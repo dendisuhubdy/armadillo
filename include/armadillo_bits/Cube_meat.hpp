@@ -982,7 +982,7 @@ Cube<eT>::rows(const uword in_row1, const uword in_row2)
 
 
 
-//! creation of subview_cube (subcube comprised of specified slices)
+//! creation of subview_cube (subcube comprised of specified rows)
 template<typename eT>
 arma_inline
 const subview_cube<eT>
@@ -1024,7 +1024,7 @@ Cube<eT>::cols(const uword in_col1, const uword in_col2)
 
 
 
-//! creation of subview_cube (subcube comprised of specified slices)
+//! creation of subview_cube (subcube comprised of specified columns)
 template<typename eT>
 arma_inline
 const subview_cube<eT>
