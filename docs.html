@@ -4234,7 +4234,7 @@ cx_mat C = cx_mat(A,B);
       <b>.insert_rows(&nbsp;</b>row_number, number_of_rows, set_to_zero&nbsp;<b>)</b>
       </td>
       <td>&nbsp;</td>
-      <td style="vertical-align: top;">(member functions of <i>Mat</i> and <i>Col</i>)
+      <td style="vertical-align: top;">(member functions of <i>Mat</i>, <i>Col</i> and <i>Cube</i>)
       </td>
     </tr>
     <tr>
@@ -4249,7 +4249,7 @@ cx_mat C = cx_mat(A,B);
       <b>.insert_cols(&nbsp;</b>col_number<b>,</b> number_of_cols<b>,</b> set_to_zero&nbsp;<b>)</b>
       </td>
       <td>&nbsp;</td>
-      <td style="vertical-align: top;">(member functions of <i>Mat</i> and <i>Row</i>)
+      <td style="vertical-align: top;">(member functions of <i>Mat</i>, <i>Row</i> and <i>Cube</i>)
       </td>
     </tr>
     <tr>
@@ -4273,16 +4273,19 @@ cx_mat C = cx_mat(A,B);
 <li>
 Functions with the <i>X</i> argument: insert a copy of <i>X</i> at the specified row/column/slice
 <ul>
-<li>if inserting rows, <i>X</i> must have the same number of columns as the recipient object</li>
-<li>if inserting columns, <i>X</i> must have the same number of rows as the recipient object</li>
+<li>if inserting rows, <i>X</i> must have the same number of columns (and slices) as the recipient object</li>
+<li>if inserting columns, <i>X</i> must have the same number of rows (and slices) as the recipient object</li>
 <li>if inserting slices, <i>X</i> must have the same number of rows and columns as the recipient object (ie. all slices must have the same size)</li>
 </ul>
 </li>
 <br>
 <li>
-Functions with the <i>number_of_...</i> argument: expand the object by creating new rows/columns/slices.
-By default, the new rows/columns/slices are set to zero.
-If <i>set_to_zero</i> is <i>false</i>, the memory used by the new rows/columns/slices will not be initialised.
+Functions with the <i>number_of_...</i> argument:
+<ul>
+<li>expand the object by creating new rows/columns/slices
+<li>by default, the new rows/columns/slices are set to zero</li>
+<li>if <i>set_to_zero</i> is <i>false</i>, the memory used by the new rows/columns/slices will not be initialised</li>
+</ul>
 </li>
 <br>
 <li>
@@ -17647,6 +17650,7 @@ List of additions and changes for each version:
 <li>added <a href="#hess">hess()</a> for Hessenberg decomposition</li>
 <li>added .row(), .rows(), .col(), .cols() to <a href="#subcube">subcube views</a></li>
 <li>expanded <a href="#shed">.shed_rows()</a> and <a href="#shed">.shed_cols()</a> to handle cubes</li>
+<li>expanded <a href="#insert">.insert_rows()</a> and <a href="#insert">.insert_cols()</a> to handle cubes</li>
 <li>faster handling of tridiagonal matrices by <a href="#solve">solve()</a></li>
 <li>faster multiplication of matrices with differing element types when using OpenMP</li>
 </ul>
