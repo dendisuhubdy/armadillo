@@ -5760,7 +5760,7 @@ SpMat<eT>::get_value(const uword in_row, const uword in_col)
   
   if( (pos_ptr != end_ptr) && ((*pos_ptr) == in_row) )
     {
-    const uword offset = pos_ptr - start_ptr;
+    const uword offset = uword(pos_ptr - start_ptr);
     const uword index  = offset + col_offset;
     
     val_ptr = &access::rw(values[index]);
@@ -5820,7 +5820,7 @@ SpMat<eT>::get_value(const uword in_row, const uword in_col) const
   
   if( (pos_ptr != end_ptr) && ((*pos_ptr) == in_row) )
     {
-    const uword offset = pos_ptr - start_ptr;
+    const uword offset = uword(pos_ptr - start_ptr);
     const uword index  = offset + col_offset;
     
     return values[index];
