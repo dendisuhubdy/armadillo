@@ -78,8 +78,8 @@ Authors:
 2: Citation Details
 ===================
 
-Please cite one of the following papers if you use Armadillo in your
-research and/or software. Citations are useful for the continued
+Please cite one (or both) of the following papers if you use Armadillo
+in your research and/or software. Citations are useful for the continued
 development and maintenance of the library.
 
   Conrad Sanderson and Ryan Curtin.
