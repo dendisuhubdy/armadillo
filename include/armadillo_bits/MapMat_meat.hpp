@@ -1098,22 +1098,15 @@ SpMat_MapMat_val<eT>::SpMat_MapMat_val(SpMat<eT>& in_s_parent, MapMat<eT>& in_m_
 
 
 template<typename eT>
-arma_inline
+inline
 SpMat_MapMat_val<eT>::operator eT() const
   {
   arma_extra_debug_sigprint();
   
-  const SpMat<eT>& const_s_parent = s_parent;
+  const  SpMat<eT>& const_s_parent = s_parent;
+  const MapMat<eT>& const_m_parent = m_parent;
   
-  return const_s_parent.get_value(row,col);  // use the const version of get_value()
-  
-  // s_parent.sync_cache();
-  // 
-  // const MapMat<eT>& const_m_parent = m_parent;
-  // 
-  // const uword index = (const_m_parent.n_rows * col) + row;
-  //   
-  // return const_m_parent.operator[](index);
+  return (const_s_parent.sync_state == 1) ? const_m_parent.at(row,col) : const_s_parent.get_value(row,col);
   }
 
 
@@ -1457,22 +1450,15 @@ SpSubview_MapMat_val<eT>::update_n_nonzeros()
 
 
 template<typename eT>
-arma_inline
+inline
 SpSubview_MapMat_val<eT>::operator eT() const
   {
   arma_extra_debug_sigprint();
   
-  const SpMat<eT>& const_s_parent = v_parent.m;
+  const  SpMat<eT>& const_s_parent = v_parent.m;
+  const MapMat<eT>& const_m_parent = m_parent;
   
-  return const_s_parent.get_value(row,col);  // use the const version of get_value()
-  
-  // v_parent.m.sync_cache();
-  // 
-  // const MapMat<eT>& const_m_parent = m_parent;
-  // 
-  // const uword index = (const_m_parent.n_rows * col) + row;
-  //   
-  // return const_m_parent.operator[](index);
+  return (const_s_parent.sync_state == 1) ? const_m_parent.at(row,col) : const_s_parent.get_value(row,col);
   }
 
 
