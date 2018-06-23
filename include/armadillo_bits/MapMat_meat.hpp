@@ -1106,6 +1106,8 @@ SpMat_MapMat_val<eT>::operator eT() const
   const  SpMat<eT>& const_s_parent = s_parent;
   const MapMat<eT>& const_m_parent = m_parent;
   
+  // get the element from the cache if it has more recent data than CSC
+  
   return (const_s_parent.sync_state == 1) ? const_m_parent.at(row,col) : const_s_parent.get_value(row,col);
   }
 
@@ -1457,6 +1459,8 @@ SpSubview_MapMat_val<eT>::operator eT() const
   
   const  SpMat<eT>& const_s_parent = v_parent.m;
   const MapMat<eT>& const_m_parent = m_parent;
+  
+  // get the element from the cache if it has more recent data than CSC
   
   return (const_s_parent.sync_state == 1) ? const_m_parent.at(row,col) : const_s_parent.get_value(row,col);
   }
