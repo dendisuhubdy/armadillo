@@ -25,9 +25,12 @@ MapMat<eT>::~MapMat()
   {
   arma_extra_debug_sigprint_this(this);
   
-  reset();
-  
-  if(map_ptr)  { delete map_ptr; }
+  if(map_ptr)
+    {
+    (*map_ptr).clear();
+    
+    delete map_ptr;
+    }
   
   // try to expose buggy user code that accesses deleted objects
   if(arma_config::debug)  { map_ptr = NULL; }
