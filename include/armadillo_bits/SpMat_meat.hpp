@@ -4631,28 +4631,33 @@ SpMat<eT>::init(const SpMat<eT>& x)
   arma_extra_debug_sigprint();
   
   // Ensure we are not initializing to ourselves.
-  if (this != &x)
+  if(this != &x)
     {
-    x.sync_csc();
-    
-    init(x.n_rows, x.n_cols);
-
-    // values and row_indices may not be null.
-    if (values != NULL)
+    if(x.sync_state == 1)
       {
-      memory::release(values);
-      memory::release(row_indices);
+      (*this).init(x.cache);
       }
-
-    access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
-    access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
-
-    // Now copy over the elements.
-    arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1);
-    arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
-    arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols + 1);
-    
-    access::rw(n_nonzero) = x.n_nonzero;
+    else
+      {
+      init(x.n_rows, x.n_cols);
+      
+      // values and row_indices may not be null.
+      if(values != NULL)
+        {
+        memory::release(values);
+        memory::release(row_indices);
+        }
+      
+      access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
+      access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
+      
+      // Now copy over the elements.
+      arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1);
+      arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
+      arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols + 1);
+      
+      access::rw(n_nonzero) = x.n_nonzero;
+      }
     }
   }
 
