@@ -4633,7 +4633,7 @@ SpMat<eT>::init(const SpMat<eT>& x)
   // Ensure we are not initializing to ourselves.
   if (this != &x)
     {
-    x.sync_csc();
+    x.sync_csc();  // TODO: refactor to avoid changing the state of x
     
     init(x.n_rows, x.n_cols);
 
