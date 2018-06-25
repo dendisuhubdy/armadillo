@@ -4630,29 +4630,42 @@ SpMat<eT>::init(const SpMat<eT>& x)
   {
   arma_extra_debug_sigprint();
   
-  // Ensure we are not initializing to ourselves.
-  if (this != &x)
-    {
-    x.sync_csc();  // TODO: refactor to avoid changing the state of x
-    
-    init(x.n_rows, x.n_cols);
-
-    // values and row_indices may not be null.
-    if (values != NULL)
+  if(this == &x)  { return; }
+  
+  bool init_done = false;
+  
+  #if defined(ARMA_USE_OPENMP)
+    if(x.sync_state == 1)
       {
-      memory::release(values);
-      memory::release(row_indices);
+      #pragma omp critical
+      if(x.sync_state == 1)
+        {
+        (*this).init(x.cache);
+        init_done = true;
+        }
       }
-
-    access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
-    access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
-
-    // Now copy over the elements.
-    arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1);
-    arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
-    arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols + 1);
-    
-    access::rw(n_nonzero) = x.n_nonzero;
+  #elif defined(ARMA_USE_CXX11)
+    if(x.sync_state == 1)
+      {
+      x.cache_mutex.lock();
+      if(x.sync_state == 1)
+        {
+        (*this).init(x.cache);
+        init_done = true;
+        }
+      x.cache_mutex.unlock();
+      }
+  #else
+    if(x.sync_state == 1)
+      {
+      (*this).init(x.cache);
+      init_done = true;
+      }
+  #endif
+  
+  if(init_done == false)
+    {
+    (*this).init_simple(x);
     }
   }
 
@@ -4749,6 +4762,35 @@ SpMat<eT>::init(const MapMat<eT>& x)
   // {
   // access::rw(col_ptrs[i + 1]) += col_ptrs[i];
   // }
+  }
+
+
+
+template<typename eT>
+inline
+void
+SpMat<eT>::init_simple(const SpMat<eT>& x)
+  {
+  arma_extra_debug_sigprint();
+  
+  if(this == &x)  { return; }
+  
+  init(x.n_rows, x.n_cols);
+  
+  if(values != NULL)
+    {
+    memory::release(values);
+    memory::release(row_indices);
+    }
+  
+  access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
+  access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
+  
+  arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1);
+  arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
+  arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols + 1);
+  
+  access::rw(n_nonzero) = x.n_nonzero;
   }
 
 
