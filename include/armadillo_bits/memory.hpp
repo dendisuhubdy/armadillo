@@ -72,7 +72,7 @@ memory::acquire(const uword n_elem)
     }
   #elif defined(ARMA_USE_MKL_ALLOC)
     {
-    out_memptr = (eT *) mkl_malloc( sizeof(eT)*n_elem, 128 );
+    out_memptr = (eT *) mkl_malloc( sizeof(eT)*n_elem, 16 );
     }
   #elif defined(ARMA_HAVE_POSIX_MEMALIGN)
     {
