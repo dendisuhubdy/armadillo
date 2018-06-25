@@ -4559,34 +4559,29 @@ SpMat<eT>::init(uword in_rows, uword in_cols)
     );
   
   // Clean out the existing memory.
-  if (values)
-    {
-    memory::release(values);
-    memory::release(row_indices);
-    }
+  if(values     )  { memory::release(access::rw(values));      }
+  if(row_indices)  { memory::release(access::rw(row_indices)); }
+  if(col_ptrs   )  { memory::release(access::rw(col_ptrs));    }
   
   access::rw(values)      = memory::acquire_chunked<eT>   (1);
   access::rw(row_indices) = memory::acquire_chunked<uword>(1);
+  access::rw(col_ptrs)    = memory::acquire<uword>        (in_cols + 2);
   
   access::rw(values[0])      = 0;
   access::rw(row_indices[0]) = 0;
   
-  memory::release(col_ptrs);
+  // fill column pointers with 0,
+  // except for the last element which contains the maximum possible element
+  // (so iterators terminate correctly).
+  arrayops::inplace_set(access::rwp(col_ptrs), uword(0), in_cols + 1);
+  
+  access::rw(col_ptrs[in_cols + 1]) = std::numeric_limits<uword>::max();
   
   // Set the new size accordingly.
   access::rw(n_rows)    = in_rows;
   access::rw(n_cols)    = in_cols;
   access::rw(n_elem)    = (in_rows * in_cols);
   access::rw(n_nonzero) = 0;
-  
-  // Try to allocate the column pointers, filling them with 0,
-  // except for the last element which contains the maximum possible element
-  // (so iterators terminate correctly).
-  access::rw(col_ptrs) = memory::acquire<uword>(in_cols + 2);
-  
-  arrayops::inplace_set(access::rwp(col_ptrs), uword(0), in_cols + 1);
-  
-  access::rw(col_ptrs[in_cols + 1]) = std::numeric_limits<uword>::max();
   }
 
 
@@ -4777,11 +4772,8 @@ SpMat<eT>::init_simple(const SpMat<eT>& x)
   
   init(x.n_rows, x.n_cols);
   
-  if(values != NULL)
-    {
-    memory::release(values);
-    memory::release(row_indices);
-    }
+  if(values     )  { memory::release(access::rw(values));      }
+  if(row_indices)  { memory::release(access::rw(row_indices)); }
   
   access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
   access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
