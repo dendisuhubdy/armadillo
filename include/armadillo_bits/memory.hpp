@@ -78,22 +78,28 @@ memory::acquire(const uword n_elem)
     {
     eT* memptr = NULL;
     
-    const size_t n_bytes   = sizeof(eT)*size_t(n_elem);
-    const size_t alignment = (n_bytes >= size_t(1024)) ? size_t(64) : size_t(16);
+    const size_t alignment = 16;
     
-    int status = posix_memalign((void **)&memptr, ( (alignment >= sizeof(void*)) ? alignment : sizeof(void*) ), n_bytes);
+    int status = posix_memalign((void **)&memptr, ( (alignment >= sizeof(void*)) ? alignment : sizeof(void*) ), sizeof(eT)*n_elem);
     
     out_memptr = (status == 0) ? memptr : NULL;
+    
+    // const size_t n_bytes   = sizeof(eT)*size_t(n_elem);
+    // const size_t alignment = (n_bytes >= size_t(1024)) ? size_t(64) : size_t(16);
+    // 
+    // int status = posix_memalign((void **)&memptr, ( (alignment >= sizeof(void*)) ? alignment : sizeof(void*) ), n_bytes);
+    // 
+    // out_memptr = (status == 0) ? memptr : NULL;
     }
   #elif defined(_MSC_VER)
     {
-    //out_memptr = (eT *) malloc(sizeof(eT)*n_elem);
-    //out_memptr = (eT *) _aligned_malloc( sizeof(eT)*n_elem, 16 );  // lives in malloc.h
+    // out_memptr = (eT *) malloc(sizeof(eT)*n_elem);
+    out_memptr = (eT *) _aligned_malloc( sizeof(eT)*n_elem, 16 );  // lives in malloc.h
     
-    const size_t n_bytes   = sizeof(eT)*size_t(n_elem);
-    const size_t alignment = (n_bytes >= size_t(1024)) ? size_t(64) : size_t(16);
-    
-    out_memptr = (eT *) _aligned_malloc( n_bytes, alignment );
+    // const size_t n_bytes   = sizeof(eT)*size_t(n_elem);
+    // const size_t alignment = (n_bytes >= size_t(1024)) ? size_t(64) : size_t(16);
+    // 
+    // out_memptr = (eT *) _aligned_malloc( n_bytes, alignment );
     }
   #else
     {
