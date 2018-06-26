@@ -233,7 +233,11 @@ MapMat<eT>::reset()
   {
   arma_extra_debug_sigprint();
   
-  init_warm(0, 0);
+  access::rw(n_rows) = 0;
+  access::rw(n_cols) = 0;
+  access::rw(n_elem) = 0;
+  
+  (*map_ptr).clear();
   }
 
 
@@ -801,7 +805,7 @@ MapMat<eT>::init_warm(const uword in_n_rows, const uword in_n_cols)
   access::rw(n_cols) = in_n_cols;
   access::rw(n_elem) = new_n_elem;
   
-  if( (new_n_elem == 0) && ((*map_ptr).empty() == false) )  { (*map_ptr).clear(); }
+  if(new_n_elem == 0) { (*map_ptr).clear(); }
   }
 
 
