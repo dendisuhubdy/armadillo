@@ -2893,8 +2893,8 @@ SpMat<eT>::shed_cols(const uword in_col1, const uword in_col2)
       arrayops::copy(new_row_indices + col_beg, row_indices + col_end, n_nonzero - col_end);
       }
 
-    memory::release(values);
-    memory::release(row_indices);
+    if(values)       { memory::release(access::rw(values));      }
+    if(row_indices)  { memory::release(access::rw(row_indices)); }
 
     access::rw(values)      = new_values;
     access::rw(row_indices) = new_row_indices;
@@ -2922,7 +2922,7 @@ SpMat<eT>::shed_cols(const uword in_col1, const uword in_col2)
     new_col_ptrs[cur_col] = col_ptrs[i] - diff;
     }
   
-  memory::release(col_ptrs);
+  if(col_ptrs)  { memory::release(access::rw(col_ptrs)); }
   access::rw(col_ptrs) = new_col_ptrs;
   
   // We update the element and column counts, and we're done.
@@ -3677,11 +3677,11 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
     }
   
   // Copy the new row indices.
-  memory::release(row_indices);
-  access::rw(row_indices) = new_row_indices;
+  if(row_indices)  { memory::release(access::rw(row_indices)); }
+  if(col_ptrs)     { memory::release(access::rw(col_ptrs));    } 
   
-  memory::release(col_ptrs);
-  access::rw(col_ptrs) = new_col_ptrs;
+  access::rw(row_indices) = new_row_indices;
+  access::rw(col_ptrs)    = new_col_ptrs;
   
   // Now set the size.
   access::rw(n_rows) = in_rows;
@@ -5156,8 +5156,8 @@ SpMat<eT>::mem_resize(const uword new_n_nonzero)
     {
     if(new_n_nonzero == 0)
       {
-      memory::release(values);
-      memory::release(row_indices);
+      if(values)       { memory::release(access::rw(values));      }
+      if(row_indices)  { memory::release(access::rw(row_indices)); }
       
       access::rw(values)      = memory::acquire_chunked<eT>   (1);
       access::rw(row_indices) = memory::acquire_chunked<uword>(1);
@@ -5179,14 +5179,14 @@ SpMat<eT>::mem_resize(const uword new_n_nonzero)
         if(n_nonzero > 0)
           {
           // Copy old elements.
-          uword copy_len = std::min(n_nonzero, new_n_nonzero);
+          uword copy_len = (std::min)(n_nonzero, new_n_nonzero);
           
           arrayops::copy(new_values,      values,      copy_len);
           arrayops::copy(new_row_indices, row_indices, copy_len);
           }
         
-        memory::release(values);
-        memory::release(row_indices);
+        if(values)       { memory::release(access::rw(values));      }
+        if(row_indices)  { memory::release(access::rw(row_indices)); }
         
         access::rw(values)      = new_values;
         access::rw(row_indices) = new_row_indices;
@@ -5394,12 +5394,8 @@ SpMat<eT>::init_xform_mt(const SpBase<eT2,T1>& A, const Functor& func)
       {
       init(x.n_rows, x.n_cols);
       
-      // values and row_indices may not be null.
-      if(values != NULL)
-        {
-        memory::release(values);
-        memory::release(row_indices);
-        }
+      if(values)       { memory::release(access::rw(values));      }
+      if(row_indices)  { memory::release(access::rw(row_indices)); }
       
       access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
       access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
@@ -6040,8 +6036,8 @@ SpMat<eT>::insert_element(const uword in_row, const uword in_col, const eT val)
     arrayops::copy(new_row_indices + pos + 1, row_indices + pos, (old_n_nonzero - pos) + 1);
     
     // Assign new pointers.
-    memory::release(values);
-    memory::release(row_indices);
+    if(values)       { memory::release(access::rw(values));      }
+    if(row_indices)  { memory::release(access::rw(row_indices)); }
 
     access::rw(values)      = new_values;
     access::rw(row_indices) = new_row_indices;
@@ -6117,8 +6113,8 @@ SpMat<eT>::delete_element(const uword in_row, const uword in_col)
           arrayops::copy(new_values      + pos, values      + pos + 1, (n_nonzero - pos) + 1);
           arrayops::copy(new_row_indices + pos, row_indices + pos + 1, (n_nonzero - pos) + 1);
           
-          memory::release(values);
-          memory::release(row_indices);
+          if(values)       { memory::release(access::rw(values));      }
+          if(row_indices)  { memory::release(access::rw(row_indices)); }
           
           access::rw(values)      = new_values;
           access::rw(row_indices) = new_row_indices;
