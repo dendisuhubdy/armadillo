@@ -25,12 +25,7 @@ MapMat<eT>::~MapMat()
   {
   arma_extra_debug_sigprint_this(this);
   
-  if(map_ptr)
-    {
-    (*map_ptr).clear();
-    
-    delete map_ptr;
-    }
+  if(map_ptr)  { (*map_ptr).clear();  delete map_ptr; }
   
   // try to expose buggy user code that accesses deleted objects
   if(arma_config::debug)  { map_ptr = NULL; }
@@ -805,7 +800,7 @@ MapMat<eT>::init_warm(const uword in_n_rows, const uword in_n_cols)
   access::rw(n_cols) = in_n_cols;
   access::rw(n_elem) = new_n_elem;
   
-  if(new_n_elem == 0) { (*map_ptr).clear(); }
+  if(new_n_elem == 0)  { (*map_ptr).clear(); }
   }
 
 
