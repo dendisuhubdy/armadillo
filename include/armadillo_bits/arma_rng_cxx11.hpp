@@ -161,7 +161,6 @@ arma_rng_cxx11::randg_fill(eT* mem, const uword N, const double a, const double 
     if((N < 512) || omp_in_parallel())  { (*this).randg_fill_simple(mem, N, a, b); return; }
     
     typedef std::mt19937_64                  motor_type;
-    typedef std::mt19937_64::result_type      seed_type;
     typedef std::gamma_distribution<double>  distr_type;
     
     const uword n_threads = uword( mp_thread_limit::get() );
