@@ -492,5 +492,5 @@ Octave/Matlab with C++ code that uses Armadillo matrices.
 * SigPack: C++ signal processing library using Armadillo
   http://sigpack.sourceforge.net
   
-* matlab2cpp: conversion of Matlab code to Armadillo based C++ code
-  https://github.com/jonathf/matlab2cpp
+* OptimLib: C++ library of numerical optimisation methods for nonlinear functions
+  https://www.kthohr.com/optimlib.html
