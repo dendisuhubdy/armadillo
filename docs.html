@@ -3042,6 +3042,8 @@ See also:
 <li><a href="#transform">.transform()</a></li>
 <li><a href="#for_each">.for_each()</a></li>
 <li><a href="#fill">.fill()</a></li>
+<li><a href="#has_nan">.has_nan()</a></li>
+<li><a href="#has_inf">.has_inf()</a></li>
 <li><a href="#find">find()</a></li>
 <li><a href="#clamp">clamp()</a></li>
 <li><a href="#operators">relational operators</a></li>
@@ -6063,9 +6065,11 @@ cout &lt;&lt; B.is_finite() &lt;&lt; endl;
 <li>
 See also:
 <ul>
-<li><a href="#is_finite">is_finite()</a> (standalone function)</li>
+<li><a href="#has_inf">.has_inf()</a></li>
+<li><a href="#has_nan">.has_nan()</a></li>
 <li><a href="#find_finite">find_finite()</a></li>
 <li><a href="#find_nonfinite">find_nonfinite()</a></li>
+<li><a href="#is_finite">is_finite()</a> (standalone function)</li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
 </li>
@@ -6105,7 +6109,9 @@ cout &lt;&lt; B.has_inf() &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#has_nan">.has_nan()</a>
+<li><a href="#replace">.replace()</a></li>
 <li><a href="#is_finite_member">.is_finite()</a>
+<li><a href="#find_nonfinite">find_nonfinite()</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
 </li>
@@ -6150,6 +6156,9 @@ cout &lt;&lt; B.has_nan() &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#has_inf">.has_inf()</a>
+<li><a href="#replace">.replace()</a></li>
+<li><a href="#is_finite_member">.is_finite()</a>
+<li><a href="#find_nonfinite">find_nonfinite()</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
 </li>
@@ -8561,6 +8570,7 @@ Examples:
 mat A = randu&lt;mat&gt;(5,5);
 
 A(1,1) = datum::inf;
+A(2,2) = datum::nan;
 
 // change non-finite elements to zero
 A.elem( find_nonfinite(A) ).zeros();
@@ -8569,11 +8579,18 @@ A.elem( find_nonfinite(A) ).zeros();
 </li>
 <br>
 <li>
+<b>Caveat:</b> the replace instances of a specific non-finite value (eg. nan or inf),
+it's more efficient to use <a href="#replace">.replace()</a>
+</li>
+<br>
+<li>
 See also:
 <ul>
 <li><a href="#find">find()</a></li>
 <li><a href="#find_finite">find_finite()</a></li>
 <li><a href="#replace">.replace()</a></li>
+<li><a href="#has_inf">.has_inf()</a></li>
+<li><a href="#has_nan">.has_nan()</a></li>
 <li><a href="#submat">submatrix views</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
