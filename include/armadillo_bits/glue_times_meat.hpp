@@ -109,6 +109,36 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     return;
     }
   
+  // TODO: this is an experimental optimisation
+  if( (strip_inv<T2>::do_inv) && (is_cx<eT>::no) )
+    {
+    // replace A*inv(B) with trans( solve(trans(B),trans(A)) )
+    
+    arma_extra_debug_print("glue_times_redirect<2>::apply(): detected A*inv(B)");
+    
+    const Mat<eT> At = trans(X.A);
+    
+    const strip_inv<T2> B_strip(X.B);
+    
+    Mat<eT> Bt = trans(B_strip.M);
+    
+    arma_debug_check( (Bt.is_square() == false), "inv(): given matrix must be square sized" );
+    
+    arma_debug_assert_mul_size(Bt, At, "matrix multiplication");
+    
+    const bool status = auxlib::solve_square_fast(out, Bt, At);
+    
+    if(status == false)
+      {
+      out.soft_reset();
+      arma_stop_runtime_error("matrix multiplication: inverse of singular matrix; suggest to use solve() instead");
+      }
+    
+    out = trans(out);
+    
+    return;
+    }
+  
   glue_times_redirect2_helper<false>::apply(out, X);
   }
 
