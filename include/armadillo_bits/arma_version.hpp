@@ -20,9 +20,9 @@
 
 
 #define ARMA_VERSION_MAJOR 8
-#define ARMA_VERSION_MINOR 600
+#define ARMA_VERSION_MINOR 690
 #define ARMA_VERSION_PATCH 0
-#define ARMA_VERSION_NAME  "Sabretooth Rugrat"
+#define ARMA_VERSION_NAME  "unstable"
 
 
 
