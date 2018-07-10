@@ -18,29 +18,29 @@ Copyright 2017-2018 Data61, CSIRO
  
 ### Contents
 
- 1: [Introduction](#introduction)
- 2: [Citation Details](#citation-details)
- 3: [Distribution License](#distribution-license)
+ 1. [Introduction](#introduction)
+ 2. [Citation Details](#citation-details)
+ 3. [Distribution License](#distribution-license)
 
- 4: [Compilers and External Dependencies](#compilers-and-external-dependencies)
+ 4. [Compilers and External Dependencies](#compilers-and-external-dependencies)
 
- 5: [Linux and macOS: Installation](#linux-and-macos-installation)
- 6: [Linux and macOS: Compiling and Linking](#linux-and-macos-compiling-and-linking)
+ 5. [Linux and macOS: Installation](#linux-and-macos-installation)
+ 6. [Linux and macOS: Compiling and Linking](#linux-and-macos-compiling-and-linking)
 
- 7: [Windows: Installation](#windows-installation)
- 8: [Windows: Compiling and Linking](#windows-compiling-and-linking)
+ 7. [Windows: Installation](#windows-installation)
+ 8. [Windows: Compiling and Linking](#windows-compiling-and-linking)
 
- 9: [Support for OpenBLAS and Intel MKL](#support-for-openblas-and-intel-mkl)
-10: [Support for ATLAS](#support-for-atlas)
-11: [Support for C++11 / C++14 Features](#support-for-c11--c14-features)
-12: [Support for OpenMP](#support-for-openmp)
+ 9. [Support for OpenBLAS and Intel MKL](#support-for-openblas-and-intel-mkl)
+10. [Support for ATLAS](#support-for-atlas)
+11. [Support for C++11 / C++14 Features](#support-for-c11--c14-features)
+12. [Support for OpenMP](#support-for-openmp)
 
-13: [API Documentation](#api-documentation)
-14: [API Stability and Versioning](#api-stability-and-versioning)
-15: [Bug Reports and Frequently Asked Questions](#bug-reports-and-frequently-asked-questions)
+13. [API Documentation](#api-documentation)
+14. [API Stability and Versioning](#api-stability-and-versioning)
+15. [Bug Reports and Frequently Asked Questions](#bug-reports-and-frequently-asked-questions)
 
-16: [MEX Interface to Octave/Matlab](#mex-interface-to-octavematlab)
-17: [Related Software](#related-software)
+16. [MEX Interface to Octave/Matlab](#mex-interface-to-octavematlab)
+17. [Related Software](#related-software)
 
 ---
 
@@ -78,13 +78,13 @@ Please cite one (or both) of the following papers if you use Armadillo
 in your research and/or software. Citations are useful for the continued
 development and maintenance of the library.
 
-  Conrad Sanderson and Ryan Curtin.  
-  Armadillo: a template-based C++ library for linear algebra.  
-  Journal of Open Source Software, Vol. 1, pp. 26, 2016.  
-
-  Conrad Sanderson and Ryan Curtin.  
-  A User-Friendly Hybrid Sparse Matrix Class in C++.  
-  International Congress on Mathematical Software, 2018.  
+  * Conrad Sanderson and Ryan Curtin.  
+    Armadillo: a template-based C++ library for linear algebra.  
+    Journal of Open Source Software, Vol. 1, pp. 26, 2016.  
+  
+  * Conrad Sanderson and Ryan Curtin.  
+    A User-Friendly Hybrid Sparse Matrix Class in C++.  
+    International Congress on Mathematical Software, 2018.  
 
 ---
 
@@ -332,17 +332,17 @@ afterwards.
 Below is an example of /etc/ld.so.conf.d/mkl.conf
 where Intel MKL is installed in /opt/intel
 
-/opt/intel/lib/intel64
-/opt/intel/mkl/lib/intel64
+/opt/intel/lib/intel64  
+/opt/intel/mkl/lib/intel64  
 
 If you have MKL installed and it is persistently giving problems
 during linking, you can disable Armadillo's support for MKL by editing
 the CMakeLists.txt file, deleting CMakeCache.txt and re-running
 the CMake based installation. Comment out the lines containing:
 
-  INCLUDE(ARMA_FindMKL)
-  INCLUDE(ARMA_FindACMLMP)
-  INCLUDE(ARMA_FindACML)
+  INCLUDE(ARMA_FindMKL)  
+  INCLUDE(ARMA_FindACMLMP)  
+  INCLUDE(ARMA_FindACML)  
 
 ---
 
