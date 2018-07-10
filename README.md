@@ -39,8 +39,8 @@ Copyright 2017-2018 Data61, CSIRO
 14. [API Stability and Versioning](#14-api-stability-and-versioning)
 15. [Bug Reports and Frequently Asked Questions](#15-bug-reports-and-frequently-asked-questions)
 
-16. [MEX Interface to Octave/Matlab](#mex-interface-to-octavematlab)
-17. [Related Software](#related-software)
+16. [MEX Interface to Octave/Matlab](#16-mex-interface-to-octavematlab)
+17. [Related Software](#17-related-software)
 
 ---
 
