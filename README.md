@@ -1,4 +1,4 @@
-Armadillo: C++ Library for Linear Algebra & Scientific Computing  
+### Armadillo: C++ Library for Linear Algebra & Scientific Computing  
 http://arma.sourceforge.net
 
 Copyright 2008-2018 Conrad Sanderson (http://conradsanderson.id.au)  
@@ -248,20 +248,20 @@ The installation is comprised of 3 steps:
   and tell your compiler to use that location for header files
   (in addition to the locations it uses already).
   Alternatively, you can use the "include" folder directly.
-  
+
 * Step 2:
   Modify "include/armadillo_bits/config.hpp" to indicate which
   libraries are currently available on your system. For example,
   if you have LAPACK, BLAS (or OpenBLAS), ARPACK and SuperLU present,
   uncomment the following lines:
-  
-  #define ARMA_USE_LAPACK
-  #define ARMA_USE_BLAS
-  #define ARMA_USE_ARPACK
-  #define ARMA_USE_SUPERLU
-  
+
+  #define ARMA_USE_LAPACK  
+  #define ARMA_USE_BLAS  
+  #define ARMA_USE_ARPACK  
+  #define ARMA_USE_SUPERLU  
+
   If you don't need sparse matrices, don't worry about ARPACK or SuperLU.
-  
+
 * Step 3:
   Configure your compiler to link with LAPACK and BLAS
   (and optionally ARPACK and SuperLU).
@@ -310,6 +310,7 @@ You may need to make minor modifications to include/armadillo_bits/config.hpp
 to make sure Armadillo uses the same integer sizes and style of function names
 as used by the replacement libraries. Specifically, you may need comment or uncomment
 the following defines:
+
   ARMA_USE_WRAPPER  
   ARMA_BLAS_CAPITALS  
   ARMA_BLAS_UNDERSCORE  
@@ -371,7 +372,7 @@ to make use C++11 features by defining ARMA_USE_CXX11 before
 You may need to explicitly enable C++11 mode in your compiler.
 For example, use the -std=c++11 or -std=c++14 options in gcc & clang.
 
-Caveat: use of the C++11 "auto" keyword is not recommended with Armadillo
+**Caveat:** use of the C++11 "auto" keyword is not recommended with Armadillo
 objects and expressions. Armadillo has a template meta-programming framework
 which creates lots of short lived temporaries that are not handled by auto.
 
