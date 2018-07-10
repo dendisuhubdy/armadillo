@@ -67,8 +67,8 @@ The library can be used for machine learning, pattern recognition, computer visi
 signal processing, bioinformatics, statistics, finance, etc.
 
 Authors:
-  Conrad Sanderson - http://conradsanderson.id.au
-  Ryan Curtin      - http://ratml.org
+  * Conrad Sanderson - http://conradsanderson.id.au
+  * Ryan Curtin      - http://ratml.org
 
 ---
 
