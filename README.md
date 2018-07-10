@@ -18,26 +18,26 @@ Copyright 2017-2018 Data61, CSIRO
  
 ### Contents
 
- 1. [Introduction](#introduction)
- 2. [Citation Details](#citation-details)
- 3. [Distribution License](#distribution-license)
+ 1. [Introduction](#1-introduction)
+ 2. [Citation Details](#2-citation-details)
+ 3. [Distribution License](#3-distribution-license)
 
- 4. [Compilers and External Dependencies](#compilers-and-external-dependencies)
+ 4. [Compilers and External Dependencies](#4-compilers-and-external-dependencies)
 
- 5. [Linux and macOS: Installation](#linux-and-macos-installation)
- 6. [Linux and macOS: Compiling and Linking](#linux-and-macos-compiling-and-linking)
+ 5. [Linux and macOS: Installation](#5-linux-and-macos-installation)
+ 6. [Linux and macOS: Compiling and Linking](#6-linux-and-macos-compiling-and-linking)
 
- 7. [Windows: Installation](#windows-installation)
- 8. [Windows: Compiling and Linking](#windows-compiling-and-linking)
+ 7. [Windows: Installation](#7-windows-installation)
+ 8. [Windows: Compiling and Linking](#8-windows-compiling-and-linking)
 
- 9. [Support for OpenBLAS and Intel MKL](#support-for-openblas-and-intel-mkl)
-10. [Support for ATLAS](#support-for-atlas)
-11. [Support for C++11 / C++14 Features](#support-for-c11--c14-features)
-12. [Support for OpenMP](#support-for-openmp)
+ 9. [Support for OpenBLAS and Intel MKL](#9-support-for-openblas-and-intel-mkl)
+10. [Support for ATLAS](#10-support-for-atlas)
+11. [Support for C++11 / C++14 Features](#11-support-for-c11-c14-features)
+12. [Support for OpenMP](#12-support-for-openmp)
 
-13. [API Documentation](#api-documentation)
-14. [API Stability and Versioning](#api-stability-and-versioning)
-15. [Bug Reports and Frequently Asked Questions](#bug-reports-and-frequently-asked-questions)
+13. [API Documentation](#13-api-documentation)
+14. [API Stability and Versioning](#14-api-stability-and-versioning)
+15. [Bug Reports and Frequently Asked Questions](#15-bug-reports-and-frequently-asked-questions)
 
 16. [MEX Interface to Octave/Matlab](#mex-interface-to-octavematlab)
 17. [Related Software](#related-software)
