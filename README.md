@@ -291,7 +291,8 @@ Faster and/or alternative implementations of BLAS and LAPACK are available:
 
 The OpenBLAS and Intel MKL libraries are generally the fastest.
 
-Caveat: Windows and MSVC are poor platforms for scientific/engineering development.
+**Caveat:** Windows and MSVC are poor platforms for scientific/engineering development.
+The MSVC compiler has a multitude of bugs and produces low-performance executables.
 For any serious and/or performance critical work, we recommend using
 a Linux based operating system:
   * Fedora  http://fedoraproject.org/
@@ -367,7 +368,7 @@ as well as the newer C++11 and C++14 standards.
 Armadillo will enable extra features (such as move constructors)
 when a C++11/C++14 compiler is detected. You can also force Armadillo
 to make use C++11 features by defining ARMA_USE_CXX11 before
-#include <armadillo> in your code.
+`#include <armadillo>` in your code.
 
 You may need to explicitly enable C++11 mode in your compiler.
 For example, use the -std=c++11 or -std=c++14 options in gcc & clang.
