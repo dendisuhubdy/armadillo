@@ -58,6 +58,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
   const bool no_band     = bool(flags & solve_opts::flag_no_band    );
+  const bool no_sym      = bool(flags & solve_opts::flag_no_sym     );
+  const bool refine      = bool(flags & solve_opts::flag_refine     );
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
@@ -65,6 +67,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(no_approx  )  { arma_extra_debug_print("no_approx");   }
   if(no_band    )  { arma_extra_debug_print("no_band");     }
+  if(no_sym     )  { arma_extra_debug_print("no_sym");      }
+  if(refine     )  { arma_extra_debug_print("refine");      }
   
   T    rcond  = T(0);
   bool status = false;
