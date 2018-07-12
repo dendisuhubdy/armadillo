@@ -49,6 +49,11 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   typedef typename get_pod_type<eT>::result T;
   
+  // TODO: make the fast operation default in Armadillo 9; also affects spsolve()
+  
+  // TODO: add solve_opts::flag_refine for forward compatibility with Armadillo 9
+  // TODO: add solve_opts::flag_no_refine as a synonym for solve_opts::flag_fast
+  
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
@@ -69,6 +74,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(A.n_rows == A.n_cols)
     {
     arma_extra_debug_print("glue_solve_gen::apply(): detected square system");
+    
+    // TODO: detect symmetric matrix and use lapack::sysv() and lapack::sysvx() (real/complex matrices)
+    // TODO: detect hermitian matrix and use lapack::hesv() and lapack::hesvx() (only complex matrices)
     
     uword KL = 0;
     uword KU = 0;
