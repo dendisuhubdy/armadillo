@@ -59,6 +59,8 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
     }
   else
     {
+    // TODO: detect symmetric matrix and use an adapted form of auxlib::inv_sym()
+    
     status = auxlib::inv(out, X.m);
     }
     
