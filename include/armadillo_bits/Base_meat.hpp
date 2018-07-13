@@ -261,6 +261,48 @@ Base<elem_type,derived>::index_max() const
 
 
 
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_symmetric() const
+  {
+  const quasi_unwrap<derived> U( (*this).get_ref() );
+  
+  const Mat<elem_type>& A = U.M;
+  
+  if( (A.n_elem == 0) || (A.n_rows != A.n_cols) )  { return false; }
+  
+  return ( accu( (A - A.st()) != elem_type(0) ) == uword(0) );
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_symmetric(const typename get_pod_type<elem_type>::result tol) const
+  {
+  typedef typename get_pod_type<elem_type>::result T;
+  
+  arma_debug_check( (tol < T(0)), "is_symmetric(): parameter 'tol' must be >= 0" );
+  
+  const quasi_unwrap<derived> U( (*this).get_ref() );
+  
+  const Mat<elem_type>& A = U.M;
+  
+  if( (A.n_elem == 0) || (A.n_rows != A.n_cols) )  { return false; }
+  
+  const T norm_A = norm(A, "inf");
+  
+  if(norm_A == T(0))  { return true; }
+  
+  return ( (norm((A - A.st()), "inf") / norm_A) <= tol );
+  }
+
+
+
 //
 // extra functions defined in Base_inv_yes
 
