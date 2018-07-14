@@ -343,7 +343,7 @@ Base_inv_yes<derived>::i() const
 
 template<typename derived>
 arma_deprecated
-  inline 
+inline
 const Op<derived,op_inv>
 Base_inv_yes<derived>::i(const bool) const   // argument kept only for compatibility with old user code
   {
