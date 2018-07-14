@@ -271,9 +271,31 @@ Base<elem_type,derived>::is_symmetric() const
   
   const Mat<elem_type>& A = U.M;
   
-  if( (A.n_elem == 0) || (A.n_rows != A.n_cols) )  { return false; }
+  if(A.n_rows != A.n_cols)  { return false; }
+  if(A.n_elem <= 1       )  { return true;  } 
   
-  return ( accu( (A - A.st()) != elem_type(0) ) == uword(0) );
+  const uword N   = A.n_rows;
+  const uword Nm1 = N-1;
+  
+  const elem_type* A_col = A.memptr();
+  
+  for(uword j=0; j < Nm1; ++j)
+    {
+    const uword jp1 = j+1;
+    
+    const elem_type* A_row = &(A.at(j,jp1));
+    
+    for(uword i=jp1; i < N; ++i)
+      {      
+      if(A_col[i] != (*A_row))  { return false; }
+      
+      A_row += N;
+      }
+    
+    A_col += N;
+    }
+  
+  return true;
   }
 
 
@@ -292,13 +314,16 @@ Base<elem_type,derived>::is_symmetric(const typename get_pod_type<elem_type>::re
   
   const Mat<elem_type>& A = U.M;
   
-  if( (A.n_elem == 0) || (A.n_rows != A.n_cols) )  { return false; }
+  if(A.n_rows != A.n_cols)  { return false; }
+  if(A.n_elem <= 1       )  { return true;  } 
   
-  const T norm_A = norm(A, "inf");
+  const T norm_A = as_scalar( arma::max(sum(abs(A), 1), 0) );
   
   if(norm_A == T(0))  { return true; }
   
-  return ( (norm((A - A.st()), "inf") / norm_A) <= tol );
+  const T norm_A_Ast = as_scalar( arma::max(sum(abs(A - A.st()), 1), 0) );
+  
+  return ( (norm_A_Ast / norm_A) <= tol );
   }
 
 
@@ -318,7 +343,7 @@ Base_inv_yes<derived>::i() const
 
 template<typename derived>
 arma_deprecated
-inline
+  inline 
 const Op<derived,op_inv>
 Base_inv_yes<derived>::i(const bool) const   // argument kept only for compatibility with old user code
   {
