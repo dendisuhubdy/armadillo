@@ -49,21 +49,27 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
   {
   arma_extra_debug_sigprint();
   
+  typedef typename T1::elem_type eT;
+  
   const strip_diagmat<T1> strip(X.m);
   
   bool status;
   
-  if(strip.do_diagmat == true)
+  if(strip.do_diagmat)
     {
     status = op_inv::apply_diagmat(out, strip.M);
     }
   else
     {
-    // TODO: detect symmetric matrix and use an adapted form of auxlib::inv_sym()
+    const quasi_unwrap<T1> U(X.m);
     
-    status = auxlib::inv(out, X.m);
+    const Mat<eT>& A = U.M;
+    
+    arma_debug_check( (A.n_rows != A.n_cols), "inv(): given matrix must be square sized" );
+    
+    status = ((A.n_rows >= 5) && U.M.is_symmetric()) ? auxlib::inv_sym(out, U.M, 0) :  auxlib::inv(out, U.M);
     }
-    
+  
   if(status == false)
     {
     out.soft_reset();
