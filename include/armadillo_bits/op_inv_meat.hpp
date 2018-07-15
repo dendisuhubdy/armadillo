@@ -48,23 +48,12 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
     
     if(N <= 4)
       {
-      if(&out == &A)
-        {
-        Mat<eT> tmp;
-        
-        status = auxlib::inv_tiny(tmp, A);
-        
-        out.steal_mem(tmp);
-        }
-      else
-        {
-        status = auxlib::inv_tiny(out, A);
-        }
+      status = auxlib::inv_tiny(out, A);
       }
     
     if(status == false)
       {
-      status = A.is_symmetric() ? auxlib::inv_sym(out, U.M, 0) :  auxlib::inv_std(out, U.M);
+      status = A.is_symmetric() ? auxlib::inv_sym(out, U.M, 0) :  auxlib::inv(out, U.M);
       }
     }
   

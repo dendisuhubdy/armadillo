@@ -37,7 +37,7 @@ class auxlib
   // inv
   
   template<typename eT>
-  inline static bool inv_std(Mat<eT>& out, const Mat<eT>& A);
+  inline static bool inv(Mat<eT>& out, const Mat<eT>& A);
   
   template<typename eT>
   inline static bool inv_tiny(Mat<eT>& out, const Mat<eT>& X);

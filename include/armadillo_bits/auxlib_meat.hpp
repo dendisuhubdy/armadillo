@@ -22,7 +22,7 @@
 template<typename eT>
 inline
 bool
-auxlib::inv_std(Mat<eT>& out, const Mat<eT>& A)
+auxlib::inv(Mat<eT>& out, const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
   
@@ -104,6 +104,24 @@ auxlib::inv_tiny(Mat<eT>& out, const Mat<eT>& X)
   arma_extra_debug_sigprint();
   
   const uword N = X.n_rows;
+  
+  // handle aliasing
+  if(&out == &X)
+    {
+    Mat<eT> tmp;
+    
+    bool status = auxlib::inv_tiny(tmp, X);
+    
+    if(status == true)
+      {
+      out.steal_mem(tmp);
+      return true;
+      }
+    else
+      {
+      return false;
+      }
+    }
   
   out.set_size(N,N);
   
@@ -292,7 +310,7 @@ auxlib::inv_sym(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
     
     char     uplo  = (layout == 0) ? 'U' : 'L';
     blas_int n     = blas_int(out.n_rows);
-    blas_int lwork = (std::max)(blas_int(podarray_prealloc_n_elem::val), 2*n);
+    blas_int lwork = (std::max)(blas_int(podarray_prealloc_n_elem::val), 32*n);
     blas_int info  = 0;
     
     podarray<blas_int> ipiv;
