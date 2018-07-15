@@ -18,30 +18,7 @@
 //! @{
 
 
-//! immediate inverse of a matrix, storing the result in a dense matrix
-template<typename eT>
-inline
-void
-op_inv::apply(Mat<eT>& out, const Mat<eT>& A)
-  {
-  arma_extra_debug_sigprint();
-  
-  // no need to check for aliasing, due to:
-  // - auxlib::inv() copies A to out before inversion
-  // - for 2x2 and 3x3 matrices the code is alias safe
-  
-  bool status = auxlib::inv(out, A);
-  
-  if(status == false)
-    {
-    out.soft_reset();
-    arma_stop_runtime_error("inv(): matrix seems singular");
-    }
-  }
 
-
-
-//! immediate inverse of T1, storing the result in a dense matrix
 template<typename T1>
 inline
 void
@@ -53,7 +30,7 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
   
   const strip_diagmat<T1> strip(X.m);
   
-  bool status;
+  bool status = false;
   
   if(strip.do_diagmat)
     {
@@ -61,13 +38,34 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
     }
   else
     {
-    const quasi_unwrap<T1> U(X.m);
+    const unwrap<T1> U(X.m);
     
     const Mat<eT>& A = U.M;
     
     arma_debug_check( (A.n_rows != A.n_cols), "inv(): given matrix must be square sized" );
     
-    status = ((A.n_rows >= 5) && U.M.is_symmetric()) ? auxlib::inv_sym(out, U.M, 0) :  auxlib::inv(out, U.M);
+    const uword N = A.n_rows;
+    
+    if(N <= 4)
+      {
+      if(&out == &A)
+        {
+        Mat<eT> tmp;
+        
+        status = auxlib::inv_tiny(tmp, A);
+        
+        out.steal_mem(tmp);
+        }
+      else
+        {
+        status = auxlib::inv_tiny(out, A);
+        }
+      }
+    
+    if(status == false)
+      {
+      status = A.is_symmetric() ? auxlib::inv_sym(out, U.M, 0) :  auxlib::inv_std(out, U.M);
+      }
     }
   
   if(status == false)
@@ -130,7 +128,6 @@ op_inv::apply_diagmat(Mat<typename T1::elem_type>& out, const T1& X)
 
 
 
-//! inverse of T1 (triangular matrices)
 template<typename T1>
 inline
 void
@@ -149,7 +146,6 @@ op_inv_tr::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv_tr>& X)
 
 
 
-//! inverse of T1 (symmetric positive definite matrices)
 template<typename T1>
 inline
 void
