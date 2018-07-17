@@ -18,19 +18,19 @@ Copyright 2017-2018 Data61, CSIRO
  
 ### Contents
 
- 1. [Introduction](#1-introduction)
- 2. [Citation Details](#2-citation-details)
- 3. [Distribution License](#3-distribution-license)
+1.  [Introduction](#1-introduction)
+2.  [Citation Details](#2-citation-details)
+3.  [Distribution License](#3-distribution-license)
 
- 4. [Compilers and External Dependencies](#4-compilers-and-external-dependencies)
+4.  [Compilers and External Dependencies](#4-compilers-and-external-dependencies)
 
- 5. [Linux and macOS: Installation](#5-linux-and-macos-installation)
- 6. [Linux and macOS: Compiling and Linking](#6-linux-and-macos-compiling-and-linking)
+5.  [Linux and macOS: Installation](#5-linux-and-macos-installation)
+6.  [Linux and macOS: Compiling and Linking](#6-linux-and-macos-compiling-and-linking)
 
- 7. [Windows: Installation](#7-windows-installation)
- 8. [Windows: Compiling and Linking](#8-windows-compiling-and-linking)
+7.  [Windows: Installation](#7-windows-installation)
+8.  [Windows: Compiling and Linking](#8-windows-compiling-and-linking)
 
- 9. [Support for OpenBLAS and Intel MKL](#9-support-for-openblas-and-intel-mkl)
+9.  [Support for OpenBLAS and Intel MKL](#9-support-for-openblas-and-intel-mkl)
 10. [Support for ATLAS](#10-support-for-atlas)
 11. [Support for C++11 / C++14 Features](#11-support-for-c11-c14-features)
 12. [Support for OpenMP](#12-support-for-openmp)
@@ -84,7 +84,7 @@ development and maintenance of the library.
   
   * Conrad Sanderson and Ryan Curtin.  
     A User-Friendly Hybrid Sparse Matrix Class in C++.  
-    International Congress on Mathematical Software, 2018.  
+    Lecture Notes in Computer Science (LNCS), Vol. 10931, pp. 422-430, 2018.
 
 ---
 
