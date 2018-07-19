@@ -58,6 +58,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool no_sym      = bool(flags & solve_opts::flag_no_sym     );
   const bool refine      = bool(flags & solve_opts::flag_refine     );
   
+  // TODO: add solve_opts::flag_no_tri
+  
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
   if(fast       )  { arma_extra_debug_print("fast");        }
@@ -87,7 +89,11 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     const bool is_band = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
     
-    // const bool is_sym  = ((no_sym == false) && (is_band == false)) ? TODO : false;
+    // const bool is_sym  = ((no_sym == false) && (is_band == false)) ? A.is_symmetric() : false;
+    
+    // bool is_tril = false;
+    // bool is_triu = false;
+    // if( (no_tri == false) && (is_band == false) && (is_sym == false))  { is_trimat(is_tril, is_triu, A, uword(threshold)); }
     
     if(refine || equilibrate)
       {
@@ -218,6 +224,8 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool tril        = bool(flags & solve_opts::flag_tril       );
   const bool refine      = bool(flags & solve_opts::flag_refine     );
   
+  // TODO: add solve_opts::flag_no_tri
+  
   arma_extra_debug_print("glue_solve_tri::apply(): enabled flags:");
   
   if(fast       )  { arma_extra_debug_print("fast");        }
@@ -228,6 +236,9 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(refine     )  { arma_extra_debug_print("refine");      }
   
   bool status = false;
+  
+  // TODO: if equilibrate is enabled, or refine is enabled, or no_tri is enabled,
+  // TODO: apply trimatu() / trimatl() operation and redirect to standard solver
   
   if(equilibrate)  { arma_debug_warn("solve(): option 'equilibrate' ignored for triangular matrices"); }
   if(refine)       { arma_debug_warn("solve(): option 'refine' ignored for triangular matrices");      }

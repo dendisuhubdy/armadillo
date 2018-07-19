@@ -133,6 +133,15 @@ struct Base
   
   inline arma_warn_unused bool is_symmetric() const;
   inline arma_warn_unused bool is_symmetric(const typename get_pod_type<elem_type>::result tol) const;
+  
+  // TODO: add is_hermitian()
+  // TODO: add is_trimatu()
+  // TODO: add is_trimatl()
+  // TODO: add is_square()
+  // TODO: add is_colvec()
+  // TODO: add is_rowvec()
+  // TODO: add is_vec()
+  // TODO: add is_empty()
   };
 
 
