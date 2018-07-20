@@ -51,22 +51,30 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   // TODO: add solve_opts::flag_refine to Armadillo 8 for forward compatibility with Armadillo 9
   
+  // TODO: add solve_opts::flag_no_hrm to disable optimisations for hermitian matrices
+  
+  const bool none        = bool(flags == 0u);
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
+  const bool triu        = bool(flags & solve_opts::flag_triu       );
+  const bool tril        = bool(flags & solve_opts::flag_tril       );
   const bool no_band     = bool(flags & solve_opts::flag_no_band    );
   const bool no_sym      = bool(flags & solve_opts::flag_no_sym     );
+  const bool no_tri      = bool(flags & solve_opts::flag_no_tri     );
   const bool refine      = bool(flags & solve_opts::flag_refine     );
-  
-  // TODO: add solve_opts::flag_no_tri
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
+  if(none       )  { arma_extra_debug_print("none");        }
   if(fast       )  { arma_extra_debug_print("fast");        }
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(no_approx  )  { arma_extra_debug_print("no_approx");   }
+  if(triu       )  { arma_extra_debug_print("triu");        }
+  if(tril       )  { arma_extra_debug_print("tril");        }
   if(no_band    )  { arma_extra_debug_print("no_band");     }
   if(no_sym     )  { arma_extra_debug_print("no_sym");      }
+  if(no_tri     )  { arma_extra_debug_print("no_tri");      }
   if(refine     )  { arma_extra_debug_print("refine");      }
   
   arma_debug_check( (fast && equilibrate), "solve(): options 'fast' and 'equilibrate' are mutually exclusive" );
@@ -217,14 +225,15 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   {
   arma_extra_debug_sigprint();
   
+  // TODO: subsume all of the functionality below into glue_solve_gen::apply() and remove glue_solve_tri;
+  // TODO: modify solve(trimat(A),B,...) to output glue_solve_gen instead of glue_solve_tri
+  
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
   const bool triu        = bool(flags & solve_opts::flag_triu       );
   const bool tril        = bool(flags & solve_opts::flag_tril       );
   const bool refine      = bool(flags & solve_opts::flag_refine     );
-  
-  // TODO: add solve_opts::flag_no_tri
   
   arma_extra_debug_print("glue_solve_tri::apply(): enabled flags:");
   
