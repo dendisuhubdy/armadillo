@@ -49,10 +49,6 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   typedef typename get_pod_type<eT>::result T;
   
-  // TODO: add solve_opts::flag_refine to Armadillo 8 for forward compatibility with Armadillo 9
-  
-  // TODO: add solve_opts::flag_no_hrm to disable optimisations for hermitian matrices
-  
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
@@ -88,10 +84,33 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     uword KU = 0;
     
     const bool is_band = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
-    
     // const bool is_sym  = ((no_sym == false) && (is_band == false)) ? A.is_symmetric() : false;
     
-    if(refine || equilibrate)
+    if(fast)
+      {
+      if(is_band == false)
+        {
+        arma_extra_debug_print("glue_solve_gen::apply(): fast + dense");
+        
+        status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
+        }
+      else
+        {
+        if( (KL == 1) && (KU == 1) )
+          {
+          arma_extra_debug_print("glue_solve_gen::apply(): fast + tridiagonal");
+          
+          status = auxlib::solve_tridiag_fast(out, A, B_expr.get_ref());
+          }
+        else
+          {
+          arma_extra_debug_print("glue_solve_gen::apply(): fast + band");
+          
+          status = auxlib::solve_band_fast(out, A, KL, KU, B_expr.get_ref());
+          }
+        }
+      }
+    else
       {
       if(is_band == false)
         {
@@ -112,32 +131,6 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           arma_extra_debug_print("glue_solve_gen::apply(): refine + band");
           
           status = auxlib::solve_band_refine(out, rcond, A, KL, KU, B_expr, equilibrate);
-          }
-        }
-      }
-    else
-      {
-      // default operation: use fast solver
-      
-      if(is_band == false)
-        {
-        arma_extra_debug_print("glue_solve_gen::apply(): fast + dense");
-        
-        status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
-        }
-      else
-        {
-        if( (KL == 1) && (KU == 1) )
-          {
-          arma_extra_debug_print("glue_solve_gen::apply(): fast + tridiagonal");
-          
-          status = auxlib::solve_tridiag_fast(out, A, B_expr.get_ref());
-          }
-        else
-          {
-          arma_extra_debug_print("glue_solve_gen::apply(): fast + band");
-          
-          status = auxlib::solve_band_fast(out, A, KL, KU, B_expr.get_ref());
           }
         }
       }
@@ -167,13 +160,20 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     if(equilibrate)  { arma_debug_warn( "solve(): option 'equilibrate' ignored for non-square matrix" ); }
     if(refine)       { arma_debug_warn( "solve(): option 'refine' ignored for non-square matrix"      ); }
     
-    status = auxlib::solve_approx_fast(out, A, B_expr.get_ref());  // A is overwritten
-    
-    if(status == false)
+    if(fast)
       {
-      Mat<eT> AA = A_expr.get_ref();
+      status = auxlib::solve_approx_fast(out, A, B_expr.get_ref());  // A is overwritten
       
-      status = auxlib::solve_approx_svd(out, AA, B_expr.get_ref());  // AA is overwritten
+      if(status == false)
+        {
+        Mat<eT> AA = A_expr.get_ref();
+        
+        status = auxlib::solve_approx_svd(out, AA, B_expr.get_ref());  // AA is overwritten
+        }
+      }
+    else
+      {
+      status = auxlib::solve_approx_svd(out, A, B_expr.get_ref());  // A is overwritten
       }
     }
   
