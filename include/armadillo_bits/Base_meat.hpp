@@ -267,12 +267,14 @@ arma_warn_unused
 bool
 Base<elem_type,derived>::is_symmetric() const
   {
+  arma_extra_debug_sigprint();
+  
   const quasi_unwrap<derived> U( (*this).get_ref() );
   
   const Mat<elem_type>& A = U.M;
   
   if(A.n_rows != A.n_cols)  { return false; }
-  if(A.n_elem <= 1       )  { return true;  } 
+  if(A.n_elem <= 1       )  { return true;  }
   
   const uword N   = A.n_rows;
   const uword Nm1 = N-1;
@@ -286,7 +288,7 @@ Base<elem_type,derived>::is_symmetric() const
     const elem_type* A_row = &(A.at(j,jp1));
     
     for(uword i=jp1; i < N; ++i)
-      {      
+      {
       if(A_col[i] != (*A_row))  { return false; }
       
       A_row += N;
@@ -306,7 +308,11 @@ arma_warn_unused
 bool
 Base<elem_type,derived>::is_symmetric(const typename get_pod_type<elem_type>::result tol) const
   {
+  arma_extra_debug_sigprint();
+  
   typedef typename get_pod_type<elem_type>::result T;
+  
+  if(tol == T(0))  { return (*this).is_symmetric(); }
   
   arma_debug_check( (tol < T(0)), "is_symmetric(): parameter 'tol' must be >= 0" );
   
@@ -315,7 +321,7 @@ Base<elem_type,derived>::is_symmetric(const typename get_pod_type<elem_type>::re
   const Mat<elem_type>& A = U.M;
   
   if(A.n_rows != A.n_cols)  { return false; }
-  if(A.n_elem <= 1       )  { return true;  } 
+  if(A.n_elem <= 1       )  { return true;  }
   
   const T norm_A = as_scalar( arma::max(sum(abs(A), 1), 0) );
   
@@ -324,6 +330,79 @@ Base<elem_type,derived>::is_symmetric(const typename get_pod_type<elem_type>::re
   const T norm_A_Ast = as_scalar( arma::max(sum(abs(A - A.st()), 1), 0) );
   
   return ( (norm_A_Ast / norm_A) <= tol );
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_hermitian() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const quasi_unwrap<derived> U( (*this).get_ref() );
+  
+  const Mat<elem_type>& A = U.M;
+  
+  if(A.n_rows != A.n_cols)  { return false; }
+  if(A.n_elem == 0       )  { return true;  }
+  
+  const uword N   = A.n_rows;
+  const uword Nm1 = N-1;
+  
+  const elem_type* A_col = A.memptr();
+  
+  for(uword j=0; j < Nm1; ++j)
+    {
+    const uword jp1 = j+1;
+    
+    const elem_type* A_row = &(A.at(j,jp1));
+    
+    for(uword i=jp1; i < N; ++i)
+      {
+      if(A_col[i] != access::alt_conj(*A_row))  { return false; }
+      
+      A_row += N;
+      }
+    
+    A_col += N;
+    }
+  
+  return true;
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_hermitian(const typename get_pod_type<elem_type>::result tol) const
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename get_pod_type<elem_type>::result T;
+  
+  if(tol == T(0))  { return (*this).is_hermitian(); }
+  
+  arma_debug_check( (tol < T(0)), "is_hermitian(): parameter 'tol' must be >= 0" );
+  
+  const quasi_unwrap<derived> U( (*this).get_ref() );
+  
+  const Mat<elem_type>& A = U.M;
+  
+  if(A.n_rows != A.n_cols)  { return false; }
+  if(A.n_elem == 0       )  { return true;  }
+  
+  const T norm_A = as_scalar( arma::max(sum(abs(A), 1), 0) );
+  
+  if(norm_A == T(0))  { return true; }
+  
+  const T norm_A_At = as_scalar( arma::max(sum(abs(A - A.t()), 1), 0) );
+  
+  return ( (norm_A_At / norm_A) <= tol );
   }
 
 
