@@ -53,28 +53,20 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   // TODO: add solve_opts::flag_no_hrm to disable optimisations for hermitian matrices
   
-  const bool none        = bool(flags == 0u);
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
-  const bool triu        = bool(flags & solve_opts::flag_triu       );
-  const bool tril        = bool(flags & solve_opts::flag_tril       );
   const bool no_band     = bool(flags & solve_opts::flag_no_band    );
   const bool no_sym      = bool(flags & solve_opts::flag_no_sym     );
-  const bool no_tri      = bool(flags & solve_opts::flag_no_tri     );
   const bool refine      = bool(flags & solve_opts::flag_refine     );
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
-  if(none       )  { arma_extra_debug_print("none");        }
   if(fast       )  { arma_extra_debug_print("fast");        }
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(no_approx  )  { arma_extra_debug_print("no_approx");   }
-  if(triu       )  { arma_extra_debug_print("triu");        }
-  if(tril       )  { arma_extra_debug_print("tril");        }
   if(no_band    )  { arma_extra_debug_print("no_band");     }
   if(no_sym     )  { arma_extra_debug_print("no_sym");      }
-  if(no_tri     )  { arma_extra_debug_print("no_tri");      }
   if(refine     )  { arma_extra_debug_print("refine");      }
   
   arma_debug_check( (fast && equilibrate), "solve(): options 'fast' and 'equilibrate' are mutually exclusive" );
@@ -98,10 +90,6 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     const bool is_band = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
     
     // const bool is_sym  = ((no_sym == false) && (is_band == false)) ? A.is_symmetric() : false;
-    
-    // bool is_tril = false;
-    // bool is_triu = false;
-    // if( (no_tri == false) && (is_band == false) && (is_sym == false))  { is_trimat(is_tril, is_triu, A, uword(threshold)); }
     
     if(refine || equilibrate)
       {
@@ -225,9 +213,6 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   {
   arma_extra_debug_sigprint();
   
-  // TODO: subsume all of the functionality below into glue_solve_gen::apply() and remove glue_solve_tri;
-  // TODO: modify solve(trimat(A),B,...) to output glue_solve_gen instead of glue_solve_tri
-  
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
@@ -244,22 +229,33 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(tril       )  { arma_extra_debug_print("tril");        }
   if(refine     )  { arma_extra_debug_print("refine");      }
   
+  if(equilibrate || refine)
+    {
+    return (triu) ? glue_solve_gen::apply(out, trimatu(A_expr.get_ref()), B_expr.get_ref(), flags) : glue_solve_gen::apply(out, trimatl(A_expr.get_ref()), B_expr.get_ref(), flags);
+    }
+  
   bool status = false;
   
-  // TODO: if equilibrate is enabled, or refine is enabled, or no_tri is enabled,
-  // TODO: apply trimatu() / trimatl() operation and redirect to standard solver
+  const uword layout = (triu) ? uword(0) : uword(1);
   
-  if(equilibrate)  { arma_debug_warn("solve(): option 'equilibrate' ignored for triangular matrices"); }
-  if(refine)       { arma_debug_warn("solve(): option 'refine' ignored for triangular matrices");      }
-  
-  const unwrap_check<T1> U(A_expr.get_ref(), out);
+  const quasi_unwrap<T1> U(A_expr.get_ref());
   const Mat<eT>& A     = U.M;
   
   arma_debug_check( (A.is_square() == false), "solve(): matrix marked as triangular must be square sized" );
   
-  const uword layout = (triu) ? uword(0) : uword(1);
+  if(U.is_alias(out))
+    {
+    Mat<eT> tmp;
+    
+    status = auxlib::solve_tri(tmp, A, B_expr.get_ref(), layout);  // A is not modified
+    
+    out.steal_mem(tmp);
+    }
+  else
+    {
+    status = auxlib::solve_tri(out, A, B_expr.get_ref(), layout);  // A is not modified
+    }
   
-  status = auxlib::solve_tri(out, A, B_expr.get_ref(), layout);  // A is not modified
   
   if( (status == false) && (no_approx == false) )
     {
@@ -267,7 +263,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     arma_debug_warn("solve(): system seems singular; attempting approx solution");
     
-    Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
+    Mat<eT> triA = (triu) ? trimatu(A) : trimatl(A);  // trimatu() and trimatl() return the same type
     
     status = auxlib::solve_approx_svd(out, triA, B_expr.get_ref());  // triA is overwritten
     }
