@@ -41,7 +41,7 @@ mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
   mat Y = armaGetPr(prhs[1]);
   
   // Our calculations require that matrices must be of the same size 
-  if ( size(X) != size(Y) )
+  if ( arma::size(X) != arma::size(Y) )
     mexErrMsgTxt("Matrices should be of same size.");
   
   // Perform calculations
