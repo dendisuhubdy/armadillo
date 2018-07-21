@@ -3255,15 +3255,9 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
       &info
       );
     
-    // if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision; rcond = ", rcond); }
-    // 
-    // const bool singular = ( (info > 0) && (info <= n) );
-    // 
-    // return (singular == false);
-    
     out_rcond = rcond;
     
-    return (info == 0);
+    return ((info == 0) || (info == (n+1)));
     }
   #else
     {
@@ -3349,15 +3343,9 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
       &info
       );
     
-    // if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision; rcond = ", rcond); }
-    // 
-    // const bool singular = ( (info > 0) && (info <= n) );
-    // 
-    // return (singular == false);
-    
     out_rcond = rcond;
     
-    return (info == 0);
+    return ((info == 0) || (info == (n+1)));
     }
   #else
     {
@@ -3916,7 +3904,7 @@ auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type
     
     out_rcond = rcond;
     
-    return (info == 0);
+    return ((info == 0) || (info == (n+1)));
     }
   #else
     {
@@ -4024,7 +4012,7 @@ auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typen
     
     out_rcond = rcond;
     
-    return (info == 0);
+    return ((info == 0) || (info == (n+1)));
     }
   #else
     {
@@ -4204,7 +4192,7 @@ auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_t
     
     out_rcond = rcond;
     
-    return (info == 0);
+    return ((info == 0) || (info == (n+1)));
     }
   #else
     {
@@ -4299,7 +4287,7 @@ auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, ty
     
     out_rcond = rcond;
     
-    return (info == 0);
+    return ((info == 0) || (info == (n+1)));
     }
   #else
     {
