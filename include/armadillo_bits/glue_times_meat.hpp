@@ -112,29 +112,54 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
   // TODO: this is an experimental optimisation
   if( (strip_inv<T2>::do_inv) && (is_cx<eT>::no) )
     {
-    // replace A*inv(B) with trans( solve(trans(B),trans(A)) )
+    // conditionally replace A*inv(B) with trans( solve(trans(B),trans(A)) )
     
     arma_extra_debug_print("glue_times_redirect<2>::apply(): detected A*inv(B)");
     
-    const Mat<eT> At = trans(X.A);
+    const unwrap<T1>   U_A(X.A);
+    const Mat<eT>& A = U_A.M;
     
     const strip_inv<T2> B_strip(X.B);
     
-    Mat<eT> Bt = trans(B_strip.M);
+    const unwrap<typename strip_inv<T2>::stored_type> U_B_strip(B_strip.M);
     
-    arma_debug_check( (Bt.is_square() == false), "inv(): given matrix must be square sized" );
+    const Mat<eT>& B = U_B_strip.M;
     
-    arma_debug_assert_mul_size(Bt, At, "matrix multiplication");
+    arma_debug_check( (B.is_square() == false), "inv(): given matrix must be square sized" );
     
-    const bool status = auxlib::solve_square_fast(out, Bt, At);
-    
-    if(status == false)
+    if(B.n_rows <= 4)
       {
-      out.soft_reset();
-      arma_stop_runtime_error("matrix multiplication: inverse of singular matrix; suggest to use solve() instead");
+      Mat<eT> B_inv;
+      
+      const bool status = inv(B_inv, B);
+      
+      if(status == false)
+        {
+        out.soft_reset();
+        arma_stop_runtime_error("matrix multiplication: inverse of singular matrix; suggest to use solve() instead");
+        }
+      else
+        {
+        out = A*B_inv;
+        }
       }
-    
-    out = trans(out);
+    else
+      {
+      arma_debug_assert_mul_size(A, B, "matrix multiplication");
+      
+            Mat<eT> Bt = trans(B);
+      const Mat<eT> At = trans(A);
+      
+      const bool status = auxlib::solve_square_fast(out, Bt, At);
+      
+      if(status == false)
+        {
+        out.soft_reset();
+        arma_stop_runtime_error("matrix multiplication: inverse of singular matrix; suggest to use solve() instead");
+        }
+      
+      out = trans(out);
+      }
     
     return;
     }
