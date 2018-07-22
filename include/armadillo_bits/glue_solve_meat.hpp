@@ -153,13 +153,11 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       
       arma_debug_warn("solve(): system seems singular (rcond: ", rcond, "); attempting approx solution");
       
-      // TODO: rather than using AA, conditionally recreate A and use it;
       // TODO: conditionally recreate A: have a separate state flag which indicates whether A was previously overwritten
       
-      A.reset();
+      A = A_expr.get_ref();  // as A may have been overwritten
       
-      Mat<eT> AA = A_expr.get_ref();
-      status = auxlib::solve_approx_svd(out, AA, B_expr.get_ref());  // AA is overwritten
+      status = auxlib::solve_approx_svd(out, A, B_expr.get_ref());  // A is overwritten
       }
     }
   else
@@ -174,9 +172,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       
       if(status == false)
         {
-        Mat<eT> AA = A_expr.get_ref();
+        A = A_expr.get_ref();  // as A was overwritten
         
-        status = auxlib::solve_approx_svd(out, AA, B_expr.get_ref());  // AA is overwritten
+        status = auxlib::solve_approx_svd(out, A, B_expr.get_ref());  // A is overwritten
         }
       }
     else
@@ -235,16 +233,16 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(triu       )  { arma_extra_debug_print("triu");        }
   if(tril       )  { arma_extra_debug_print("tril");        }
   
-  if(equilibrate)  { arma_debug_warn("solve(): option 'equilibrate' ignored for triangular matrices"); }
-  
   bool status = false;
   
-  const uword layout = (triu) ? uword(0) : uword(1);
+  if(equilibrate)  { arma_debug_warn("solve(): option 'equilibrate' ignored for triangular matrices"); }
   
   const quasi_unwrap<T1> U(A_expr.get_ref());
   const Mat<eT>& A     = U.M;
   
   arma_debug_check( (A.is_square() == false), "solve(): matrix marked as triangular must be square sized" );
+  
+  const uword layout = (triu) ? uword(0) : uword(1);
   
   if(U.is_alias(out))
     {
