@@ -93,8 +93,15 @@ spsolve_helper
       
       uword flags = solve_opts::flag_none;
       
-      if(opts.equilibrate                     )  { flags |= solve_opts::flag_equilibrate; }
-      if(opts.refine != superlu_opts::REF_NONE)  { flags |= solve_opts::flag_refine;      }
+      if( (opts.equilibrate == false) && (opts.refine == superlu_opts::REF_NONE) )
+        {
+        flags |= solve_opts::flag_fast;
+        }
+      else
+      if(opts.equilibrate == true)
+        {
+        flags |= solve_opts::flag_equilibrate;
+        }
       
       status = glue_solve_gen::apply(out, AA, B.get_ref(), flags);
       }

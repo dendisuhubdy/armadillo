@@ -3257,7 +3257,8 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
     
     out_rcond = rcond;
     
-    return ((info == 0) || (info == (n+1)));
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
     }
   #else
     {
@@ -3345,7 +3346,8 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
     
     out_rcond = rcond;
     
-    return ((info == 0) || (info == (n+1)));
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
     }
   #else
     {
@@ -3904,7 +3906,8 @@ auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type
     
     out_rcond = rcond;
     
-    return ((info == 0) || (info == (n+1)));
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
     }
   #else
     {
@@ -4012,7 +4015,8 @@ auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typen
     
     out_rcond = rcond;
     
-    return ((info == 0) || (info == (n+1)));
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
     }
   #else
     {
@@ -4192,7 +4196,8 @@ auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_t
     
     out_rcond = rcond;
     
-    return ((info == 0) || (info == (n+1)));
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
     }
   #else
     {
@@ -4287,7 +4292,8 @@ auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, ty
     
     out_rcond = rcond;
     
-    return ((info == 0) || (info == (n+1)));
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
     }
   #else
     {
