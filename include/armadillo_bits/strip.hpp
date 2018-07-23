@@ -71,7 +71,9 @@ struct strip_inv
   
   const T1& M;
   
-  static const bool do_inv = false;
+  static const bool do_inv       = false;
+  static const bool do_inv_gen   = false;
+  static const bool do_inv_sympd = false;
   };
 
 
@@ -90,7 +92,9 @@ struct strip_inv< Op<T1, op_inv> >
   
   const T1& M;
   
-  static const bool do_inv = true;
+  static const bool do_inv       = true;
+  static const bool do_inv_gen   = true;
+  static const bool do_inv_sympd = false;
   };
 
 
@@ -109,7 +113,9 @@ struct strip_inv< Op<T1, op_inv_sympd> >
   
   const T1& M;
   
-  static const bool do_inv = true;
+  static const bool do_inv       = true;
+  static const bool do_inv_gen   = false;
+  static const bool do_inv_sympd = true;
   };
 
 
