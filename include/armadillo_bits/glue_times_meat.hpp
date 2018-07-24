@@ -98,6 +98,7 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, B, "matrix multiplication");
     
+    // TODO: if(strip_inv<T1>::do_inv_sympd == true), use auxlib::solve_sym_fast()
     const bool status = auxlib::solve_square_fast(out, A, B);
     
     if(status == false)
@@ -110,6 +111,7 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     }
   
   // // TODO: this is an experimental optimisation
+  // // TODO: refactor this for op_inv_sympd, which allows avoiding transpose of B
   // if( (strip_inv<T2>::do_inv) && (is_cx<eT>::no) )
   //   {
   //   // conditionally replace A*inv(B) with trans( solve(trans(B),trans(A)) )
@@ -272,6 +274,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, BC, "matrix multiplication");
     
+    // TODO: if(strip_inv<T1>::do_inv_sympd == true), use auxlib::solve_sym_fast()
     const bool status = auxlib::solve_square_fast(out, A, BC);
     
     if(status == false)
@@ -303,6 +306,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> solve_result;
     
+    // TODO: if(strip_inv<T2>::do_inv_sympd == true), use auxlib::solve_sym_fast()
     const bool status = auxlib::solve_square_fast(solve_result, B, C);
     
     if(status == false)
