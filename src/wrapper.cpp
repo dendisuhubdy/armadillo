@@ -567,6 +567,11 @@ extern "C"
     
     
     
+    // TODO: ?sysv
+    // TODO: ?sysvx
+    
+    
+    
     void arma_fortran_prefix(arma_sgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, float*  b, blas_int* ldb, float*  work, blas_int* lwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_sgels)(trans, m, n, nrhs, a, lda, b, ldb, work, lwork, info);
