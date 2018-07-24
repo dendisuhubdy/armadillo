@@ -3364,6 +3364,13 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
 
 
 
+// TODO: solve_sym_fast; if N <= 4, redirect to solve_square_fast
+// TODO: solve_sym_refine (real)
+// TODO: solve_sym_refine (cx)
+// TODO: check function availability in crippled lapack
+
+
+
 //! solve a non-square full-rank system via QR or LQ decomposition
 template<typename T1>
 inline
