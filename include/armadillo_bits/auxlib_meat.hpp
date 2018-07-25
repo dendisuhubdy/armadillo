@@ -374,6 +374,8 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
     blas_int n    = blas_int(out.n_rows);
     blas_int info = 0;
     
+    // NOTE: for complex matrices, zpotrf() assumes the matrix is hermitian (not simply symmetric)
+    
     arma_extra_debug_print("lapack::potrf()");
     lapack::potrf(&uplo, &n, out.memptr(), &n, &info);
     
