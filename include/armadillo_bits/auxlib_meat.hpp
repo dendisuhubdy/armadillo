@@ -3366,7 +3366,71 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
 
 
 
-// TODO: solve_sym_fast; if N <= 4, redirect to solve_square_fast
+template<typename T1>
+inline
+bool
+auxlib::solve_sym_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr, const uword layout)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const uword A_n_rows = A.n_rows;
+  
+  if(A_n_rows <= 4)
+    {
+    return auxlib::solve_square_fast(out, A, B_expr.get_ref());
+    }
+  
+  out = B_expr.get_ref();
+  
+  const uword B_n_rows = out.n_rows;
+  const uword B_n_cols = out.n_cols;
+  
+  arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
+  
+  if(A.is_empty() || out.is_empty())
+    {
+    out.zeros(A.n_cols, B_n_cols);
+    return true;
+    }
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    arma_debug_assert_blas_size(A, out);
+    
+    char     uplo = (layout == 0) ? 'U' : 'L';
+    blas_int n    = blas_int(A_n_rows);  // assuming A is square
+    blas_int nrhs = blas_int(B_n_cols);
+    blas_int lda  = blas_int(A_n_rows);
+    blas_int ldb  = blas_int(B_n_rows);
+    blas_int info = blas_int(0);
+    
+    podarray<blas_int> ipiv(A_n_rows + 2);  // +2 for paranoia
+    
+    // TODO: refactor to query for the optimal length of the work array
+    blas_int     lwork = (std::max)(blas_int(podarray_prealloc_n_elem::val), 64*n);
+    podarray<eT>  work(static_cast<uword>(lwork));
+    
+    arma_extra_debug_print("lapack::sysv()");
+    lapack::sysv<eT>(&uplo, &n, &nrhs, A.memptr(), &lda, ipiv.memptr(), out.memptr(), &ldb, work.memptr(), &lwork, &info);
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
+    arma_ignore(layout);
+    arma_stop_logic_error("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
 // TODO: solve_sym_refine (real)
 // TODO: solve_sym_refine (cx)
 // TODO: check function availability in crippled lapack

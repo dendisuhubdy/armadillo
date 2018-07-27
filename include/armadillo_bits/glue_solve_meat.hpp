@@ -81,17 +81,12 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     uword KU = 0;
     
     const bool is_band = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
-    // const bool is_sym  = ((no_sym == false) && (is_band == false)) ? A.is_symmetric() : false;
+    const bool is_sym  = ((is_band == false) && (no_sym == false)) ? A.is_symmetric() : false;
+ // const bool is_hrm  = (is_cx<eT>::yes && (is_band == false) && (is_sym == false) && (no_sym == false)) ? A.is_hermitian() : false;
     
     if(fast)
       {
-      if(is_band == false)
-        {
-        arma_extra_debug_print("glue_solve_gen::apply(): fast + dense");
-        
-        status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
-        }
-      else
+      if(is_band)
         {
         if( (KL == 1) && (KU == 1) )
           {
@@ -106,16 +101,23 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           status = auxlib::solve_band_fast(out, A, KL, KU, B_expr.get_ref());
           }
         }
-      }
-    else
-      {
-      if(is_band == false)
+      else
+      if(is_sym)
         {
-        arma_extra_debug_print("glue_solve_gen::apply(): refine + dense");
+        arma_extra_debug_print("glue_solve_gen::apply(): fast + sym");
         
-        status = auxlib::solve_square_refine(out, rcond, A, B_expr, equilibrate);  // A is overwritten
+        status = auxlib::solve_sym_fast(out, A, B_expr.get_ref(), 0);  // A is overwritten
         }
       else
+        {
+        arma_extra_debug_print("glue_solve_gen::apply(): fast + dense");
+        
+        status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
+        }
+      }
+    else  // solve with refinement and provide rcond estimate
+      {
+      if(is_band)
         {
         if( (KL == 1) && (KU == 1) && (equilibrate == false) )
           {
@@ -129,6 +131,12 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           
           status = auxlib::solve_band_refine(out, rcond, A, KL, KU, B_expr, equilibrate);
           }
+        }
+      else
+        {
+        arma_extra_debug_print("glue_solve_gen::apply(): refine + dense");
+        
+        status = auxlib::solve_square_refine(out, rcond, A, B_expr, equilibrate);  // A is overwritten
         }
       }
     
