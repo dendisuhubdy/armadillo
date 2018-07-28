@@ -3369,7 +3369,7 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
 template<typename T1>
 inline
 bool
-auxlib::solve_sym_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr, const uword layout)
+auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -3399,21 +3399,15 @@ auxlib::solve_sym_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_t
     {
     arma_debug_assert_blas_size(A, out);
     
-    char     uplo = (layout == 0) ? 'U' : 'L';
+    char     uplo = 'L';
     blas_int n    = blas_int(A_n_rows);  // assuming A is square
     blas_int nrhs = blas_int(B_n_cols);
     blas_int lda  = blas_int(A_n_rows);
     blas_int ldb  = blas_int(B_n_rows);
     blas_int info = blas_int(0);
     
-    podarray<blas_int> ipiv(A_n_rows + 2);  // +2 for paranoia
-    
-    // TODO: refactor to query for the optimal length of the work array
-    blas_int     lwork = (std::max)(blas_int(podarray_prealloc_n_elem::val), 64*n);
-    podarray<eT>  work(static_cast<uword>(lwork));
-    
-    arma_extra_debug_print("lapack::sysv()");
-    lapack::sysv<eT>(&uplo, &n, &nrhs, A.memptr(), &lda, ipiv.memptr(), out.memptr(), &ldb, work.memptr(), &lwork, &info);
+    arma_extra_debug_print("lapack::posv()");
+    lapack::posv<eT>(&uplo, &n, &nrhs, A.memptr(), &lda, out.memptr(), &ldb, &info);
     
     return (info == 0);
     }

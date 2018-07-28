@@ -730,32 +730,32 @@ namespace lapack
   template<typename eT>
   inline
   void
-  sysv(char* uplo, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, blas_int* ipiv, eT* b, blas_int* ldb, eT* work, blas_int* lwork, blas_int* info)
+  posv(char* uplo, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, eT* b, blas_int* ldb, blas_int* info)
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
     if(is_float<eT>::value)
       {
       typedef float T;
-      arma_fortran(arma_ssysv)(uplo, n, nrhs, (T*)a, lda, ipiv, (T*)b, ldb, (T*)work, lwork, info);
+      arma_fortran(arma_sposv)(uplo, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     else
     if(is_double<eT>::value)
       {
       typedef double T;
-      arma_fortran(arma_dsysv)(uplo, n, nrhs, (T*)a, lda, ipiv, (T*)b, ldb, (T*)work, lwork, info);
+      arma_fortran(arma_dposv)(uplo, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     else
     if(is_supported_complex_float<eT>::value)
       {
       typedef std::complex<float> T;
-      arma_fortran(arma_csysv)(uplo, n, nrhs, (T*)a, lda, ipiv, (T*)b, ldb, (T*)work, lwork, info);
+      arma_fortran(arma_cposv)(uplo, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     else
     if(is_supported_complex_double<eT>::value)
       {
       typedef std::complex<double> T;
-      arma_fortran(arma_zsysv)(uplo, n, nrhs, (T*)a, lda, ipiv, (T*)b, ldb, (T*)work, lwork, info);
+      arma_fortran(arma_zposv)(uplo, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     }
   

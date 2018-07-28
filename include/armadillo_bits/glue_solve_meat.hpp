@@ -53,7 +53,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
   const bool no_band     = bool(flags & solve_opts::flag_no_band    );
-  const bool no_sym      = bool(flags & solve_opts::flag_no_sym     );
+  const bool no_sympd    = bool(flags & solve_opts::flag_no_sympd   );
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
@@ -61,7 +61,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(no_approx  )  { arma_extra_debug_print("no_approx");   }
   if(no_band    )  { arma_extra_debug_print("no_band");     }
-  if(no_sym     )  { arma_extra_debug_print("no_sym");      }
+  if(no_sympd   )  { arma_extra_debug_print("no_sympd");    }
   
   arma_debug_check( (fast && equilibrate), "solve(): options 'fast' and 'equilibrate' are mutually exclusive" );
   
@@ -74,15 +74,11 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     {
     arma_extra_debug_print("glue_solve_gen::apply(): detected square system");
     
-    // TODO: detect symmetric matrix and use lapack::sysv() and lapack::sysvx() (real/complex matrices)
-    // TODO: detect hermitian matrix and use lapack::hesv() and lapack::hesvx() (only complex matrices)
-    
     uword KL = 0;
     uword KU = 0;
     
-    const bool is_band = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
-    const bool is_sym  = ((is_band == false) && (no_sym == false)) ? A.is_symmetric() : false;
- // const bool is_hrm  = (is_cx<eT>::yes && (is_band == false) && (is_sym == false) && (no_sym == false)) ? A.is_hermitian() : false;
+    const bool is_band  = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
+    const bool is_sympd = ((is_band == false) && (no_sympd == false)) ? glue_solve_gen::guess_sympd(A) : false;
     
     if(fast)
       {
@@ -102,11 +98,18 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           }
         }
       else
-      if(is_sym)
+      if(is_sympd)
         {
-        arma_extra_debug_print("glue_solve_gen::apply(): fast + sym");
+        arma_extra_debug_print("glue_solve_gen::apply(): fast + sympd");
         
-        status = auxlib::solve_sym_fast(out, A, B_expr.get_ref(), 0);  // A is overwritten
+        status = auxlib::solve_sympd_fast(out, A, B_expr.get_ref());  // A is overwritten
+        
+        if(status == false)
+          {
+          // auxlib::solve_sympd_fast() may have failed because A wasn't really sympd
+          A = A_expr.get_ref();
+          status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
+          }
         }
       else
         {
@@ -195,6 +198,56 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(status == false)  { out.soft_reset(); }
   
   return status;
+  }
+
+
+
+template<typename eT>
+inline
+bool
+glue_solve_gen::guess_sympd(const Mat<eT>& A)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename get_pod_type<eT>::result T;
+  
+  if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
+  
+  const uword N = A.n_rows;
+  
+  const eT* A_col = A.memptr();
+  
+  for(uword j=0; j < N; ++j)
+    {
+    if(is_cx<eT>::yes)
+      {
+      const T A_jj_real = access::tmp_real(A_col[j]);
+      const T A_jj_imag = access::tmp_imag(A_col[j]);
+      
+      if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > std::numeric_limits<T>::epsilon()) )  { return false; }
+      }
+    else
+      {
+      if(access::tmp_real(A_col[j]) <= T(0))  { return false; }
+      }
+    
+    const uword jp1   = j+1;
+    const eT*   A_row = &(A.at(j,jp1));
+    
+    for(uword i=jp1; i < N; ++i)
+      {
+      const eT A_ij = A_col[i];
+      
+      if(A_ij != (*A_row))  { return false; }
+      //if( (A_ij > A_jj) || (A_ij != (*A_row)) )  { return false; }
+      
+      A_row += N;
+      }
+    
+    A_col += N;
+    }
+  
+  return true;
   }
 
 
