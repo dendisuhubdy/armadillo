@@ -106,7 +106,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
         
         if(status == false)
           {
-          // auxlib::solve_sympd_fast() may have failed because A wasn't really sympd
+          // auxlib::solve_sympd_fast() may have failed because A isn't really sympd
           A = A_expr.get_ref();
           status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
           }
@@ -204,7 +204,46 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
 
 template<typename eT>
 inline
-bool
+typename enable_if2<is_cx<eT>::no, bool>::result
+glue_solve_gen::guess_sympd(const Mat<eT>& A)
+  {
+  arma_extra_debug_sigprint();
+  
+  if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
+  
+  const uword N = A.n_rows;
+  
+  const eT* A_col = A.memptr();
+  
+  for(uword j=0; j < N; ++j)
+    {
+    const eT A_jj = A_col[j];
+    
+    if(A_jj <= eT(0))  { return false; }
+    
+    const uword jp1   = j+1;
+    const eT*   A_row = &(A.at(j,jp1));
+    
+    for(uword i=jp1; i < N; ++i)
+      {
+      const eT A_ij = A_col[i];
+      
+      if( (A_ij > A_jj) || (A_ij != (*A_row)) )  { return false; }
+      
+      A_row += N;
+      }
+    
+    A_col += N;
+    }
+  
+  return true;
+  }
+
+
+
+template<typename eT>
+inline
+typename enable_if2<is_cx<eT>::yes, bool>::result
 glue_solve_gen::guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
@@ -219,17 +258,10 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   
   for(uword j=0; j < N; ++j)
     {
-    if(is_cx<eT>::yes)
-      {
-      const T A_jj_real = access::tmp_real(A_col[j]);
-      const T A_jj_imag = access::tmp_imag(A_col[j]);
-      
-      if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > std::numeric_limits<T>::epsilon()) )  { return false; }
-      }
-    else
-      {
-      if(access::tmp_real(A_col[j]) <= T(0))  { return false; }
-      }
+    const T A_jj_real = std::real(A_col[j]);
+    const T A_jj_imag = std::imag(A_col[j]);
+    
+    if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > std::numeric_limits<T>::epsilon()) )  { return false; }
     
     const uword jp1   = j+1;
     const eT*   A_row = &(A.at(j,jp1));
@@ -238,8 +270,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
       {
       const eT A_ij = A_col[i];
       
-      if(A_ij != (*A_row))  { return false; }
-      //if( (A_ij > A_jj) || (A_ij != (*A_row)) )  { return false; }
+      if(A_ij != std::conj(*A_row))  { return false; }
       
       A_row += N;
       }
