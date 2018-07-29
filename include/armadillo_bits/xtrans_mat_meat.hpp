@@ -76,7 +76,7 @@ arma_inline
 eT
 xtrans_mat<eT,do_conj>::at(const uword in_row, const uword in_col) const
   {
-  return really_do_conj ? eT(access::alt_conj(X.at(in_col, in_row))) : X.at(in_col, in_row);
+  return really_do_conj ? eT(access::alt_conj(X.at(in_col, in_row))) : eT(X.at(in_col, in_row));
   // in_row and in_col deliberately swapped above
   }
 
