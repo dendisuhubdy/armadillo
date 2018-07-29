@@ -212,8 +212,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   // computationally inexpensive algorithm to guess whether a real matrix is positive definite:
   // (1) ensure the the matrix is symmetric
   // (2) ensure the diagonal entries are greater than zero
-  // (3) ensure the absolute values in each column are lower than the corresponding diagonal entry
-  // all of the above conditions are necessary, but not sufficient;
+  // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
   
   if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
@@ -233,9 +232,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
     
     for(uword i=jp1; i < N; ++i)
       {
-      const eT A_ij = A_col[i];
-      
-      if( (std::abs(A_ij) >= A_jj) || (A_ij != (*A_row)) )  { return false; }
+      if(A_col[i] != (*A_row))  { return false; }
       
       A_row += N;
       }
@@ -258,10 +255,8 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   // computationally inexpensive algorithm to guess whether a complex matrix is positive definite:
   // (1) ensure the the matrix is hermitian
   // (2) ensure the diagonal entries are real and greater than zero
-  // (3) ensure the absolute values in each column are lower than the corresponding diagonal entry
-  // all of the above conditions are necessary, but not sufficient;
+  // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
-  // NOTE: step (3) is currently omitted for complex matrices, as abs(complex) involves 2 multiplications
   
   typedef typename get_pod_type<eT>::result T;
   
@@ -271,11 +266,13 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   
   const eT* A_col = A.memptr();
   
+  const T threshold = T(2) * std::numeric_limits<T>::epsilon();
+  
   for(uword j=0; j < N; ++j)
     {
     const eT& A_jj = A_col[j];
     
-    if( (std::real(A_jj) <= T(0)) || (std::abs(std::imag(A_jj)) > std::numeric_limits<T>::epsilon()) )  { return false; }
+    if( (std::real(A_jj) <= T(0)) || (std::abs(std::imag(A_jj)) > threshold) )  { return false; }
     
     const uword jp1   = j+1;
     const eT*   A_row = &(A.at(j,jp1));
