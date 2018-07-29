@@ -214,6 +214,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   // (2) ensure the diagonal entries are greater than zero
   // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
+  // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
   
   if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
   
@@ -257,6 +258,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   // (2) ensure the diagonal entries are real and greater than zero
   // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
+  // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
   
   typedef typename get_pod_type<eT>::result T;
   
