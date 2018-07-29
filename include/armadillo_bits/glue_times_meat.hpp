@@ -109,61 +109,36 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     return;
     }
   
-  // // TODO: this is an experimental optimisation
-  // // TODO: refactor this for op_inv_sympd, which allows avoiding transpose of B
-  // if( (strip_inv<T2>::do_inv) && (is_cx<eT>::no) )
-  //   {
-  //   // conditionally replace A*inv(B) with trans( solve(trans(B),trans(A)) )
-  //   
-  //   arma_extra_debug_print("glue_times_redirect<2>::apply(): detected A*inv(B)");
-  //   
-  //   const unwrap<T1>   U_A(X.A);
-  //   const Mat<eT>& A = U_A.M;
-  //   
-  //   const strip_inv<T2> B_strip(X.B);
-  //   
-  //   const unwrap<typename strip_inv<T2>::stored_type> U_B_strip(B_strip.M);
-  //   
-  //   const Mat<eT>& B = U_B_strip.M;
-  //   
-  //   arma_debug_check( (B.is_square() == false), "inv(): given matrix must be square sized" );
-  //   
-  //   if(B.n_rows <= 4)
-  //     {
-  //     Mat<eT> B_inv;
-  //     
-  //     const bool status = inv(B_inv, B);
-  //     
-  //     if(status == false)
-  //       {
-  //       out.soft_reset();
-  //       arma_stop_runtime_error("matrix multiplication: problem with matrix inverse; suggest to use solve() instead");
-  //       }
-  //     else
-  //       {
-  //       out = A*B_inv;
-  //       }
-  //     }
-  //   else
-  //     {
-  //     arma_debug_assert_mul_size(A, B, "matrix multiplication");
-  //     
-  //           Mat<eT> Bt = trans(B);
-  //     const Mat<eT> At = trans(A);
-  //     
-  //     const bool status = auxlib::solve_square_fast(out, Bt, At);
-  //     
-  //     if(status == false)
-  //       {
-  //       out.soft_reset();
-  //       arma_stop_runtime_error("matrix multiplication: problem with matrix inverse; suggest to use solve() instead");
-  //       }
-  //     
-  //     out = trans(out);
-  //     }
-  //   
-  //   return;
-  //   }
+  // TODO: this is an experimental optimisation
+  if( (strip_inv<T2>::do_inv_sympd) && (is_cx<eT>::no) )
+    {
+    // replace A*inv_sympd(B) with trans( solve(trans(B),trans(A)) )
+    // transpose of B is avoided as B is explicitly marked as symmetric
+    
+    arma_extra_debug_print("glue_times_redirect<2>::apply(): detected A*inv_sympd(B)");
+    
+    const Mat<eT> At = trans(X.A);
+    
+    const strip_inv<T2> B_strip(X.B);
+    
+    Mat<eT> B = B_strip.M;
+    
+    arma_debug_check( (B.is_square() == false), "inv_sympd(): given matrix must be square sized" );
+    
+    arma_debug_assert_mul_size(At.n_cols, At.n_rows, B.n_rows, B.n_cols, "matrix multiplication");
+    
+    const bool status = auxlib::solve_sympd_fast(out, B, At);
+    
+    if(status == false)
+      {
+      out.soft_reset();
+      arma_stop_runtime_error("matrix multiplication: problem with matrix inverse; suggest to use solve() instead");
+      }
+    
+    out = trans(out);
+    
+    return;
+    }
   
   glue_times_redirect2_helper<false>::apply(out, X);
   }
@@ -278,7 +253,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     if(status == false)
       {
       out.soft_reset();
-      arma_stop_runtime_error("matrix multiplication: problem with inverse; suggest to use solve() instead");
+      arma_stop_runtime_error("matrix multiplication: problem with matrix inverse; suggest to use solve() instead");
       }
     
     return;
