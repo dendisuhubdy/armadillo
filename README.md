@@ -40,7 +40,7 @@ Copyright 2017-2018 Data61, CSIRO
 15. [Bug Reports and Frequently Asked Questions](#15-bug-reports-and-frequently-asked-questions)
 
 16. [MEX Interface to Octave/Matlab](#16-mex-interface-to-octavematlab)
-17. [Related Software](#17-related-software)
+17. [Related Software Using Armadillo](#17-related-software-using-armadillo)
 
 ---
 
@@ -468,12 +468,13 @@ Octave/Matlab with C++ code that uses Armadillo matrices.
 
 ---
 
-### 17: Related Software
+### 17: Related Software Using Armadillo
 
-* MLPACK: C++ library for machine learning and pattern recognition, built on top of Armadillo.  
+* MLPACK: extensive library of machine learning algorithms
+  (regression, hidden Markov models, neural networks, etc)  
   http://mlpack.org
 
-* SigPack: C++ signal processing library using Armadillo  
+* SigPack: C++ signal processing library  
   http://sigpack.sourceforge.net
 
 * OptimLib: C++ library of numerical optimisation methods for nonlinear functions  
