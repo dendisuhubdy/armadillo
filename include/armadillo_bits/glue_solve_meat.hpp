@@ -209,6 +209,13 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
   
+  // computationally inexpensive algorithm to guess whether a real matrix is positive definite:
+  // (1) ensure the the matrix is symmetric
+  // (2) ensure the diagonal entries are greater than zero
+  // (3) ensure the absolute values in each column are lower than the corresponding diagonal entry
+  // all of the above conditions are necessary, but not sufficient;
+  // doing it properly would be too computationally expensive for our purposes
+  
   if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
   
   const uword N = A.n_rows;
@@ -228,7 +235,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
       {
       const eT A_ij = A_col[i];
       
-      if( (A_ij > A_jj) || (A_ij != (*A_row)) )  { return false; }
+      if( (std::abs(A_ij) >= A_jj) || (A_ij != (*A_row)) )  { return false; }
       
       A_row += N;
       }
@@ -248,6 +255,14 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
   
+  // computationally inexpensive algorithm to guess whether a complex matrix is positive definite:
+  // (1) ensure the the matrix is hermitian
+  // (2) ensure the diagonal entries are real and greater than zero
+  // (3) ensure the absolute values in each column are lower than the corresponding diagonal entry
+  // all of the above conditions are necessary, but not sufficient;
+  // doing it properly would be too computationally expensive for our purposes
+  // NOTE: step (3) is currently omitted for complex matrices, as abs(complex) involves 2 multiplications
+  
   typedef typename get_pod_type<eT>::result T;
   
   if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
@@ -258,19 +273,16 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   
   for(uword j=0; j < N; ++j)
     {
-    const T A_jj_real = std::real(A_col[j]);
-    const T A_jj_imag = std::imag(A_col[j]);
+    const eT& A_jj = A_col[j];
     
-    if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > std::numeric_limits<T>::epsilon()) )  { return false; }
+    if( (std::real(A_jj) <= T(0)) || (std::abs(std::imag(A_jj)) > std::numeric_limits<T>::epsilon()) )  { return false; }
     
     const uword jp1   = j+1;
     const eT*   A_row = &(A.at(j,jp1));
     
     for(uword i=jp1; i < N; ++i)
       {
-      const eT A_ij = A_col[i];
-      
-      if(A_ij != std::conj(*A_row))  { return false; }
+      if(A_col[i] != std::conj(*A_row))  { return false; }
       
       A_row += N;
       }
