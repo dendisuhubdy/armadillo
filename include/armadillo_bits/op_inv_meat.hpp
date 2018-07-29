@@ -50,11 +50,15 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
       {
       status = auxlib::inv_tiny(out, A);
       }
+    else
+    if(glue_solve_gen::guess_sympd(A))
+      {
+      status = auxlib::inv_sympd(out, A);
+      }
     
     if(status == false)
       {
-      status = auxlib::inv(out, U.M);
-      //status = A.is_symmetric() ? auxlib::inv_sym(out, U.M, 0) :  auxlib::inv(out, U.M);
+      status = auxlib::inv(out, A);
       }
     }
   
