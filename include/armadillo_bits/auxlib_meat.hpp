@@ -3369,7 +3369,7 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
 template<typename T1>
 inline
 bool
-auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
+auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr, const bool extra_check)
   {
   arma_extra_debug_sigprint();
   
@@ -3379,6 +3379,8 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
   
   if(A_n_rows <= 4)
     {
+    if(extra_check && (glue_solve_gen::guess_sympd(A) == false))  { return false; }
+    
     return auxlib::solve_square_fast(out, A, B_expr.get_ref());
     }
   
@@ -3394,6 +3396,8 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
     out.zeros(A.n_cols, B_n_cols);
     return true;
     }
+  
+  // TODO: handle ATLAS
   
   #if defined(ARMA_USE_LAPACK)
     {
@@ -3416,7 +3420,6 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
     arma_ignore(out);
     arma_ignore(A);
     arma_ignore(B_expr);
-    arma_ignore(layout);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
