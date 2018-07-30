@@ -51,7 +51,7 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
       status = auxlib::inv_tiny(out, A);
       }
     else
-    if(glue_solve_gen::guess_sympd(A))
+    if(sympd_helper::guess_sympd(A))
       {
       status = auxlib::inv_sympd(out, A);
       }

@@ -3405,7 +3405,7 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
   
   if(A_n_rows <= 4)
     {
-    if(extra_check && (glue_solve_gen::guess_sympd(A) == false))  { return false; }
+    if(extra_check && (sympd_helper::guess_sympd(A) == false))  { return false; }
     
     return auxlib::solve_square_fast(out, A, B_expr.get_ref());
     }

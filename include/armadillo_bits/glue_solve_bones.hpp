@@ -27,9 +27,6 @@ class glue_solve_gen
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve_gen>& X);
   
   template<typename eT, typename T1, typename T2> inline static bool apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const uword flags);
-  
-  template<typename eT> inline static typename enable_if2<is_cx<eT>::no,  bool>::result guess_sympd(const Mat<eT>& A);
-  template<typename eT> inline static typename enable_if2<is_cx<eT>::yes, bool>::result guess_sympd(const Mat<eT>& A);
   };
 
 
