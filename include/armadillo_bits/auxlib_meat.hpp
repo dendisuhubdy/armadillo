@@ -110,17 +110,13 @@ auxlib::inv_tiny(Mat<eT>& out, const Mat<eT>& X)
     {
     Mat<eT> tmp;
     
-    bool status = auxlib::inv_tiny(tmp, X);
+    const bool status = auxlib::inv_tiny(tmp, X);
     
-    if(status == true)
-      {
-      out.steal_mem(tmp);
-      return true;
-      }
-    else
-      {
-      return false;
-      }
+    if(status == false)  { return false; }
+    
+    out.steal_mem(tmp);
+    
+    return true;
     }
   
   out.set_size(N,N);
@@ -360,7 +356,33 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   
-  #if defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_ATLAS)
+    {
+    out = X.get_ref();
+    
+    arma_debug_check( (out.is_square() == false), "inv_sympd(): given matrix must be square sized" );
+    
+    if(out.is_empty())  { return true; }
+    
+    arma_debug_assert_atlas_size(out);
+    
+    int info = 0;
+    
+    arma_extra_debug_print("atlas::clapack_potrf()");
+    info = atlas::clapack_potrf(atlas::CblasColMajor, atlas::CblasLower, out.n_rows, out.memptr(), out.n_rows);
+    
+    if(info != 0)  { return false; }
+    
+    arma_extra_debug_print("atlas::clapack_potri()");
+    info = atlas::clapack_potri(atlas::CblasColMajor, atlas::CblasLower, out.n_rows, out.memptr(), out.n_rows);
+    
+    if(info != 0)  { return false; }
+    
+    out = symmatl(out);
+    
+    return true;
+    }
+  #elif defined(ARMA_USE_LAPACK)
     {
     out = X.get_ref();
     
@@ -394,7 +416,7 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
     {
     arma_ignore(out);
     arma_ignore(X);
-    arma_stop_logic_error("inv_sympd(): use of LAPACK must be enabled");
+    arma_stop_logic_error("inv_sympd(): use of ATLAS or LAPACK must be enabled");
     return false;
     }
   #endif
@@ -3397,9 +3419,18 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
     return true;
     }
   
-  // TODO: handle ATLAS
-  
-  #if defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_ATLAS)
+    {
+    arma_debug_assert_atlas_size(A, out);
+    
+    int info = 0;
+    
+    arma_extra_debug_print("atlas::clapack_posv()");
+    info = atlas::clapack_posv<eT>(atlas::CblasColMajor, atlas::CblasLower, A_n_rows, B_n_cols, A.memptr(), A_n_rows, out.memptr(), B_n_rows);
+    
+    return (info == 0);
+    }
+  #elif defined(ARMA_USE_LAPACK)
     {
     arma_debug_assert_blas_size(A, out);
     
@@ -3420,7 +3451,7 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
     arma_ignore(out);
     arma_ignore(A);
     arma_ignore(B_expr);
-    arma_stop_logic_error("solve(): use of LAPACK must be enabled");
+    arma_stop_logic_error("solve(): use of ATLAS or LAPACK must be enabled");
     return false;
     }
   #endif

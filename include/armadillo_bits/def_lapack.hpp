@@ -538,8 +538,8 @@ extern "C"
   void arma_fortran(arma_zposv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda,   void* b, blas_int* ldb, blas_int* info);
   
   // solve system of linear equations (symmetric positive definite matrix, advanced form, real matrices)
-  void arma_fortran(arma_sposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* af, blas_int* ldaf, char* equed,  float* s,  float* b, blas_int* ldb,  float* x, blas_int* ldx, float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info);
-  void arma_fortran(arma_dposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, char* equed, double* s, double* b, blas_int* ldb, double* x, blas_int* ldx,double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_sposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* af, blas_int* ldaf, char* equed,  float* s,  float* b, blas_int* ldb,  float* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_dposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, char* equed, double* s, double* b, blas_int* ldb, double* x, blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info);
   
   // solve system of linear equations (hermitian positive definite matrix, advanced form, complex matrices)
   void arma_fortran(arma_cposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, char* equed,  float* s, void* b, blas_int* ldb, void* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info);

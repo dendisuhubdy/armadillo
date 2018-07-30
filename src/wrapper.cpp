@@ -1220,6 +1220,12 @@ extern "C"
       return    clapack_zgesv(Order, N, NRHS, A, lda, ipiv, B, ldb);
       }
     
+    
+    
+    // TODO: wrapper_clapack_?potrf
+    // TODO: wrapper_clapack_?potri
+    // TODO: wrapper_clapack_?posv
+    
   #endif
 
 
