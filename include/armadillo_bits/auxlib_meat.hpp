@@ -1723,6 +1723,8 @@ auxlib::chol(Mat<eT>& X, const uword layout)
   {
   arma_extra_debug_sigprint();
   
+  // TODO: expand to use ATLAS
+  
   #if defined(ARMA_USE_LAPACK)
     {
     arma_debug_assert_blas_size(X);

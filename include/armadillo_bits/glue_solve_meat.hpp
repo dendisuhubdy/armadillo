@@ -212,6 +212,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   // computationally inexpensive algorithm to guess whether a real matrix is positive definite:
   // (1) ensure the the matrix is symmetric
   // (2) ensure the diagonal entries are greater than zero
+  // (3) ensure that the value with largest modulus is on the diagonal
   // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
   // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
@@ -222,18 +223,29 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   
   const eT* A_col = A.memptr();
   
+  eT max_diag    = eT(0);
+  eT max_offdiag = eT(0);
+  
   for(uword j=0; j < N; ++j)
     {
     const eT A_jj = A_col[j];
     
     if(A_jj <= eT(0))  { return false; }
     
+    max_diag = (A_jj > max_diag) ? A_jj : max_diag;
+    
     const uword jp1   = j+1;
     const eT*   A_row = &(A.at(j,jp1));
     
     for(uword i=jp1; i < N; ++i)
       {
-      if(A_col[i] != (*A_row))  { return false; }
+      eT A_ij = A_col[i];
+      
+      if(A_ij != (*A_row))  { return false; }
+      
+      A_ij = std::abs(A_ij);
+      
+      max_offdiag = (A_ij > max_offdiag) ? A_ij : max_offdiag;
       
       A_row += N;
       }
@@ -241,7 +253,7 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
     A_col += N;
     }
   
-  return true;
+  return (max_diag > max_offdiag);
   }
 
 
@@ -256,9 +268,11 @@ glue_solve_gen::guess_sympd(const Mat<eT>& A)
   // computationally inexpensive algorithm to guess whether a complex matrix is positive definite:
   // (1) ensure the the matrix is hermitian
   // (2) ensure the diagonal entries are real and greater than zero
+  // (3) ensure that the value with largest modulus is on the diagonal
   // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
   // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
+  // NOTE: (3) is not done for complex numbers, as that involves two multiplications and sqrt per element
   
   typedef typename get_pod_type<eT>::result T;
   
