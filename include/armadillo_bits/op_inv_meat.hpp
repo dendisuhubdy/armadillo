@@ -34,32 +34,55 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
   
   if(strip.do_diagmat)
     {
-    status = op_inv::apply_diagmat(out, strip.M);
+    op_inv::apply_diagmat(out, strip.M);
     }
   else
     {
-    const unwrap<T1> U(X.m);
+    const quasi_unwrap<T1> U(X.m);
     
-    const Mat<eT>& A = U.M;
-    
-    arma_debug_check( (A.n_rows != A.n_cols), "inv(): given matrix must be square sized" );
-    
-    const uword N = A.n_rows;
-    
-    if(N <= 4)
+    if(U.is_alias(out))
       {
-      status = auxlib::inv_tiny(out, A);
+      Mat<eT> tmp;
+      
+      op_inv::apply_noalias(tmp, U.M);
+      
+      out.steal_mem(tmp);
       }
     else
-    if(sympd_helper::guess_sympd(A))
       {
-      status = auxlib::inv_sympd(out, A);
+      op_inv::apply_noalias(out, U.M);
       }
-    
-    if(status == false)
-      {
-      status = auxlib::inv(out, A);
-      }
+    }
+  }
+
+
+
+template<typename eT>
+inline
+void
+op_inv::apply_noalias(Mat<eT>& out, const Mat<eT>& A)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_debug_check( (A.n_rows != A.n_cols), "inv(): given matrix must be square sized" );
+  
+  const uword N = A.n_rows;
+  
+  bool status = false;
+  
+  if(N <= 4)
+    {
+    status = auxlib::inv_tiny(out, A);
+    }
+  else
+  if(sympd_helper::guess_sympd(A))
+    {
+    status = auxlib::inv_sympd(out, A);
+    }
+  
+  if(status == false)
+    {
+    status = auxlib::inv(out, A);
     }
   
   if(status == false)
@@ -73,7 +96,7 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
 
 template<typename T1>
 inline
-bool
+void
 op_inv::apply_diagmat(Mat<typename T1::elem_type>& out, const T1& X)
   {
   arma_extra_debug_sigprint();
@@ -117,7 +140,11 @@ op_inv::apply_diagmat(Mat<typename T1::elem_type>& out, const T1& X)
     out.steal_mem(tmp);
     }
   
-  return status;
+  if(status == false)
+    {
+    out.soft_reset();
+    arma_stop_runtime_error("inv(): matrix seems singular");
+    }
   }
 
 
