@@ -97,6 +97,7 @@ auxlib::inv(Mat<eT>& out, const Mat<eT>& A)
 
 
 template<typename eT>
+arma_cold
 inline
 bool
 auxlib::inv_tiny(Mat<eT>& out, const Mat<eT>& X)
@@ -457,6 +458,7 @@ auxlib::det(const Base<eT,T1>& X)
 
 
 template<typename eT>
+arma_cold
 inline
 eT
 auxlib::det_tinymat(const Mat<eT>& X, const uword N)

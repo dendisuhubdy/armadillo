@@ -40,7 +40,7 @@ class auxlib
   inline static bool inv(Mat<eT>& out, const Mat<eT>& A);
   
   template<typename eT>
-  inline static bool inv_tiny(Mat<eT>& out, const Mat<eT>& X);
+  arma_cold inline static bool inv_tiny(Mat<eT>& out, const Mat<eT>& X);
   
   template<typename eT, typename T1>
   inline static bool inv_tr(Mat<eT>& out, const Base<eT,T1>& X, const uword layout);
@@ -59,7 +59,7 @@ class auxlib
   inline static eT det(const Base<eT,T1>& X);
   
   template<typename eT>
-  inline static eT det_tinymat(const Mat<eT>& X, const uword N);
+  arma_cold inline static eT det_tinymat(const Mat<eT>& X, const uword N);
   
   template<typename eT>
   inline static eT det_lapack(const Mat<eT>& X, const bool make_copy);
