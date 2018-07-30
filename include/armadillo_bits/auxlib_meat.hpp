@@ -291,68 +291,6 @@ auxlib::inv_tr(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
 template<typename eT, typename T1>
 inline
 bool
-auxlib::inv_sym(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
-  {
-  arma_extra_debug_sigprint();
-  
-  #if defined(ARMA_USE_LAPACK)
-    {
-    out = X.get_ref();
-    
-    arma_debug_check( (out.is_square() == false), "inv(): given matrix must be square sized" );
-    
-    if(out.is_empty())  { return true; }
-    
-    arma_debug_assert_blas_size(out);
-    
-    char     uplo  = (layout == 0) ? 'U' : 'L';
-    blas_int n     = blas_int(out.n_rows);
-    blas_int lwork = (std::max)(blas_int(podarray_prealloc_n_elem::val), 32*n);
-    blas_int info  = 0;
-    
-    podarray<blas_int> ipiv;
-    ipiv.set_size(out.n_rows);
-    
-    podarray<eT> work;
-    work.set_size( uword(lwork) );
-    
-    arma_extra_debug_print("lapack::sytrf()");
-    lapack::sytrf(&uplo, &n, out.memptr(), &n, ipiv.memptr(), work.memptr(), &lwork, &info);
-    
-    if(info != 0)  { return false; }
-    
-    arma_extra_debug_print("lapack::sytri()");
-    lapack::sytri(&uplo, &n, out.memptr(), &n, ipiv.memptr(), work.memptr(), &info);
-    
-    if(info != 0)  { return false; }
-    
-    if(layout == 0)
-      {
-      out = symmatu(out);
-      }
-    else
-      {
-      out = symmatl(out);
-      }
-    
-    return true;
-    }
-  #else
-    {
-    arma_ignore(out);
-    arma_ignore(X);
-    arma_ignore(layout);
-    arma_stop_logic_error("inv(): use of LAPACK must be enabled");
-    return false;
-    }
-  #endif
-  }
-
-
-
-template<typename eT, typename T1>
-inline
-bool
 auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();

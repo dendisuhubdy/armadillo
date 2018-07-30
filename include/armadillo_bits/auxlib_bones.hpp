@@ -46,9 +46,6 @@ class auxlib
   inline static bool inv_tr(Mat<eT>& out, const Base<eT,T1>& X, const uword layout);
   
   template<typename eT, typename T1>
-  inline static bool inv_sym(Mat<eT>& out, const Base<eT,T1>& X, const uword layout);
-  
-  template<typename eT, typename T1>
   inline static bool inv_sympd(Mat<eT>& out, const Base<eT,T1>& X);
   
   

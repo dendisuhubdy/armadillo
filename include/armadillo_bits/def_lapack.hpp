@@ -163,16 +163,6 @@
   #define arma_ctrsyl ctrsyl
   #define arma_ztrsyl ztrsyl
   
-  #define arma_ssytrf ssytrf
-  #define arma_dsytrf dsytrf
-  #define arma_csytrf csytrf
-  #define arma_zsytrf zsytrf
-  
-  #define arma_ssytri ssytri
-  #define arma_dsytri dsytri
-  #define arma_csytri csytri
-  #define arma_zsytri zsytri
-  
   #define arma_sgges  sgges
   #define arma_dgges  dgges
   #define arma_cgges  cgges
@@ -358,16 +348,6 @@
   #define arma_dtrsyl DTRSYL
   #define arma_ctrsyl CTRSYL
   #define arma_ztrsyl ZTRSYL
-  
-  #define arma_ssytrf SSYTRF
-  #define arma_dsytrf DSYTRF
-  #define arma_csytrf CSYTRF
-  #define arma_zsytrf ZSYTRF
-  
-  #define arma_ssytri SSYTRI
-  #define arma_dsytri DSYTRI
-  #define arma_csytri CSYTRI
-  #define arma_zsytri ZSYTRI
   
   #define arma_sgges  SGGES
   #define arma_dgges  DGGES
@@ -606,16 +586,6 @@ extern "C"
   void arma_fortran(arma_dtrsyl)(char* transa, char* transb, blas_int* isgn, blas_int* m, blas_int* n, const double* a, blas_int* lda, const double* b, blas_int* ldb, double* c, blas_int* ldc, double* scale, blas_int* info);
   void arma_fortran(arma_ctrsyl)(char* transa, char* transb, blas_int* isgn, blas_int* m, blas_int* n, const void*   a, blas_int* lda, const void*   b, blas_int* ldb, void*   c, blas_int* ldc, float*  scale, blas_int* info);
   void arma_fortran(arma_ztrsyl)(char* transa, char* transb, blas_int* isgn, blas_int* m, blas_int* n, const void*   a, blas_int* lda, const void*   b, blas_int* ldb, void*   c, blas_int* ldc, double* scale, blas_int* info);
-  
-  void arma_fortran(arma_ssytrf)(char* uplo, blas_int* n, float*  a, blas_int* lda, blas_int* ipiv, float*  work, blas_int* lwork, blas_int* info);
-  void arma_fortran(arma_dsytrf)(char* uplo, blas_int* n, double* a, blas_int* lda, blas_int* ipiv, double* work, blas_int* lwork, blas_int* info);
-  void arma_fortran(arma_csytrf)(char* uplo, blas_int* n, void*   a, blas_int* lda, blas_int* ipiv, void*   work, blas_int* lwork, blas_int* info);
-  void arma_fortran(arma_zsytrf)(char* uplo, blas_int* n, void*   a, blas_int* lda, blas_int* ipiv, void*   work, blas_int* lwork, blas_int* info);
-  
-  void arma_fortran(arma_ssytri)(char* uplo, blas_int* n, float*  a, blas_int* lda, blas_int* ipiv, float*  work, blas_int* info);
-  void arma_fortran(arma_dsytri)(char* uplo, blas_int* n, double* a, blas_int* lda, blas_int* ipiv, double* work, blas_int* info);
-  void arma_fortran(arma_csytri)(char* uplo, blas_int* n, void*   a, blas_int* lda, blas_int* ipiv, void*   work, blas_int* info);
-  void arma_fortran(arma_zsytri)(char* uplo, blas_int* n, void*   a, blas_int* lda, blas_int* ipiv, void*   work, blas_int* info);
   
   // QZ decomposition (real matrices)
   void arma_fortran(arma_sgges)(char* jobvsl, char* jobvsr, char* sort, void* selctg, blas_int* n,  float* a, blas_int* lda,  float* b, blas_int* ldb, blas_int* sdim,  float* alphar,  float* alphai,  float* beta,  float* vsl, blas_int* ldvsl,  float* vsr, blas_int* ldvsr,  float* work, blas_int* lwork,  float* bwork, blas_int* info);
