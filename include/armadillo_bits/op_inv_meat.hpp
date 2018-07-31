@@ -30,8 +30,6 @@ op_inv::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv>& X)
   
   const strip_diagmat<T1> strip(X.m);
   
-  bool status = false;
-  
   if(strip.do_diagmat)
     {
     op_inv::apply_diagmat(out, strip.M);
