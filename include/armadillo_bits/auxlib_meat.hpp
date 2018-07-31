@@ -1661,9 +1661,22 @@ auxlib::chol(Mat<eT>& X, const uword layout)
   {
   arma_extra_debug_sigprint();
   
-  // TODO: expand to use ATLAS
-  
-  #if defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_ATLAS)
+    {
+    arma_debug_assert_atlas_size(X);
+    
+    int info = 0;
+    
+    arma_extra_debug_print("atlas::clapack_potrf()");
+    info = atlas::clapack_potrf(atlas::CblasColMajor, ((layout == 0) ? atlas::CblasUpper : atlas::CblasLower), X.n_rows, X.memptr(), X.n_rows);
+    
+    if(info != 0)  { return false; }
+    
+    X = (layout == 0) ? trimatu(X) : trimatl(X);  // trimatu() and trimatl() return the same type
+    
+    return true;
+    }
+  #elif defined(ARMA_USE_LAPACK)
     {
     arma_debug_assert_blas_size(X);
     
@@ -1676,26 +1689,7 @@ auxlib::chol(Mat<eT>& X, const uword layout)
     
     if(info != 0)  { return false; }
     
-    const uword X_n_rows = X.n_rows;
-    
-    if(layout == 0)
-      {
-      for(uword col=0; col < X_n_rows; ++col)
-        {
-        eT* colptr = X.colptr(col);
-        
-        for(uword row=(col+1); row < X_n_rows; ++row)  { colptr[row] = eT(0); }
-        }
-      }
-    else
-      {
-      for(uword col=1; col < X_n_rows; ++col)
-        {
-        eT* colptr = X.colptr(col);
-        
-        for(uword row=0; row < col; ++row)  { colptr[row] = eT(0); }
-        }
-      }
+    X = (layout == 0) ? trimatu(X) : trimatl(X);  // trimatu() and trimatl() return the same type
     
     return true;
     }
@@ -1704,7 +1698,7 @@ auxlib::chol(Mat<eT>& X, const uword layout)
     arma_ignore(X);
     arma_ignore(layout);
     
-    arma_stop_logic_error("chol(): use of LAPACK must be enabled");
+    arma_stop_logic_error("chol(): use of ATLAS or LAPACK must be enabled");
     return false;
     }
   #endif
@@ -3337,8 +3331,6 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
   {
   arma_extra_debug_sigprint();
   
-  typedef typename T1::elem_type eT;
-  
   const uword A_n_rows = A.n_rows;
   
   if(A_n_rows <= 4)
@@ -3363,6 +3355,8 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
   
   #if defined(ARMA_USE_ATLAS)
     {
+    typedef typename T1::elem_type eT;
+    
     arma_debug_assert_atlas_size(A, out);
     
     int info = 0;
@@ -3374,6 +3368,8 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
     }
   #elif defined(ARMA_USE_LAPACK)
     {
+    typedef typename T1::elem_type eT;
+    
     arma_debug_assert_blas_size(A, out);
     
     char     uplo = 'L';
