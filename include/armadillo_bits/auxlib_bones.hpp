@@ -215,6 +215,9 @@ class auxlib
   // solve
   
   template<typename T1>
+  arma_cold inline static bool solve_square_tiny(Mat<typename T1::elem_type>& out, const Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr);
+  
+  template<typename T1>
   inline static bool solve_square_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr);
   
   template<typename T1>

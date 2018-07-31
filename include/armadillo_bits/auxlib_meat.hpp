@@ -106,20 +106,6 @@ auxlib::inv_tiny(Mat<eT>& out, const Mat<eT>& X)
   
   const uword N = X.n_rows;
   
-  // handle aliasing
-  if(&out == &X)
-    {
-    Mat<eT> tmp;
-    
-    const bool status = auxlib::inv_tiny(tmp, X);
-    
-    if(status == false)  { return false; }
-    
-    out.steal_mem(tmp);
-    
-    return true;
-    }
-  
   out.set_size(N,N);
   
   typedef typename get_pod_type<eT>::result T;
@@ -295,14 +281,30 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   
+  out = X.get_ref();
+  
+  arma_debug_check( (out.is_square() == false), "inv_sympd(): given matrix must be square sized" );
+  
+  if(out.is_empty())  { return true; }
+  
+  if(out.n_rows <= 4)
+    {
+    if(sympd_helper::guess_sympd(out) == false)  { return false; }
+    
+    Mat<eT> tmp;
+    
+    const bool status = auxlib::inv_tiny(tmp, out);
+    
+    if(status == true)
+      {
+      out.steal_mem(tmp);
+      
+      return true;
+      }
+    }
+    
   #if defined(ARMA_USE_ATLAS)
     {
-    out = X.get_ref();
-    
-    arma_debug_check( (out.is_square() == false), "inv_sympd(): given matrix must be square sized" );
-    
-    if(out.is_empty())  { return true; }
-    
     arma_debug_assert_atlas_size(out);
     
     int info = 0;
@@ -323,12 +325,6 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
     }
   #elif defined(ARMA_USE_LAPACK)
     {
-    out = X.get_ref();
-    
-    arma_debug_check( (out.is_square() == false), "inv_sympd(): given matrix must be square sized" );
-    
-    if(out.is_empty())  { return true; }
-    
     arma_debug_assert_blas_size(out);
     
     char     uplo = 'L';
@@ -3043,6 +3039,61 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
 
 
 
+//! solve a system of linear equations via explicit inverse (tiny matrices)
+template<typename T1>
+arma_cold
+inline
+bool
+auxlib::solve_square_tiny(Mat<typename T1::elem_type>& out, const Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  // NOTE: assuming A has a size <= 4x4
+  
+  typedef typename T1::elem_type eT;
+  
+  const uword A_n_rows = A.n_rows;
+  
+  Mat<eT> A_inv(A_n_rows, A_n_rows);
+  
+  const bool status = auxlib::inv_tiny(A_inv, A);
+  
+  if(status == false)  { return false; }
+  
+  const quasi_unwrap<T1> UB(B_expr.get_ref());
+  const Mat<eT>& B     = UB.M;
+  
+  const uword B_n_rows = B.n_rows;
+  const uword B_n_cols = B.n_cols;
+  
+  arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
+  
+  if(A.is_empty() || B.is_empty())
+    {
+    out.zeros(A.n_cols, B_n_cols);
+    return true;
+    }
+  
+  if(UB.is_alias(out))
+    {
+    Mat<eT> tmp(A_n_rows, B_n_cols);
+    
+    gemm_emul<false,false,false,false>::apply(tmp, A_inv, B);
+    
+    out.steal_mem(tmp);
+    }
+  else
+    {
+    out.set_size(A_n_rows, B_n_cols);
+    
+    gemm_emul<false,false,false,false>::apply(out, A_inv, B);
+    }
+  
+  return true;
+  }
+
+
+
 //! solve a system of linear equations via LU decomposition
 template<typename T1>
 inline
@@ -3057,43 +3108,9 @@ auxlib::solve_square_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::ele
   
   if(A_n_rows <= 4)
     {
-    Mat<eT> A_inv(A_n_rows, A_n_rows);
+    const bool status = auxlib::solve_square_tiny(out, A, B_expr.get_ref());
     
-    const bool status = auxlib::inv_tiny(A_inv, A);
-    
-    if(status == true)
-      {
-      const unwrap<T1>   U(B_expr.get_ref());
-      const Mat<eT>& B = U.M;
-      
-      const uword B_n_rows = B.n_rows;
-      const uword B_n_cols = B.n_cols;
-      
-      arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
-      
-      if(A.is_empty() || B.is_empty())
-        {
-        out.zeros(A.n_cols, B_n_cols);
-        return true;
-        }
-      
-      if(&out != &B)
-        {
-        out.set_size(A_n_rows, B_n_cols);
-        
-        gemm_emul<false,false,false,false>::apply(out, A_inv, B);
-        }
-      else
-        {
-        Mat<eT> tmp(A_n_rows, B_n_cols);
-        
-        gemm_emul<false,false,false,false>::apply(tmp, A_inv, B);
-        
-        out.steal_mem(tmp);
-        }
-      
-      return true;
-      }
+    if(status == true)  { return true; }
     }
   
   out = B_expr.get_ref();
@@ -3337,7 +3354,9 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
     {
     if(extra_check && (sympd_helper::guess_sympd(A) == false))  { return false; }
     
-    return auxlib::solve_square_fast(out, A, B_expr.get_ref());
+    const bool status = auxlib::solve_square_tiny(out, A, B_expr.get_ref());
+    
+    if(status == true)  { return true; }
     }
   
   out = B_expr.get_ref();
