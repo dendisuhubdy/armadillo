@@ -289,20 +289,13 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   
   if(out.n_rows <= 4)
     {
-    if(sympd_helper::guess_sympd(out) == false)  { return false; }
-    
     Mat<eT> tmp;
     
-    const bool status = auxlib::inv_tiny(tmp, out);
+    const bool status = auxlib::inv_sympd_tiny(tmp, out);
     
-    if(status == true)
-      {
-      out.steal_mem(tmp);
-      
-      return true;
-      }
+    if(status == true)  { out = tmp; return true; }
     }
-    
+  
   #if defined(ARMA_USE_ATLAS)
     {
     arma_debug_assert_atlas_size(out);
@@ -355,6 +348,21 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
     return false;
     }
   #endif
+  }
+
+
+
+template<typename eT>
+arma_cold
+inline
+bool
+auxlib::inv_sympd_tiny(Mat<eT>& out, const Mat<eT>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  if(sympd_helper::guess_sympd(X) == false)  { return false; }
+  
+  return auxlib::inv_tiny(out, X);
   }
 
 

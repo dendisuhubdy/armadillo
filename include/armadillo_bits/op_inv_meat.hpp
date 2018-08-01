@@ -64,11 +64,9 @@ op_inv::apply_noalias(Mat<eT>& out, const Mat<eT>& A)
   
   arma_debug_check( (A.n_rows != A.n_cols), "inv(): given matrix must be square sized" );
   
-  const uword N = A.n_rows;
-  
   bool status = false;
   
-  if(N <= 4)
+  if(A.n_rows <= 4)
     {
     status = auxlib::inv_tiny(out, A);
     }

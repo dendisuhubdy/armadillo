@@ -48,6 +48,10 @@ class auxlib
   template<typename eT, typename T1>
   inline static bool inv_sympd(Mat<eT>& out, const Base<eT,T1>& X);
   
+  template<typename eT>
+  arma_cold inline static bool inv_sympd_tiny(Mat<eT>& out, const Mat<eT>& X);
+  
+  
   
   //
   // det
