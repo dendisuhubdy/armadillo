@@ -3378,12 +3378,33 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
   {
   arma_extra_debug_sigprint();
   
+  if(extra_check && (A.n_rows <= 4) && (sympd_helper::guess_sympd(A) == false))  { return false; }
+  
+  #if defined(ARMA_CRIPPLED_LAPACK)
+    {
+    arma_extra_debug_print("auxlib::solve_sympd_fast(): redirecting to auxlib::solve_square_fast() due to crippled LAPACK");
+    
+    return auxlib::solve_square_fast(out, A, B_expr);
+    }
+  #else
+    {
+    return auxlib::solve_sympd_fast_common(out, A, B_expr);
+    }
+  #endif
+  }
+  
+  
+template<typename T1>
+inline
+bool
+auxlib::solve_sympd_fast_common(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
+  
   const uword A_n_rows = A.n_rows;
   
   if(A_n_rows <= 4)
     {
-    if(extra_check && (sympd_helper::guess_sympd(A) == false))  { return false; }
-    
     const bool status = auxlib::solve_square_tiny(out, A, B_expr.get_ref());
     
     if(status == true)  { return true; }
@@ -3534,9 +3555,13 @@ auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, type
   {
   arma_extra_debug_sigprint();
   
-  // TODO: check function availability in crippled lapack
-  
-  #if defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_CRIPPLED_LAPACK)
+    {
+    arma_extra_debug_print("auxlib::solve_band_refine(): redirecting to auxlib::solve_square_refine() due to crippled LAPACK");
+    
+    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, equilibrate);
+    }
+  #elif defined(ARMA_USE_LAPACK)
     {
     typedef typename T1::pod_type     T;
     typedef typename std::complex<T> eT;
