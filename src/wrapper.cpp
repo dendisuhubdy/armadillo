@@ -567,8 +567,49 @@ extern "C"
     
     
     
-    // TODO: ?posv
-    // TODO: ?posvx
+    void arma_fortran_prefix(arma_sposv)(char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* b, blas_int* ldb, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_sposv)(uplo, n, nrhs, a, lda, b, ldb, info);
+      }
+    
+    void arma_fortran_prefix(arma_dposv)(char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* b, blas_int* ldb, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_dposv)(uplo, n, nrhs, a, lda, b, ldb, info);
+      }
+    
+    void arma_fortran_prefix(arma_cposv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda,   void* b, blas_int* ldb, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_cposv)(uplo, n, nrhs, a, lda, b, ldb, info);
+      }
+    
+    void arma_fortran_prefix(arma_zposv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda,   void* b, blas_int* ldb, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_zposv)(uplo, n, nrhs, a, lda, b, ldb, info);
+      }
+    
+    
+    
+    void arma_fortran_prefix(arma_sposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* af, blas_int* ldaf, char* equed,  float* s,  float* b, blas_int* ldb,  float* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_sposvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, equed, s, b, ldb, x, ldx, rcond, ferr, berr, work, iwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_dposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, char* equed, double* s, double* b, blas_int* ldb, double* x, blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_dposvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, equed, s, b, ldb, x, ldx, rcond, ferr, berr, work, iwork, info);
+      }
+    
+    
+    
+    void arma_fortran_prefix(arma_cposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, char* equed,  float* s, void* b, blas_int* ldb, void* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_cposvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, equed, s, b, ldb, x, ldx, rcond, ferr, berr, work, rwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_zposvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, char* equed, double* s, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_zposvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, equed, s, b, ldb, x, ldx, rcond, ferr, berr, work, rwork, info);
+      }
     
     
     
