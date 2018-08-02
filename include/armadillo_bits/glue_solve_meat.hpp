@@ -106,6 +106,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
         
         if(status == false)
           {
+          arma_extra_debug_print("glue_solve_gen::apply(): auxlib::solve_sympd_fast() failed; retrying");
+          
           // auxlib::solve_sympd_fast() may have failed because A isn't really sympd
           A = A_expr.get_ref();
           status = auxlib::solve_square_fast(out, A, B_expr.get_ref());  // A is overwritten
@@ -133,6 +135,22 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           arma_extra_debug_print("glue_solve_gen::apply(): refine + band");
           
           status = auxlib::solve_band_refine(out, rcond, A, KL, KU, B_expr, equilibrate);
+          }
+        }
+      else
+      if(is_sympd)
+        {
+        arma_extra_debug_print("glue_solve_gen::apply(): refine + sympd");
+        
+        status = auxlib::solve_sympd_refine(out, rcond, A, B_expr.get_ref(), equilibrate);  // A is overwritten
+        
+        if(status == false)
+          {
+          arma_extra_debug_print("glue_solve_gen::apply(): auxlib::solve_sympd_refine() failed; retrying");
+          
+          // auxlib::solve_sympd_refine() may have failed because A isn't really sympd
+          A = A_expr.get_ref();
+          status = auxlib::solve_square_refine(out, rcond, A, B_expr.get_ref(), equilibrate);  // A is overwritten
           }
         }
       else

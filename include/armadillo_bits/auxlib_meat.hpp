@@ -3184,7 +3184,15 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
     {
     typedef typename T1::pod_type eT;
     
-    Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::gesvx()
+    // Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::gesvx() if equilibrate is enabled
+    
+    quasi_unwrap<T1> UB(B_expr.get_ref());  // deliberately not declaring as const
+    
+    const bool use_copy = ((equilibrate && UB.is_const) || UB.is_alias(out));
+    
+    Mat<eT> B_tmp;  if(use_copy)  { B_tmp = UB.M; }
+    
+    const Mat<eT>& B = (use_copy) ? B_tmp : UB.M;  // using const ref for B in case UB.M is a const ref
     
     arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
       
@@ -3230,7 +3238,7 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
       &equed,
       R.memptr(),
       C.memptr(),
-      B.memptr(), &ldb,
+      const_cast<eT*>(B.memptr()), &ldb,
       out.memptr(), &ldx,
       &rcond,
       FERR.memptr(),
@@ -3239,6 +3247,9 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
       IWORK.memptr(),
       &info
       );
+    
+    // NOTE: using const_cast<eT*>(B.memptr()) to allow B to be overwritten for equilibration;
+    // NOTE: B is created as a copy of B_expr if equilibration is enabled; otherwise B is a reference to B_expr
     
     out_rcond = rcond;
     
@@ -3273,7 +3284,15 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
     typedef typename T1::pod_type     T;
     typedef typename std::complex<T> eT;
     
-    Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::cx_gesvx()
+    // Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::cx_gesvx() if equilibrate is enabled
+    
+    quasi_unwrap<T1> UB(B_expr.get_ref());  // deliberately not declaring as const
+    
+    const bool use_copy = ((equilibrate && UB.is_const) || UB.is_alias(out));
+    
+    Mat<eT> B_tmp;  if(use_copy)  { B_tmp = UB.M; }
+    
+    const Mat<eT>& B = (use_copy) ? B_tmp : UB.M;  // using const ref for B in case UB.M is a const ref
     
     arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
       
@@ -3319,7 +3338,7 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
       &equed,
       R.memptr(),
       C.memptr(),
-      B.memptr(), &ldb,
+      const_cast<eT*>(B.memptr()), &ldb,
       out.memptr(), &ldx,
       &rcond,
       FERR.memptr(),
@@ -3328,6 +3347,9 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
       RWORK.memptr(),
       &info
       );
+    
+    // NOTE: using const_cast<eT*>(B.memptr()) to allow B to be overwritten for equilibration;
+    // NOTE: B is created as a copy of B_expr if equilibration is enabled; otherwise B is a reference to B_expr
     
     out_rcond = rcond;
     
@@ -3424,9 +3446,166 @@ auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem
 
 
 
-// TODO: solve_sym_refine (real)
-// TODO: solve_sym_refine (cx)
-// TODO: check function availability in crippled lapack
+//! solve a system of linear equations via Cholesky decomposition with refinement (real matrices)
+template<typename T1>
+inline
+bool
+auxlib::solve_sympd_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
+  {
+  arma_extra_debug_sigprint();
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    typedef typename T1::pod_type eT;
+    
+    // Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::posvx() if equilibrate is enabled
+    
+    quasi_unwrap<T1> UB(B_expr.get_ref());  // deliberately not declaring as const
+    
+    const bool use_copy = ((equilibrate && UB.is_const) || UB.is_alias(out));
+    
+    Mat<eT> B_tmp;  if(use_copy)  { B_tmp = UB.M; }
+    
+    const Mat<eT>& B = (use_copy) ? B_tmp : UB.M;  // using const ref for B in case UB.M is a const ref
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_rows, B.n_cols);
+      return true;
+      }
+    
+    arma_debug_assert_blas_size(A,B);
+    
+    out.set_size(A.n_rows, B.n_cols);
+    
+    char     fact  = (equilibrate) ? 'E' : 'N'; 
+    char     uplo  = 'L';
+    char     equed = char(0);
+    blas_int n     = blas_int(A.n_rows);
+    blas_int nrhs  = blas_int(B.n_cols);
+    blas_int lda   = blas_int(A.n_rows);
+    blas_int ldaf  = blas_int(A.n_rows);
+    blas_int ldb   = blas_int(A.n_rows);
+    blas_int ldx   = blas_int(A.n_rows);
+    blas_int info  = blas_int(0);
+    eT       rcond = eT(0);
+    
+    Mat<eT> AF(A.n_rows, A.n_rows);
+    
+    podarray<eT>           S(  A.n_rows);
+    podarray<eT>        FERR(  B.n_cols);
+    podarray<eT>        BERR(  B.n_cols);
+    podarray<eT>        WORK(3*A.n_rows);
+    podarray<blas_int> IWORK(  A.n_rows);
+    
+    arma_extra_debug_print("lapack::posvx()");
+    lapack::posvx(&fact, &uplo, &n, &nrhs, A.memptr(), &lda, AF.memptr(), &ldaf, &equed, S.memptr(), const_cast<eT*>(B.memptr()), &ldb, out.memptr(), &ldx, &rcond, FERR.memptr(), BERR.memptr(), WORK.memptr(), IWORK.memptr(), &info);
+    
+    // NOTE: using const_cast<eT*>(B.memptr()) to allow B to be overwritten for equilibration;
+    // NOTE: B is created as a copy of B_expr if equilibration is enabled; otherwise B is a reference to B_expr
+    
+    out_rcond = rcond;
+    
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
+    }
+  #else
+    {
+    arma_ignore(out);
+    arma_ignore(out_rcond);
+    arma_ignore(A);
+    arma_ignore(B_expr);
+    arma_ignore(equilibrate);
+    arma_stop_logic_error("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
+//! solve a system of linear equations via Cholesky decomposition with refinement (complex matrices)
+template<typename T1>
+inline
+bool
+auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
+  {
+  arma_extra_debug_sigprint();
+  
+  // TODO: check function availability in crippled lapack
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    typedef typename T1::pod_type     T;
+    typedef typename std::complex<T> eT;
+    
+    // Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::cx_posvx() if equilibrate is enabled
+    
+    quasi_unwrap<T1> UB(B_expr.get_ref());  // deliberately not declaring as const
+    
+    const bool use_copy = ((equilibrate && UB.is_const) || UB.is_alias(out));
+    
+    Mat<eT> B_tmp;  if(use_copy)  { B_tmp = UB.M; }
+    
+    const Mat<eT>& B = (use_copy) ? B_tmp : UB.M;  // using const ref for B in case UB.M is a const ref
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+      
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_rows, B.n_cols);
+      return true;
+      }
+    
+    arma_debug_assert_blas_size(A,B);
+    
+    out.set_size(A.n_rows, B.n_cols);
+    
+    char     fact  = (equilibrate) ? 'E' : 'N'; 
+    char     uplo  = 'L';
+    char     equed = char(0);
+    blas_int n     = blas_int(A.n_rows);
+    blas_int nrhs  = blas_int(B.n_cols);
+    blas_int lda   = blas_int(A.n_rows);
+    blas_int ldaf  = blas_int(A.n_rows);
+    blas_int ldb   = blas_int(A.n_rows);
+    blas_int ldx   = blas_int(A.n_rows);
+    blas_int info  = blas_int(0);
+    T        rcond = T(0);
+    
+    Mat<eT> AF(A.n_rows, A.n_rows);
+    
+    podarray< T>           S(  A.n_rows);
+    podarray< T>        FERR(  B.n_cols);
+    podarray< T>        BERR(  B.n_cols);
+    podarray<eT>        WORK(2*A.n_rows);
+    podarray< T>       RWORK(  A.n_rows);
+    
+    arma_extra_debug_print("lapack::cx_posvx()");
+    lapack::cx_posvx(&fact, &uplo, &n, &nrhs, A.memptr(), &lda, AF.memptr(), &ldaf, &equed, S.memptr(), const_cast<eT*>(B.memptr()), &ldb, out.memptr(), &ldx, &rcond, FERR.memptr(), BERR.memptr(), WORK.memptr(), RWORK.memptr(), &info);
+    
+    // NOTE: using const_cast<eT*>(B.memptr()) to allow B to be overwritten for equilibration;
+    // NOTE: B is created as a copy of B_expr if equilibration is enabled; otherwise B is a reference to B_expr
+    
+    out_rcond = rcond;
+    
+    //return ((info == 0) || (info == (n+1)));
+    return (info == 0);
+    }
+  #else
+    {
+    arma_ignore(out);
+    arma_ignore(out_rcond);
+    arma_ignore(A);
+    arma_ignore(B_expr);
+    arma_ignore(equilibrate);
+    arma_stop_logic_error("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
 
 
 
