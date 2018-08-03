@@ -264,6 +264,14 @@
   #undef ARMA_USE_HDF5_ALT
 #endif
 
+#if defined(ARMA_DONT_OPTIMISE_SOLVE_BAND)
+  #undef ARMA_OPTIMISE_SOLVE_BAND
+#endif
+
+#if defined(ARMA_DONT_OPTIMISE_SOLVE_SYMPD)
+  #undef ARMA_OPTIMISE_SOLVE_SYMPD
+#endif
+
 #if defined(ARMA_DONT_PRINT_ERRORS)
   #undef ARMA_PRINT_ERRORS
 #endif
