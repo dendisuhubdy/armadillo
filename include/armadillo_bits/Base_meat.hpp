@@ -407,6 +407,87 @@ Base<elem_type,derived>::is_hermitian(const typename get_pod_type<elem_type>::re
 
 
 
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_empty() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const Proxy<derived> P( (*this).get_ref() );
+  
+  return (P.get_n_elem() == uword(0));
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_square() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const Proxy<derived> P( (*this).get_ref() );
+  
+  return (P.get_n_rows() == P.get_n_cols());
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_vec() const
+  {
+  arma_extra_debug_sigprint();
+  
+  if( (Proxy<derived>::is_row) || (Proxy<derived>::is_col) )  { return true; }
+  
+  const Proxy<derived> P( (*this).get_ref() );
+  
+  return ( (P.get_n_rows() == uword(1)) || (P.get_n_cols() == uword(1)) );
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_colvec() const
+  {
+  arma_extra_debug_sigprint();
+  
+  if(Proxy<derived>::is_col)  { return true; }
+  
+  const Proxy<derived> P( (*this).get_ref() );
+  
+  return (P.get_n_cols() == uword(1));
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base<elem_type,derived>::is_rowvec() const
+  {
+  arma_extra_debug_sigprint();
+  
+  if(Proxy<derived>::is_row)  { return true; }
+  
+  const Proxy<derived> P( (*this).get_ref() );
+  
+  return (P.get_n_rows() == uword(1));
+  }
+
+
+
 //
 // extra functions defined in Base_inv_yes
 
