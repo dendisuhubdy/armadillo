@@ -6041,16 +6041,18 @@ See also:
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_symmetric"></a>
 <b>.is_symmetric()</b>
-<br><b>.is_symmetric(tol)</b>
+<br><b>.is_symmetric(&nbsp;tol&nbsp;)</b>
 <ul>
 <li>
 Member function of <i>Mat</i>
 </li>
 <br>
-<li>Returns <i>true</i> if the matrix is symmetric
-</li>
+<li>Returns <i>true</i> if the matrix is symmetric</li>
 <br>
-<li>Returns <i>false</i> if the matrix is not symmetric
+<li>Returns <i>false</i> if the matrix is not symmetric</li>
+<br>
+<li>
+The <i>tol</i> argument is optional; if <i>tol</i> is specified, the given matrix <i>X</i> is considered symmetric if <i>norm(X - X.st(), "inf") / norm (X, "inf") &leq; tol</i>
 </li>
 <br>
 <li>
@@ -6081,16 +6083,18 @@ See also:
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_hermitian"></a>
 <b>.is_hermitian()</b>
-<br><b>.is_hermitian(tol)</b>
+<br><b>.is_hermitian(&nbsp;tol&nbsp;)</b>
 <ul>
 <li>
 Member function of <i>Mat</i>
 </li>
 <br>
-<li>Returns <i>true</i> if the matrix is hermitian
-</li>
+<li>Returns <i>true</i> if the matrix is hermitian</li>
 <br>
-<li>Returns <i>false</i> if the matrix is not hermitian
+<li>Returns <i>false</i> if the matrix is not hermitian</li>
+<br>
+<li>
+The <i>tol</i> argument is optional; if <i>tol</i> is specified, the given matrix <i>X</i> is considered hermitian if <i>norm(X - X.t(), "inf") / norm (X, "inf") &leq; tol</i>
 </li>
 <br>
 <li>
@@ -17857,7 +17861,7 @@ List of additions and changes for each version:
 <li>Version 9.100:
 <ul>
 <li>faster handling of symmetric/hermitian positive definite matrices by <a href="#solve">solve()</a></li>
-<li>faster handlig of <a href="#inv_sympd">inv_sympd()</a> in compound expressions</li>
+<li>faster handling of <a href="#inv_sympd">inv_sympd()</a> in compound expressions</li>
 <li>added <a href="#is_symmetric">.is_symmetric()</a></li>
 <li>added <a href="#is_hermitian">.is_hermitian()</a></li>
 <li>new <a href="#config_hpp">configuration</a> options ARMA_OPTIMISE_SOLVE_BAND and ARMA_OPTIMISE_SOLVE_SYMPD</li>
