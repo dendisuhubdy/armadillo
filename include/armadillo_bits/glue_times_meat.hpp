@@ -98,7 +98,11 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, B, "matrix multiplication");
     
-    const bool status = (strip_inv<T1>::do_inv_sympd) ? auxlib::solve_sympd_fast(out, A, B, true) : auxlib::solve_square_fast(out, A, B);
+    #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
+      const bool status = (strip_inv<T1>::do_inv_sympd) ? auxlib::solve_sympd_fast(out, A, B, true) : auxlib::solve_square_fast(out, A, B);
+    #else
+      const bool status = auxlib::solve_square_fast(out, A, B);
+    #endif
     
     if(status == false)
       {
@@ -109,36 +113,39 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     return;
     }
   
-  // TODO: this is an experimental optimisation
-  if( (strip_inv<T2>::do_inv_sympd) && (is_cx<eT>::no) )
+  #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
     {
-    // replace A*inv_sympd(B) with trans( solve(trans(B),trans(A)) )
-    // transpose of B is avoided as B is explicitly marked as symmetric
-    
-    arma_extra_debug_print("glue_times_redirect<2>::apply(): detected A*inv_sympd(B)");
-    
-    const Mat<eT> At = trans(X.A);
-    
-    const strip_inv<T2> B_strip(X.B);
-    
-    Mat<eT> B = B_strip.M;
-    
-    arma_debug_check( (B.is_square() == false), "inv_sympd(): given matrix must be square sized" );
-    
-    arma_debug_assert_mul_size(At.n_cols, At.n_rows, B.n_rows, B.n_cols, "matrix multiplication");
-    
-    const bool status = auxlib::solve_sympd_fast(out, B, At, true);
-    
-    if(status == false)
+    if( (strip_inv<T2>::do_inv_sympd) && (is_cx<eT>::no) )
       {
-      out.soft_reset();
-      arma_stop_runtime_error("matrix multiplication: problem with matrix inverse; suggest to use solve() instead");
+      // replace A*inv_sympd(B) with trans( solve(trans(B),trans(A)) )
+      // transpose of B is avoided as B is explicitly marked as symmetric
+      
+      arma_extra_debug_print("glue_times_redirect<2>::apply(): detected A*inv_sympd(B)");
+      
+      const Mat<eT> At = trans(X.A);
+      
+      const strip_inv<T2> B_strip(X.B);
+      
+      Mat<eT> B = B_strip.M;
+      
+      arma_debug_check( (B.is_square() == false), "inv_sympd(): given matrix must be square sized" );
+      
+      arma_debug_assert_mul_size(At.n_cols, At.n_rows, B.n_rows, B.n_cols, "matrix multiplication");
+      
+      const bool status = auxlib::solve_sympd_fast(out, B, At, true);
+      
+      if(status == false)
+        {
+        out.soft_reset();
+        arma_stop_runtime_error("matrix multiplication: problem with matrix inverse; suggest to use solve() instead");
+        }
+      
+      out = trans(out);
+      
+      return;
       }
-    
-    out = trans(out);
-    
-    return;
     }
+  #endif
   
   glue_times_redirect2_helper<false>::apply(out, X);
   }
@@ -248,7 +255,11 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, BC, "matrix multiplication");
     
-    const bool status = (strip_inv<T1>::do_inv_sympd) ? auxlib::solve_sympd_fast(out, A, BC, true) : auxlib::solve_square_fast(out, A, BC);
+    #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
+      const bool status = (strip_inv<T1>::do_inv_sympd) ? auxlib::solve_sympd_fast(out, A, BC, true) : auxlib::solve_square_fast(out, A, BC);
+    #else
+      const bool status = auxlib::solve_square_fast(out, A, BC);
+    #endif
     
     if(status == false)
       {
@@ -279,7 +290,11 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> solve_result;
     
-    const bool status = (strip_inv<T2>::do_inv_sympd) ? auxlib::solve_sympd_fast(solve_result, B, C, true) : auxlib::solve_square_fast(solve_result, B, C);
+    #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
+      const bool status = (strip_inv<T2>::do_inv_sympd) ? auxlib::solve_sympd_fast(solve_result, B, C, true) : auxlib::solve_square_fast(solve_result, B, C);
+    #else
+      const bool status = auxlib::solve_square_fast(solve_result, B, C);
+    #endif
     
     if(status == false)
       {
