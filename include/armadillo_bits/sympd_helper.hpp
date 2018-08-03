@@ -97,7 +97,8 @@ guess_sympd(const Mat<eT>& A)
   // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
   // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
-  // NOTE: (3) is not done for complex numbers, as that involves two multiplications and sqrt per element
+  // NOTE: (3) is done approximately for complex numbers,
+  // NOTE  as std::abs() on each complex element is too expensive
   
   typedef typename get_pod_type<eT>::result T;
   
@@ -107,20 +108,37 @@ guess_sympd(const Mat<eT>& A)
   
   const eT* A_col = A.memptr();
   
+  T max_diag = T(0);
+  
   const T threshold = T(2) * std::numeric_limits<T>::epsilon();
   
   for(uword j=0; j < N; ++j)
     {
-    const eT& A_jj = A_col[j];
+    const eT& A_jj      = A_col[j];
+    const  T  A_jj_real = std::real(A_jj);
+    const  T  A_jj_imag = std::imag(A_jj);
+        
+    if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > threshold) )  { return false; }
     
-    if( (std::real(A_jj) <= T(0)) || (std::abs(std::imag(A_jj)) > threshold) )  { return false; }
+    max_diag = (A_jj_real > max_diag) ? A_jj_real : max_diag;
     
+    A_col += N;
+    }
+  
+  A_col = A.memptr();
+  
+  const uword Nm1 = N-1;
+  
+  for(uword j=0; j < Nm1; ++j)
+    {
     const uword jp1   = j+1;
     const eT*   A_row = &(A.at(j,jp1));
     
     for(uword i=jp1; i < N; ++i)
       {
-      if(A_col[i] != std::conj(*A_row))  { return false; }
+      const eT& A_ij = A_col[i];
+      
+      if( (A_ij != std::conj(*A_row)) || (std::abs(std::real(A_ij)) > max_diag) || (std::abs(std::imag(A_ij)) > max_diag) )  { return false; }
       
       A_row += N;
       }
