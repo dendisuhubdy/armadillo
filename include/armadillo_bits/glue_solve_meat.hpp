@@ -82,7 +82,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     #else
       const bool is_band  = false;
     #endif
-     
+    
     #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
       const bool is_sympd = ((no_sympd == false) && (auxlib::crippled_lapack(A) == false) && (is_band == false)) ? sympd_helper::guess_sympd(A) : false;
     #else
