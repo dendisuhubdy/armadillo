@@ -114,12 +114,12 @@
 
 #if !defined(ARMA_OPTIMISE_SOLVE_BAND)
   #define ARMA_OPTIMISE_SOLVE_BAND
-  //// Comment out the above line if you don't want use optimised code for solving band matrices
+  //// Comment out the above line if you don't want optimised handling of band matrices by solve()
 #endif
 
 #if !defined(ARMA_OPTIMISE_SOLVE_SYMPD)
   #define ARMA_OPTIMISE_SOLVE_SYMPD
-  //// Comment out the above line if you don't want use optimised code for solving symmetric/hermitian positive definite matrices
+  //// Comment out the above line if you don't want optimised handling of symmetric/hermitian positive definite matrices by solve()
 #endif
 
 // #define ARMA_USE_HDF5_ALT

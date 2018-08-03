@@ -148,7 +148,7 @@ hr.greyline
 <a class="noprint" style="display:scroll; position:fixed; bottom:5px; right:5px;" href="#top"><font size=-1>[top]</font></a>
 
 <a name="top"></a>
-<big><b>API Documentation for Armadillo 8.690</b></big>
+<big><b>API Documentation for Armadillo 9.100</b></big>
 <br>
 <br>
 <br>
@@ -305,9 +305,12 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
 <tr><td><a href="#in_range">.in_range</a></td><td>&nbsp;</td><td>check whether given location or span is valid</td></tr>
 <tr><td><a href="#is_empty">.is_empty</a></td><td>&nbsp;</td><td>check whether object is empty</td></tr>
-<tr><td><a href="#is_square">.is_square</a></td><td>&nbsp;</td><td>check whether matrix is square sized</td></tr>
 <tr><td><a href="#is_vec">.is_vec</a></td><td>&nbsp;</td><td>check whether matrix is a vector</td></tr>
 <tr><td><a href="#is_sorted">.is_sorted</a></td><td>&nbsp;</td><td>check whether vector or matrix is sorted</td></tr>
+<tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
+<tr><td><a href="#is_square">.is_square</a></td><td>&nbsp;</td><td>check whether matrix is square sized</td></tr>
+<tr><td><a href="#is_symmetric">.is_symmetric</a></td><td>&nbsp;</td><td>check whether matrix is symmetric</td></tr>
+<tr><td><a href="#is_hermitian">.is_hermitian</a></td><td>&nbsp;</td><td>check whether matrix is hermitian</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
 <tr><td><a href="#is_finite_member">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#has_inf">.has_inf</a></td><td>&nbsp;</td><td>check whether any element is +-Inf</td></tr>
@@ -5532,7 +5535,7 @@ if matrix <i>A</i> is know to be symmetric positive definite, it's faster to use
 </li>
 <li>
 to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
-it can be faster and/or more accurate to use <a href="#solve">solve()</a> instead
+using <a href="#solve">solve()</a> can be faster and/or more accurate
 </li>
 </ul>
 </li>
@@ -5865,44 +5868,6 @@ See also:
 </ul>
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
-<a name="is_square"></a>
-<b>.is_square()</b>
-<ul>
-<li>
-Member function of <i>Mat</i> and <i>SpMat</i>
-</li>
-<br>
-<li>Returns <i>true</i> if the matrix is square, ie. number of rows is equal to the number of columns
-</li>
-<br>
-<li>Returns <i>false</i> if the matrix is not square
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A = randu&lt;mat&gt;(5,5);
-mat B = randu&lt;mat&gt;(6,7);
-
-cout &lt;&lt; A.is_square() &lt;&lt; endl;
-cout &lt;&lt; B.is_square() &lt;&lt; endl;
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#is_empty">.is_empty()</a></li>
-<li><a href="#is_vec">.is_vec()</a></li>
-<li><a href="#is_finite_member">.is_finite()</a></li>
-</ul>
-</li>
-<br>
-</ul>
-
-<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_vec"></a>
 <b>.is_vec()</b>
 <br><b>.is_colvec()</b>
@@ -6028,6 +5993,126 @@ cout &lt;&lt; A.is_sorted("ascend", 1) &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#sort">sort()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="is_square"></a>
+<b>.is_square()</b>
+<ul>
+<li>
+Member function of <i>Mat</i> and <i>SpMat</i>
+</li>
+<br>
+<li>Returns <i>true</i> if the matrix is square, ie. number of rows is equal to the number of columns
+</li>
+<br>
+<li>Returns <i>false</i> if the matrix is not square
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A = randu&lt;mat&gt;(5,5);
+mat B = randu&lt;mat&gt;(6,7);
+
+cout &lt;&lt; A.is_square() &lt;&lt; endl;
+cout &lt;&lt; B.is_square() &lt;&lt; endl;
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#is_symmetric">.is_symmetric()</a></li>
+<li><a href="#is_hermitian">.is_hermitian()</a></li>
+<li><a href="#is_empty">.is_empty()</a></li>
+<li><a href="#is_vec">.is_vec()</a></li>
+<li><a href="#is_finite_member">.is_finite()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="is_symmetric"></a>
+<b>.is_symmetric()</b>
+<br><b>.is_symmetric(tol)</b>
+<ul>
+<li>
+Member function of <i>Mat</i>
+</li>
+<br>
+<li>Returns <i>true</i> if the matrix is symmetric
+</li>
+<br>
+<li>Returns <i>false</i> if the matrix is not symmetric
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A = randu&lt;mat&gt;(5,5);
+mat B = A.t() * A;
+
+cout &lt;&lt; A.is_symmetric() &lt;&lt; endl;
+cout &lt;&lt; B.is_symmetric() &lt;&lt; endl;
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#is_hermitian">.is_hermitian()</a></li>
+<li><a href="#is_square">.is_square()</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Symmetric_matrix">Symmetric matrix in Wikipedia</a></li>
+<li><a href="http://mathworld.wolfram.com/SymmetricMatrix.html">Symmetric matrix in MathWorld</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="is_hermitian"></a>
+<b>.is_hermitian()</b>
+<br><b>.is_hermitian(tol)</b>
+<ul>
+<li>
+Member function of <i>Mat</i>
+</li>
+<br>
+<li>Returns <i>true</i> if the matrix is hermitian
+</li>
+<br>
+<li>Returns <i>false</i> if the matrix is not hermitian
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+cx_mat A = randu&lt;cx_mat&gt;(5,5);
+cx_mat B = A.t() * A;
+
+cout &lt;&lt; A.is_hermitian() &lt;&lt; endl;
+cout &lt;&lt; B.is_hermitian() &lt;&lt; endl;
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#is_symmetric">.is_symmetric()</a></li>
+<li><a href="#is_square">.is_square()</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Hermitian_matrix">Hermitian matrix in Wikipedia</a></li>
+<li><a href="http://mathworld.wolfram.com/HermitianMatrix.html">Hermitian matrix in MathWorld</a></li>
 </ul>
 </li>
 <br>
@@ -11482,7 +11567,7 @@ if matrix <i>A</i> is know to be diagonal, use <i>inv(&nbsp;diagmat(A)&nbsp;)</i
 </li>
 <li>
 to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
-it can be faster and/or more accurate to use <a href="#solve">solve()</a> instead
+using <a href="#solve">solve()</a> can be faster and/or more accurate
 </li>
 </ul>
 </li>
@@ -11542,18 +11627,16 @@ There is currently no explicit check whether <i>A</i> is symmetric or positive d
 <li>
 <b>Caveat:</b> 
 to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
-using <a href="#solve">solve()</a> is faster and more accurate
+using <a href="#solve">solve()</a> can be faster and/or more accurate
 </li>
 <br>
 <li>
 Examples:
 <ul>
 <pre>
-mat A   = randu&lt;mat&gt;(5,5);
-
-mat AtA = A.t() * A;
-
-mat B   = inv_sympd(AtA);
+mat A = randu&lt;mat&gt;(5,5);
+mat B = A.t() * A;
+mat C = inv_sympd(B);
 </pre>
 </ul>
 </li>
@@ -12059,6 +12142,7 @@ The number of rows in <i>A</i> and <i>B</i> must be the same
 <tr><td><code>solve_opts::equilibrate</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>equilibrate the system before solving &nbsp; (matrix <i>A</i> must be square)</td></tr>
 <tr><td><code>solve_opts::no_approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not find approximate solutions for rank deficient systems</td></tr>
 <tr><td><code>solve_opts::no_band</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use optimisations for band matrices</td></tr>
+<tr><td><code>solve_opts::no_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use optimisations for symmetric/hermitian positive definite matrices</td></tr>
 </tbody>
 </table>
 <br>
@@ -16836,7 +16920,7 @@ Armadillo requires LAPACK for functions such as <a href="#svd">svd()</a>, <a hre
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of LAPACK. Overrides <i>ARMA_USE_LAPACK</i>
+Disable use of LAPACK; overrides <i>ARMA_USE_LAPACK</i>
     </td>
   </tr>
   <tr>
@@ -16882,7 +16966,7 @@ Without BLAS, Armadillo will use a built-in matrix multiplication routine, which
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of BLAS. Overrides <i>ARMA_USE_BLAS</i>
+Disable use of BLAS; overrides <i>ARMA_USE_BLAS</i>
     </td>
   </tr>
   <tr>
@@ -16928,7 +17012,7 @@ Requires ARMA_USE_LAPACK to be enabled.
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of the built-in reimplementation of ARPACK. Overrides <i>ARMA_USE_NEWARP</i>
+Disable use of the built-in reimplementation of ARPACK; overrides <i>ARMA_USE_NEWARP</i>
     </td>
   </tr>
   <tr>
@@ -16973,7 +17057,7 @@ Armadillo requires ARPACK for the eigen decomposition of complex sparse matrices
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of ARPACK. Overrides <i>ARMA_USE_ARPACK</i>
+Disable use of ARPACK; overrides <i>ARMA_USE_ARPACK</i>
     </td>
   </tr>
   <tr>
@@ -17019,7 +17103,7 @@ you will need to link with the superlu library, for example <code><i>-lsuperlu</
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of SuperLU. Overrides <i>ARMA_USE_SUPERLU</i>
+Disable use of SuperLU; overrides <i>ARMA_USE_SUPERLU</i>
     </td>
   </tr>
   <tr>
@@ -17064,7 +17148,7 @@ the <i>hdf5.h</i> header file must be available on your system and you will need
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable the use of the HDF5 library. Overrides <i>ARMA_USE_HDF5</i>
+Disable the use of the HDF5 library; overrides <i>ARMA_USE_HDF5</i>
     </td>
   </tr>
   <tr>
@@ -17110,7 +17194,97 @@ automatically enabled when using a compiler in C++11 or C++14 mode, for example:
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of C++11 features. Overrides <i>ARMA_USE_CXX11</i>
+Disable use of C++11 features; overrides <i>ARMA_USE_CXX11</i>
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+<code>ARMA_OPTIMISE_SOLVE_BAND</code>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+Enable optimised handling of band matrices by <a href="#solve">solve()</a>.
+Enabled by default.
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+<code>ARMA_DONT_OPTIMISE_SOLVE_BAND</code>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+Disable optimised handling of band matrices by <a href="#solve">solve()</a>; overrides <i>ARMA_OPTIMISE_SOLVE_BAND</i>
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+<code>ARMA_OPTIMISE_SOLVE_SYMPD</code>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+Enable optimised handling of symmetric/hermitian positive definite matrices by <a href="#solve">solve()</a>.
+Enabled by default.
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+<code>ARMA_DONT_OPTIMISE_SOLVE_SYMPD</code>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+Disable optimised handling of symmetric/hermitian positive definite matrices by <a href="#solve">solve()</a>; overrides <i>ARMA_OPTIMISE_SOLVE_SYMPD</i>
     </td>
   </tr>
   <tr>
@@ -17157,7 +17331,7 @@ Automatically enabled when using a C++11/C++14 compiler which has OpenMP 3.1+ ac
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Disable use of OpenMP for parallelisation of element-wise operations. Overrides <i>ARMA_USE_OPENMP</i>
+Disable use of OpenMP for parallelisation of element-wise operations; overrides <i>ARMA_USE_OPENMP</i>
     </td>
   </tr>
   <tr>
@@ -17179,7 +17353,7 @@ Disable use of OpenMP for parallelisation of element-wise operations. Overrides 
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-The minimum number of elements in a matrix to enable OpenMP based parallelisation of computationally expensive element-wise functions; default value is 320
+The minimum number of elements in a matrix to enable OpenMP based parallelisation of computationally expensive element-wise functions; default value is 240
     </td>
   </tr>
   <tr>
@@ -17529,7 +17703,7 @@ Print errors and warnings encountered during program execution
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-Do not print errors or warnings. Overrides <i>ARMA_PRINT_ERRORS</i>
+Do not print errors or warnings; overrides <i>ARMA_PRINT_ERRORS</i>
     </td>
   </tr>
   <tr>
@@ -17679,6 +17853,17 @@ List of additions and changes for each version:
 
 
 
+<a name="version_9100"></a>
+<li>Version 9.100:
+<ul>
+<li>faster handling of symmetric/hermitian positive definite matrices by <a href="#solve">solve()</a></li>
+<li>faster handlig of <a href="#inv_sympd">inv_sympd()</a> in compound expressions</li>
+<li>added <a href="#is_symmetric">.is_symmetric()</a></li>
+<li>added <a href="#is_hermitian">.is_hermitian()</a></li>
+<li>new <a href="#config_hpp">configuration</a> options ARMA_OPTIMISE_SOLVE_BAND and ARMA_OPTIMISE_SOLVE_SYMPD</li>
+</ul>
+</li>
+<br>
 <a name="version_8600"></a>
 <li>Version 8.600:
 <ul>
