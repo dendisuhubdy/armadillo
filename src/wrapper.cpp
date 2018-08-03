@@ -1217,9 +1217,70 @@ extern "C"
     
     
     
-    // TODO: wrapper_clapack_?potrf
-    // TODO: wrapper_clapack_?potri
-    // TODO: wrapper_clapack_?posv
+    int wrapper_clapack_spotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,  float *A, const int lda)
+      {
+      return    clapack_spotrf(Order, Uplo, N, A, lda);
+      }
+    
+    int wrapper_clapack_dpotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, double *A, const int lda)
+      {
+      return    clapack_dpotrf(Order, Uplo, N, A, lda);
+      }
+    
+    int wrapper_clapack_cpotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
+      {
+      return    clapack_cpotrf(Order, Uplo, N, A, lda);
+      }
+    
+    int wrapper_clapack_zpotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
+      {
+      return    clapack_zpotrf(Order, Uplo, N, A, lda);
+      }
+    
+    
+    
+    int wrapper_clapack_spotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,  float *A, const int lda)
+      {
+      return    clapack_spotri(Order, Uplo, N, A, lda);
+      }
+    
+    int wrapper_clapack_dpotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, double *A, const int lda)
+      {
+      return    clapack_dpotri(Order, Uplo, N, A, lda);
+      }
+    
+    int wrapper_clapack_cpotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
+      {
+      return    clapack_cpotri(Order, Uplo, N, A, lda);
+      }
+    
+    int wrapper_clapack_zpotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
+      {
+      return    clapack_zpotri(Order, Uplo, N, A, lda);
+      }
+    
+    
+    
+    int wrapper_clapack_sposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS,  float *A, const int lda,  float *B, const int ldb)
+      {
+      return    clapack_sposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
+      }
+    
+    int wrapper_clapack_dposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS, double *A, const int lda, double *B, const int ldb)
+      {
+      return    clapack_dposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
+      }
+    
+    int wrapper_clapack_cposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS,   void *A, const int lda,   void *B, const int ldb)
+      {
+      return    clapack_cposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
+      }
+    
+    int wrapper_clapack_zposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS,   void *A, const int lda,   void *B, const int ldb)
+      {
+      return    clapack_zposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
+      }
+    
     
   #endif
 
