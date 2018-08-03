@@ -112,6 +112,16 @@
 //// and you will need to link with the hdf5 library (eg. -lhdf5)
 #endif
 
+#if !defined(ARMA_OPTIMISE_SOLVE_BAND)
+  #define ARMA_OPTIMISE_SOLVE_BAND
+  //// Comment out the above line if you don't want use optimised code for solving band matrices
+#endif
+
+#if !defined(ARMA_OPTIMISE_SOLVE_SYMPD)
+  #define ARMA_OPTIMISE_SOLVE_SYMPD
+  //// Comment out the above line if you don't want use optimised code for solving symmetric/hermitian positive definite matrices
+#endif
+
 // #define ARMA_USE_HDF5_ALT
 #if defined(ARMA_USE_HDF5_ALT) && defined(ARMA_USE_WRAPPER)
   #undef  ARMA_USE_HDF5
@@ -252,6 +262,14 @@
 #if defined(ARMA_DONT_USE_HDF5)
   #undef ARMA_USE_HDF5
   #undef ARMA_USE_HDF5_ALT
+#endif
+
+#if defined(ARMA_DONT_OPTIMISE_SOLVE_BAND)
+  #undef ARMA_OPTIMISE_SOLVE_BAND
+#endif
+
+#if defined(ARMA_DONT_OPTIMISE_SOLVE_SYMPD)
+  #undef ARMA_OPTIMISE_SOLVE_SYMPD
 #endif
 
 #if defined(ARMA_DONT_PRINT_ERRORS)

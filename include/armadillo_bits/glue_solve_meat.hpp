@@ -77,9 +77,17 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     uword KL = 0;
     uword KU = 0;
     
-    const bool is_band  = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
-    
-    const bool is_sympd = ((no_sympd == false) && (auxlib::crippled_lapack(A) == false) && (is_band == false) ) ? sympd_helper::guess_sympd(A) : false;
+    #if defined(ARMA_OPTIMISE_SOLVE_BAND)
+      const bool is_band  = ((no_band == false) && (auxlib::crippled_lapack(A) == false)) ? band_helper::is_band(KL, KU, A, uword(32)) : false;
+    #else
+      const bool is_band  = false;
+    #endif
+     
+    #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
+      const bool is_sympd = ((no_sympd == false) && (auxlib::crippled_lapack(A) == false) && (is_band == false)) ? sympd_helper::guess_sympd(A) : false;
+    #else
+      const bool is_sympd = false;
+    #endif
     
     if(fast)
       {
