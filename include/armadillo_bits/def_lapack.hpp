@@ -180,16 +180,6 @@
   
   #define arma_ilaenv ilaenv
   
-  #define arma_ssytrs ssytrs
-  #define arma_dsytrs dsytrs
-  #define arma_csytrs csytrs
-  #define arma_zsytrs zsytrs
-  
-  #define arma_sgetrs sgetrs
-  #define arma_dgetrs dgetrs
-  #define arma_cgetrs cgetrs
-  #define arma_zgetrs zgetrs
-  
   #define arma_slahqr slahqr
   #define arma_dlahqr dlahqr
   
@@ -365,16 +355,6 @@
   #define arma_zgecon ZGECON
   
   #define arma_ilaenv ILAENV
-  
-  #define arma_ssytrs SSYTRS
-  #define arma_dsytrs DSYTRS
-  #define arma_csytrs CSYTRS
-  #define arma_zsytrs ZSYTRS
-  
-  #define arma_sgetrs SGETRS
-  #define arma_dgetrs DGETRS
-  #define arma_cgetrs CGETRS
-  #define arma_zgetrs ZGETRS
   
   #define arma_slahqr SLAHQR
   #define arma_dlahqr DLAHQR
@@ -611,18 +591,6 @@ extern "C"
   
   // obtain parameters according to the local configuration of lapack
   blas_int arma_fortran(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4);
-  
-  // solve linear equations using LDL decomposition
-  void arma_fortran(arma_ssytrs)(char* uplo, blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, blas_int* ipiv, float*  b, blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_dsytrs)(char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_csytrs)(char* uplo, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_zsytrs)(char* uplo, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);
-  
-  // solve linear equations using LU decomposition
-  void arma_fortran(arma_sgetrs)(char* trans, blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, blas_int* ipiv, float*  b, blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_dgetrs)(char* trans, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_cgetrs)(char* trans, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_zgetrs)(char* trans, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);
   
   // calculate eigenvalues of an upper Hessenberg matrix
   void arma_fortran(arma_slahqr)(blas_int* wantt, blas_int* wantz, blas_int* n, blas_int* ilo, blas_int* ihi, float*  h, blas_int* ldh, float*  wr, float*  wi, blas_int* iloz, blas_int* ihiz, float*  z, blas_int* ldz, blas_int* info);
