@@ -129,7 +129,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
 * Step 1:
   Ensure a C++ compiler is installed on your system.
   
-  Caveat: on macOS you will need to install Xcode
+  Caveat: on macOS you will need to install Xcode (version 8 or later)
   and then type the following command in a terminal window:
   xcode-select --install
   
