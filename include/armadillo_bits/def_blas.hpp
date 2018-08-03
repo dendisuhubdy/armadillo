@@ -110,3 +110,37 @@ extern "C"
 
 
 #endif
+
+
+
+#ifdef ARMA_USE_OPENBLAS_EXTRA
+
+
+#if !defined(ARMA_BLAS_CAPITALS)
+  
+  #define arma_somatcopy somatcopy
+  #define arma_domatcopy domatcopy
+  #define arma_comatcopy comatcopy
+  #define arma_zomatcopy zomatcopy
+  
+#else
+  
+  #define arma_somatcopy SOMATCOPY
+  #define arma_domatcopy DOMATCOPY
+  #define arma_comatcopy COMATCOPY
+  #define arma_zomatcopy ZOMATCOPY
+  
+#endif
+
+
+
+extern "C"
+  {
+  void arma_fortran(arma_somatcopy)(const char* order, const char* trans, const blas_int* n_rows, const blas_int* n_cols, const  float* alpha, const  float* A, const blas_int* lda,  float* B, const blas_int* ldb);
+  void arma_fortran(arma_domatcopy)(const char* order, const char* trans, const blas_int* n_rows, const blas_int* n_cols, const double* alpha, const double* A, const blas_int* lda, double* B, const blas_int* ldb);
+  void arma_fortran(arma_comatcopy)(const char* order, const char* trans, const blas_int* n_rows, const blas_int* n_cols, const   void* alpha, const   void* A, const blas_int* lda,   void* B, const blas_int* ldb);
+  void arma_fortran(arma_zomatcopy)(const char* order, const char* trans, const blas_int* n_rows, const blas_int* n_cols,  const  void* alpha, const   void* A, const blas_int* lda,   void* B, const blas_int* ldb);
+  }
+
+
+#endif

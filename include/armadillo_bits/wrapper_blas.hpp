@@ -53,7 +53,6 @@ namespace blas
       typedef std::complex<double> T;
       arma_fortran(arma_zgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
       }
-    
     }
   
   
@@ -88,7 +87,6 @@ namespace blas
       typedef std::complex<double> T;
       arma_fortran(arma_zgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
       }
-    
     }
   
   
@@ -214,10 +212,8 @@ namespace blas
       
       return result[0];
       }
-    else
-      {
-      return eT(0);
-      }
+
+    return eT(0);
     }
   
   
@@ -246,10 +242,8 @@ namespace blas
       typedef double T;
       return arma_fortran(arma_dasum)(&n, (const T*)x, &inc);
       }
-    else
-      {
-      return eT(0);
-      }
+    
+    return eT(0);
     }
   
   
@@ -278,12 +272,59 @@ namespace blas
       typedef double T;
       return arma_fortran(arma_dnrm2)(&n, (const T*)x, &inc);
       }
-    else
+    
+    return eT(0);
+    }
+  
+  
+  }   // namespace blas
+
+
+#endif
+
+
+
+#ifdef ARMA_USE_OPENBLAS_EXTRA
+
+
+//! \namespace openblas_extra namespace for extra functions from OpenBLAS
+namespace openblas_extra
+  {
+  
+  
+  template<typename eT>
+  arma_inline
+  void
+  omatcopy(const char* order, const char* trans, const blas_int* n_rows, const blas_int* n_cols, const eT* alpha, const eT* A, const blas_int* lda, eT* B, const blas_int* ldb)
+    {
+    arma_type_check((is_supported_blas_type<eT>::value == false));
+    
+    if(is_float<eT>::value)
       {
-      return eT(0);
+      typedef float T;
+      return arma_fortran(arma_somatcopy)(order, trans, n_rows, n_cols, (T*)alpha, (T*)A, lda, (T*)B, ldb);
+      }
+    else
+    if(is_double<eT>::value)
+      {
+      typedef double T;
+      return arma_fortran(arma_domatcopy)(order, trans, n_rows, n_cols, (T*)alpha, (T*)A, lda, (T*)B, ldb);
+      }
+    if(is_supported_complex_float<eT>::value)
+      {
+      typedef std::complex<float> T;
+      return arma_fortran(arma_comatcopy)(order, trans, n_rows, n_cols, (T*)alpha, (T*)A, lda, (T*)B, ldb);
+      }
+    else
+    if(is_supported_complex_double<eT>::value)
+      {
+      typedef std::complex<double> T;
+      return arma_fortran(arma_zomatcopy)(order, trans, n_rows, n_cols, (T*)alpha, (T*)A, lda, (T*)B, ldb);
       }
     }
-  }
+  
+  
+  }   // namespace openblas_extra
 
 
 #endif

@@ -21,7 +21,7 @@
 
 //! for tiny square matrices (size <= 4x4)
 template<typename eT, typename TA>
-arma_hot
+arma_cold
 inline
 void
 op_strans::apply_mat_noalias_tinysq(Mat<eT>& out, const TA& A)
@@ -121,27 +121,45 @@ op_strans::apply_mat_noalias(Mat<eT>& out, const TA& A)
       }
     else
       {
-      eT* outptr = out.memptr();
-      
-      for(uword k=0; k < A_n_rows; ++k)
+      #if defined(ARMA_USE_OPENBLAS_EXTRA)
         {
-        const eT* Aptr = &(A.at(k,0));
+        // TODO: check blas size
         
-        uword j;
-        for(j=1; j < A_n_cols; j+=2)
+        char     order  = 'C';                 // column major
+        char     trans  = 'T';                 // T = simple transpose; C = conjugate transpose
+        blas_int n_rows = blas_int(A_n_cols);  // number of rows in destination matrix
+        blas_int n_cols = blas_int(A_n_rows);  // number of cols in destination matrix
+        blas_int lda    = blas_int(A_n_rows);
+        blas_int ldb    = blas_int(A_n_cols);
+        eT       alpha  = eT(1);
+        
+        openblas_extra::omatcopy(&order, &trans, &n_rows, &n_cols, &alpha, A.memptr(), &lda, out.memptr(), &ldb);
+        }
+      #else
+        {
+        eT* outptr = out.memptr();
+        
+        for(uword k=0; k < A_n_rows; ++k)
           {
-          const eT tmp_i = (*Aptr);  Aptr += A_n_rows;
-          const eT tmp_j = (*Aptr);  Aptr += A_n_rows;
+          const eT* Aptr = &(A.at(k,0));
           
-          (*outptr) = tmp_i;  outptr++;
-          (*outptr) = tmp_j;  outptr++;
-          }
-        
-        if((j-1) < A_n_cols)
-          {
-          (*outptr) = (*Aptr);  outptr++;;
+          uword j;
+          for(j=1; j < A_n_cols; j+=2)
+            {
+            const eT tmp_i = (*Aptr);  Aptr += A_n_rows;
+            const eT tmp_j = (*Aptr);  Aptr += A_n_rows;
+            
+            (*outptr) = tmp_i;  outptr++;
+            (*outptr) = tmp_j;  outptr++;
+            }
+          
+          if((j-1) < A_n_cols)
+            {
+            (*outptr) = (*Aptr);  outptr++;;
+            }
           }
         }
+      #endif
       }
     }
   }
@@ -386,7 +404,7 @@ op_strans::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_strans>& in)
 
 //! for tiny square matrices (size <= 4x4)
 template<typename eT, typename TA>
-arma_hot
+arma_cold
 inline
 void
 op_strans2::apply_noalias_tinysq(Mat<eT>& out, const TA& A, const eT val)
