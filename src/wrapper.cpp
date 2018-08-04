@@ -891,54 +891,9 @@ extern "C"
     
     
     
-    
     blas_int arma_fortran_prefix(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4)
       {
       return arma_fortran_noprefix(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
-      }
-    
-    
-    
-    void arma_fortran_prefix(arma_ssytrs)(char* uplo, blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, blas_int* ipiv, float*  b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_ssytrs)(uplo, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    void arma_fortran_prefix(arma_dsytrs)(char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_dsytrs)(uplo, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    void arma_fortran_prefix(arma_csytrs)(char* uplo, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_csytrs)(uplo, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    void arma_fortran_prefix(arma_zsytrs)(char* uplo, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_zsytrs)(uplo, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    
-    
-    void arma_fortran_prefix(arma_sgetrs)(char* trans, blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, blas_int* ipiv, float*  b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_sgetrs)(trans, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    void arma_fortran_prefix(arma_dgetrs)(char* trans, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_dgetrs)(trans, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    void arma_fortran_prefix(arma_cgetrs)(char* trans, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_cgetrs)(trans, n, nrhs, a, lda, ipiv, b, ldb, info);
-      }
-    
-    void arma_fortran_prefix(arma_zgetrs)(char* trans, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_zgetrs)(trans, n, nrhs, a, lda, ipiv, b, ldb, info);
       }
     
     
