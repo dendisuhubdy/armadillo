@@ -212,11 +212,9 @@ op_dot::apply(const T1& X, const T2& Y)
   {
   arma_extra_debug_sigprint();
   
-  // TODO: if T1 is op_htrans and (T1::is_col or T1::is_row) and T1::elem_type is not complex, skip op_htrans
-  
   const bool use_at = (Proxy<T1>::use_at) || (Proxy<T2>::use_at);
   
-  const bool have_direct_mem = ((is_Mat<T1>::value || is_subview_col<T1>::value) && (is_Mat<T2>::value || is_subview_col<T2>::value));
+  const bool have_direct_mem = (quasi_unwrap<T1>::has_orig_mem) && (quasi_unwrap<T2>::has_orig_mem);
   
   if(use_at || have_direct_mem)
     {
