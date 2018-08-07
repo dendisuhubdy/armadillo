@@ -121,45 +121,27 @@ op_strans::apply_mat_noalias(Mat<eT>& out, const TA& A)
       }
     else
       {
-      #if defined(ARMA_USE_OPENBLAS_EXTRA)
+      eT* outptr = out.memptr();
+      
+      for(uword k=0; k < A_n_rows; ++k)
         {
-        // TODO: check blas size
+        const eT* Aptr = &(A.at(k,0));
         
-        char     order  = 'C';                 // column major
-        char     trans  = 'T';                 // T = simple transpose; C = conjugate transpose
-        blas_int n_rows = blas_int(A_n_cols);  // number of rows in destination matrix
-        blas_int n_cols = blas_int(A_n_rows);  // number of cols in destination matrix
-        blas_int lda    = blas_int(A_n_rows);
-        blas_int ldb    = blas_int(A_n_cols);
-        eT       alpha  = eT(1);
-        
-        openblas_extra::omatcopy(&order, &trans, &n_rows, &n_cols, &alpha, A.memptr(), &lda, out.memptr(), &ldb);
-        }
-      #else
-        {
-        eT* outptr = out.memptr();
-        
-        for(uword k=0; k < A_n_rows; ++k)
+        uword j;
+        for(j=1; j < A_n_cols; j+=2)
           {
-          const eT* Aptr = &(A.at(k,0));
+          const eT tmp_i = (*Aptr);  Aptr += A_n_rows;
+          const eT tmp_j = (*Aptr);  Aptr += A_n_rows;
           
-          uword j;
-          for(j=1; j < A_n_cols; j+=2)
-            {
-            const eT tmp_i = (*Aptr);  Aptr += A_n_rows;
-            const eT tmp_j = (*Aptr);  Aptr += A_n_rows;
-            
-            (*outptr) = tmp_i;  outptr++;
-            (*outptr) = tmp_j;  outptr++;
-            }
-          
-          if((j-1) < A_n_cols)
-            {
-            (*outptr) = (*Aptr);  outptr++;;
-            }
+          (*outptr) = tmp_i;  outptr++;
+          (*outptr) = tmp_j;  outptr++;
+          }
+        
+        if((j-1) < A_n_cols)
+          {
+          (*outptr) = (*Aptr);  outptr++;;
           }
         }
-      #endif
       }
     }
   }
