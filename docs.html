@@ -11618,10 +11618,10 @@ If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>
-There is currently no explicit check whether <i>A</i> is symmetric or positive definite
+There is currently no explicit check whether <i>A</i> is symmetric/hermitian
 </li>
 <br>
-<li>If <i>A</i> appears to be singular:
+<li>If <i>A</i> appears to be singular or not positive definite:
 <ul>
 <li><i>B = inv_sympd(A)</i> resets <i>B</i> and throws a <i>std::runtime_error</i> exception</li>
 <li><i>inv_sympd(B,A)</i> resets <i>B</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
