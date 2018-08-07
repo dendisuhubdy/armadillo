@@ -1062,6 +1062,155 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
 
 
 
+template<typename eT>
+inline
+bool
+sp_auxlib::superlu_det(Col<eT>& U_diag, const SpMat<eT>& A)
+  {
+  arma_extra_debug_sigprint();
+  
+  // NOTE: this is a better-than-nothing solution; it co-opts superlu gssv() to find the LU decomposition of A
+  
+  if(A.n_rows    != A.n_cols)  { U_diag.reset(); return false; }
+  if(A.n_elem    == 0       )  { U_diag.ones(1); return true;  }
+  if(A.n_nonzero == 0       )  { U_diag.zeros(); return true;  }
+  
+  #if defined(ARMA_USE_SUPERLU)
+    {
+    superlu::superlu_options_t  options;
+    
+    // default options as the starting point
+    superlu::set_default_opts(&options);
+    
+    // our settings
+    options.Trans           = superlu::NOTRANS;
+    options.ConditionNumber = superlu::NO;
+    
+    Mat<eT> X(A.n_rows, uword(1), fill::ones);  // superlu::gssv() uses X as input (the B matrix) and as output (the solution)
+    
+    if(arma_config::debug)
+      {
+      const bool overflow = (A.n_nonzero > INT_MAX) || (A.n_rows > INT_MAX);
+      
+      if(overflow)
+        {
+        arma_stop_runtime_error("det(): integer overflow: matrix dimensions are too large for integer type used by SuperLU");
+        return false;
+        }
+      }
+    
+    superlu::SuperMatrix x;  arrayops::inplace_set(reinterpret_cast<char*>(&x), char(0), sizeof(superlu::SuperMatrix));
+    superlu::SuperMatrix a;  arrayops::inplace_set(reinterpret_cast<char*>(&a), char(0), sizeof(superlu::SuperMatrix));
+    
+    const bool status_x = wrap_to_supermatrix(x, X);
+    const bool status_a = copy_to_supermatrix(a, A);
+    
+    if( (status_x == false) || (status_a == false) )
+      {
+      destroy_supermatrix(a);
+      destroy_supermatrix(x);
+      return false;
+      }
+    
+    superlu::SuperMatrix l;  arrayops::inplace_set(reinterpret_cast<char*>(&l), char(0), sizeof(superlu::SuperMatrix));
+    superlu::SuperMatrix u;  arrayops::inplace_set(reinterpret_cast<char*>(&u), char(0), sizeof(superlu::SuperMatrix));
+    
+    // paranoia: use SuperLU's memory allocation, in case it reallocs
+    
+    int* perm_c = (int*) superlu::malloc( (A.n_cols+1) * sizeof(int));  // extra paranoia: increase array length by 1
+    int* perm_r = (int*) superlu::malloc( (A.n_rows+1) * sizeof(int));
+    
+    arma_check_bad_alloc( (perm_c == 0), "det(): out of memory" );
+    arma_check_bad_alloc( (perm_r == 0), "det(): out of memory" );
+    
+    arrayops::inplace_set(perm_c, 0, A.n_cols+1);
+    arrayops::inplace_set(perm_r, 0, A.n_rows+1);
+    
+    superlu::SuperLUStat_t stat;
+    superlu::init_stat(&stat);
+    
+    int info = 0;
+    
+    arma_extra_debug_print("superlu::gssv()");
+    superlu::gssv<eT>(&options, &a, perm_c, perm_r, &l, &u, &x, &stat, &info);
+    
+    bool status = false;
+    
+    if( (info > 0) && (info <= int(A.n_cols)) )
+      {
+      // std::stringstream tmp;
+      // tmp << "spsolve(): could not solve system; LU factorisation completed, but detected zero in U(" << (info-1) << ',' << (info-1) << ')';
+      // arma_debug_warn(tmp.str());
+      }
+    else
+    if(info > int(A.n_cols))
+      {
+      arma_debug_warn("det(): memory allocation failure: could not allocate ", (info - int(A.n_cols)), " bytes");
+      }
+    else
+    if(info < 0)
+      {
+      arma_debug_warn("det(): unknown SuperLU error code from gssv(): ", info);
+      }
+    
+    
+    // det(A) = det(LU) = det(L)*det(U)
+    // determinant of a triangular matrix is the product of the diagonal entries
+    // 
+    // superlu::gssv() produces:
+    // L with Mtype = SLU_TRLU, which is lower triangular and unit diagonal
+    // U with Mtype = SLU_TRU,  which is upper triangular
+    // 
+    // as in this case det(L) = 1, we only need to extract the diagonal from U
+    
+    arma_debug_check( ((l.Mtype != superlu::SLU_TRLU) || (u.Mtype != superlu::SLU_TRU) || (u.Stype != superlu::SLU_NC)), "det(): problem with SuperLU decomposition result format" );
+    
+    if( (info >= 0) && (info <= int(A.n_cols)) )
+      {
+      superlu::NCformat* u_Store = (superlu::NCformat*)(u.Store);
+      
+      arma_debug_check( (u_Store->nnz <= 0), "det(): problem with SuperLU decomposition result format" );
+    
+      const uvec    U_rowind((uword*)(u_Store->rowind), uword(u_Store->nnz), false, false);
+      const uvec    U_colptr((uword*)(u_Store->colptr), A.n_rows+1,          false, false);
+      const Col<eT> U_values(   (eT*)(u_Store->nzval),  uword(u_Store->nnz), false, false);
+      
+      SpMat<eT> U_tmp(U_rowind, U_colptr, U_values, A.n_rows, A.n_rows);
+      
+      U_diag.set_size(A.n_rows);
+      
+      for(uword i=0; i<A.n_rows; ++i)
+        {
+        U_diag(i) = U_tmp(i,i);
+        }
+      
+      status = true;
+      }
+    
+    superlu::free_stat(&stat);
+    
+    superlu::free(perm_c);
+    superlu::free(perm_r);
+    
+    destroy_supermatrix(u);
+    destroy_supermatrix(l);
+    destroy_supermatrix(a);
+    destroy_supermatrix(x);
+    
+    return status;
+    }
+  #else
+    {
+    arma_ignore(U_diag);
+    arma_ignore(A);
+    arma_stop_logic_error("det(): use of SuperLU must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
 #if defined(ARMA_USE_SUPERLU)
   
   inline
