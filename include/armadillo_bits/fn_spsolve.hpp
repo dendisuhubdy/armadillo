@@ -115,8 +115,7 @@ spsolve_helper
   
   if(status == false)
     {
-    if(rcond > T(0))  { arma_debug_warn("spsolve(): system seems singular (rcond: ", rcond, ")"); }
-    else              { arma_debug_warn("spsolve(): system seems singular");                      }
+    arma_debug_warn("spsolve(): system seems singular (rcond: ", rcond, ")");
     
     out.soft_reset();
     }
