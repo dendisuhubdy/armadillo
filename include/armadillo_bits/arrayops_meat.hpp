@@ -38,7 +38,7 @@ arrayops::copy(eT* dest, const eT* src, const uword n_elem)
 
 
 template<typename eT>
-arma_hot
+arma_cold
 inline
 void
 arrayops::copy_small(eT* dest, const eT* src, const uword n_elem)
@@ -668,7 +668,7 @@ arrayops::inplace_set_base(eT* dest, const eT val, const uword n_elem)
 
 
 template<typename eT>
-arma_hot
+arma_cold
 inline
 void
 arrayops::inplace_set_small(eT* dest, const eT val, const uword n_elem)
