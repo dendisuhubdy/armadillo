@@ -189,7 +189,14 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       {
       arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
-      arma_debug_warn("solve(): system seems singular (rcond: ", rcond, "); attempting approx solution");
+      if(rcond > T(0))
+        {
+        arma_debug_warn("solve(): system seems singular (rcond: ", rcond, "); attempting approx solution");
+        }
+      else
+        {
+        arma_debug_warn("solve(): system seems singular; attempting approx solution");
+        }
       
       // TODO: conditionally recreate A: have a separate state flag which indicates whether A was previously overwritten
       
