@@ -12601,11 +12601,11 @@ See also:
 <a name="spsolve"></a>
 <b>X = spsolve( A, B )</b>
 <br><b>X = spsolve( A, B, solver )</b>
-<br><b>X = spsolve( A, B, solver, settings )</b>
+<br><b>X = spsolve( A, B, solver, opts )</b>
 <br>
 <br><b>spsolve( X, A, B )</b>
 <br><b>spsolve( X, A, B, solver )</b>
-<br><b>spsolve( X, A, B, solver, settings )</b>
+<br><b>spsolve( X, A, B, solver, opts )</b>
 <br>
 <ul>
 <li>
@@ -12637,15 +12637,13 @@ For <code>"lapack"</code>, sparse matrix <i>A</i> is converted to a dense matrix
 </li>
 <br>
 <li>
-The <i>settings</i> argument is optional 
-<br>
-<br>
+The <i>opts</i> argument is optional and applicable to the SuperLU solver;
+<br><i>opts</i> is an instance of the <i>superlu_opts</i> structure:
 <ul>
-<li>
-when <i>solver</i> is "superlu", <i>settings</i> is an instance of the <i>superlu_opts</i> structure:
 <pre>
 struct superlu_opts
   {
+  bool             allow_ugly;   // default: false
   bool             equilibrate;  // default: false
   bool             symmetric;    // default: false
   double           pivot_thresh; // default: 1.0
@@ -12653,13 +12651,18 @@ struct superlu_opts
   refine_type      refine;       // default: superlu_opts::REF_DOUBLE
   };
 </pre>
-</li>
+</ul>
+<ul>
 <li>
-<i>equilibrate</i> is either <i>true</i> or <i>false</i>; it indicates whether to equilibrate the system (scale the rows and columns of <i>A</i> to have unit norm)
+<i>allow_ugly</i> is either <i>true</i> or <i>false</i>; indicates whether to keep solutions from systems singular to working precision
 </li>
 <br>
 <li>
-<i>symmetric</i> is either <i>true</i> or <i>false</i>; it indicates whether to use SuperLU symmetric mode, which gives preference to diagonal pivots
+<i>equilibrate</i> is either <i>true</i> or <i>false</i>; indicates whether to equilibrate the system (scale the rows and columns of <i>A</i> to have unit norm)
+</li>
+<br>
+<li>
+<i>symmetric</i> is either <i>true</i> or <i>false</i>; indicates whether to use SuperLU symmetric mode, which gives preference to diagonal pivots
 </li>
 <br>
 <li>
@@ -12669,27 +12672,30 @@ struct superlu_opts
 <li>
 <i>permutation</i> specifies the type of column permutation; it is one of:
 <br>
-<br>
+<ul>
 <table style="text-align: left;" border="0" cellpadding="0" cellspacing="0">
 <tr><td><code>superlu_opts::NATURAL</code></td><td>&nbsp;&nbsp;</td><td>natural ordering</td></tr>
 <tr><td><code>superlu_opts::MMD_ATA</code></td><td>&nbsp;&nbsp;</td><td>minimum degree ordering on structure of <code>A.t()&nbsp;*&nbsp;A</code></td></tr>
 <tr><td><code>superlu_opts::MMD_AT_PLUS_A</code></td><td>&nbsp;&nbsp;</td><td>minimum degree ordering on structure of <code>A.t()&nbsp;+&nbsp;A</code></td></tr>
 <tr><td><code>superlu_opts::COLAMD</code></td><td>&nbsp;&nbsp;</td><td>approximate minimum degree column ordering</td></tr>
 </table>
+</ul>
 </li>
 <br>
 <li>  
 <i>refine</i> specifies the type of iterative refinement; it is one of:
 <br>
-<br>
+<ul>
 <table style="text-align: left;" border="0" cellpadding="0" cellspacing="0">
 <tr><td><code>superlu_opts::REF_NONE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>no refinement</td></tr>
 <tr><td><code>superlu_opts::REF_SINGLE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in single precision</td></tr>
 <tr><td><code>superlu_opts::REF_DOUBLE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in double precision</td></tr>
 <tr><td><code>superlu_opts::REF_EXTRA</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in extra precision</td></tr>
 </table>
+</ul>
 </li>
 </ul>
+</li>
 <br>
 <li>
 Examples:
@@ -12706,15 +12712,15 @@ mat X = spsolve(A, B);  // solve several systems
 bool status = spsolve(x, A, b);  // use default solver
 if(status == false)  { cout &lt;&lt; "no solution" &lt;&lt; endl; }
 
-spsolve(x, A, b, "lapack");   // use LAPACK  solver
+spsolve(x, A, b, "lapack" );  // use LAPACK  solver
 spsolve(x, A, b, "superlu");  // use SuperLU solver
 
-superlu_opts settings;
+superlu_opts opts;
 
-settings.permutation = superlu_opts::NATURAL;
-settings.refine      = superlu_opts::REF_NONE;
+opts.allow_ugly  = true;
+opts.equilibrate = true;
 
-spsolve(x, A, b, "superlu", settings);
+spsolve(x, A, b, "superlu", opts);
 </pre>
 </ul>
 </li>
@@ -17864,6 +17870,7 @@ List of additions and changes for each version:
 <li>faster handling of <a href="#inv_sympd">inv_sympd()</a> in compound expressions</li>
 <li>added <a href="#is_symmetric">.is_symmetric()</a></li>
 <li>added <a href="#is_hermitian">.is_hermitian()</a></li>
+<li>expanded <a href="#spsolve">spsolve()</a> to optionally allow keeping solutions from systems singular to working precision</li>
 <li>new <a href="#config_hpp">configuration</a> options ARMA_OPTIMISE_SOLVE_BAND and ARMA_OPTIMISE_SOLVE_SYMPD</li>
 </ul>
 </li>
