@@ -34,16 +34,6 @@ class arrayops
   
   template<typename eT>
   arma_hot inline static void
-  copy_forwards(eT* dest, const eT* src, const uword n_elem);
-  
-  
-  template<typename eT>
-  arma_hot inline static void
-  copy_backwards(eT* dest, const eT* src, const uword n_elem);
-  
-  
-  template<typename eT>
-  arma_hot inline static void
   fill_zeros(eT* dest, const uword n_elem);
   
   

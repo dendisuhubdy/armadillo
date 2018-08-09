@@ -42,13 +42,6 @@ struct arma_config
   #endif
   
   
-  #if defined(ARMA_SPMAT_CHUNKSIZE)
-    static const uword spmat_chunksize = (sword(ARMA_SPMAT_CHUNKSIZE) > 0) ? uword(ARMA_SPMAT_CHUNKSIZE) : 256;
-  #else
-    static const uword spmat_chunksize = 256;
-  #endif
-  
-  
   #if defined(ARMA_USE_ATLAS)
     static const bool atlas = true;
   #else

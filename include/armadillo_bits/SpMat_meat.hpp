@@ -29,8 +29,8 @@ SpMat<eT>::SpMat()
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(memory::acquire_chunked<eT>(1))
-  , row_indices(memory::acquire_chunked<uword>(1))
+  , values(memory::acquire<eT>(1))
+  , row_indices(memory::acquire<uword>(1))
   , col_ptrs(memory::acquire<uword>(2))
   {
   arma_extra_debug_sigprint_this(this);
@@ -2876,8 +2876,8 @@ SpMat<eT>::shed_cols(const uword in_col1, const uword in_col2)
 
   if (diff > 0)
     {
-    eT*    new_values      = memory::acquire_chunked<eT>   (n_nonzero - diff);
-    uword* new_row_indices = memory::acquire_chunked<uword>(n_nonzero - diff);
+    eT*    new_values      = memory::acquire<eT>   (n_nonzero - diff);
+    uword* new_row_indices = memory::acquire<uword>(n_nonzero - diff);
 
     // Copy first part.
     if (col_beg != 0)
@@ -3751,7 +3751,7 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
   uword* new_col_ptrs    = memory::acquire<uword>(in_cols + 2);
   new_col_ptrs[in_cols + 1] = std::numeric_limits<uword>::max();
   
-  uword* new_row_indices = memory::acquire_chunked<uword>(n_nonzero + 1);
+  uword* new_row_indices = memory::acquire<uword>(n_nonzero + 1);
   access::rw(new_row_indices[n_nonzero]) = 0;
   
   arrayops::inplace_set(new_col_ptrs, uword(0), in_cols + 1);
@@ -4659,9 +4659,9 @@ SpMat<eT>::init(uword in_rows, uword in_cols)
   if(row_indices)  { memory::release(access::rw(row_indices)); }
   if(col_ptrs   )  { memory::release(access::rw(col_ptrs));    }
   
-  access::rw(values)      = memory::acquire_chunked<eT>   (1);
-  access::rw(row_indices) = memory::acquire_chunked<uword>(1);
-  access::rw(col_ptrs)    = memory::acquire<uword>        (in_cols + 2);
+  access::rw(values)      = memory::acquire<eT>   (1);
+  access::rw(row_indices) = memory::acquire<uword>(1);
+  access::rw(col_ptrs)    = memory::acquire<uword>(in_cols + 2);
   
   access::rw(values[0])      = 0;
   access::rw(row_indices[0]) = 0;
@@ -4871,8 +4871,8 @@ SpMat<eT>::init_simple(const SpMat<eT>& x)
   if(values     )  { memory::release(access::rw(values));      }
   if(row_indices)  { memory::release(access::rw(row_indices)); }
   
-  access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
-  access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
+  access::rw(values)      = memory::acquire<eT>   (x.n_nonzero + 1);
+  access::rw(row_indices) = memory::acquire<uword>(x.n_nonzero + 1);
   
   if(x.values     )  { arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1); }
   if(x.row_indices)  { arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1); }
@@ -5255,38 +5255,31 @@ SpMat<eT>::mem_resize(const uword new_n_nonzero)
       if(values)       { memory::release(access::rw(values));      }
       if(row_indices)  { memory::release(access::rw(row_indices)); }
       
-      access::rw(values)      = memory::acquire_chunked<eT>   (1);
-      access::rw(row_indices) = memory::acquire_chunked<uword>(1);
+      access::rw(values)      = memory::acquire<eT>   (1);
+      access::rw(row_indices) = memory::acquire<uword>(1);
       
       access::rw(     values[0]) = 0;
       access::rw(row_indices[0]) = 0;
       }
     else
       {
-      // Figure out the actual amount of memory currently allocated.
-      // NOTE: this relies on memory::acquire_chunked() being used for the 'values' and 'row_indices' arrays
-      const uword n_alloc = memory::enlarge_to_mult_of_chunksize(n_nonzero);
+      eT*    new_values      = memory::acquire<eT>   (new_n_nonzero + 1);
+      uword* new_row_indices = memory::acquire<uword>(new_n_nonzero + 1);
       
-      if(n_alloc < new_n_nonzero)
+      if(n_nonzero > 0)
         {
-        eT*    new_values      = memory::acquire_chunked<eT>   (new_n_nonzero + 1);
-        uword* new_row_indices = memory::acquire_chunked<uword>(new_n_nonzero + 1);
+        // Copy old elements.
+        uword copy_len = (std::min)(n_nonzero, new_n_nonzero);
         
-        if(n_nonzero > 0)
-          {
-          // Copy old elements.
-          uword copy_len = (std::min)(n_nonzero, new_n_nonzero);
-          
-          arrayops::copy(new_values,      values,      copy_len);
-          arrayops::copy(new_row_indices, row_indices, copy_len);
-          }
-        
-        if(values)       { memory::release(access::rw(values));      }
-        if(row_indices)  { memory::release(access::rw(row_indices)); }
-        
-        access::rw(values)      = new_values;
-        access::rw(row_indices) = new_row_indices;
+        arrayops::copy(new_values,      values,      copy_len);
+        arrayops::copy(new_row_indices, row_indices, copy_len);
         }
+      
+      if(values)       { memory::release(access::rw(values));      }
+      if(row_indices)  { memory::release(access::rw(row_indices)); }
+      
+      access::rw(values)      = new_values;
+      access::rw(row_indices) = new_row_indices;
       
       // Set the "fake end" of the matrix by setting the last value and row index to 0.
       // This helps the iterators work correctly.
@@ -5493,8 +5486,8 @@ SpMat<eT>::init_xform_mt(const SpBase<eT2,T1>& A, const Functor& func)
       if(values)       { memory::release(access::rw(values));      }
       if(row_indices)  { memory::release(access::rw(row_indices)); }
       
-      access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
-      access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
+      access::rw(values)      = memory::acquire<eT>   (x.n_nonzero + 1);
+      access::rw(row_indices) = memory::acquire<uword>(x.n_nonzero + 1);
       
       arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
       arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols    + 1);
@@ -5997,55 +5990,35 @@ SpMat<eT>::insert_element(const uword in_row, const uword in_col, const eT val)
     access::rw(col_ptrs[i])++; // We are only inserting one new element.
     }
   
+  const uword old_n_nonzero = n_nonzero;
   
-  // Figure out the actual amount of memory currently allocated
-  // NOTE: this relies on memory::acquire_chunked() being used for the 'values' and 'row_indices' arrays
-  const uword n_alloc = memory::enlarge_to_mult_of_chunksize(n_nonzero + 1);
+  access::rw(n_nonzero)++; // Add to count of nonzero elements.
   
-  // If possible, avoid time-consuming memory allocation 
-  if(n_alloc > (n_nonzero + 1))
+  // Allocate larger memory.
+  eT*    new_values      = memory::acquire<eT>   (n_nonzero + 1);
+  uword* new_row_indices = memory::acquire<uword>(n_nonzero + 1);
+  
+  // Copy things over, before the new element.
+  if (pos > 0)
     {
-    arrayops::copy_backwards(access::rwp(values)      + pos + 1, values      + pos, (n_nonzero - pos) + 1);
-    arrayops::copy_backwards(access::rwp(row_indices) + pos + 1, row_indices + pos, (n_nonzero - pos) + 1);
-    
-    // Insert the new element.
-    access::rw(values[pos])      = val;
-    access::rw(row_indices[pos]) = in_row;
-    
-    access::rw(n_nonzero)++;
+    arrayops::copy(new_values,      values,      pos);
+    arrayops::copy(new_row_indices, row_indices, pos);
     }
-  else
-    {
-    const uword old_n_nonzero = n_nonzero;
-    
-    access::rw(n_nonzero)++; // Add to count of nonzero elements.
-    
-    // Allocate larger memory.
-    eT*    new_values      = memory::acquire_chunked<eT>   (n_nonzero + 1);
-    uword* new_row_indices = memory::acquire_chunked<uword>(n_nonzero + 1);
-    
-    // Copy things over, before the new element.
-    if (pos > 0)
-      {
-      arrayops::copy(new_values,      values,      pos);
-      arrayops::copy(new_row_indices, row_indices, pos);
-      }
-    
-    // Insert the new element.
-    new_values[pos]      = val;
-    new_row_indices[pos] = in_row;
-    
-    // Copy the rest of things over (including the extra element at the end).
-    arrayops::copy(new_values      + pos + 1, values      + pos, (old_n_nonzero - pos) + 1);
-    arrayops::copy(new_row_indices + pos + 1, row_indices + pos, (old_n_nonzero - pos) + 1);
-    
-    // Assign new pointers.
-    if(values)       { memory::release(access::rw(values));      }
-    if(row_indices)  { memory::release(access::rw(row_indices)); }
-
-    access::rw(values)      = new_values;
-    access::rw(row_indices) = new_row_indices;
-    }
+  
+  // Insert the new element.
+  new_values[pos]      = val;
+  new_row_indices[pos] = in_row;
+  
+  // Copy the rest of things over (including the extra element at the end).
+  arrayops::copy(new_values      + pos + 1, values      + pos, (old_n_nonzero - pos) + 1);
+  arrayops::copy(new_row_indices + pos + 1, row_indices + pos, (old_n_nonzero - pos) + 1);
+  
+  // Assign new pointers.
+  if(values)       { memory::release(access::rw(values));      }
+  if(row_indices)  { memory::release(access::rw(row_indices)); }
+  
+  access::rw(values)      = new_values;
+  access::rw(row_indices) = new_row_indices;
   
   return access::rw(values[pos]);
   }
@@ -6087,42 +6060,24 @@ SpMat<eT>::delete_element(const uword in_row, const uword in_col)
         
         // Found it.  Now remove it.
         
-        // Figure out the actual amount of memory currently allocated and the actual amount that will be required
-        // NOTE: this relies on memory::acquire_chunked() being used for the 'values' and 'row_indices' arrays
+        // Make new arrays.
+        eT*    new_values      = memory::acquire<eT>   (n_nonzero + 1);
+        uword* new_row_indices = memory::acquire<uword>(n_nonzero + 1);
         
-        const uword n_alloc     = memory::enlarge_to_mult_of_chunksize(old_n_nonzero + 1);
-        const uword n_alloc_mod = memory::enlarge_to_mult_of_chunksize(n_nonzero     + 1);
+        if (pos > 0)
+          {
+          arrayops::copy(new_values,      values,      pos);
+          arrayops::copy(new_row_indices, row_indices, pos);
+          }
         
-        // If possible, avoid time-consuming memory allocation
-        if(n_alloc_mod == n_alloc)
-          {
-          if (pos < n_nonzero)  // remember, we decremented n_nonzero
-            {
-            arrayops::copy_forwards(access::rwp(values)      + pos, values      + pos + 1, (n_nonzero - pos) + 1);
-            arrayops::copy_forwards(access::rwp(row_indices) + pos, row_indices + pos + 1, (n_nonzero - pos) + 1);
-            }
-          }
-        else
-          {
-          // Make new arrays.
-          eT*    new_values      = memory::acquire_chunked<eT>   (n_nonzero + 1);
-          uword* new_row_indices = memory::acquire_chunked<uword>(n_nonzero + 1);
-          
-          if (pos > 0)
-            {
-            arrayops::copy(new_values,      values,      pos);
-            arrayops::copy(new_row_indices, row_indices, pos);
-            }
-          
-          arrayops::copy(new_values      + pos, values      + pos + 1, (n_nonzero - pos) + 1);
-          arrayops::copy(new_row_indices + pos, row_indices + pos + 1, (n_nonzero - pos) + 1);
-          
-          if(values)       { memory::release(access::rw(values));      }
-          if(row_indices)  { memory::release(access::rw(row_indices)); }
-          
-          access::rw(values)      = new_values;
-          access::rw(row_indices) = new_row_indices;
-          }
+        arrayops::copy(new_values      + pos, values      + pos + 1, (n_nonzero - pos) + 1);
+        arrayops::copy(new_row_indices + pos, row_indices + pos + 1, (n_nonzero - pos) + 1);
+        
+        if(values)       { memory::release(access::rw(values));      }
+        if(row_indices)  { memory::release(access::rw(row_indices)); }
+        
+        access::rw(values)      = new_values;
+        access::rw(row_indices) = new_row_indices;
         
         // And lastly, update all the column pointers (decrement by one).
         for (uword i = in_col + 1; i < n_cols + 1; i++)
