@@ -5760,11 +5760,11 @@ arma_warn_unused
 eT
 SpMat<eT>::get_value(const uword i) const
   {
-  // First convert to the actual location.
-  uword lcol = i / n_rows; // Integer division.
-  uword lrow = i % n_rows;
-
-  return get_value(lrow, lcol);
+  const MapMat<eT>& const_cache = cache;  // declare as const for clarity of intent
+  
+  // get the element from the cache if it has more recent data than CSC
+  
+  return (sync_state == 1) ? const_cache.operator[](i) : get_value_csc(i);
   }
 
 
@@ -5838,8 +5838,38 @@ arma_warn_unused
 eT
 SpMat<eT>::get_value(const uword in_row, const uword in_col) const
   {
-  sync_csc();
+  const MapMat<eT>& const_cache = cache;  // declare as const for clarity of intent
   
+  // get the element from the cache if it has more recent data than CSC
+  
+  return (sync_state == 1) ? const_cache.at(in_row, in_col) : get_value_csc(in_row, in_col);
+  }
+
+
+
+template<typename eT>
+inline
+arma_hot
+arma_warn_unused
+eT
+SpMat<eT>::get_value_csc(const uword i) const
+  {
+  // First convert to the actual location.
+  uword lcol = i / n_rows; // Integer division.
+  uword lrow = i % n_rows;
+  
+  return get_value_csc(lrow, lcol);
+  }
+
+
+
+template<typename eT>
+inline
+arma_hot
+arma_warn_unused
+eT
+SpMat<eT>::get_value_csc(const uword in_row, const uword in_col) const
+  {
   const uword      col_offset = col_ptrs[in_col    ];
   const uword next_col_offset = col_ptrs[in_col + 1];
   

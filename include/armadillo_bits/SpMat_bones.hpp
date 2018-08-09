@@ -608,6 +608,9 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   inline arma_hot arma_warn_unused SpValProxy<SpMat<eT> > get_value(const uword in_row, const uword in_col);
   inline arma_hot arma_warn_unused eT                     get_value(const uword in_row, const uword in_col) const;
   
+  inline arma_hot arma_warn_unused eT get_value_csc(const uword i                         ) const;
+  inline arma_hot arma_warn_unused eT get_value_csc(const uword in_row, const uword in_col) const;
+  
   
   arma_inline arma_hot arma_warn_unused uword get_position(const uword i) const;
   arma_inline arma_hot                  void  get_position(const uword i, uword& row_of_i, uword& col_of_i) const;
