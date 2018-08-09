@@ -5741,22 +5741,6 @@ template<typename eT>
 inline
 arma_hot
 arma_warn_unused
-SpValProxy<SpMat<eT> >
-SpMat<eT>::get_value(const uword i)
-  {
-  // First convert to the actual location.
-  uword lcol = i / n_rows; // Integer division.
-  uword lrow = i % n_rows;
-
-  return get_value(lrow, lcol);
-  }
-
-
-
-template<typename eT>
-inline
-arma_hot
-arma_warn_unused
 eT
 SpMat<eT>::get_value(const uword i) const
   {
@@ -5765,68 +5749,6 @@ SpMat<eT>::get_value(const uword i) const
   // get the element from the cache if it has more recent data than CSC
   
   return (sync_state == 1) ? const_cache.operator[](i) : get_value_csc(i);
-  }
-
-
-
-template<typename eT>
-inline
-arma_hot
-arma_warn_unused
-SpValProxy<SpMat<eT> >
-SpMat<eT>::get_value(const uword in_row, const uword in_col)
-  {
-  sync_csc();
-  
-  const uword      col_offset = col_ptrs[in_col    ];
-  const uword next_col_offset = col_ptrs[in_col + 1];
-  
-  const uword* start_ptr = &row_indices[     col_offset];
-  const uword*   end_ptr = &row_indices[next_col_offset];
-  
-  const uword* pos_ptr = std::lower_bound(start_ptr, end_ptr, in_row);  // binary search
-  
-  eT* val_ptr = NULL;
-  
-  if( (pos_ptr != end_ptr) && ((*pos_ptr) == in_row) )
-    {
-    const uword offset = uword(pos_ptr - start_ptr);
-    const uword index  = offset + col_offset;
-    
-    val_ptr = &access::rw(values[index]);
-    }
-  
-  return SpValProxy< SpMat<eT> >(in_row, in_col, *this, val_ptr);
-  
-  
-  // // OLD METHOD - LINEAR SEARCH
-  // 
-  // sync_csc();
-  // 
-  // const uword colptr      = col_ptrs[in_col];
-  // const uword next_colptr = col_ptrs[in_col + 1];
-  // 
-  // // Step through the row indices to see if our element exists.
-  // for (uword i = colptr; i < next_colptr; ++i)
-  //   {
-  //   const uword row_index = row_indices[i];
-  //   
-  //   // First check that we have not stepped past it.
-  //   if (in_row < row_index) // If we have, then it doesn't exist: return 0.
-  //     {
-  //     return SpValProxy<SpMat<eT> >(in_row, in_col, *this); // Proxy for a zero value.
-  //     }
-  // 
-  //   // Now check if we are at the correct place.
-  //   if (in_row == row_index) // If we are, return a reference to the value.
-  //     {
-  //     return SpValProxy<SpMat<eT> >(in_row, in_col, *this, &access::rw(values[i]));
-  //     }
-  // 
-  //   }
-  // 
-  // // We did not find it, so it does not exist: return 0.
-  // return SpValProxy<SpMat<eT> >(in_row, in_col, *this);
   }
 
 
@@ -5916,50 +5838,6 @@ SpMat<eT>::get_value_csc(const uword in_row, const uword in_col) const
   // 
   // // We did not find it, so it does not exist: return 0.
   // return eT(0);
-  }
-
-
-
-/**
- * Given the index representing which of the nonzero values this is, return its
- * actual location, either in row/col or just the index.
- */
-template<typename eT>
-arma_hot
-arma_inline
-arma_warn_unused
-uword
-SpMat<eT>::get_position(const uword i) const
-  {
-  uword lrow, lcol;
-  
-  get_position(i, lrow, lcol);
-  
-  // Assemble the row/col into the element's location in the matrix.
-  return (lrow + n_rows * lcol);
-  }
-
-
-
-template<typename eT>
-arma_hot
-arma_inline
-void
-SpMat<eT>::get_position(const uword i, uword& row_of_i, uword& col_of_i) const
-  {
-  sync_csc();
-  
-  arma_debug_check((i >= n_nonzero), "SpMat::get_position(): index out of bounds");
-  
-  col_of_i = 0;
-  while (col_ptrs[col_of_i + 1] <= i)
-    {
-    col_of_i++;
-    }
-  
-  row_of_i = row_indices[i];
-  
-  return;
   }
 
 
