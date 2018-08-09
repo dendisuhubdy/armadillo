@@ -127,18 +127,20 @@ For example, for GCC and Clang compilers use -O2 or -O3
 ### 5: Linux and macOS: Installation
 
 * Step 1:
-  Ensure a C++ compiler is installed on your system.  
-  On macOS systems you will need to install Xcode (version 8 or later)
-  and then type the following command in a terminal window:  
-  xcode-select --install
-  
+  Ensure a C++ compiler is installed on your system.
+
+   - On macOS systems you will need to install Xcode (version 8 or later)
+     and then type the following command in a terminal window:  
+     xcode-select --install
+
 * Step 2:
   Ensure the CMake tool is installed on your system.
   You can download it from http://www.cmake.org
-  or (preferably) install it using your package manager.  
-  On Linux-based systems, you can get CMake using dnf, yum, apt, aptitude, ...  
-  On macOS systems, you can get CMake through MacPorts or Homebrew.
-  
+  or (preferably) install it using your package manager.
+
+  - On Linux-based systems, you can get CMake using dnf, yum, apt, aptitude, ...
+  - On macOS systems, you can get CMake through MacPorts or Homebrew.
+
 * Step 3:
   Ensure LAPACK and BLAS (or preferably OpenBLAS) are installed on your system.
   On macOS this is not necessary.
@@ -158,57 +160,55 @@ For example, for GCC and Clang compilers use -O2 or -O3
 * Step 4:
   Open a terminal window, change into the directory that was created
   by unpacking the armadillo archive, and type the following command:
-  
+
     cmake .
-  
-  The full stop separated from "cmake" by a space is important.
-  CMake will detect which relevant libraries are installed on your system
-  (eg. OpenBLAS, LAPACK, SuperLU, ARPACK, etc)
-  and will modify Armadillo's configuration correspondingly.
-  CMake will also generate the Armadillo run-time library,
-  which is a wrapper for all the detected libraries.
-  
-  By default, cmake assumes that the Armadillo library and the
-  corresponding header files are going to be installed in the default 
-  system directory (eg. in the /usr hierarchy in Linux-based systems).
-  If you wish to install the library and headers in a different directory,
-  use the additional option CMAKE_INSTALL_PREFIX in this form:
-  
-    cmake . -DCMAKE_INSTALL_PREFIX:PATH=my_directory
-  
-  where "my_directory" is an alternative directory for storing
-  C++ headers and library files.
-  
-  If you need to re-run cmake, it's a good idea to first delete the
-  "CMakeCache.txt" file (not "CMakeLists.txt").
-  
-  Caveat: out-of-tree builds are currently not fully supported;
-  eg, creating a sub-directory called "build" and running cmake ..
-  from within "build" is currently not supported.
-  
-  Caveat: if you are installing Armadillo in a non-system directory,
-  make sure your C++ compiler is configured to use the "lib" and "include"
-  sub-directories present within this directory.  Note that the "lib"
-  directory might be named differently on your system.
-  On recent 64 bit Debian & Ubuntu systems it is "lib/x86_64-linux-gnu".
-  On recent 64 bit Fedora & RHEL systems it is "lib64".
-  
+
+  - The full stop separated from "cmake" by a space is important.
+
+  - CMake will detect which relevant libraries are installed on your system
+    (eg. OpenBLAS, LAPACK, SuperLU, ARPACK, etc)
+    and will modify Armadillo's configuration correspondingly.
+    CMake will also generate the Armadillo run-time library,
+    which is a wrapper for all the detected libraries.
+
+  - By default, cmake assumes that the Armadillo library and the
+    corresponding header files are going to be installed in the default 
+    system directory (eg. in the /usr hierarchy in Linux-based systems).
+    If you wish to install the library and headers in an alternative directory,
+    use the additional option CMAKE_INSTALL_PREFIX in this form:
+
+    cmake . -DCMAKE_INSTALL_PREFIX:PATH=alternative_directory
+
+  - If you need to re-run cmake, it's a good idea to first delete the
+    "CMakeCache.txt" file (not "CMakeLists.txt").
+
+  - Caveat: out-of-tree builds are currently not fully supported;
+     eg, creating a sub-directory called "build" and running cmake ..
+     from within "build" is currently not supported.
+
+  - Caveat: if you are installing Armadillo in a non-system directory,
+    make sure your C++ compiler is configured to use the "lib" and "include"
+    sub-directories present within this directory.  Note that the "lib"
+    directory might be named differently on your system.
+    On recent 64 bit Debian & Ubuntu systems it is "lib/x86_64-linux-gnu".
+    On recent 64 bit Fedora & RHEL systems it is "lib64".
+
 * Step 5:
   To generate the run-time armadillo library, type the following command:
-  
+
     make
 
 * Step 6:
   If you and have access to root/administrator/superuser privileges
   (ie. able to use "sudo") and didn't use the CMAKE_INSTALL_PREFIX option,
   type the following command:
-  
+
     sudo make install
-  
+
   If you don't have root/administrator/superuser privileges,
   make sure that you use the CMAKE_PREFIX_PATH option in Step 4,
   and type the following command:
-  
+
     make install
 
 ---
@@ -219,14 +219,14 @@ The "examples" directory contains several quick example programs
 that use the Armadillo library.
 
 In general, programs which use Armadillo are compiled along these lines:
-  
+
     g++ example1.cpp -o example1 -O2 -larmadillo
-  
+
 If you want to use Armadillo without installation (not recommended),
 compile along these lines:
-  
+
     g++ example1.cpp -o example1 -O2 -I /home/blah/armadillo-7.200.3/include -DARMA_DONT_USE_WRAPPER -lblas -llapack
-  
+
 The above command line assumes that you have unpacked the armadillo archive into /home/blah/  
 You will need to adjust this for later versions of Armadillo (ie. change the 7.200.3 part)
 and/or if you have unpacked the armadillo archive into a different directory.
