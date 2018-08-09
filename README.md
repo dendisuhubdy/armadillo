@@ -141,24 +141,26 @@ For example, for GCC and Clang compilers use -O2 or -O3
   
 * Step 3:
   Ensure LAPACK and BLAS (or preferably OpenBLAS) are installed on your system.
-  On macOS this is not necessary.  
-  For better performance, we recommend installing the OpenBLAS library.
-  See http://www.openblas.net/  
-  If you are using sparse matrices, also install ARPACK and SuperLU.
-  Caveat: only SuperLU version 5.2 can be used!
-  
-  On Linux-based systems, the following libraries are recommended
-  to be present: OpenBLAS, LAPACK, SuperLU and ARPACK.
-  It is also necessary to install the corresponding development
-  files for each library. For example, when installing the "lapack"
-  package, also install the "lapack-devel" or "lapack-dev" package.
+  On macOS this is not necessary.
+
+  - For better performance, we recommend installing the OpenBLAS library.
+    See http://www.openblas.net/  
+
+  - If you are using sparse matrices, also install ARPACK and SuperLU.
+    Caveat: only SuperLU version 5.2 can be used!
+
+  - On Linux-based systems, the following libraries are recommended
+    to be present: OpenBLAS, LAPACK, SuperLU and ARPACK.
+    It is also necessary to install the corresponding development
+    files for each library. For example, when installing the "lapack"
+    package, also install the "lapack-devel" or "lapack-dev" package.
   
 * Step 4:
   Open a terminal window, change into the directory that was created
   by unpacking the armadillo archive, and type the following command:
-    
+  
     cmake .
-    
+  
   The full stop separated from "cmake" by a space is important.
   CMake will detect which relevant libraries are installed on your system
   (eg. OpenBLAS, LAPACK, SuperLU, ARPACK, etc)
@@ -195,7 +197,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
   To generate the run-time armadillo library, type the following command:
   
     make
-  
+
 * Step 6:
   If you and have access to root/administrator/superuser privileges
   (ie. able to use "sudo") and didn't use the CMAKE_INSTALL_PREFIX option,
