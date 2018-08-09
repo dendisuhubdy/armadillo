@@ -129,13 +129,13 @@ For example, for GCC and Clang compilers use -O2 or -O3
 * Step 1:
   Ensure a C++ compiler is installed on your system.  
   On macOS systems you will need to install Xcode (version 8 or later)
-  and then type the following command in a terminal window:
+  and then type the following command in a terminal window:  
   xcode-select --install
   
 * Step 2:
   Ensure the CMake tool is installed on your system.
   You can download it from http://www.cmake.org
-  or (preferably) install it using your package manager.
+  or (preferably) install it using your package manager.  
   
   On Linux-based systems, you can get CMake using dnf, yum, apt, aptitude, ...  
   On macOS systems, you can get CMake through MacPorts or Homebrew.
