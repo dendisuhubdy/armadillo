@@ -206,7 +206,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
     sudo make install
 
   If you don't have root/administrator/superuser privileges,
-  make sure that you use the CMAKE_PREFIX_PATH option in Step 4,
+  make sure that you use the CMAKE_INSTALL_PREFIX option in Step 4,
   and type the following command:
 
     make install
