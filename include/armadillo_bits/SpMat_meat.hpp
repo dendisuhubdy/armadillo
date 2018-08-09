@@ -3151,6 +3151,54 @@ template<typename eT>
 inline
 arma_warn_unused
 bool
+SpMat<eT>::is_symmetric() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const SpMat<eT>& A = (*this);
+  
+  if(A.n_rows != A.n_cols)  { return false; }
+  
+  const SpMat<eT> tmp = A - A.st();
+  
+  return (tmp.n_nonzero == uword(0));
+  }
+
+
+
+template<typename eT>
+inline
+arma_warn_unused
+bool
+SpMat<eT>::is_symmetric(const typename get_pod_type<elem_type>::result tol) const
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename get_pod_type<eT>::result T;
+  
+  if(tol == T(0))  { return (*this).is_symmetric(); }
+  
+  arma_debug_check( (tol < T(0)), "is_symmetric(): parameter 'tol' must be >= 0" );
+  
+  const SpMat<eT>& A = (*this);
+  
+  if(A.n_rows != A.n_cols)  { return false; }
+  
+  const T norm_A = as_scalar( arma::max(sum(abs(A), 1), 0) );
+  
+  if(norm_A == T(0))  { return true; }
+  
+  const T norm_A_Ast = as_scalar( arma::max(sum(abs(A - A.st()), 1), 0) );
+  
+  return ( (norm_A_Ast / norm_A) <= tol );
+  }
+
+
+
+template<typename eT>
+inline
+arma_warn_unused
+bool
 SpMat<eT>::has_inf() const
   {
   arma_extra_debug_sigprint();
@@ -4778,9 +4826,9 @@ SpMat<eT>::init_simple(const SpMat<eT>& x)
   access::rw(values)      = memory::acquire_chunked<eT>   (x.n_nonzero + 1);
   access::rw(row_indices) = memory::acquire_chunked<uword>(x.n_nonzero + 1);
   
-  arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1);
-  arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
-  arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols + 1);
+  if(x.values     )  { arrayops::copy(access::rwp(values),      x.values,      x.n_nonzero + 1); }
+  if(x.row_indices)  { arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1); }
+  if(x.col_ptrs   )  { arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols    + 1); }
   
   access::rw(n_nonzero) = x.n_nonzero;
   }
