@@ -2008,7 +2008,7 @@ in this version, the following subset of operations works with sparse matrices:
 <li>generated matrices: <a href="#speye">speye()</a>, <a href="#spones">spones()</a>, <a href="#sprandu_sprandn">sprandu()</a>, <a href="#sprandu_sprandn">sprandn()</a>, <a href="#zeros_standalone">zeros()</a></li>
 <li>eigen and svd decomposition: <a href="#eigs_sym">eigs_sym()</a>, <a href="#eigs_gen">eigs_gen()</a>, <a href="#svds">svds()</a></li>
 <li>solution of sparse linear systems: <a href="#spsolve">spsolve()</a>
-<li>miscellaneous: <a href="#approx_equal">approx_equal()</a>, <a href="#element_access">element access</a>, <a href="#iterators_spmat">element iterators</a>, <a href="#for_each">.for_each()</a>, <a href="#is_finite">is_finite()</a>, <a href="#print">.print()</a>, <a href="#replace">.replace()</a>, <a href="#transform">.transform()</a></li>
+<li>miscellaneous: <a href="#approx_equal">approx_equal()</a>, <a href="#element_access">element access</a>, <a href="#iterators_spmat">element iterators</a>, <a href="#for_each">.for_each()</a>, <a href="#print">.print()</a>, <a href="#replace">.replace()</a>, <a href="#transform">.transform()</a>, <a href="#is_finite_member">.is_finite()</a>, <a href="#is_symmetric">.is_symmetric()</a>, <a href="#is_hermitian">.is_hermitian()</a></li>
 </ul>
 </li>
 <br>
@@ -6044,7 +6044,7 @@ See also:
 <br><b>.is_symmetric(&nbsp;tol&nbsp;)</b>
 <ul>
 <li>
-Member function of <i>Mat</i>
+Member function of <i>Mat</i> and <i>SpMat</i>
 </li>
 <br>
 <li>Returns <i>true</i> if the matrix is symmetric</li>
@@ -6086,7 +6086,7 @@ See also:
 <br><b>.is_hermitian(&nbsp;tol&nbsp;)</b>
 <ul>
 <li>
-Member function of <i>Mat</i>
+Member function of <i>Mat</i> and <i>SpMat</i>
 </li>
 <br>
 <li>Returns <i>true</i> if the matrix is hermitian</li>
