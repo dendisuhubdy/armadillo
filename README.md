@@ -162,7 +162,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
   Open a terminal window, change into the directory that was created
   by unpacking the armadillo archive, and type the following command:
   
-  cmake .
+    cmake .
   
   The full stop separated from "cmake" by a space is important.
   CMake will detect which relevant libraries are installed on your system
@@ -177,7 +177,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
   If you wish to install the library and headers in a different directory,
   use the additional option CMAKE_INSTALL_PREFIX in this form:
   
-  cmake . -DCMAKE_INSTALL_PREFIX:PATH=my_directory
+    cmake . -DCMAKE_INSTALL_PREFIX:PATH=my_directory
   
   where "my_directory" is an alternative directory for storing
   C++ headers and library files.
@@ -206,13 +206,13 @@ For example, for GCC and Clang compilers use -O2 or -O3
   (ie. able to use "sudo") and didn't use the CMAKE_INSTALL_PREFIX option,
   type the following command:
   
-  sudo make install
+    sudo make install
   
   If you don't have root/administrator/superuser privileges,
   make sure that you use the CMAKE_PREFIX_PATH option in Step 4,
   and type the following command:
   
-  make install
+    make install
 
 ---
 
@@ -223,12 +223,12 @@ that use the Armadillo library.
 
 In general, programs which use Armadillo are compiled along these lines:
   
-  g++ example1.cpp -o example1 -O2 -larmadillo
+    g++ example1.cpp -o example1 -O2 -larmadillo
   
 If you want to use Armadillo without installation (not recommended),
 compile along these lines:
   
-  g++ example1.cpp -o example1 -O2 -I /home/blah/armadillo-7.200.3/include -DARMA_DONT_USE_WRAPPER -lblas -llapack
+    g++ example1.cpp -o example1 -O2 -I /home/blah/armadillo-7.200.3/include -DARMA_DONT_USE_WRAPPER -lblas -llapack
   
 The above command line assumes that you have unpacked the armadillo archive into /home/blah/  
 You will need to adjust this for later versions of Armadillo (ie. change the 7.200.3 part)
@@ -255,10 +255,10 @@ The installation is comprised of 3 steps:
   if you have LAPACK, BLAS (or OpenBLAS), ARPACK and SuperLU present,
   uncomment the following lines:
 
-  #define ARMA_USE_LAPACK  
-  #define ARMA_USE_BLAS  
-  #define ARMA_USE_ARPACK  
-  #define ARMA_USE_SUPERLU  
+    #define ARMA_USE_LAPACK  
+    #define ARMA_USE_BLAS  
+    #define ARMA_USE_ARPACK  
+    #define ARMA_USE_SUPERLU  
 
   If you don't need sparse matrices, don't worry about ARPACK or SuperLU.
 
@@ -312,11 +312,11 @@ to make sure Armadillo uses the same integer sizes and style of function names
 as used by the replacement libraries. Specifically, you may need comment or uncomment
 the following defines:
 
-  ARMA_USE_WRAPPER  
-  ARMA_BLAS_CAPITALS  
-  ARMA_BLAS_UNDERSCORE  
-  ARMA_BLAS_LONG  
-  ARMA_BLAS_LONG_LONG  
+    ARMA_USE_WRAPPER  
+    ARMA_BLAS_CAPITALS  
+    ARMA_BLAS_UNDERSCORE  
+    ARMA_BLAS_LONG  
+    ARMA_BLAS_LONG_LONG  
 
 See the documentation for more information on the above defines.
 
@@ -334,17 +334,17 @@ afterwards.
 Below is an example of /etc/ld.so.conf.d/mkl.conf
 where Intel MKL is installed in /opt/intel
 
-/opt/intel/lib/intel64  
-/opt/intel/mkl/lib/intel64  
+    /opt/intel/lib/intel64  
+    /opt/intel/mkl/lib/intel64  
 
 If you have MKL installed and it is persistently giving problems
 during linking, you can disable Armadillo's support for MKL by editing
 the CMakeLists.txt file, deleting CMakeCache.txt and re-running
 the CMake based installation. Comment out the lines containing:
 
-  INCLUDE(ARMA_FindMKL)  
-  INCLUDE(ARMA_FindACMLMP)  
-  INCLUDE(ARMA_FindACML)  
+    INCLUDE(ARMA_FindMKL)  
+    INCLUDE(ARMA_FindACMLMP)  
+    INCLUDE(ARMA_FindACML)  
 
 ---
 
