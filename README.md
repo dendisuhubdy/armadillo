@@ -127,9 +127,8 @@ For example, for GCC and Clang compilers use -O2 or -O3
 ### 5: Linux and macOS: Installation
 
 * Step 1:
-  Ensure a C++ compiler is installed on your system.
-  
-  Caveat: on macOS you will need to install Xcode (version 8 or later)
+  Ensure a C++ compiler is installed on your system.  
+  On macOS systems you will need to install Xcode (version 8 or later)
   and then type the following command in a terminal window:
   xcode-select --install
   
@@ -138,8 +137,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
   You can download it from http://www.cmake.org
   or (preferably) install it using your package manager.
   
-  On Linux-based systems, you can get CMake using dnf, yum, apt, aptitude, ...
-  
+  On Linux-based systems, you can get CMake using dnf, yum, apt, aptitude, ...  
   On macOS systems, you can get CMake through MacPorts or Homebrew.
   
 * Step 3:
@@ -199,7 +197,7 @@ For example, for GCC and Clang compilers use -O2 or -O3
 * Step 5:
   To generate the run-time armadillo library, type the following command:
   
-  make
+    make
   
 * Step 6:
   If you and have access to root/administrator/superuser privileges
@@ -395,9 +393,8 @@ may lead to speed regressions on recent processors.
 
 ### 13: API Documentation
 
-Documentation of functions, classes and options is available at:
-
-  http://arma.sourceforge.net/docs.html
+Documentation of functions, classes and options is available at:  
+http://arma.sourceforge.net/docs.html
 
 The documentation is also in the "docs.html" file in this folder,
 which can be viewed with a web browser.
@@ -432,7 +429,7 @@ alter the public API in future major versions of Armadillo while remaining
 backwards compatible in as many cases as possible (eg. major version 8 may
 have slightly different public API than major version 7).
 
-CAVEAT: any function, class, constant or other code _not_ explicitly described
+**CAVEAT:** any function, class, constant or other code _not_ explicitly described
 in the public API documentation is considered as part of the underlying internal
 implementation details, and may change or be removed without notice.
 (In other words, don't use internal functionality).
@@ -451,13 +448,11 @@ which exposes the bug, and then send the program source and the bug description
 to the developers. The small program must have a main() function and use only
 functions/classes from Armadillo and the standard C++ library (no other libraries).
 
-The contact details are at:
+The contact details are at:  
+http://arma.sourceforge.net/contact.html
 
-  http://arma.sourceforge.net/contact.html
-
-Further information about Armadillo is on the frequently asked questions page:
-
-  http://arma.sourceforge.net/faq.html
+Further information about Armadillo is on the frequently asked questions page:  
+http://arma.sourceforge.net/faq.html
 
 ---
 
