@@ -274,6 +274,9 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   inline arma_warn_unused bool is_symmetric() const;
   inline arma_warn_unused bool is_symmetric(const typename get_pod_type<eT>::result tol) const;
   
+  inline arma_warn_unused bool is_hermitian() const;
+  inline arma_warn_unused bool is_hermitian(const typename get_pod_type<eT>::result tol) const;
+  
   inline arma_warn_unused bool has_inf() const;
   inline arma_warn_unused bool has_nan() const;
   

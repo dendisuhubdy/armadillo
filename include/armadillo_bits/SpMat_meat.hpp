@@ -3199,6 +3199,54 @@ template<typename eT>
 inline
 arma_warn_unused
 bool
+SpMat<eT>::is_hermitian() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const SpMat<eT>& A = (*this);
+  
+  if(A.n_rows != A.n_cols)  { return false; }
+  
+  const SpMat<eT> tmp = A - A.t();
+  
+  return (tmp.n_nonzero == uword(0));
+  }
+
+
+
+template<typename eT>
+inline
+arma_warn_unused
+bool
+SpMat<eT>::is_hermitian(const typename get_pod_type<elem_type>::result tol) const
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename get_pod_type<eT>::result T;
+  
+  if(tol == T(0))  { return (*this).is_hermitian(); }
+  
+  arma_debug_check( (tol < T(0)), "is_hermitian(): parameter 'tol' must be >= 0" );
+  
+  const SpMat<eT>& A = (*this);
+  
+  if(A.n_rows != A.n_cols)  { return false; }
+  
+  const T norm_A = as_scalar( arma::max(sum(abs(A), 1), 0) );
+  
+  if(norm_A == T(0))  { return true; }
+  
+  const T norm_A_At = as_scalar( arma::max(sum(abs(A - A.t()), 1), 0) );
+  
+  return ( (norm_A_At / norm_A) <= tol );
+  }
+
+
+
+template<typename eT>
+inline
+arma_warn_unused
+bool
 SpMat<eT>::has_inf() const
   {
   arma_extra_debug_sigprint();
