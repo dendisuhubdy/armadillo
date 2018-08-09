@@ -6054,8 +6054,6 @@ SpMat<eT>::delete_element(const uword in_row, const uword in_col)
       {
       if (in_row == row_indices[pos])
         {
-        const uword old_n_nonzero = n_nonzero;
-        
         --access::rw(n_nonzero); // Remove one from the count of nonzero elements.
         
         // Found it.  Now remove it.
