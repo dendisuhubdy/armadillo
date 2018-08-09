@@ -136,17 +136,14 @@ For example, for GCC and Clang compilers use -O2 or -O3
   Ensure the CMake tool is installed on your system.
   You can download it from http://www.cmake.org
   or (preferably) install it using your package manager.  
-  
   On Linux-based systems, you can get CMake using dnf, yum, apt, aptitude, ...  
   On macOS systems, you can get CMake through MacPorts or Homebrew.
   
 * Step 3:
   Ensure LAPACK and BLAS (or preferably OpenBLAS) are installed on your system.
-  On macOS this is not necessary.
-  
+  On macOS this is not necessary.  
   For better performance, we recommend installing the OpenBLAS library.
-  See http://www.openblas.net/
-  
+  See http://www.openblas.net/  
   If you are using sparse matrices, also install ARPACK and SuperLU.
   Caveat: only SuperLU version 5.2 can be used!
   
@@ -159,9 +156,9 @@ For example, for GCC and Clang compilers use -O2 or -O3
 * Step 4:
   Open a terminal window, change into the directory that was created
   by unpacking the armadillo archive, and type the following command:
-  
+    
     cmake .
-  
+    
   The full stop separated from "cmake" by a space is important.
   CMake will detect which relevant libraries are installed on your system
   (eg. OpenBLAS, LAPACK, SuperLU, ARPACK, etc)
