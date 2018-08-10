@@ -768,6 +768,8 @@ sp_auxlib::spsolve_simple(Mat<typename T1::elem_type>& X, const SpBase<typename 
       return true;
       }
     
+    if(A.n_nonzero == uword(0))  { return false; }
+    
     if(arma_config::debug)
       {
       bool overflow;
@@ -915,6 +917,8 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
       {
       return true;
       }
+    
+    if(A.n_nonzero == uword(0))  { return false; }
     
     if(arma_config::debug)
       {
