@@ -475,3 +475,6 @@ Octave/Matlab with C++ code that uses Armadillo matrices.
 * OptimLib: C++ library of numerical optimisation methods for nonlinear functions  
   https://www.kthohr.com/optimlib.html
 
+* RcppArmadillo: Seamless Integration of Armadillo into the 
+  R System and Environment  
+  http://dirk.eddelbuettel.com/code/rcpp.armadillo.html
