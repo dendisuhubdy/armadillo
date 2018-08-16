@@ -360,7 +360,7 @@ auxlib::inv_sympd_tiny(Mat<eT>& out, const Mat<eT>& X)
   {
   arma_extra_debug_sigprint();
   
-  if(sympd_helper::guess_sympd(X) == false)  { return false; }
+  // if(sympd_helper::guess_sympd(X) == false)  { return false; }
   
   return auxlib::inv_tiny(out, X);
   }
@@ -3378,11 +3378,9 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
 template<typename T1>
 inline
 bool
-auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr, const bool extra_check)
+auxlib::solve_sympd_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
-  
-  if(extra_check && (A.n_rows <= 4) && (sympd_helper::guess_sympd(A) == false))  { return false; }
   
   #if defined(ARMA_CRIPPLED_LAPACK)
     {
