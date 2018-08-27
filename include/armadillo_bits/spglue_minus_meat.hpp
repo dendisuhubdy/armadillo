@@ -156,42 +156,4 @@ spglue_minus::apply_noalias(SpMat<eT>& result, const SpProxy<T1>& pa, const SpPr
 
 
 
-//
-//
-// spglue_minus2: scalar*(A - B)
-
-
-
-template<typename T1, typename T2>
-arma_hot
-inline
-void
-spglue_minus2::apply(SpMat<typename T1::elem_type>& out, const SpGlue<T1,T2,spglue_minus2>& X)
-  {
-  arma_extra_debug_sigprint();
-  
-  typedef typename T1::elem_type eT;
-  
-  const SpProxy<T1> pa(X.A);
-  const SpProxy<T2> pb(X.B);
-  
-  const bool is_alias = pa.is_alias(out) || pb.is_alias(out);
-  
-  if(is_alias == false)
-    {
-    spglue_minus::apply_noalias(out, pa, pb);
-    }
-  else
-    {
-    SpMat<eT> tmp;
-    spglue_minus::apply_noalias(tmp, pa, pb);
-    
-    out.steal_mem(tmp);
-    }
-  
-  out *= X.aux;
-  }
-
-
-
 //! @}
