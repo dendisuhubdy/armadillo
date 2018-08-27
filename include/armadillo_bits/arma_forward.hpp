@@ -232,6 +232,8 @@ class spglue_minus2;
 class spglue_times;
 class spglue_times2;
 
+class spglue_schur;
+
 struct state_type
   {
   #if   defined(ARMA_USE_OPENMP)
