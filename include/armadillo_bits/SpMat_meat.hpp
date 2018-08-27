@@ -516,8 +516,6 @@ SpMat<eT>::SpMat
   {
   arma_extra_debug_sigprint_this(this);
   
-  init(in_n_rows, in_n_cols);
-  
   const unwrap<T1> rowind_tmp( rowind_expr.get_ref() );
   const unwrap<T2> colptr_tmp( colptr_expr.get_ref() );
   const unwrap<T3>   vals_tmp( values_expr.get_ref() );
@@ -534,7 +532,7 @@ SpMat<eT>::SpMat
   arma_debug_check( (colptr.n_elem != (n_cols+1) ), "SpMat::SpMat(): number of column pointers is not equal to n_cols+1" );
   
   // Resize to correct number of elements (this also sets n_nonzero)
-  mem_resize(vals.n_elem);
+  init(in_n_rows, in_n_cols, vals.n_elem);
   
   // copy supplied values into sparse matrix -- not checked for consistency
   arrayops::copy(access::rwp(row_indices), rowind.memptr(), rowind.n_elem );
@@ -557,8 +555,7 @@ SpMat<eT>::operator=(const eT val)
   if(val != eT(0))
     {
     // Resize to 1x1 then set that to the right value.
-    init(1, 1); // Sets col_ptrs to 0.
-    mem_resize(1); // One element.
+    init(1, 1, 1); // Sets col_ptrs to 0.
     
     // Manually set element.
     access::rw(values[0]) = val;
@@ -801,8 +798,7 @@ SpMat<eT>::SpMat
   const uword l_n_cols = X.n_cols;
   
   // Set size of matrix correctly.
-  init(l_n_rows, l_n_cols);
-  mem_resize(n_unique(X, Y, op_n_unique_count()));
+  init(l_n_rows, l_n_cols, n_unique(X, Y, op_n_unique_count()));
   
   // Now on a second iteration, fill it.
   typename SpMat<T>::const_iterator x_it  = X.begin();
@@ -892,8 +888,6 @@ SpMat<eT>::operator=(const Base<eT, T1>& expr)
   const uword x_n_cols = x.n_cols;
   const uword x_n_elem = x.n_elem;
   
-  init(x_n_rows, x_n_cols);
-  
   // Count number of nonzero elements in base object.
   uword n = 0;
   
@@ -904,9 +898,9 @@ SpMat<eT>::operator=(const Base<eT, T1>& expr)
     n += (x_mem[i] != eT(0)) ? uword(1) : uword(0);
     }
   
-  mem_resize(n);
+  init(x_n_rows, x_n_cols, n);
   
-  // Now the memory is resized correctly; add nonzero elements.
+  // Now the memory is resized correctly; set nonzero elements.
   n = 0;
   for(uword j = 0; j < x_n_cols; ++j)
   for(uword i = 0; i < x_n_rows; ++i)
@@ -1334,18 +1328,11 @@ SpMat<eT>::operator=(const SpSubview<eT>& X)
   
   X.m.sync_csc();
   
-  const uword in_n_cols = X.n_cols;
-  const uword in_n_rows = X.n_rows;
-  
   const bool alias = (this == &(X.m));
 
   if(alias == false)
     {
-    init(in_n_rows, in_n_cols);
-
-    const uword x_n_nonzero = X.n_nonzero;
-
-    mem_resize(x_n_nonzero);
+    init(X.n_rows, X.n_cols, X.n_nonzero);
 
     typename SpSubview<eT>::const_iterator it     = X.begin();
     typename SpSubview<eT>::const_iterator it_end = X.end();
@@ -4045,9 +4032,7 @@ SpMat<eT>::eye(const uword in_rows, const uword in_cols)
   
   const uword N = (std::min)(in_rows, in_cols);
   
-  zeros(in_rows, in_cols);
-  
-  mem_resize(N);
+  init(in_rows, in_cols, N);
   
   arrayops::inplace_set(access::rwp(values), eT(1), N);
   
@@ -4785,9 +4770,7 @@ SpMat<eT>::init(const MapMat<eT>& x)
   const uword x_n_cols = x.n_cols;
   const uword x_n_nz   = x.get_n_nonzero();
   
-  init(x_n_rows, x_n_cols);
-  
-  mem_resize(x_n_nz);
+  init(x_n_rows, x_n_cols, x_n_nz);
   
   arrayops::inplace_set(access::rwp(col_ptrs), uword(0), x_n_cols + 1);
   
@@ -5530,9 +5513,7 @@ SpMat<eT>::init_xform_mt(const SpBase<eT2,T1>& A, const Functor& func)
     }
   else
     {
-    init(P.get_n_rows(), P.get_n_cols());
-    
-    mem_resize(P.get_n_nonzero());
+    init(P.get_n_rows(), P.get_n_cols(), P.get_n_nonzero());
     
     typename SpProxy<T1>::const_iterator_type it     = P.begin();
     typename SpProxy<T1>::const_iterator_type it_end = P.end();

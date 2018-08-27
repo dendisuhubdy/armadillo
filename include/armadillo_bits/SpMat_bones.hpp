@@ -351,7 +351,6 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   inline void reserve(const uword in_rows, const uword in_cols, const uword new_n_nonzero);
   
   
-  
   template<typename T1> inline void set_real(const SpBase<pod_type,T1>& X);
   template<typename T1> inline void set_imag(const SpBase<pod_type,T1>& X);
   

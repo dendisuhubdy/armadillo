@@ -2980,9 +2980,7 @@ diskio::load_arma_binary(SpMat<eT>& x, std::istream& f, std::string& err_msg)
     //f.seekg(1, ios::cur);  // NOTE: this may not be portable, as on a Windows machine a newline could be two characters
     f.get();
     
-    x.set_size(f_n_rows, f_n_cols);
-    
-    x.mem_resize(f_n_nz);
+    x.reserve(f_n_rows, f_n_cols, f_n_nz);
     
     f.read( reinterpret_cast<char*>(access::rwp(x.values)),      std::streamsize(x.n_nonzero*sizeof(eT))     );
     

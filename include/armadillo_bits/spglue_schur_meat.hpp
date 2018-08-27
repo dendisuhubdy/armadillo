@@ -59,12 +59,10 @@ spglue_schur::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
   
   arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "element-wise multiplication");
   
-  out.zeros(pa.get_n_rows(), pa.get_n_cols());
-  
   if( (pa.get_n_nonzero() != 0) && (pb.get_n_nonzero() != 0) )
     {
     // Resize memory to correct size.
-    out.mem_resize(n_unique(pa, pb, op_n_unique_mul()));
+    out.reserve(pa.get_n_rows(), pa.get_n_cols(), n_unique(pa, pb, op_n_unique_mul()));
     
     // Now iterate across both matrices.
     typename SpProxy<T1>::const_iterator_type x_it = pa.begin();
@@ -119,6 +117,10 @@ spglue_schur::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
       {
       col_ptrs[c] += col_ptrs[c - 1];
       }
+    }
+  else
+    {
+    out.zeros(pa.get_n_rows(), pa.get_n_cols());
     }
   }
 
