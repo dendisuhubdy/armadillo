@@ -61,10 +61,8 @@ spglue_plus::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy<
   
   if( (pa.get_n_nonzero() != 0) && (pb.get_n_nonzero() != 0) )
     {
-    out.zeros(pa.get_n_rows(), pa.get_n_cols());
-    
     // Resize memory to correct size.
-    out.mem_resize(n_unique(pa, pb, op_n_unique_add()));
+    out.reserve(pa.get_n_rows(), pa.get_n_cols(), n_unique(pa, pb, op_n_unique_add()));
     
     // Now iterate across both matrices.
     typename SpProxy<T1>::const_iterator_type x_it = pa.begin();

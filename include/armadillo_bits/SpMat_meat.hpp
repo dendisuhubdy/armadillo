@@ -4317,6 +4317,18 @@ SpMat<eT>::reset()
 
 
 template<typename eT>
+inline
+void
+SpMat<eT>::reserve(const uword in_rows, const uword in_cols, const uword new_n_nonzero)
+  {
+  arma_extra_debug_sigprint();
+  
+  init(in_rows, in_cols, new_n_nonzero);
+  }
+
+
+
+template<typename eT>
 template<typename T1>
 inline
 void
@@ -4616,7 +4628,7 @@ SpMat<eT>::quiet_load(std::istream& is, const file_type type)
 template<typename eT>
 inline
 void
-SpMat<eT>::init(uword in_rows, uword in_cols)
+SpMat<eT>::init(uword in_rows, uword in_cols, const uword new_n_nonzero)
   {
   arma_extra_debug_sigprint();
   
@@ -4659,12 +4671,12 @@ SpMat<eT>::init(uword in_rows, uword in_cols)
   if(row_indices)  { memory::release(access::rw(row_indices)); }
   if(col_ptrs   )  { memory::release(access::rw(col_ptrs));    }
   
-  access::rw(values)      = memory::acquire<eT>   (1);
-  access::rw(row_indices) = memory::acquire<uword>(1);
+  access::rw(values)      = memory::acquire<eT>   (new_n_nonzero + 1);
+  access::rw(row_indices) = memory::acquire<uword>(new_n_nonzero + 1);
   access::rw(col_ptrs)    = memory::acquire<uword>(in_cols + 2);
   
-  access::rw(values[0])      = 0;
-  access::rw(row_indices[0]) = 0;
+  access::rw(     values[new_n_nonzero]) = 0;
+  access::rw(row_indices[new_n_nonzero]) = 0;
   
   // fill column pointers with 0,
   // except for the last element which contains the maximum possible element
@@ -4677,7 +4689,7 @@ SpMat<eT>::init(uword in_rows, uword in_cols)
   access::rw(n_rows)    = in_rows;
   access::rw(n_cols)    = in_cols;
   access::rw(n_elem)    = (in_rows * in_cols);
-  access::rw(n_nonzero) = 0;
+  access::rw(n_nonzero) = new_n_nonzero;
   }
 
 
