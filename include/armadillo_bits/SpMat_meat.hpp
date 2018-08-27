@@ -528,11 +528,11 @@ SpMat<eT>::SpMat
   arma_debug_check( (colptr.is_vec() == false), "SpMat::SpMat(): given 'colptr' object is not a vector" );
   arma_debug_check( (vals.is_vec()   == false), "SpMat::SpMat(): given 'values' object is not a vector" );
   
-  arma_debug_check( (rowind.n_elem != vals.n_elem), "SpMat::SpMat(): number of row indices is not equal to number of values" );
-  arma_debug_check( (colptr.n_elem != (n_cols+1) ), "SpMat::SpMat(): number of column pointers is not equal to n_cols+1" );
-  
   // Resize to correct number of elements (this also sets n_nonzero)
   init(in_n_rows, in_n_cols, vals.n_elem);
+  
+  arma_debug_check( (rowind.n_elem != vals.n_elem), "SpMat::SpMat(): number of row indices is not equal to number of values" );
+  arma_debug_check( (colptr.n_elem != (n_cols+1) ), "SpMat::SpMat(): number of column pointers is not equal to n_cols+1" );
   
   // copy supplied values into sparse matrix -- not checked for consistency
   arrayops::copy(access::rwp(row_indices), rowind.memptr(), rowind.n_elem );
