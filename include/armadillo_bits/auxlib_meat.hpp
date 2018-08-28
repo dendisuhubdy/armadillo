@@ -3176,7 +3176,7 @@ auxlib::solve_square_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::ele
 template<typename T1>
 inline
 bool
-auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
+auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -3255,8 +3255,7 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -3265,6 +3264,7 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
     arma_ignore(A);
     arma_ignore(B_expr);
     arma_ignore(equilibrate);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -3277,7 +3277,7 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_ty
 template<typename T1>
 inline
 bool
-auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
+auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -3357,8 +3357,7 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -3367,6 +3366,7 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
     arma_ignore(A);
     arma_ignore(B_expr);
     arma_ignore(equilibrate);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -3474,7 +3474,7 @@ auxlib::solve_sympd_fast_common(Mat<typename T1::elem_type>& out, Mat<typename T
 template<typename T1>
 inline
 bool
-auxlib::solve_sympd_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
+auxlib::solve_sympd_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -3534,8 +3534,7 @@ auxlib::solve_sympd_refine(Mat<typename T1::pod_type>& out, typename T1::pod_typ
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -3544,6 +3543,7 @@ auxlib::solve_sympd_refine(Mat<typename T1::pod_type>& out, typename T1::pod_typ
     arma_ignore(A);
     arma_ignore(B_expr);
     arma_ignore(equilibrate);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -3556,7 +3556,7 @@ auxlib::solve_sympd_refine(Mat<typename T1::pod_type>& out, typename T1::pod_typ
 template<typename T1>
 inline
 bool
-auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
+auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -3564,7 +3564,7 @@ auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, type
     {
     arma_extra_debug_print("auxlib::solve_band_refine(): redirecting to auxlib::solve_square_refine() due to crippled LAPACK");
     
-    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, equilibrate);
+    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, equilibrate, allow_ugly);
     }
   #elif defined(ARMA_USE_LAPACK)
     {
@@ -3623,8 +3623,7 @@ auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, type
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -3633,6 +3632,7 @@ auxlib::solve_sympd_refine(Mat< std::complex<typename T1::pod_type> >& out, type
     arma_ignore(A);
     arma_ignore(B_expr);
     arma_ignore(equilibrate);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -4108,7 +4108,7 @@ auxlib::solve_band_fast_common(Mat<typename T1::elem_type>& out, const Mat<typen
 template<typename T1>
 inline
 bool
-auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const uword KL, const uword KU, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
+auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const uword KL, const uword KU, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -4183,8 +4183,7 @@ auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -4195,6 +4194,7 @@ auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type
     arma_ignore(KU);
     arma_ignore(B_expr);
     arma_ignore(equilibrate);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -4207,7 +4207,7 @@ auxlib::solve_band_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type
 template<typename T1>
 inline
 bool
-auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const uword KL, const uword KU, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
+auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const uword KL, const uword KU, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -4218,7 +4218,7 @@ auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typen
     arma_ignore(KL);
     arma_ignore(KU);
     
-    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, equilibrate);
+    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, equilibrate, allow_ugly);
     }
   #elif defined(ARMA_USE_LAPACK)
     {
@@ -4292,8 +4292,7 @@ auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typen
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -4304,6 +4303,7 @@ auxlib::solve_band_refine(Mat< std::complex<typename T1::pod_type> >& out, typen
     arma_ignore(KU);
     arma_ignore(B_expr);
     arma_ignore(equilibrate);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -4405,7 +4405,7 @@ auxlib::solve_tridiag_fast_common(Mat<typename T1::elem_type>& out, const Mat<ty
 template<typename T1>
 inline
 bool
-auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -4473,8 +4473,7 @@ auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_t
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -4482,6 +4481,7 @@ auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_t
     arma_ignore(out_rcond);
     arma_ignore(A);
     arma_ignore(B_expr);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -4494,7 +4494,7 @@ auxlib::solve_tridiag_refine(Mat<typename T1::pod_type>& out, typename T1::pod_t
 template<typename T1>
 inline
 bool
-auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
+auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool allow_ugly)
   {
   arma_extra_debug_sigprint();
   
@@ -4502,7 +4502,7 @@ auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, ty
     {
     arma_extra_debug_print("auxlib::solve_tridiag_refine(): redirecting to auxlib::solve_square_refine() due to crippled LAPACK");
     
-    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, false);
+    return auxlib::solve_square_refine(out, out_rcond, A, B_expr, false, allow_ugly);
     }
   #elif defined(ARMA_USE_LAPACK)
     {
@@ -4528,7 +4528,7 @@ auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, ty
     
     arma_debug_assert_blas_size(out, B);
     
-    char     fact  = 'N'; 
+    char     fact  = 'N';
     char     trans = 'N';
     blas_int n     = blas_int(N);
     blas_int nrhs  = blas_int(B.n_cols);
@@ -4569,8 +4569,7 @@ auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, ty
     
     out_rcond = rcond;
     
-    //return ((info == 0) || (info == (n+1)));
-    return (info == 0);
+    return (allow_ugly) ? ((info == 0) || (info == (n+1))) : (info == 0);
     }
   #else
     {
@@ -4578,6 +4577,7 @@ auxlib::solve_tridiag_refine(Mat< std::complex<typename T1::pod_type> >& out, ty
     arma_ignore(out_rcond);
     arma_ignore(A);
     arma_ignore(B_expr);
+    arma_ignore(allow_ugly);
     arma_stop_logic_error("solve(): use of LAPACK must be enabled");
     return false;
     }

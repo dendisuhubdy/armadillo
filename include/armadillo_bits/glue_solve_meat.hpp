@@ -54,6 +54,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
   const bool no_band     = bool(flags & solve_opts::flag_no_band    );
   const bool no_sympd    = bool(flags & solve_opts::flag_no_sympd   );
+  const bool allow_ugly  = bool(flags & solve_opts::flag_allow_ugly );
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
@@ -62,6 +63,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(no_approx  )  { arma_extra_debug_print("no_approx");   }
   if(no_band    )  { arma_extra_debug_print("no_band");     }
   if(no_sympd   )  { arma_extra_debug_print("no_sympd");    }
+  if(allow_ugly )  { arma_extra_debug_print("allow_ugly");  }
   
   arma_debug_check( (fast && equilibrate), "solve(): options 'fast' and 'equilibrate' are mutually exclusive" );
   
@@ -137,13 +139,13 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           {
           arma_extra_debug_print("glue_solve_gen::apply(): refine + tridiagonal");
           
-          status = auxlib::solve_tridiag_refine(out, rcond, A, B_expr);
+          status = auxlib::solve_tridiag_refine(out, rcond, A, B_expr, allow_ugly);
           }
         else
           {
           arma_extra_debug_print("glue_solve_gen::apply(): refine + band");
           
-          status = auxlib::solve_band_refine(out, rcond, A, KL, KU, B_expr, equilibrate);
+          status = auxlib::solve_band_refine(out, rcond, A, KL, KU, B_expr, equilibrate, allow_ugly);
           }
         }
       else
@@ -151,7 +153,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
         {
         arma_extra_debug_print("glue_solve_gen::apply(): refine + sympd");
         
-        status = auxlib::solve_sympd_refine(out, rcond, A, B_expr.get_ref(), equilibrate);  // A is overwritten
+        status = auxlib::solve_sympd_refine(out, rcond, A, B_expr.get_ref(), equilibrate, allow_ugly);  // A is overwritten
         
         if(status == false)
           {
@@ -159,14 +161,14 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           
           // auxlib::solve_sympd_refine() may have failed because A isn't really sympd
           A = A_expr.get_ref();
-          status = auxlib::solve_square_refine(out, rcond, A, B_expr.get_ref(), equilibrate);  // A is overwritten
+          status = auxlib::solve_square_refine(out, rcond, A, B_expr.get_ref(), equilibrate, allow_ugly);  // A is overwritten
           }
         }
       else
         {
         arma_extra_debug_print("glue_solve_gen::apply(): refine + dense");
         
-        status = auxlib::solve_square_refine(out, rcond, A, B_expr, equilibrate);  // A is overwritten
+        status = auxlib::solve_square_refine(out, rcond, A, B_expr, equilibrate, allow_ugly);  // A is overwritten
         }
       }
     
