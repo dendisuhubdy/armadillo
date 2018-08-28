@@ -173,18 +173,10 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       }
     
     
-      // if((status == true) && (rcond > T(0)) && (rcond <= (T(0.5)*std::numeric_limits<T>::epsilon())) )
-      //   {
-      //   // arma_debug_warn("solve(): system seems singular to working precision (rcond: ", rcond, ")");
-      //   
-      //   status = approx_equal( A_expr.get_ref() * out, B_expr.get_ref(), "reldiff", T(2)*std::numeric_limits<T>::epsilon() );
-      //   
-      //   if(status == true)
-      //     {
-      //     // solution seems okay, but warn the user about rcond
-      //     arma_debug_warn("solve(): system seems singular to working precision (rcond: ", rcond, ")");
-      //     }
-      //   }
+    if((status == true) && (rcond > T(0)) && (rcond <= (T(0.5)*std::numeric_limits<T>::epsilon())) )
+      {
+      arma_debug_warn("solve(): solution computed, but system seems singular to working precision (rcond: ", rcond, ")");
+      }
     
     
     if( (status == false) && (no_approx == false) )
