@@ -14,33 +14,62 @@
 // ------------------------------------------------------------------------
 
 
-//! \addtogroup fn_cond
+//! \addtogroup op_cond
 //! @{
 
 
 
 template<typename T1>
-arma_warn_unused
 inline
-typename enable_if2<is_supported_blas_type<typename T1::elem_type>::value, typename T1::pod_type>::result
-cond(const Base<typename T1::elem_type, T1>& X)
+typename T1::pod_type
+op_cond::cond(const Base<typename T1::elem_type, T1>& X)
   {
   arma_extra_debug_sigprint();
   
-  return op_cond::cond(X.get_ref());
+  typedef typename T1::pod_type T;
+  
+  Col<T> S;
+  
+  const bool status = auxlib::svd_dc(S, X);
+  
+  if(status == false)
+    {
+    arma_debug_warn("cond(): svd failed");
+    
+    return T(0);
+    }
+  
+  if(S.n_elem > 0)
+    {
+    return T( max(S) / min(S) );
+    }
+  else
+    {
+    return T(0);
+    }
   }
 
 
 
 template<typename T1>
-arma_warn_unused
 inline
-typename enable_if2<is_supported_blas_type<typename T1::elem_type>::value, typename T1::pod_type>::result
-rcond(const Base<typename T1::elem_type, T1>& X)
+typename T1::pod_type
+op_cond::rcond(const Base<typename T1::elem_type, T1>& X)
   {
   arma_extra_debug_sigprint();
   
-  return op_cond::rcond(X.get_ref());
+  typedef typename T1::elem_type eT;
+  typedef typename T1::pod_type   T;
+  
+  Mat<eT> A = X.get_ref();
+  
+  arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
+  
+  if(A.is_empty()) { return Datum<T>::inf; }
+  
+  const bool is_sympd = (auxlib::crippled_lapack(A) == false) ? sympd_helper::guess_sympd(A) : false;
+  
+  return (is_sympd) ? auxlib::rcond_sympd(A) : auxlib::rcond(A);
   }
 
 

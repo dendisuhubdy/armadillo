@@ -4970,77 +4970,61 @@ auxlib::qz(Mat< std::complex<T> >& A, Mat< std::complex<T> >& B, Mat< std::compl
 
 
 
-template<typename T1>
+template<typename eT>
 inline
-typename T1::pod_type
-auxlib::rcond(const Base<typename T1::pod_type,T1>& A_expr)
+eT
+auxlib::rcond(Mat<eT>& A)
   {
-  typedef typename T1::pod_type T;
-  
   #if defined(ARMA_USE_LAPACK)
     {
-    typedef typename T1::elem_type eT;
-    
-    Mat<eT> A = A_expr.get_ref();
-    
-    arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
-    
-    if(A.is_empty()) { return Datum<T>::inf; }
-    
     arma_debug_assert_blas_size(A);
     
     char     norm_id  = '1';
     blas_int m        = blas_int(A.n_rows);
     blas_int n        = blas_int(A.n_rows);  // assuming square matrix
     blas_int lda      = blas_int(A.n_rows);
-    T        norm_val = T(0);
-    T        rcond    = T(0);
+    eT       norm_val = eT(0);
+    eT       rcond    = eT(0);
     blas_int info     = blas_int(0);
     
     podarray<eT>        work(4*A.n_rows);
-    podarray<blas_int> iwork(A.n_rows);
+    podarray<blas_int> iwork(  A.n_rows);
     podarray<blas_int> ipiv( (std::min)(A.n_rows, A.n_cols) );
     
+    arma_extra_debug_print("lapack::lange()");
     norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, work.memptr());
     
+    arma_extra_debug_print("lapack::getrf()");
     lapack::getrf(&m, &n, A.memptr(), &lda, ipiv.memptr(), &info);
     
-    if(info != blas_int(0))  { return T(0); }
+    if(info != blas_int(0))  { return eT(0); }
     
+    arma_extra_debug_print("lapack::gecon()");
     lapack::gecon(&norm_id, &n, A.memptr(), &lda, &norm_val, &rcond, work.memptr(), iwork.memptr(), &info);
     
-    if(info != blas_int(0))  { return T(0); }
+    if(info != blas_int(0))  { return eT(0); }
     
     return rcond;
     }
   #else
     {
-    arma_ignore(A_expr);
+    arma_ignore(A);
     arma_stop_logic_error("rcond(): use of LAPACK must be enabled");
+    return eT(0);
     }
   #endif
-  
-  return T(0);
   }
 
 
 
-template<typename T1>
+template<typename T>
 inline
-typename T1::pod_type
-auxlib::rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
+T
+auxlib::rcond(Mat< std::complex<T> >& A)
   {
-  typedef typename T1::pod_type T;
-  
   #if defined(ARMA_USE_LAPACK)
     {
-    typedef typename T1::elem_type eT;
-    
-    Mat<eT> A = A_expr.get_ref();
-    
-    arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
-    
-    if(A.is_empty()) { return Datum<T>::inf; }
+    typedef typename std::complex<T> eT;
     
     arma_debug_assert_blas_size(A);
     
@@ -5052,18 +5036,20 @@ auxlib::rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
     T        rcond    = T(0);
     blas_int info     = blas_int(0);
     
-    podarray< T>       junk(1);
+    podarray< T>        junk(1);
     podarray<eT>        work(2*A.n_rows);
     podarray< T>       rwork(2*A.n_rows);
-    podarray<blas_int> iwork(A.n_rows);
     podarray<blas_int> ipiv( (std::min)(A.n_rows, A.n_cols) );
     
+    arma_extra_debug_print("lapack::lange()");
     norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, junk.memptr());
     
+    arma_extra_debug_print("lapack::getrf()");
     lapack::getrf(&m, &n, A.memptr(), &lda, ipiv.memptr(), &info);
     
     if(info != blas_int(0))  { return T(0); }
     
+    arma_extra_debug_print("lapack::cx_gecon()");
     lapack::cx_gecon(&norm_id, &n, A.memptr(), &lda, &norm_val, &rcond, work.memptr(), rwork.memptr(), &info);
     
     if(info != blas_int(0))  { return T(0); }
@@ -5072,12 +5058,114 @@ auxlib::rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
     }
   #else
     {
-    arma_ignore(A_expr);
+    arma_ignore(A);
     arma_stop_logic_error("rcond(): use of LAPACK must be enabled");
+    return T(0);
     }
   #endif
-  
-  return T(0);
+  }
+
+
+
+template<typename eT>
+inline
+eT
+auxlib::rcond_sympd(Mat<eT>& A)
+  {
+  #if defined(ARMA_USE_LAPACK)
+    {
+    arma_debug_assert_blas_size(A);
+    
+    char     norm_id  = '1';
+    char     uplo     = 'L';
+    blas_int m        = blas_int(A.n_rows);
+    blas_int n        = blas_int(A.n_rows);  // assuming square matrix
+    blas_int lda      = blas_int(A.n_rows);
+    eT       norm_val = eT(0);
+    eT       rcond    = eT(0);
+    blas_int info     = blas_int(0);
+    
+    podarray<eT>        work(3*A.n_rows);
+    podarray<blas_int> iwork(  A.n_rows);
+    
+    arma_extra_debug_print("lapack::lange()");
+    norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, work.memptr());
+    
+    arma_extra_debug_print("lapack::potrf()");
+    lapack::potrf(&uplo, &n, A.memptr(), &lda, &info);
+    
+    if(info != blas_int(0))  { return eT(0); }
+    
+    arma_extra_debug_print("lapack::pocon()");
+    lapack::pocon(&uplo, &n, A.memptr(), &lda, &norm_val, &rcond, work.memptr(), iwork.memptr(), &info);
+    
+    if(info != blas_int(0))  { return eT(0); }
+    
+    return rcond;
+    }
+  #else
+    {
+    arma_ignore(A);
+    arma_stop_logic_error("rcond(): use of LAPACK must be enabled");
+    return eT(0);
+    }
+  #endif
+  }
+
+
+
+template<typename T>
+inline
+T
+auxlib::rcond_sympd(Mat< std::complex<T> >& A)
+  {
+  #if defined(ARMA_CRIPPLED_LAPACK)
+    {
+    arma_extra_debug_print("auxlib::rcond_sympd(): redirecting to auxlib::rcond() due to crippled LAPACK");
+    
+    return auxlib::rcond(A);
+    }
+  #elif defined(ARMA_USE_LAPACK)
+    {
+    typedef typename std::complex<T> eT;
+    
+    arma_debug_assert_blas_size(A);
+    
+    char     norm_id  = '1';
+    char     uplo     = 'L';
+    blas_int m        = blas_int(A.n_rows);
+    blas_int n        = blas_int(A.n_rows);  // assuming square matrix
+    blas_int lda      = blas_int(A.n_rows);
+    T        norm_val = T(0);
+    T        rcond    = T(0);
+    blas_int info     = blas_int(0);
+    
+    podarray< T>  junk(1);
+    podarray<eT>  work(2*A.n_rows);
+    podarray< T> rwork(  A.n_rows);
+    
+    arma_extra_debug_print("lapack::lange()");
+    norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, junk.memptr());
+    
+    arma_extra_debug_print("lapack::potrf()");
+    lapack::potrf(&uplo, &n, A.memptr(), &lda, &info);
+    
+    if(info != blas_int(0))  { return T(0); }
+    
+    arma_extra_debug_print("lapack::cx_pocon()");
+    lapack::cx_pocon(&uplo, &n, A.memptr(), &lda, &norm_val, &rcond, work.memptr(), rwork.memptr(), &info);
+    
+    if(info != blas_int(0))  { return T(0); }
+    
+    return rcond;
+    }
+  #else
+    {
+    arma_ignore(A);
+    arma_stop_logic_error("rcond(): use of LAPACK must be enabled");
+    return T(0);
+    }
+  #endif
   }
 
 

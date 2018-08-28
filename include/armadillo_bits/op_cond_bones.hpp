@@ -14,35 +14,17 @@
 // ------------------------------------------------------------------------
 
 
-//! \addtogroup fn_cond
+//! \addtogroup op_cond
 //! @{
 
 
-
-template<typename T1>
-arma_warn_unused
-inline
-typename enable_if2<is_supported_blas_type<typename T1::elem_type>::value, typename T1::pod_type>::result
-cond(const Base<typename T1::elem_type, T1>& X)
+class op_cond
   {
-  arma_extra_debug_sigprint();
+  public:
   
-  return op_cond::cond(X.get_ref());
-  }
-
-
-
-template<typename T1>
-arma_warn_unused
-inline
-typename enable_if2<is_supported_blas_type<typename T1::elem_type>::value, typename T1::pod_type>::result
-rcond(const Base<typename T1::elem_type, T1>& X)
-  {
-  arma_extra_debug_sigprint();
-  
-  return op_cond::rcond(X.get_ref());
-  }
-
+  template<typename T1> static inline typename T1::pod_type  cond(const Base<typename T1::elem_type, T1>& X);
+  template<typename T1> static inline typename T1::pod_type rcond(const Base<typename T1::elem_type, T1>& X);
+  };
 
 
 //! @}

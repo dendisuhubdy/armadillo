@@ -281,6 +281,7 @@ namespace arma
   #include "armadillo_bits/op_chi2rnd_bones.hpp"
   #include "armadillo_bits/op_wishrnd_bones.hpp"
   #include "armadillo_bits/op_roots_bones.hpp"
+  #include "armadillo_bits/op_cond_bones.hpp"
   
   #include "armadillo_bits/glue_times_bones.hpp"
   #include "armadillo_bits/glue_mixed_bones.hpp"
@@ -684,6 +685,7 @@ namespace arma
   #include "armadillo_bits/op_chi2rnd_meat.hpp"
   #include "armadillo_bits/op_wishrnd_meat.hpp"
   #include "armadillo_bits/op_roots_meat.hpp"
+  #include "armadillo_bits/op_cond_meat.hpp"
   
   #include "armadillo_bits/glue_times_meat.hpp"
   #include "armadillo_bits/glue_mixed_meat.hpp"

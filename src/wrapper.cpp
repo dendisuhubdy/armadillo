@@ -891,6 +891,28 @@ extern "C"
     
     
     
+    void arma_fortran_prefix(arma_spocon)(char* uplo, blas_int* n,  float* a, blas_int* lda,  float* anorm,  float* rcond,  float* work, blas_int* iwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_spocon)(uplo, n, a, lda, anorm, rcond, work, iwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_dpocon)(char* uplo, blas_int* n, double* a, blas_int* lda, double* anorm, double* rcond, double* work, blas_int* iwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_dpocon)(uplo, n, a, lda, anorm, rcond, work, iwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_cpocon)(char* uplo, blas_int* n, void* a, blas_int* lda,  float* anorm,  float* rcond, void* work,  float* rwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_cpocon)(uplo, n, a, lda, anorm, rcond, work, rwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_zpocon)(char* uplo, blas_int* n, void* a, blas_int* lda, double* anorm, double* rcond, void* work, double* rwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_zpocon)(uplo, n, a, lda, anorm, rcond, work, rwork, info);
+      }
+    
+    
+    
     blas_int arma_fortran_prefix(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4)
       {
       return arma_fortran_noprefix(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
