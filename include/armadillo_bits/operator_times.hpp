@@ -289,7 +289,6 @@ operator*
 //! multiplication of two sparse objects
 template<typename T1, typename T2>
 inline
-arma_hot
 typename
 enable_if2
   <
