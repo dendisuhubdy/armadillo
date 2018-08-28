@@ -29,19 +29,13 @@ SpMat<eT>::SpMat()
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(memory::acquire<eT>(1))
-  , row_indices(memory::acquire<uword>(1))
-  , col_ptrs(memory::acquire<uword>(2))
+  , values(NULL)
+  , row_indices(NULL)
+  , col_ptrs(NULL)
   {
   arma_extra_debug_sigprint_this(this);
   
-  invalidate_cache();
-  
-  access::rw(values[0]) = 0;
-  access::rw(row_indices[0]) = 0;
-  
-  access::rw(col_ptrs[0]) = 0; // No elements.
-  access::rw(col_ptrs[1]) = std::numeric_limits<uword>::max();
+  init(0,0);
   }
 
 
@@ -99,6 +93,25 @@ SpMat<eT>::SpMat(const SizeMat& s)
   arma_extra_debug_sigprint_this(this);
   
   init(s.n_rows, s.n_cols);
+  }
+
+
+
+template<typename eT>
+inline
+SpMat<eT>::SpMat(const arma_spmat_reserve_indicator&, const uword in_rows, const uword in_cols, const uword new_n_nonzero)
+  : n_rows(0)
+  , n_cols(0)
+  , n_elem(0)
+  , n_nonzero(0)
+  , vec_state(0)
+  , values(NULL)
+  , row_indices(NULL)
+  , col_ptrs(NULL)
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  init(in_rows, in_cols, new_n_nonzero);
   }
 
 
@@ -1001,9 +1014,7 @@ SpMat<eT>::operator*=(const Base<eT, T1>& y)
     last_index = index[last_index];
     }
 
-  SpMat<eT> z(n_rows, p.get_n_cols());
-
-  z.mem_resize(nonzero_rows * p.get_n_cols()); // upper bound on size
+  SpMat<eT> z(arma_spmat_reserve_indicator(), n_rows, p.get_n_cols(), (nonzero_rows * p.get_n_cols())); // upper bound on size
 
   // Now we have to fill all the elements using a modification of the NUMBMM algorithm.
   uword cur_pos = 0;
@@ -1110,9 +1121,8 @@ SpMat<eT>::operator%=(const Base<eT, T1>& x)
     ++it;
     }
   
-  SpMat<eT> tmp(n_rows, n_cols);
-  tmp.mem_resize(new_n_nonzero);
-
+  SpMat<eT> tmp(arma_spmat_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
+  
   const_iterator c_it     = begin();
   const_iterator c_it_end = end();
   
@@ -4110,21 +4120,18 @@ SpMat<eT>::sprandu(const uword in_rows, const uword in_cols, const double densit
   
   arma_debug_check( ( (density < double(0)) || (density > double(1)) ), "sprandu(): density must be in the [0,1] interval" );
   
-  zeros(in_rows, in_cols);
+  const uword new_n_nonzero = uword(density * double(in_rows) * double(in_cols) + 0.5);
   
-  mem_resize( uword(density * double(in_rows) * double(in_cols) + 0.5) );
+  init(in_rows, in_cols, new_n_nonzero);
   
-  if(n_nonzero == 0)
-    {
-    return *this;
-    }
+  if(new_n_nonzero == 0)  { return *this; }
   
-  arma_rng::randu<eT>::fill( access::rwp(values), n_nonzero );
+  arma_rng::randu<eT>::fill( access::rwp(values), new_n_nonzero );
   
-  uvec indices = linspace<uvec>( 0u, in_rows*in_cols-1, n_nonzero );
+  uvec indices = linspace<uvec>( 0u, in_rows*in_cols-1, new_n_nonzero );
   
   // perturb the indices
-  for(uword i=1; i < n_nonzero-1; ++i)
+  for(uword i=1; i < new_n_nonzero-1; ++i)
     {
     const uword index_left  = indices[i-1];
     const uword index_right = indices[i+1];
@@ -4161,7 +4168,7 @@ SpMat<eT>::sprandu(const uword in_rows, const uword in_cols, const double densit
     ++count;
     }
   
-  if(cur_index != n_nonzero)
+  if(cur_index != new_n_nonzero)
     {
     // Fix size to correct size.
     mem_resize(cur_index);
@@ -4199,21 +4206,18 @@ SpMat<eT>::sprandn(const uword in_rows, const uword in_cols, const double densit
   
   arma_debug_check( ( (density < double(0)) || (density > double(1)) ), "sprandn(): density must be in the [0,1] interval" );
   
-  zeros(in_rows, in_cols);
+  const uword new_n_nonzero = uword(density * double(in_rows) * double(in_cols) + 0.5);
   
-  mem_resize( uword(density * double(in_rows) * double(in_cols) + 0.5) );
+  init(in_rows, in_cols, new_n_nonzero);
   
-  if(n_nonzero == 0)
-    {
-    return *this;
-    }
+  if(new_n_nonzero == 0)  { return *this; }
   
-  arma_rng::randn<eT>::fill( access::rwp(values), n_nonzero );
+  arma_rng::randn<eT>::fill( access::rwp(values), new_n_nonzero );
   
-  uvec indices = linspace<uvec>( 0u, in_rows*in_cols-1, n_nonzero );
+  uvec indices = linspace<uvec>( 0u, in_rows*in_cols-1, new_n_nonzero );
   
   // perturb the indices
-  for(uword i=1; i < n_nonzero-1; ++i)
+  for(uword i=1; i < new_n_nonzero-1; ++i)
     {
     const uword index_left  = indices[i-1];
     const uword index_right = indices[i+1];
@@ -4250,7 +4254,7 @@ SpMat<eT>::sprandn(const uword in_rows, const uword in_cols, const double densit
     ++count;
     }
   
-  if(cur_index != n_nonzero)
+  if(cur_index != new_n_nonzero)
     {
     // Fix size to correct size.
     mem_resize(cur_index);
@@ -5328,9 +5332,7 @@ SpMat<eT>::remove_zeros()
     {
     if(new_n_nonzero == 0)  { init(n_rows, n_cols); return; }
     
-    SpMat<eT> tmp(n_rows, n_cols);
-    
-    tmp.mem_resize(new_n_nonzero);
+    SpMat<eT> tmp(arma_spmat_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
     
     uword new_index = 0;
     
