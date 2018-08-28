@@ -173,7 +173,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       }
     
     
-    if((status == true) && (rcond > T(0)) && (rcond <= (T(0.5)*std::numeric_limits<T>::epsilon())) )
+    if( (status == true) && (rcond > T(0)) && (rcond <= (T(0.5)*std::numeric_limits<T>::epsilon())) )
       {
       arma_debug_warn("solve(): solution computed, but system seems singular to working precision (rcond: ", rcond, ")");
       }
