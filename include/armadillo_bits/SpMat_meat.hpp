@@ -541,6 +541,9 @@ SpMat<eT>::SpMat
   
   // important: set the sentinel as well
   access::rw(col_ptrs[n_cols + 1]) = std::numeric_limits<uword>::max();
+  
+  // make sure no zeros are stored
+  remove_zeros();
   }
 
 
