@@ -12148,6 +12148,7 @@ The number of rows in <i>A</i> and <i>B</i> must be the same
 <tr><td><code>solve_opts::no_approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not find approximate solutions for rank deficient systems</td></tr>
 <tr><td><code>solve_opts::no_band</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use optimisations for band matrices</td></tr>
 <tr><td><code>solve_opts::no_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use optimisations for symmetric/hermitian positive definite matrices</td></tr>
+<tr><td><code>solve_opts::allow_ugly</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>keep solutions of systems that are singular to working precision</td></tr>
 </tbody>
 </table>
 <br>
@@ -17867,8 +17868,9 @@ List of additions and changes for each version:
 <a name="version_9200"></a>
 <li>Version 9.200:
 <ul>
+<li>faster handling of symmetric positive definite matrices by <a href="#rcond">rcond()</a></li>
+<li>faster handling of compound sparse matrix expressions by <a href="#accu">accu()</a></li>
 <li>expanded <a href="#solve">solve()</a> to optionally allow keeping solutions of systems singular to working precision</li>
-<li>faster handling of compound sparse expressions by <a href="#accu">accu()</a></li>
 </ul>
 </li>
 <br>
