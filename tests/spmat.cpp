@@ -2404,12 +2404,62 @@ TEST_CASE("spmat_dirk_constructor_test")
 
   // Ok, now make a matrix.
   sp_mat M(row_indices, col_ptrs, values, 6, 5);
+  
+  REQUIRE( M.n_nonzero == 6 );
 
   // Make the equivalent dense matrix.
   mat D(6, 5);
   D.fill(0);
   D(1, 0) = 4.0;
   D(3, 0) = 2.0;
+  D(1, 2) = 1.0;
+  D(2, 3) = 3.2;
+  D(4, 4) = 1.2;
+  D(5, 4) = 3.5;
+
+  // So now let's just do a bunch of operations and make sure everything is the
+  // same.
+  sp_mat dm = M * M.t();
+  mat dd = D * D.t();
+
+  CheckMatrices(dm, dd);
+
+  dm = M.t() * M;
+  dd = D.t() * D;
+
+  CheckMatrices(dm, dd);
+
+  sp_mat am = M + M;
+  mat ad = D + D;
+
+  CheckMatrices(am, ad);
+
+  dm = M + D;
+  ad = D + M;
+
+  CheckMatrices(dm, ad);
+  }
+
+
+
+TEST_CASE("spmat_dirk_constructor_test2")
+  {
+  // note the zero at (1,1)
+   vec values      = "4.0 2.0 0.0 1.0 3.2 1.2 3.5";
+  uvec row_indices = "1 3 1 1 2 4 5";
+  uvec col_ptrs    = "0 2 3 4 5 7";
+  
+  // Ok, now make a matrix.
+  sp_mat M(row_indices, col_ptrs, values, 6, 5);
+  
+  REQUIRE( M.n_nonzero == 6 );
+
+  // Make the equivalent dense matrix.
+  mat D(6, 5);
+  D.fill(0);
+  D(1, 0) = 4.0;
+  D(3, 0) = 2.0;
+  D(1, 1) = 0.0;
   D(1, 2) = 1.0;
   D(2, 3) = 3.2;
   D(4, 4) = 1.2;
