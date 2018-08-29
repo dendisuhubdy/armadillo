@@ -787,7 +787,7 @@ SpMat<eT>::SpMat
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(NULL) // extra element is set when mem_resize is called
+  , values(NULL)
   , row_indices(NULL)
   , col_ptrs(NULL)
   {
@@ -878,7 +878,7 @@ SpMat<eT>::SpMat(const Base<eT, T1>& x)
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(NULL) // extra element is set when mem_resize is called in operator=()
+  , values(NULL)
   , row_indices(NULL)
   , col_ptrs(NULL)
   {
@@ -1321,7 +1321,7 @@ SpMat<eT>::SpMat(const SpSubview<eT>& X)
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(NULL) // extra element added when mem_resize is called
+  , values(NULL)
   , row_indices(NULL)
   , col_ptrs(NULL)
   {
@@ -1477,7 +1477,7 @@ SpMat<eT>::SpMat(const spdiagview<eT>& X)
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(NULL) // extra element added when mem_resize is called
+  , values(NULL)
   , row_indices(NULL)
   , col_ptrs(NULL)
   {
@@ -1721,7 +1721,7 @@ SpMat<eT>::SpMat(const SpGlue<T1, T2, spglue_type>& X)
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(NULL) // extra element set in application of sparse glue
+  , values(NULL)
   , row_indices(NULL)
   , col_ptrs(NULL)
   {
@@ -1746,7 +1746,7 @@ SpMat<eT>::SpMat(const mtSpOp<eT, T1, spop_type>& X)
   , n_elem(0)
   , n_nonzero(0)
   , vec_state(0)
-  , values(NULL) // extra element set in application of sparse glue
+  , values(NULL)
   , row_indices(NULL)
   , col_ptrs(NULL)
   {
