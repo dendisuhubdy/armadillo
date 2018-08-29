@@ -840,7 +840,7 @@ accu(const SpGlue<T1,T2,spglue_minus>& expr)
         }
       else // x is closer to the end
         {
-        acc -= (*y_it);
+        acc -= (*y_it);  // subtraction
         
         ++y_it;
         }

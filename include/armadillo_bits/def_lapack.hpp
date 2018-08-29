@@ -599,11 +599,11 @@ extern "C"
   void arma_fortran(arma_cgecon)(char* norm, blas_int* n, void* a, blas_int* lda,  float* anorm,  float* rcond, void* work,  float* rwork, blas_int* info);
   void arma_fortran(arma_zgecon)(char* norm, blas_int* n, void* a, blas_int* lda, double* anorm, double* rcond, void* work, double* rwork, blas_int* info);
   
-  // reciprocal of condition number (real, symmetric positive definite)
+  // reciprocal of condition number (real, symmetric positive definite matrix)
   void arma_fortran(arma_spocon)(char* uplo, blas_int* n,  float* a, blas_int* lda,  float* anorm,  float* rcond,  float* work, blas_int* iwork, blas_int* info);
   void arma_fortran(arma_dpocon)(char* uplo, blas_int* n, double* a, blas_int* lda, double* anorm, double* rcond, double* work, blas_int* iwork, blas_int* info);
   
-  // reciprocal of condition number (complex, hermitian positive definite)
+  // reciprocal of condition number (complex, hermitian positive definite matrix)
   void arma_fortran(arma_cpocon)(char* uplo, blas_int* n, void* a, blas_int* lda,  float* anorm,  float* rcond, void* work,  float* rwork, blas_int* info);
   void arma_fortran(arma_zpocon)(char* uplo, blas_int* n, void* a, blas_int* lda, double* anorm, double* rcond, void* work, double* rwork, blas_int* info);
   

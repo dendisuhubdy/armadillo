@@ -992,7 +992,7 @@ SpMat<eT>::operator*=(const Base<eT, T1>& y)
   // a fairly valid assumption), each row with any nonzero elements in it (in this
   // matrix) implies an entire nonzero column.  Therefore, we iterate over all
   // the row_indices and count the number of rows with any elements in them
-  // (using the quasi-linked-list idea from SYMBMM -- see operator_times.hpp).
+  // (using the quasi-linked-list idea from SYMBMM -- see spglue_times_meat.hpp).
   podarray<uword> index(n_rows);
   index.fill(n_rows); // Fill with invalid links.
 
@@ -4778,8 +4778,6 @@ SpMat<eT>::init(const MapMat<eT>& x)
   const uword x_n_nz   = x.get_n_nonzero();
   
   init(x_n_rows, x_n_cols, x_n_nz);
-  
-  arrayops::inplace_set(access::rwp(col_ptrs), uword(0), x_n_cols + 1);
   
   typename MapMat<eT>::map_type& x_map_ref = *(x.map_ptr);
   
