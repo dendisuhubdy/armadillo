@@ -135,7 +135,7 @@ operator%
     }
   
   // Resize memory accordingly.
-  SpMat<eT> result(arma_spmat_reserve_indicator(), pa.get_n_rows(), pa.get_n_cols(), new_n_nonzero);
+  SpMat<eT> result(arma_reserve_indicator(), pa.get_n_rows(), pa.get_n_cols(), new_n_nonzero);
   
   uword cur_val = 0;
   

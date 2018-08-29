@@ -212,7 +212,7 @@ operator/
       }
     }
   
-  SpMat<eT> result(arma_spmat_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
+  SpMat<eT> result(arma_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
   
   uword cur_pos = 0;
   

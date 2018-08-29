@@ -351,7 +351,7 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   inline void reserve(const uword in_rows, const uword in_cols, const uword new_n_nonzero);
   
   //! don't use this unless you're writing internal Armadillo code
-  inline SpMat(const arma_spmat_reserve_indicator&, const uword in_rows, const uword in_cols, const uword new_n_nonzero);
+  inline SpMat(const arma_reserve_indicator&, const uword in_rows, const uword in_cols, const uword new_n_nonzero);
   
   
   template<typename T1> inline void set_real(const SpBase<pod_type,T1>& X);

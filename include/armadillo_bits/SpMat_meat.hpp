@@ -99,7 +99,7 @@ SpMat<eT>::SpMat(const SizeMat& s)
 
 template<typename eT>
 inline
-SpMat<eT>::SpMat(const arma_spmat_reserve_indicator&, const uword in_rows, const uword in_cols, const uword new_n_nonzero)
+SpMat<eT>::SpMat(const arma_reserve_indicator&, const uword in_rows, const uword in_cols, const uword new_n_nonzero)
   : n_rows(0)
   , n_cols(0)
   , n_elem(0)
@@ -1014,7 +1014,7 @@ SpMat<eT>::operator*=(const Base<eT, T1>& y)
     last_index = index[last_index];
     }
 
-  SpMat<eT> z(arma_spmat_reserve_indicator(), n_rows, p.get_n_cols(), (nonzero_rows * p.get_n_cols())); // upper bound on size
+  SpMat<eT> z(arma_reserve_indicator(), n_rows, p.get_n_cols(), (nonzero_rows * p.get_n_cols())); // upper bound on size
 
   // Now we have to fill all the elements using a modification of the NUMBMM algorithm.
   uword cur_pos = 0;
@@ -1121,7 +1121,7 @@ SpMat<eT>::operator%=(const Base<eT, T1>& x)
     ++it;
     }
   
-  SpMat<eT> tmp(arma_spmat_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
+  SpMat<eT> tmp(arma_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
   
   const_iterator c_it     = begin();
   const_iterator c_it_end = end();
@@ -5330,7 +5330,7 @@ SpMat<eT>::remove_zeros()
     {
     if(new_n_nonzero == 0)  { init(n_rows, n_cols); return; }
     
-    SpMat<eT> tmp(arma_spmat_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
+    SpMat<eT> tmp(arma_reserve_indicator(), n_rows, n_cols, new_n_nonzero);
     
     uword new_index = 0;
     
