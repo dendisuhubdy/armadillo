@@ -118,8 +118,6 @@ operator%
   
   arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "element-wise multiplication");
   
-  SpMat<eT> result(pa.get_n_rows(), pa.get_n_cols());
-  
   // count new size
   uword new_n_nonzero = 0;
   
@@ -137,7 +135,7 @@ operator%
     }
   
   // Resize memory accordingly.
-  result.mem_resize(new_n_nonzero);
+  SpMat<eT> result(arma_spmat_reserve_indicator(), pa.get_n_rows(), pa.get_n_cols(), new_n_nonzero);
   
   uword cur_val = 0;
   
