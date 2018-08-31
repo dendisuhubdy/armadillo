@@ -5464,18 +5464,10 @@ SpMat<eT>::init_xform_mt(const SpBase<eT2,T1>& A, const Functor& func)
     
     if(void_ptr(this) != void_ptr(&x))
       {
-      init(x.n_rows, x.n_cols);
-      
-      if(values)       { memory::release(access::rw(values));      }
-      if(row_indices)  { memory::release(access::rw(row_indices)); }
-      
-      access::rw(values)      = memory::acquire<eT>   (x.n_nonzero + 1);
-      access::rw(row_indices) = memory::acquire<uword>(x.n_nonzero + 1);
+      init(x.n_rows, x.n_cols, x.n_nonzero);
       
       arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1);
       arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols    + 1);
-      
-      access::rw(n_nonzero) = x.n_nonzero;
       }
     
     
