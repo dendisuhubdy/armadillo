@@ -5248,47 +5248,32 @@ SpMat<eT>::mem_resize(const uword new_n_nonzero)
   
   invalidate_cache();  // placed here, as mem_resize() is used during matrix modification
   
-  if(n_nonzero != new_n_nonzero)
+  if(n_nonzero == new_n_nonzero)  { return; }
+  
+  eT*    new_values      = memory::acquire<eT>   (new_n_nonzero + 1);
+  uword* new_row_indices = memory::acquire<uword>(new_n_nonzero + 1);
+  
+  if( (n_nonzero > 0 ) && (new_n_nonzero > 0) )
     {
-    if(new_n_nonzero == 0)
-      {
-      if(values)       { memory::release(access::rw(values));      }
-      if(row_indices)  { memory::release(access::rw(row_indices)); }
-      
-      access::rw(values)      = memory::acquire<eT>   (1);
-      access::rw(row_indices) = memory::acquire<uword>(1);
-      
-      access::rw(     values[0]) = 0;
-      access::rw(row_indices[0]) = 0;
-      }
-    else
-      {
-      eT*    new_values      = memory::acquire<eT>   (new_n_nonzero + 1);
-      uword* new_row_indices = memory::acquire<uword>(new_n_nonzero + 1);
-      
-      if(n_nonzero > 0)
-        {
-        // Copy old elements.
-        uword copy_len = (std::min)(n_nonzero, new_n_nonzero);
-        
-        arrayops::copy(new_values,      values,      copy_len);
-        arrayops::copy(new_row_indices, row_indices, copy_len);
-        }
-      
-      if(values)       { memory::release(access::rw(values));      }
-      if(row_indices)  { memory::release(access::rw(row_indices)); }
-      
-      access::rw(values)      = new_values;
-      access::rw(row_indices) = new_row_indices;
-      
-      // Set the "fake end" of the matrix by setting the last value and row index to 0.
-      // This helps the iterators work correctly.
-      access::rw(     values[new_n_nonzero]) = 0;
-      access::rw(row_indices[new_n_nonzero]) = 0;
-      }
+    // Copy old elements.
+    uword copy_len = (std::min)(n_nonzero, new_n_nonzero);
     
-    access::rw(n_nonzero) = new_n_nonzero;
+    arrayops::copy(new_values,      values,      copy_len);
+    arrayops::copy(new_row_indices, row_indices, copy_len);
     }
+  
+  if(values)       { memory::release(access::rw(values));      }
+  if(row_indices)  { memory::release(access::rw(row_indices)); }
+  
+  access::rw(values)      = new_values;
+  access::rw(row_indices) = new_row_indices;
+  
+  // Set the "fake end" of the matrix by setting the last value and row index to 0.
+  // This helps the iterators work correctly.
+  access::rw(     values[new_n_nonzero]) = 0;
+  access::rw(row_indices[new_n_nonzero]) = 0;
+  
+  access::rw(n_nonzero) = new_n_nonzero;
   }
 
 
