@@ -11192,6 +11192,9 @@ For single argument functions, <i>B = trig_fn(A)</i>, where <i>trig_fn</i> is ap
 <li>
 <i>tan</i>, <i>atan</i>, <i>tanh</i>, <i>atanh</i>
 </li>
+<li>
+<i>sinc</i>, defined as sinc(x) = sin(&pi;x)&nbsp;/&nbsp;(&pi;x) for x&nbsp;&ne;&nbsp;0, and sinc(x) = 1 for x&nbsp;=&nbsp;0
+</li>
 </ul>
 </li>
 <br>
@@ -11215,11 +11218,11 @@ mat Y = cos(X);
 <li>
 See also:
 <ul>
-<li><a href="#misc_fns">miscellaneous functions</a></li>
-<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#misc_fns">miscellaneous element-wise functions</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Trigonometric_functions">trigonometric functions in Wikipedia</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Atan2">atan2 function in Wikipedia</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Hypot">hypot function in Wikipedia</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sinc_function">sinc function in Wikipedia</a></li>
 </ul>
 </li>
 <br>
@@ -17870,6 +17873,7 @@ List of additions and changes for each version:
 <ul>
 <li>faster handling of symmetric positive definite matrices by <a href="#rcond">rcond()</a></li>
 <li>faster handling of compound sparse matrix expressions by <a href="#accu">accu()</a></li>
+<li>added <a href="#trig_fns">sinc()</a></li>
 <li>expanded <a href="#solve">solve()</a> to optionally allow keeping solutions of systems singular to working precision</li>
 </ul>
 </li>
