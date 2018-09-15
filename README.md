@@ -465,7 +465,7 @@ Octave/Matlab with C++ code that uses Armadillo matrices.
 ### 17: Related Software Using Armadillo
 
 * MLPACK: extensive library of machine learning algorithms
-  (regression, neural networks, etc)  
+  (regression, nonlinear optimisation, neural networks, etc)  
   http://mlpack.org
 
 * SigPack: C++ signal processing library  
