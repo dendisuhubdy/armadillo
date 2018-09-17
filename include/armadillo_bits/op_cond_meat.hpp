@@ -39,14 +39,7 @@ op_cond::cond(const Base<typename T1::elem_type, T1>& X)
     return T(0);
     }
   
-  if(S.n_elem > 0)
-    {
-    return T( max(S) / min(S) );
-    }
-  else
-    {
-    return T(0);
-    }
+  return (S.n_elem > 0) ? T( max(S) / min(S) ) : T(0);
   }
 
 
