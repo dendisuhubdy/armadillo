@@ -5070,11 +5070,13 @@ auxlib::rcond(Mat< std::complex<T> >& A)
 template<typename eT>
 inline
 eT
-auxlib::rcond_sympd(Mat<eT>& A)
+auxlib::rcond_sympd(Mat<eT>& A, bool& calc_ok)
   {
   #if defined(ARMA_USE_LAPACK)
     {
     arma_debug_assert_blas_size(A);
+    
+    calc_ok = false;
     
     char     norm_id  = '1';
     char     uplo     = 'L';
@@ -5101,11 +5103,14 @@ auxlib::rcond_sympd(Mat<eT>& A)
     
     if(info != blas_int(0))  { return eT(0); }
     
+    calc_ok = true;
+    
     return rcond;
     }
   #else
     {
     arma_ignore(A);
+    calc_ok = false;
     arma_stop_logic_error("rcond(): use of LAPACK must be enabled");
     return eT(0);
     }
@@ -5117,11 +5122,13 @@ auxlib::rcond_sympd(Mat<eT>& A)
 template<typename T>
 inline
 T
-auxlib::rcond_sympd(Mat< std::complex<T> >& A)
+auxlib::rcond_sympd(Mat< std::complex<T> >& A, bool& calc_ok)
   {
   #if defined(ARMA_CRIPPLED_LAPACK)
     {
     arma_extra_debug_print("auxlib::rcond_sympd(): redirecting to auxlib::rcond() due to crippled LAPACK");
+    
+    calc_ok = true;
     
     return auxlib::rcond(A);
     }
@@ -5130,6 +5137,8 @@ auxlib::rcond_sympd(Mat< std::complex<T> >& A)
     typedef typename std::complex<T> eT;
     
     arma_debug_assert_blas_size(A);
+    
+    calc_ok = false;
     
     char     norm_id  = '1';
     char     uplo     = 'L';
@@ -5157,11 +5166,14 @@ auxlib::rcond_sympd(Mat< std::complex<T> >& A)
     
     if(info != blas_int(0))  { return T(0); }
     
+    calc_ok = true;
+    
     return rcond;
     }
   #else
     {
     arma_ignore(A);
+    calc_ok = false;
     arma_stop_logic_error("rcond(): use of LAPACK must be enabled");
     return T(0);
     }
