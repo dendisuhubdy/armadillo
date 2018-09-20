@@ -6485,8 +6485,13 @@ Applicable to <i>Mat</i> only.
                         <td style="vertical-align: top;"><br>
                         </td>
                         <td style="vertical-align: top;">
-Numerical data stored in coordinate list format, without a header.
+Numerical data stored as a text file in coordinate list format, without a header.
+Only non-zero values are stored.
 Applicable only to sparse matrices (<a href="#SpMat">SpMat</a>).
+<br>
+For real matrices, each line contains information in the following format:&nbsp; <code>row column value</code>
+<br>For complex matrices, each line contains information in the following format:&nbsp; <code>row column real_value imag_value</code>
+<br>The rows and columns start at zero. 
 <br>
 <br>
                         </td>
