@@ -239,6 +239,8 @@ struct state_type
                 int  state;
   #endif
   
+  arma_inline state_type() : state(int(0)) {}
+  
   // openmp: "omp atomic" does an implicit flush on the affected variable
   // C++11:  std::atomic<>::load() and std::atomic<>::store() use std::memory_order_seq_cst by default, which has an implied fence
   
@@ -270,19 +272,6 @@ struct state_type
       state.store(in_state);
     #else
       state = in_state;
-    #endif
-    }
-  
-  arma_inline
-  state_type()
-    {
-    #if   defined(ARMA_USE_OPENMP)
-      #pragma omp atomic write
-      state = int(0);
-    #elif defined(ARMA_USE_CXX11)
-      state.store(int(0));
-    #else
-      state = int(0);
     #endif
     }
   };
