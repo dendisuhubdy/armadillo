@@ -598,8 +598,8 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   
   protected:
   
-  inline void      init(uword in_rows, uword in_cols, const uword new_n_nonzero = 0);
-  inline void init_cold(uword in_rows, uword in_cols, const uword new_n_nonzero = 0);
+  inline void                init(uword in_rows, uword in_cols, const uword new_n_nonzero = 0);
+  inline void arma_cold init_cold(uword in_rows, uword in_cols, const uword new_n_nonzero = 0);
   
   inline void init(const std::string& text);
   inline void init(const  SpMat<eT>& x);

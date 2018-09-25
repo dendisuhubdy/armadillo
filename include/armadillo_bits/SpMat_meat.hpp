@@ -4639,6 +4639,7 @@ SpMat<eT>::init(uword in_rows, uword in_cols, const uword new_n_nonzero)
 template<typename eT>
 inline
 void
+arma_cold
 SpMat<eT>::init_cold(uword in_rows, uword in_cols, const uword new_n_nonzero)
   {
   arma_extra_debug_sigprint();
