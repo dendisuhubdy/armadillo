@@ -272,6 +272,19 @@ struct state_type
       state = in_state;
     #endif
     }
+  
+  arma_inline
+  state_type()
+    {
+    #if   defined(ARMA_USE_OPENMP)
+      #pragma omp atomic write
+      state = int(0);
+    #elif defined(ARMA_USE_CXX11)
+      state.store(int(0));
+    #else
+      state = int(0);
+    #endif
+    }
   };
 
 
