@@ -246,7 +246,7 @@ trace(const SpBase<typename T1::elem_type,T1>& expr)
 
 
 
-//! trace of sparse object; speedup for trace(A+B)
+//! trace of sparse object; speedup for trace(A + B)
 template<typename T1, typename T2>
 arma_warn_unused
 inline
@@ -265,7 +265,7 @@ trace(const SpGlue<T1, T2, spglue_plus>& expr)
 
 
 
-//! trace of sparse object; speedup for trace(A+B)
+//! trace of sparse object; speedup for trace(A - B)
 template<typename T1, typename T2>
 arma_warn_unused
 inline
@@ -280,6 +280,39 @@ trace(const SpGlue<T1, T2, spglue_minus>& expr)
   arma_debug_assert_same_size(UA.M.n_rows, UA.M.n_cols, UB.M.n_rows, UB.M.n_cols, "subtraction");
   
   return (trace(UA.M) - trace(UB.M));
+  }
+
+
+
+//! trace of sparse object; speedup for trace(A % B)
+template<typename T1, typename T2>
+arma_warn_unused
+inline
+typename T1::elem_type
+trace(const SpGlue<T1, T2, spglue_schur>& expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const unwrap_spmat<T1> UA(expr.A);
+  const unwrap_spmat<T2> UB(expr.B);
+  
+  const SpMat<eT>& A = UA.M;
+  const SpMat<eT>& B = UB.M;
+  
+  arma_debug_assert_same_size(A.n_rows, A.n_cols, B.n_rows, B.n_cols, "element-wise multiplication");
+  
+  const uword N = (std::min)(A.n_rows, A.n_cols);
+  
+  eT acc = eT(0);
+  
+  for(uword i=0; i<N; ++i)
+    {
+    acc += A.at(i,i) * B.at(i,i);
+    }
+  
+  return acc;
   }
 
 
