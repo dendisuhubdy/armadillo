@@ -306,8 +306,8 @@ spop_diagmat::apply_noalias(SpMat<typename T1::elem_type>& out, const SpGlue<T1,
     
     for(uword k=0; k < N; ++k)
       {
-      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
-      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
+      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col_no_sync(k);
+      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col_no_sync(k);
       
       eT acc = eT(0);
       

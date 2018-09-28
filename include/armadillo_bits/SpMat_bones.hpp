@@ -556,6 +556,9 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   inline       col_iterator end_col(const uword col_num);
   inline const_col_iterator end_col(const uword col_num) const;
   
+  inline       col_iterator end_col_no_sync(const uword col_num);
+  inline const_col_iterator end_col_no_sync(const uword col_num) const;
+  
   inline       row_iterator begin_row(const uword row_num = 0);
   inline const_row_iterator begin_row(const uword row_num = 0) const;
   

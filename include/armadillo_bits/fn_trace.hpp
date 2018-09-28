@@ -351,8 +351,8 @@ trace(const SpGlue<T1, T2, spglue_times>& expr)
     {
     for(uword k=0; k < N; ++k)
       {
-      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
-      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
+      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col_no_sync(k);
+      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col_no_sync(k);
       
       while(B_it != B_it_end)
         {
@@ -410,8 +410,8 @@ trace(const SpGlue<SpOp<T1, spop_htrans>, T2, spglue_times>& expr)
     {
     for(uword k=0; k < N; ++k)
       {
-      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
-      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
+      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col_no_sync(k);
+      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col_no_sync(k);
       
       while(B_it != B_it_end)
         {
