@@ -32,16 +32,6 @@ class spglue_times
 
 
 
-class spglue_times2
-  {
-  public:
-  
-  template<typename T1, typename T2>
-  inline static void apply(SpMat<typename T1::elem_type>& out, const SpGlue<T1,T2,spglue_times2>& X);
-  };
-
-
-
 class spglue_times_misc
   {
   public:

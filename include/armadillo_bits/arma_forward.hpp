@@ -227,7 +227,6 @@ class spglue_plus;
 class spglue_minus;
 class spglue_schur;
 class spglue_times;
-class spglue_times2;
 
 struct state_type
   {
