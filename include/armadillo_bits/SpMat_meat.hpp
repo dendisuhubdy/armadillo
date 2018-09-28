@@ -5530,6 +5530,16 @@ SpMat<eT>::init_xform_mt(const SpBase<eT2,T1>& A, const Functor& func)
 
 
 template<typename eT>
+arma_inline
+bool
+SpMat<eT>::is_alias(const SpMat<eT>& X) const
+  {
+  return (&X == this);
+  }
+
+
+
+template<typename eT>
 inline
 typename SpMat<eT>::iterator
 SpMat<eT>::begin()
