@@ -347,20 +347,29 @@ trace(const SpGlue<T1, T2, spglue_times>& expr)
   
   eT acc = eT(0);
   
-  for(uword k=0; k < N; ++k)
+  if( (A.n_nonzero >= 5*N) || (B.n_nonzero >= 5*N) )
     {
-    typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
-    typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
-    
-    while(B_it != B_it_end)
+    for(uword k=0; k < N; ++k)
       {
-      const eT    B_val = (*B_it);
-      const uword i     = B_it.row();
+      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
+      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
       
-      acc += A.at(k,i) * B_val;
-      
-      ++B_it;
+      while(B_it != B_it_end)
+        {
+        const eT    B_val = (*B_it);
+        const uword i     = B_it.row();
+        
+        acc += A.at(k,i) * B_val;
+        
+        ++B_it;
+        }
       }
+    }
+  else
+    {
+    const SpMat<eT> AB = A * B;
+    
+    acc = trace(AB);
     }
   
   return acc;
@@ -397,20 +406,29 @@ trace(const SpGlue<SpOp<T1, spop_htrans>, T2, spglue_times>& expr)
   
   eT acc = eT(0);
   
-  for(uword k=0; k < N; ++k)
+  if( (A.n_nonzero >= 5*N) || (B.n_nonzero >= 5*N) )
     {
-    typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
-    typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
-    
-    while(B_it != B_it_end)
+    for(uword k=0; k < N; ++k)
       {
-      const eT    B_val = (*B_it);
-      const uword i     = B_it.row();
+      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col(k);
+      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col(k);
       
-      acc += A.at(i,k) * B_val;
-      
-      ++B_it;
+      while(B_it != B_it_end)
+        {
+        const eT    B_val = (*B_it);
+        const uword i     = B_it.row();
+        
+        acc += A.at(i,k) * B_val;
+        
+        ++B_it;
+        }
       }
+    }
+  else
+    {
+    const SpMat<eT> AtB = A.t() * B;
+    
+    acc = trace(AtB);
     }
   
   return acc;
