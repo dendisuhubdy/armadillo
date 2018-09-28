@@ -171,11 +171,10 @@ spop_diagmat::apply_noalias(SpMat<typename T1::elem_type>& out, const SpGlue<T1,
     }
   else   // generate a diagonal matrix out of a matrix
     {
-    out.zeros(A.n_rows, A.n_cols);
+    SpMat<eT> AA;  spop_diagmat::apply_noalias(AA, A);
+    SpMat<eT> BB;  spop_diagmat::apply_noalias(BB, B);
     
-    const uword N = (std::min)(A.n_rows, A.n_cols);
-    
-    for(uword i=0; i < N; ++i) { out.at(i,i) = A.at(i,i) + B.at(i,i); }
+    out = AA + BB;
     }
   }
 
@@ -217,11 +216,10 @@ spop_diagmat::apply_noalias(SpMat<typename T1::elem_type>& out, const SpGlue<T1,
     }
   else   // generate a diagonal matrix out of a matrix
     {
-    out.zeros(A.n_rows, A.n_cols);
+    SpMat<eT> AA;  spop_diagmat::apply_noalias(AA, A);
+    SpMat<eT> BB;  spop_diagmat::apply_noalias(BB, B);
     
-    const uword N = (std::min)(A.n_rows, A.n_cols);
-    
-    for(uword i=0; i < N; ++i) { out.at(i,i) = A.at(i,i) - B.at(i,i); }
+    out = AA - BB;
     }
   }
 
@@ -263,11 +261,10 @@ spop_diagmat::apply_noalias(SpMat<typename T1::elem_type>& out, const SpGlue<T1,
     }
   else   // generate a diagonal matrix out of a matrix
     {
-    out.zeros(A.n_rows, A.n_cols);
+    SpMat<eT> AA;  spop_diagmat::apply_noalias(AA, A);
+    SpMat<eT> BB;  spop_diagmat::apply_noalias(BB, B);
     
-    const uword N = (std::min)(A.n_rows, A.n_cols);
-    
-    for(uword i=0; i < N; ++i) { out.at(i,i) = A.at(i,i) * B.at(i,i); }
+    out = AA % BB;
     }
   }
 
