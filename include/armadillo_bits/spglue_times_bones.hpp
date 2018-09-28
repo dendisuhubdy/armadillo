@@ -29,8 +29,8 @@ class spglue_times
   template<typename T1, typename T2>
   inline static void apply(SpMat<typename T1::elem_type>& out, const SpGlue<SpOp<T1,spop_scalar_times>,T2,spglue_times>& X);
   
-  template<typename eT, typename T1, typename T2>
-  arma_hot inline static void apply_noalias(SpMat<eT>& c, const SpProxy<T1>& pa, const SpProxy<T2>& pb);
+  template<typename eT>
+  arma_hot inline static void apply_noalias(SpMat<eT>& c, const SpMat<eT>& x, const SpMat<eT>& y);
   };
 
 

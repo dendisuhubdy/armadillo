@@ -5644,6 +5644,26 @@ SpMat<eT>::begin_col(const uword col_num) const
 template<typename eT>
 inline
 typename SpMat<eT>::col_iterator
+SpMat<eT>::begin_col_no_sync(const uword col_num)
+  {
+  return col_iterator(*this, 0, col_num);
+  }
+
+
+
+template<typename eT>
+inline
+typename SpMat<eT>::const_col_iterator
+SpMat<eT>::begin_col_no_sync(const uword col_num) const
+  {
+  return const_col_iterator(*this, 0, col_num);
+  }
+
+
+
+template<typename eT>
+inline
+typename SpMat<eT>::col_iterator
 SpMat<eT>::end_col(const uword col_num)
   {
   sync_csc();
