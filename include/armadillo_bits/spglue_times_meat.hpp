@@ -45,10 +45,46 @@ spglue_times::apply(SpMat<typename T1::elem_type>& out, const SpGlue<T1,T2,spglu
   else
     {
     SpMat<eT> tmp;
+    
     spglue_times::apply_noalias(tmp, pa, pb);
     
     out.steal_mem(tmp);
     }
+  }
+
+
+
+template<typename T1, typename T2>
+inline
+void
+spglue_times::apply(SpMat<typename T1::elem_type>& out, const SpGlue<SpOp<T1,spop_scalar_times>,T2,spglue_times>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const unwrap_spmat<T1> tmp1(X.A.m);
+  const unwrap_spmat<T2> tmp2(X.B);
+  
+  const SpProxy<typename unwrap_spmat<T1>::stored_type> pa(tmp1.M);
+  const SpProxy<typename unwrap_spmat<T2>::stored_type> pb(tmp2.M);
+  
+  const bool is_alias = pa.is_alias(out) || pb.is_alias(out);
+  
+  if(is_alias == false)
+    {
+    spglue_times::apply_noalias(out, pa, pb);
+    }
+  else
+    {
+    SpMat<eT> tmp;
+    
+    spglue_times::apply_noalias(tmp, pa, pb);
+    
+    out.steal_mem(tmp);
+    }
+  
+  out *= X.A.aux;
   }
 
 
