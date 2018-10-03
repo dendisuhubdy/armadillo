@@ -300,28 +300,37 @@ spop_diagmat::apply_noalias(SpMat<typename T1::elem_type>& out, const SpGlue<T1,
     }
   else   // generate a diagonal matrix out of a matrix
     {
-    out.zeros(C_n_rows, C_n_cols);
-    
     const uword N = (std::min)(C_n_rows, C_n_cols);
     
-    for(uword k=0; k < N; ++k)
+    if( (A.n_nonzero >= 5*N) || (B.n_nonzero >= 5*N) )
       {
-      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col_no_sync(k);
-      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col_no_sync(k);
+      out.zeros(C_n_rows, C_n_cols);
       
-      eT acc = eT(0);
-      
-      while(B_it != B_it_end)
+      for(uword k=0; k < N; ++k)
         {
-        const eT    B_val = (*B_it);
-        const uword i     = B_it.row();
+        typename SpMat<eT>::const_col_iterator B_it     = B.begin_col_no_sync(k);
+        typename SpMat<eT>::const_col_iterator B_it_end = B.end_col_no_sync(k);
         
-        acc += A.at(k,i) * B_val;
+        eT acc = eT(0);
         
-        ++B_it;
+        while(B_it != B_it_end)
+          {
+          const eT    B_val = (*B_it);
+          const uword i     = B_it.row();
+          
+          acc += A.at(k,i) * B_val;
+          
+          ++B_it;
+          }
+        
+        out(k,k) = acc;
         }
+      }
+    else
+      {
+      const SpMat<eT> C = A*B;
       
-      out(k,k) = acc;
+      spop_diagmat::apply_noalias(out, C);
       }
     }
   }
