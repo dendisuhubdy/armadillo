@@ -4676,12 +4676,9 @@ SpMat<eT>::init_cold(uword in_rows, uword in_cols, const uword new_n_nonzero)
       error_message
     );
   
+  access::rw(col_ptrs)    = memory::acquire<uword>(in_cols + 2);
   access::rw(values)      = memory::acquire<eT>   (new_n_nonzero + 1);
   access::rw(row_indices) = memory::acquire<uword>(new_n_nonzero + 1);
-  access::rw(col_ptrs)    = memory::acquire<uword>(in_cols + 2);
-  
-  access::rw(     values[new_n_nonzero]) = 0;
-  access::rw(row_indices[new_n_nonzero]) = 0;
   
   // fill column pointers with 0,
   // except for the last element which contains the maximum possible element
@@ -4689,6 +4686,9 @@ SpMat<eT>::init_cold(uword in_rows, uword in_cols, const uword new_n_nonzero)
   arrayops::fill_zeros(access::rwp(col_ptrs), in_cols + 1);
   
   access::rw(col_ptrs[in_cols + 1]) = std::numeric_limits<uword>::max();
+  
+  access::rw(     values[new_n_nonzero]) = 0;
+  access::rw(row_indices[new_n_nonzero]) = 0;
   
   // Set the new size accordingly.
   access::rw(n_rows)    = in_rows;
