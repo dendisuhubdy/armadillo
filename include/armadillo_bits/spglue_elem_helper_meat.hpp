@@ -23,7 +23,7 @@ template<typename T1, typename T2>
 arma_hot
 inline
 uword
-spglue_elem_helper::estimate_n_nonzero(const SpProxy<T1>& pa, const SpProxy<T2>& pb)
+spglue_elem_helper::max_n_nonzero_plus(const SpProxy<T1>& pa, const SpProxy<T2>& pb)
   {
   arma_extra_debug_sigprint();
   
@@ -71,6 +71,65 @@ spglue_elem_helper::estimate_n_nonzero(const SpProxy<T1>& pa, const SpProxy<T2>&
       }
     
     ++count;
+    }
+  
+  return count;
+  }
+  
+
+
+template<typename T1, typename T2>
+arma_hot
+inline
+uword
+spglue_elem_helper::max_n_nonzero_schur(const SpProxy<T1>& pa, const SpProxy<T2>& pb)
+  {
+  arma_extra_debug_sigprint();
+  
+  // assuming that pa and pb have the same size, ie.
+  // pa.get_n_rows() == pb.get_n_rows()
+  // pa.get_n_cols() == pb.get_n_cols()
+  
+  typename SpProxy<T1>::const_iterator_type x_it  = pa.begin();
+  typename SpProxy<T1>::const_iterator_type x_end = pa.end();
+  
+  typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
+  typename SpProxy<T2>::const_iterator_type y_end = pb.end();
+  
+  const uword n_rows = pa.get_n_rows();
+  
+  uword count = 0;
+  
+  while( (x_it != x_end) || (y_it != y_end) )
+    {
+    const uword x_it_row = x_it.row();
+    const uword x_it_col = x_it.col();
+    
+    const uword x_index  = x_it_row + x_it_col * n_rows;
+    
+    const uword y_it_row = y_it.row();
+    const uword y_it_col = y_it.col();
+    
+    const uword y_index  = y_it_row + y_it_col * n_rows;
+    
+    if(x_index == y_index)
+      {
+      ++x_it;
+      ++y_it;
+      
+      ++count;
+      }
+    else
+      {
+      if(x_index < y_index)
+        {
+        ++x_it;
+        }
+      else
+        {
+        ++y_it;
+        }
+      }
     }
   
   return count;

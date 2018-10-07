@@ -24,7 +24,10 @@ class spglue_elem_helper
   public:
   
   template<typename T1, typename T2>
-  arma_hot inline static uword estimate_n_nonzero(const SpProxy<T1>& pa, const SpProxy<T2>& pb);
+  arma_hot inline static uword max_n_nonzero_plus(const SpProxy<T1>& pa, const SpProxy<T2>& pb);
+  
+  template<typename T1, typename T2>
+  arma_hot inline static uword max_n_nonzero_schur(const SpProxy<T1>& pa, const SpProxy<T2>& pb);
   };
 
 

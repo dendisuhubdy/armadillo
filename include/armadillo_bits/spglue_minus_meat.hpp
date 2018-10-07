@@ -61,7 +61,7 @@ spglue_minus::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
   
   if( (pa.get_n_nonzero() != 0) && (pb.get_n_nonzero() != 0) )
     {
-    const uword max_n_nonzero = spglue_elem_helper::estimate_n_nonzero(pa, pb);
+    const uword max_n_nonzero = spglue_elem_helper::max_n_nonzero_plus(pa, pb);
     
     // Resize memory to upper bound
     out.reserve(pa.get_n_rows(), pa.get_n_cols(), max_n_nonzero);

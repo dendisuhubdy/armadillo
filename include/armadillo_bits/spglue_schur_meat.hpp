@@ -61,29 +61,45 @@ spglue_schur::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
   
   if( (pa.get_n_nonzero() != 0) && (pb.get_n_nonzero() != 0) )
     {
-    // Resize memory to correct size.
-    out.reserve(pa.get_n_rows(), pa.get_n_cols(), n_unique(pa, pb, op_n_unique_mul()));
+    const uword max_n_nonzero = spglue_elem_helper::max_n_nonzero_schur(pa, pb);
+    
+    // Resize memory to upper bound
+    out.reserve(pa.get_n_rows(), pa.get_n_cols(), max_n_nonzero);
     
     // Now iterate across both matrices.
-    typename SpProxy<T1>::const_iterator_type x_it = pa.begin();
-    typename SpProxy<T2>::const_iterator_type y_it = pb.begin();
-    
+    typename SpProxy<T1>::const_iterator_type x_it  = pa.begin();
     typename SpProxy<T1>::const_iterator_type x_end = pa.end();
+    
+    typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
     typename SpProxy<T2>::const_iterator_type y_end = pb.end();
     
-    uword cur_val = 0;
+    const uword n_rows = pa.get_n_rows();
+    
+    uword count = 0;
+    
     while( (x_it != x_end) || (y_it != y_end) )
       {
-      if(x_it == y_it)
+      const uword x_it_row = x_it.row();
+      const uword x_it_col = x_it.col();
+      
+      const uword x_index  = x_it_row + x_it_col * n_rows;
+      
+      const uword y_it_row = y_it.row();
+      const uword y_it_col = y_it.col();
+      
+      const uword y_index  = y_it_row + y_it_col * n_rows;
+      
+      if(x_index == y_index)
         {
-        const eT val = (*x_it) * (*y_it);
+        const eT out_val = (*x_it) * (*y_it);
         
-        if(val != eT(0))
+        if(out_val != eT(0))
           {
-          access::rw(out.values[cur_val]) = val;
-          access::rw(out.row_indices[cur_val]) = x_it.row();
-          ++access::rw(out.col_ptrs[x_it.col() + 1]);
-          ++cur_val;
+          access::rw(out.values[count]) = out_val;
+          
+          access::rw(out.row_indices[count]) = x_it_row;
+          access::rw(out.col_ptrs[x_it_col + 1])++;
+          ++count;
           }
         
         ++x_it;
@@ -91,13 +107,7 @@ spglue_schur::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
         }
       else
         {
-        const uword x_it_row = x_it.row();
-        const uword x_it_col = x_it.col();
-        
-        const uword y_it_row = y_it.row();
-        const uword y_it_col = y_it.col();
-        
-        if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
+        if(x_index < y_index)
           {
           ++x_it;
           }
@@ -116,6 +126,21 @@ spglue_schur::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
     for(uword c = 1; c <= out_n_cols; ++c)
       {
       col_ptrs[c] += col_ptrs[c - 1];
+      }
+    
+    if(count < max_n_nonzero)
+      {
+      if(count <= (max_n_nonzero/2))
+        {
+        out.mem_resize(count);
+        }
+      else
+        {
+        // quick resize without reallocating memory and copying data
+        access::rw(         out.n_nonzero) = count;
+        access::rw(     out.values[count]) = eT(0);
+        access::rw(out.row_indices[count]) = uword(0);
+        }
       }
     }
   else
