@@ -183,9 +183,7 @@ spglue_times::apply_noalias(SpMat<eT>& c, const SpMat<eT>& x, const SpMat<eT>& y
   podarray<eT> sums(x_n_rows); // Partial sums.
   sums.zeros();
   
-  // setting the size of 'sorted_indices' to x_n_rows is a better-than-nothing guess;
-  // the correct minimum size is determined later
-  podarray<uword> sorted_indices(x_n_rows);
+  podarray<uword> sorted_indices(x_n_rows);  // upper bound
   
   // last_ind is already set to x_n_rows, and cur_col_length is already set to 0.
   // We will loop through all columns as necessary.
@@ -245,14 +243,6 @@ spglue_times::apply_noalias(SpMat<eT>& c, const SpMat<eT>& x, const SpMat<eT>& y
       }
 
     // Now sort the indices that were used in this column.
-    //podarray<uword> sorted_indices(c.col_ptrs[cur_col + 1] - c.col_ptrs[cur_col]);
-    sorted_indices.set_min_size(c.col_ptrs[cur_col + 1] - c.col_ptrs[cur_col]);
-    
-    // .set_min_size() can only enlarge the array to the specified size,
-    // hence if we request a smaller size than already allocated,
-    // no new memory allocation is done
-    
-    
     uword cur_index = 0;
     while(last_ind != x_n_rows + 1)
       {
