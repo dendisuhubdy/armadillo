@@ -446,7 +446,7 @@ namespace priv
   struct functor_sign
     {
     template<typename eT>
-    arma_inline eT operator()(const eT val) const { return eop_aux::sign(val); }
+    arma_inline eT operator()(const eT val) const { return arma_sign(val); }
     };
   }
 
