@@ -37,30 +37,24 @@ spglue_elem_helper::max_n_nonzero_plus(const SpProxy<T1>& pa, const SpProxy<T2>&
   typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
   typename SpProxy<T2>::const_iterator_type y_end = pb.end();
   
-  const uword n_rows = pa.get_n_rows();
-  
   uword count = 0;
   
   while( (x_it != x_end) || (y_it != y_end) )
     {
-    const uword x_it_row = x_it.row();
-    const uword x_it_col = x_it.col();
-    
-    const uword x_index  = x_it_row + x_it_col * n_rows;
-    
-    const uword y_it_row = y_it.row();
-    const uword y_it_col = y_it.col();
-    
-    const uword y_index  = y_it_row + y_it_col * n_rows;
-    
-    if(x_index == y_index)
+    if(x_it == y_it)
       {
       ++x_it;
       ++y_it;
       }
     else
       {
-      if(x_index < y_index)
+      const uword x_it_col = x_it.col();
+      const uword x_it_row = x_it.row();
+      
+      const uword y_it_col = y_it.col();
+      const uword y_it_row = y_it.row();
+      
+      if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
         {
         ++x_it;
         }
@@ -96,23 +90,11 @@ spglue_elem_helper::max_n_nonzero_schur(const SpProxy<T1>& pa, const SpProxy<T2>
   typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
   typename SpProxy<T2>::const_iterator_type y_end = pb.end();
   
-  const uword n_rows = pa.get_n_rows();
-  
   uword count = 0;
   
   while( (x_it != x_end) || (y_it != y_end) )
     {
-    const uword x_it_row = x_it.row();
-    const uword x_it_col = x_it.col();
-    
-    const uword x_index  = x_it_row + x_it_col * n_rows;
-    
-    const uword y_it_row = y_it.row();
-    const uword y_it_col = y_it.col();
-    
-    const uword y_index  = y_it_row + y_it_col * n_rows;
-    
-    if(x_index == y_index)
+    if(x_it == y_it)
       {
       ++x_it;
       ++y_it;
@@ -121,7 +103,13 @@ spglue_elem_helper::max_n_nonzero_schur(const SpProxy<T1>& pa, const SpProxy<T2>
       }
     else
       {
-      if(x_index < y_index)
+      const uword x_it_col = x_it.col();
+      const uword x_it_row = x_it.row();
+      
+      const uword y_it_col = y_it.col();
+      const uword y_it_row = y_it.row();
+      
+      if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
         {
         ++x_it;
         }

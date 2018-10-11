@@ -73,27 +73,21 @@ spglue_minus::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
     typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
     typename SpProxy<T2>::const_iterator_type y_end = pb.end();
     
-    const uword n_rows = pa.get_n_rows();
-    
     uword count = 0;
     
     while( (x_it != x_end) || (y_it != y_end) )
       {
+      eT out_val;
+      
       const uword x_it_row = x_it.row();
       const uword x_it_col = x_it.col();
-      
-      const uword x_index  = x_it_row + x_it_col * n_rows;
       
       const uword y_it_row = y_it.row();
       const uword y_it_col = y_it.col();
       
-      const uword y_index  = y_it_row + y_it_col * n_rows;
-      
-      eT out_val;
-      
       bool use_y_loc = false;
       
-      if(x_index == y_index)
+      if(x_it == y_it)
         {
         out_val = (*x_it) - (*y_it);
         
@@ -102,7 +96,7 @@ spglue_minus::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
         }
       else
         {
-        if(x_index < y_index) // if y is closer to the end
+        if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
           {
           out_val = (*x_it);
           
@@ -110,11 +104,11 @@ spglue_minus::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
           }
         else
           {
-          use_y_loc = true;
-          
           out_val = -(*y_it);  // take the negative
           
           ++y_it;
+          
+          use_y_loc = true;
           }
         }
       
