@@ -4308,6 +4308,27 @@ SpMat<eT>::reset()
 
 
 
+//! Set the size to the size of another matrix.
+template<typename eT>
+template<typename eT2>
+inline
+void
+SpMat<eT>::copy_layout(const SpMat<eT2>& x)
+  {
+  arma_extra_debug_sigprint();
+  
+  if(void_ptr(this) == void_ptr(&x))  { return; }
+  
+  init(x.n_rows, x.n_cols, x.n_nonzero);
+  
+  if(x.row_indices)  { arrayops::copy(access::rwp(row_indices), x.row_indices, x.n_nonzero + 1); }
+  if(x.col_ptrs   )  { arrayops::copy(access::rwp(col_ptrs),    x.col_ptrs,    x.n_cols    + 1); }
+  
+  // NOTE: 'values' array is not initialised
+  }
+
+
+
 template<typename eT>
 inline
 void
