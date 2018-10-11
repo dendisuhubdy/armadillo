@@ -41,6 +41,7 @@ spglue_schur::apply(SpMat<typename T1::elem_type>& out, const SpGlue<T1,T2,spglu
   else
     {
     SpMat<eT> tmp;
+    
     spglue_schur::apply_noalias(tmp, pa, pb);
     
     out.steal_mem(tmp);
@@ -59,87 +60,86 @@ spglue_schur::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy
   
   arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "element-wise multiplication");
   
-  if( (pa.get_n_nonzero() != 0) && (pb.get_n_nonzero() != 0) )
+  if( (pa.get_n_nonzero() == 0) || (pb.get_n_nonzero() == 0) )
     {
-    const uword max_n_nonzero = spglue_elem_helper::max_n_nonzero_schur(pa, pb);
+    out.zeros(pa.get_n_rows(), pa.get_n_cols());
+    return;
+    }
+  
+  const uword max_n_nonzero = spglue_elem_helper::max_n_nonzero_schur(pa, pb);
+  
+  // Resize memory to upper bound
+  out.reserve(pa.get_n_rows(), pa.get_n_cols(), max_n_nonzero);
+  
+  // Now iterate across both matrices.
+  typename SpProxy<T1>::const_iterator_type x_it  = pa.begin();
+  typename SpProxy<T1>::const_iterator_type x_end = pa.end();
+  
+  typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
+  typename SpProxy<T2>::const_iterator_type y_end = pb.end();
+  
+  uword count = 0;
+  
+  while( (x_it != x_end) || (y_it != y_end) )
+    {
+    const uword x_it_row = x_it.row();
+    const uword x_it_col = x_it.col();
     
-    // Resize memory to upper bound
-    out.reserve(pa.get_n_rows(), pa.get_n_cols(), max_n_nonzero);
+    const uword y_it_row = y_it.row();
+    const uword y_it_col = y_it.col();
     
-    // Now iterate across both matrices.
-    typename SpProxy<T1>::const_iterator_type x_it  = pa.begin();
-    typename SpProxy<T1>::const_iterator_type x_end = pa.end();
-    
-    typename SpProxy<T2>::const_iterator_type y_it  = pb.begin();
-    typename SpProxy<T2>::const_iterator_type y_end = pb.end();
-    
-    uword count = 0;
-    
-    while( (x_it != x_end) || (y_it != y_end) )
+    if(x_it == y_it)
       {
-      const uword x_it_row = x_it.row();
-      const uword x_it_col = x_it.col();
+      const eT out_val = (*x_it) * (*y_it);
       
-      const uword y_it_row = y_it.row();
-      const uword y_it_col = y_it.col();
-      
-      if(x_it == y_it)
+      if(out_val != eT(0))
         {
-        const eT out_val = (*x_it) * (*y_it);
+        access::rw(out.values[count]) = out_val;
         
-        if(out_val != eT(0))
-          {
-          access::rw(out.values[count]) = out_val;
-          
-          access::rw(out.row_indices[count]) = x_it_row;
-          access::rw(out.col_ptrs[x_it_col + 1])++;
-          ++count;
-          }
-        
+        access::rw(out.row_indices[count]) = x_it_row;
+        access::rw(out.col_ptrs[x_it_col + 1])++;
+        ++count;
+        }
+      
+      ++x_it;
+      ++y_it;
+      }
+    else
+      {
+      if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
+        {
         ++x_it;
+        }
+      else
+        {
         ++y_it;
-        }
-      else
-        {
-        if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
-          {
-          ++x_it;
-          }
-        else
-          {
-          ++y_it;
-          }
-        }
-      }
-    
-    const uword out_n_cols = out.n_cols;
-    
-    uword* col_ptrs = access::rwp(out.col_ptrs);
-    
-    // Fix column pointers to be cumulative.
-    for(uword c = 1; c <= out_n_cols; ++c)
-      {
-      col_ptrs[c] += col_ptrs[c - 1];
-      }
-    
-    if(count < max_n_nonzero)
-      {
-      if(count <= (max_n_nonzero/2))
-        {
-        out.mem_resize(count);
-        }
-      else
-        {
-        // quick resize without reallocating memory and copying data
-        access::rw(         out.n_nonzero) = count;
-        access::rw(     out.values[count]) = eT(0);
-        access::rw(out.row_indices[count]) = uword(0);
         }
       }
     }
-  else
+  
+  const uword out_n_cols = out.n_cols;
+  
+  uword* col_ptrs = access::rwp(out.col_ptrs);
+  
+  // Fix column pointers to be cumulative.
+  for(uword c = 1; c <= out_n_cols; ++c)
     {
-    out.zeros(pa.get_n_rows(), pa.get_n_cols());
+    col_ptrs[c] += col_ptrs[c - 1];
+    }
+  
+  if(count < max_n_nonzero)
+    {
+    if(count <= (max_n_nonzero/2))
+      {
+      out.mem_resize(count);
+      }
+    else
+      {
+      // quick resize without reallocating memory and copying data
+      access::rw(         out.n_nonzero) = count;
+      access::rw(     out.values[count]) = eT(0);
+      access::rw(out.row_indices[count]) = uword(0);
+      }
     }
   }
 
