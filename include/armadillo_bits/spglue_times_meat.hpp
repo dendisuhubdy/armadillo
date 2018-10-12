@@ -495,7 +495,6 @@ spglue_times_mixed::sparse_times_sparse(SpMat< typename promote_type<typename T1
     
     const SpMat<out_eT>& BB = reinterpret_cast< const SpMat<out_eT>& >(B);
     
-    
     spglue_times::apply_noalias(out, AA, BB);
     }
   else
@@ -558,7 +557,7 @@ spglue_times_mixed::sparse_times_dense(Mat< typename promote_type<typename T1::e
     // upgrade T1
     
     const unwrap_spmat<T1> UA(X);
-    const unwrap<T2>       UB(Y);
+    const quasi_unwrap<T2> UB(Y);
     
     const SpMat<eT1>& A = UA.M;
     const   Mat<eT2>& B = UB.M;
@@ -577,7 +576,7 @@ spglue_times_mixed::sparse_times_dense(Mat< typename promote_type<typename T1::e
     // upgrade T2 
     
     const unwrap_spmat<T1> UA(X);
-    const unwrap<T2>       UB(Y);
+    const quasi_unwrap<T2> UB(Y);
     
     const SpMat<eT1>& A = UA.M;
     const   Mat<eT2>& B = UB.M;
@@ -593,7 +592,7 @@ spglue_times_mixed::sparse_times_dense(Mat< typename promote_type<typename T1::e
     // upgrade T1 and T2
     
     const unwrap_spmat<T1> UA(X);
-    const unwrap<T2>       UB(Y);
+    const quasi_unwrap<T2> UB(Y);
     
     const SpMat<eT1>& A = UA.M;
     const   Mat<eT2>& B = UB.M;
@@ -628,7 +627,7 @@ spglue_times_mixed::dense_times_sparse(Mat< typename promote_type<typename T1::e
     {
     // upgrade T1
     
-    const unwrap<T1>       UA(X);
+    const quasi_unwrap<T1> UA(X);
     const unwrap_spmat<T2> UB(Y);
     
     const   Mat<eT1>& A = UA.M;
@@ -645,7 +644,7 @@ spglue_times_mixed::dense_times_sparse(Mat< typename promote_type<typename T1::e
     {
     // upgrade T2 
     
-    const unwrap<T1>       UA(X);
+    const quasi_unwrap<T1> UA(X);
     const unwrap_spmat<T2> UB(Y);
     
     const   Mat<eT1>& A = UA.M;
@@ -663,7 +662,7 @@ spglue_times_mixed::dense_times_sparse(Mat< typename promote_type<typename T1::e
     {
     // upgrade T1 and T2
     
-    const unwrap<T1>       UA(X);
+    const quasi_unwrap<T1> UA(X);
     const unwrap_spmat<T2> UB(Y);
     
     const   Mat<eT1>& A = UA.M;
