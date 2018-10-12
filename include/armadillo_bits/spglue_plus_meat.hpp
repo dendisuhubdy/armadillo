@@ -155,4 +155,140 @@ spglue_plus::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy<
 
 
 
+template<typename eT>
+arma_hot
+inline
+void
+spglue_plus::apply_noalias(SpMat<eT>& out, const SpMat<eT>& A, const SpMat<eT>& B)
+  {
+  arma_extra_debug_sigprint();
+  
+  const SpProxy< SpMat<eT> > pa(A);
+  const SpProxy< SpMat<eT> > pb(B);
+  
+  spglue_plus::apply_noalias(out, pa, pb);
+  }
+
+
+
+//
+
+
+
+template<typename T1, typename T2>
+inline
+void
+spglue_plus_mixed::sparse_plus_sparse(SpMat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >& out, const T1& X, const T2& Y)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT1;
+  typedef typename T2::elem_type eT2;
+  
+  typedef typename promote_type<eT1,eT2>::result out_eT;
+  
+  promote_type<eT1,eT2>::check();
+  
+  if( (is_same_type<eT1,out_eT>::no) && (is_same_type<eT2,out_eT>::yes) )
+    {
+    // upgrade T1
+    
+    const unwrap_spmat<T1> UA(X);
+    const unwrap_spmat<T2> UB(Y);
+    
+    const SpMat<eT1>& A = UA.M;
+    const SpMat<eT2>& B = UB.M;
+    
+    SpMat<out_eT> AA;  AA.copy_layout(A);
+    
+    for(uword i=0; i < A.n_nonzero; ++i)  { access::rw(AA.values[i]) = out_eT(A.values[i]); }
+    
+    const SpMat<out_eT>& BB = reinterpret_cast< const SpMat<out_eT>& >(B);
+    
+    spglue_plus::apply_noalias(out, AA, BB);
+    }
+  else
+  if( (is_same_type<eT1,out_eT>::yes) && (is_same_type<eT2,out_eT>::no) )
+    {
+    // upgrade T2 
+    
+    const unwrap_spmat<T1> UA(X);
+    const unwrap_spmat<T2> UB(Y);
+    
+    const SpMat<eT1>& A = UA.M;
+    const SpMat<eT2>& B = UB.M;
+    
+    const SpMat<out_eT>& AA = reinterpret_cast< const SpMat<out_eT>& >(A);
+    
+    SpMat<out_eT> BB;  BB.copy_layout(B);
+    
+    for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
+    
+    spglue_plus::apply_noalias(out, AA, BB);
+    }
+  else
+    {
+    // upgrade T1 and T2
+    
+    const unwrap_spmat<T1> UA(X);
+    const unwrap_spmat<T2> UB(Y);
+    
+    const SpMat<eT1>& A = UA.M;
+    const SpMat<eT2>& B = UB.M;
+    
+    SpMat<out_eT> AA;  AA.copy_layout(A);
+    SpMat<out_eT> BB;  BB.copy_layout(B);
+    
+    for(uword i=0; i < A.n_nonzero; ++i)  { access::rw(AA.values[i]) = out_eT(A.values[i]); }
+    for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
+    
+    spglue_plus::apply_noalias(out, AA, BB);
+    }
+  }
+
+
+
+template<typename T1, typename T2>
+inline
+void
+spglue_plus_mixed::dense_plus_sparse(Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type >::result>& out, const T1& X, const T2& Y)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT1;
+  typedef typename T2::elem_type eT2;
+  
+  typedef typename promote_type<eT1,eT2>::result out_eT;
+  
+  promote_type<eT1,eT2>::check();
+  
+  if(is_same_type<eT1,out_eT>::no)
+    {
+    out = conv_to< Mat<out_eT> >::from(X);
+    }
+  else
+    {
+    const quasi_unwrap<T1> UA(X);
+    
+    const Mat<eT1>& A = UA.M;
+    
+    out = reinterpret_cast< const Mat<out_eT>& >(A);
+    }
+  
+  const SpProxy<T2> pb(Y);
+  
+  arma_debug_assert_same_size( out.n_rows, out.n_cols, pb.get_n_rows(), pb.get_n_cols(), "addition" );
+  
+  typename SpProxy<T2>::const_iterator_type it     = pb.begin();
+  typename SpProxy<T2>::const_iterator_type it_end = pb.end();
+  
+  while(it != it_end)
+    {
+    out.at(it.row(), it.col()) += out_eT(*it);
+    ++it;
+    }
+  }
+
+
+
 //! @}
