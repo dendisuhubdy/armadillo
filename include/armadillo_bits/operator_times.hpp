@@ -364,4 +364,82 @@ operator*
 
 
 
+//! multiplication of two sparse objects with different element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value && (is_same_type<typename T1::elem_type, typename T2::elem_type>::no)),
+  SpMat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >
+  >::result
+operator*
+  (
+  const T1& X,
+  const T2& Y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  SpMat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result > out;
+  
+  spglue_times_mixed::sparse_times_sparse(out, X, Y);
+  
+  return out;
+  }
+
+
+
+//! multiplication of one sparse and one dense object with different element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_arma_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::no),
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >
+  >::result
+operator*
+  (
+  const T1& X,
+  const T2& Y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result > out;
+  
+  spglue_times_mixed::sparse_times_dense(out, X, Y);
+  
+  return out;
+  }
+
+
+
+//! multiplication of one dense and one sparse object with different element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_type<T1>::value && is_arma_sparse_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::no),
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >
+  >::result
+operator*
+  (
+  const T1& X,
+  const T2& Y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result > out;
+  
+  spglue_times_mixed::dense_times_sparse(out, X, Y);
+  
+  return out;
+  }
+
+
+
 //! @}
