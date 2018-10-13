@@ -286,6 +286,50 @@ operator*
 
 
 
+//! non-complex sparse * complex scalar
+template<typename T1>
+arma_inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_cx<typename T1::elem_type>::no),
+  const mtSpOp<typename std::complex<typename T1::pod_type>, T1, spop_cx_scalar_times>
+  >::result
+operator*
+  (
+  const T1&                                  X,
+  const std::complex<typename T1::pod_type>& k
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  return mtSpOp<typename std::complex<typename T1::pod_type>, T1, spop_cx_scalar_times>('j', X, k);
+  }
+
+
+
+//! complex scalar * non-complex sparse
+template<typename T1>
+arma_inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_cx<typename T1::elem_type>::no),
+  const mtSpOp<typename std::complex<typename T1::pod_type>, T1, spop_cx_scalar_times>
+  >::result
+operator*
+  (
+  const std::complex<typename T1::pod_type>& k,
+  const T1&                                  X
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  return mtSpOp<typename std::complex<typename T1::pod_type>, T1, spop_cx_scalar_times>('j', X, k);
+  }
+
+
+
 //! multiplication of two sparse objects
 template<typename T1, typename T2>
 inline
