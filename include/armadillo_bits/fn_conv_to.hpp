@@ -503,14 +503,65 @@ conv_to< Col<out_eT> >::from(const std::vector<in_eT>& in, const typename arma_c
 
 
 
+//! convert between SpMat types
 template<typename out_eT>
 class conv_to< SpMat<out_eT> >
   {
   public:
   
+  template<typename in_eT, typename T1>
+  inline static SpMat<out_eT> from(const SpBase<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk = 0);
+  
+  template<typename in_eT, typename T1>
+  inline static SpMat<out_eT> from(const SpBase<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk = 0);
+  
   template<typename T1>
   inline static SpMat<out_eT> from(const Base<out_eT, T1>& in);
   };
+
+
+
+template<typename out_eT>
+template<typename in_eT, typename T1>
+arma_warn_unused
+inline
+SpMat<out_eT>
+conv_to< SpMat<out_eT> >::from(const SpBase<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk)
+  {
+  arma_extra_debug_sigprint();
+  arma_ignore(junk);
+  
+  const unwrap_spmat<T1>  tmp(in.get_ref());
+  const SpMat<in_eT>& X = tmp.M;
+  
+  SpMat<out_eT> out;  out.copy_layout(X);
+  
+  arrayops::convert( access::rwp(out.values), X.values, X.n_nonzero );
+  
+  return out;
+  }
+
+
+
+template<typename out_eT>
+template<typename in_eT, typename T1>
+arma_warn_unused
+inline
+SpMat<out_eT>
+conv_to< SpMat<out_eT> >::from(const SpBase<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk)
+  {
+  arma_extra_debug_sigprint();
+  arma_ignore(junk);
+  
+  const unwrap_spmat<T1>  tmp(in.get_ref());
+  const SpMat<in_eT>& X = tmp.M;
+  
+  SpMat<out_eT> out;  out.copy_layout(X);
+  
+  arrayops::convert_cx( access::rwp(out.values), X.values, X.n_nonzero );
+  
+  return out;
+  }
 
 
 
