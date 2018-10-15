@@ -534,7 +534,7 @@ conv_to< SpMat<out_eT> >::from(const SpBase<in_eT, T1>& in, const typename arma_
   const unwrap_spmat<T1>  tmp(in.get_ref());
   const SpMat<in_eT>& X = tmp.M;
   
-  SpMat<out_eT> out;  out.copy_layout(X);
+  SpMat<out_eT> out(arma_layout_indicator(), X);
   
   arrayops::convert( access::rwp(out.values), X.values, X.n_nonzero );
   
@@ -556,7 +556,7 @@ conv_to< SpMat<out_eT> >::from(const SpBase<in_eT, T1>& in, const typename arma_
   const unwrap_spmat<T1>  tmp(in.get_ref());
   const SpMat<in_eT>& X = tmp.M;
   
-  SpMat<out_eT> out;  out.copy_layout(X);
+  SpMat<out_eT> out(arma_layout_indicator(), X);
   
   arrayops::convert_cx( access::rwp(out.values), X.values, X.n_nonzero );
   
