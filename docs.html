@@ -17882,6 +17882,8 @@ List of additions and changes for each version:
 <li>faster handling of compound sparse matrix expressions by <a href="#accu">accu()</a>, <a href="#diagmat">diagmat()</a>, <a href="#trace">trace()</a></li>
 <li>added <a href="#trig_fns">sinc()</a></li>
 <li>expanded <a href="#misc_fns">sign()</a> to handle scalar arguments</li>
+<li>expanded <a href="#operators">operators</a> (*, %, +, &minus;) to handle sparse matrices with differing element types (eg. multiplication of complex matrix by real matrix)</li>
+<li>expanded <a href="#conv_to">conv_to()</a> to allow conversion between sparse matrices with differing element types</li>
 <li>expanded <a href="#solve">solve()</a> to optionally allow keeping solutions of systems singular to working precision</li>
 </ul>
 </li>
