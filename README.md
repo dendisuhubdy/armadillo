@@ -467,11 +467,11 @@ Octave/Matlab with C++ code that uses Armadillo matrices.
   (regression, nonlinear optimisation, neural networks, etc)  
   http://mlpack.org
 
+* ensmallen: flexible C++ library for efficient mathematical optimisation  
+  http://ensmallen.org/
+
 * SigPack: C++ signal processing library  
   http://sigpack.sourceforge.net
-
-* OptimLib: C++ library of numerical optimisation methods for nonlinear functions  
-  https://www.kthohr.com/optimlib.html
 
 * RcppArmadillo: integration of Armadillo with the R system and environment  
   http://dirk.eddelbuettel.com/code/rcpp.armadillo.html
