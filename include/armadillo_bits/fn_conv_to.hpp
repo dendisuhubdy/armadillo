@@ -19,31 +19,28 @@
 
 
 
-//! conversions to scalars via conv_to<>::from() is deprecated;
-//! use as_scalar() instead
 template<typename out_eT>
 class conv_to
   {
   public:
   
   template<typename in_eT, typename T1>
-  arma_deprecated inline static out_eT from(const Base<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk = 0);
+  inline static out_eT from(const Base<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk = 0);
 
   template<typename in_eT, typename T1>
-  arma_deprecated inline static out_eT from(const Base<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk = 0);
+  inline static out_eT from(const Base<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk = 0);
   
   template<typename in_eT, typename T1>
-  arma_deprecated inline static out_eT from(const BaseCube<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk = 0);
+  inline static out_eT from(const BaseCube<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk = 0);
   
   template<typename in_eT, typename T1>
-  arma_deprecated inline static out_eT from(const BaseCube<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk = 0);
+  inline static out_eT from(const BaseCube<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk = 0);
   };
 
 
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
-arma_deprecated
 inline
 out_eT
 conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk)
@@ -64,7 +61,6 @@ conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_not_cx<in_e
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
-arma_deprecated
 inline
 out_eT
 conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk)
@@ -89,7 +85,6 @@ conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_cx_only<in_
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
-arma_deprecated
 inline
 out_eT
 conv_to<out_eT>::from(const BaseCube<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk)
@@ -110,7 +105,6 @@ conv_to<out_eT>::from(const BaseCube<in_eT, T1>& in, const typename arma_not_cx<
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
-arma_deprecated
 inline
 out_eT
 conv_to<out_eT>::from(const BaseCube<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk)
