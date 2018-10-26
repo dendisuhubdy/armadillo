@@ -19,6 +19,8 @@
 
 
 
+//! conversion from Armadillo Base and BaseCube objects to scalars
+//! NOTE: use as_scalar() instead; this functionality is kept only for compatibility with old user code
 template<typename out_eT>
 class conv_to
   {
@@ -41,6 +43,7 @@ class conv_to
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
+arma_warn_unused
 inline
 out_eT
 conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk)
@@ -61,6 +64,7 @@ conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_not_cx<in_e
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
+arma_warn_unused
 inline
 out_eT
 conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk)
@@ -85,6 +89,7 @@ conv_to<out_eT>::from(const Base<in_eT, T1>& in, const typename arma_cx_only<in_
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
+arma_warn_unused
 inline
 out_eT
 conv_to<out_eT>::from(const BaseCube<in_eT, T1>& in, const typename arma_not_cx<in_eT>::result* junk)
@@ -105,6 +110,7 @@ conv_to<out_eT>::from(const BaseCube<in_eT, T1>& in, const typename arma_not_cx<
 
 template<typename out_eT>
 template<typename in_eT, typename T1>
+arma_warn_unused
 inline
 out_eT
 conv_to<out_eT>::from(const BaseCube<in_eT, T1>& in, const typename arma_cx_only<in_eT>::result* junk)
