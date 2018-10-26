@@ -538,6 +538,8 @@ conv_to< SpMat<out_eT> >::from(const SpBase<in_eT, T1>& in, const typename arma_
   
   arrayops::convert( access::rwp(out.values), X.values, X.n_nonzero );
   
+  out.remove_zeros();
+  
   return out;
   }
 
@@ -559,6 +561,8 @@ conv_to< SpMat<out_eT> >::from(const SpBase<in_eT, T1>& in, const typename arma_
   SpMat<out_eT> out(arma_layout_indicator(), X);
   
   arrayops::convert_cx( access::rwp(out.values), X.values, X.n_nonzero );
+  
+  out.remove_zeros();
   
   return out;
   }
