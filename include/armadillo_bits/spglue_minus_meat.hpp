@@ -286,7 +286,7 @@ spglue_minus_mixed::sparse_minus_dense(Mat< typename promote_type<typename T1::e
   
   while(it != it_end)
     {
-    out.at(it.row(), it.col()) += (*it);
+    out.at(it.row(), it.col()) += out_eT(*it);
     ++it;
     }
   }
