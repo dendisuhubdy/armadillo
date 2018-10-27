@@ -437,6 +437,12 @@ op_htrans2::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const eT val)
       }
     }
   else
+  if( (A_n_rows >= 512) && (A_n_cols >= 512) )
+    {
+    op_htrans::apply_mat_noalias_large(out, A);
+    arrayops::inplace_mul( out.memptr(), val, out.n_elem );
+    }
+  else
     {
     eT* outptr = out.memptr();
     
