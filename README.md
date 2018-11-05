@@ -277,9 +277,9 @@ You may need to make adaptations for 32 bit systems, later versions of Windows
 and/or the compiler. For example, you may have to enable or disable
 ARMA_BLAS_LONG and ARMA_BLAS_UNDERSCORE defines in "armadillo_bits/config.hpp".
 
-The folder "examples/lib_win64" contains reference LAPACK and BLAS libraries compiled
-for 64 bit Windows. The compilation was done by a third party. USE AT YOUR OWN RISK.
-The compiled versions of LAPACK and BLAS were obtained from:
+The folder "examples/lib_win64" contains baseline (unoptimised) LAPACK and BLAS
+libraries compiled for 64 bit Windows. The compilation was done by a third party.
+USE AT YOUR OWN RISK. The compiled versions of LAPACK and BLAS were obtained from:
   http://ylzhao.blogspot.com.au/2013/10/blas-lapack-precompiled-binaries-for.html
 
 Faster and/or alternative implementations of BLAS and LAPACK are available:
@@ -287,7 +287,8 @@ Faster and/or alternative implementations of BLAS and LAPACK are available:
   * http://icl.cs.utk.edu/lapack-for-windows/lapack/
   * http://software.intel.com/en-us/intel-mkl/
 
-The OpenBLAS and Intel MKL libraries are generally the fastest.
+The OpenBLAS and Intel MKL libraries are generally the fastest
+replacements for both BLAS and LAPACK.
 
 **Caveat:** 
 for any high performance scientific/engineering workloads,
