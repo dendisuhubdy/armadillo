@@ -773,8 +773,8 @@ class Mat<eT>::fixed : public Mat<eT>
   typedef eT                                elem_type;
   typedef typename get_pod_type<eT>::result pod_type;
   
-  static const bool is_col = (fixed_n_cols == 1) ? true : false;
-  static const bool is_row = (fixed_n_rows == 1) ? true : false;
+  static const bool is_col = (fixed_n_cols == 1);
+  static const bool is_row = (fixed_n_rows == 1);
   
   static const uword n_rows;  // value provided below the class definition
   static const uword n_cols;  // value provided below the class definition
