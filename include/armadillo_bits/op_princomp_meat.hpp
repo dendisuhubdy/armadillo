@@ -58,7 +58,7 @@ op_princomp::direct_princomp
     Mat<eT> U;
     Col< T> s;
     
-    const bool svd_ok = svd(U, s, coeff_out, score_out);
+    const bool svd_ok = (n_rows >= n_cols) ? svd_econ(U, s, coeff_out, score_out) : svd(U, s, coeff_out, score_out);
     
     if(svd_ok == false)  { return false; }
     
@@ -149,7 +149,7 @@ op_princomp::direct_princomp
     Mat<eT> U;
     Col< T> s;
     
-    const bool svd_ok = svd(U, s, coeff_out, score_out);
+    const bool svd_ok = (n_rows >= n_cols) ? svd_econ(U, s, coeff_out, score_out) : svd(U, s, coeff_out, score_out);
     
     if(svd_ok == false)  { return false; }
     
@@ -223,7 +223,7 @@ op_princomp::direct_princomp
     Mat<eT> U;
     Col< T> s;
     
-    const bool svd_ok = svd(U, s, coeff_out, score_out);
+    const bool svd_ok = (n_rows >= n_cols) ? svd_econ(U, s, coeff_out, score_out) : svd(U, s, coeff_out, score_out);
     
     if(svd_ok == false)  { return false; }
     
@@ -275,7 +275,7 @@ op_princomp::direct_princomp
     Mat<eT> U;
     Col<eT> s;
     
-    const bool svd_ok = svd(U, s, coeff_out, tmp);
+    const bool svd_ok = (in.n_rows >= in.n_cols) ? svd_econ(U, s, coeff_out, tmp) : svd(U, s, coeff_out, tmp);
     
     if(svd_ok == false)  { return false; }
     }
