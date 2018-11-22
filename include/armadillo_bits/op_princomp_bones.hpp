@@ -28,39 +28,39 @@ class op_princomp
   direct_princomp
     (
            Mat<typename T1::elem_type>&     coeff_out,
-    const Base<typename T1::elem_type, T1>& X
-    );
-  
-  template<typename T1>
-  inline static bool
-  direct_princomp
-    (
-           Mat<typename T1::elem_type>&     coeff_out,
-           Mat<typename T1::elem_type>&     score_out,
-    const Base<typename T1::elem_type, T1>& X
-    );
-  
-  template<typename T1>
-  inline static bool
-  direct_princomp
-    (
-           Mat<typename T1::elem_type>&     coeff_out,
-           Mat<typename T1::elem_type>&     score_out,
-           Col<typename T1::pod_type>&     latent_out,
-    const Base<typename T1::elem_type, T1>& X
-    );
-  
-  template<typename T1>
-  inline static bool
-  direct_princomp
-    (
-           Mat<typename T1::elem_type>&     coeff_out,
            Mat<typename T1::elem_type>&     score_out,
            Col<typename T1::pod_type>&     latent_out,
            Col<typename T1::elem_type>&     tsquared_out,
     const Base<typename T1::elem_type, T1>& X
     );
   
+  
+  template<typename T1>
+  inline static bool
+  direct_princomp
+    (
+           Mat<typename T1::elem_type>&     coeff_out,
+           Mat<typename T1::elem_type>&     score_out,
+           Col<typename T1::pod_type>&     latent_out,
+    const Base<typename T1::elem_type, T1>& X
+    );
+  
+  template<typename T1>
+  inline static bool
+  direct_princomp
+    (
+           Mat<typename T1::elem_type>&     coeff_out,
+           Mat<typename T1::elem_type>&     score_out,
+    const Base<typename T1::elem_type, T1>& X
+    );
+  
+  template<typename T1>
+  inline static bool
+  direct_princomp
+    (
+           Mat<typename T1::elem_type>&     coeff_out,
+    const Base<typename T1::elem_type, T1>& X
+    );
   
   template<typename T1>
   inline static void
