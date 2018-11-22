@@ -72,9 +72,7 @@ op_princomp::direct_princomp
       {
       score_out.cols(n_rows-1,n_cols-1).zeros();
       
-      //Col<eT> s_tmp = zeros< Col<eT> >(n_cols);
-      Col<T> s_tmp(n_cols);
-      s_tmp.zeros();
+      Col<T> s_tmp(n_cols, fill::zeros);
       
       s_tmp.rows(0,n_rows-2) = s.rows(0,n_rows-2);
       s = s_tmp;
@@ -165,14 +163,14 @@ op_princomp::direct_princomp
       {
       score_out.cols(n_rows-1,n_cols-1).zeros();
       
-      Col<T> s_tmp = zeros< Col<T> >(n_cols);
+      Col<T> s_tmp(n_cols, fill::zeros);
+      
       s_tmp.rows(0,n_rows-2) = s.rows(0,n_rows-2);
       s = s_tmp;
       }
       
     // compute the eigenvalues of the principal vectors
     latent_out = s%s;
-    
     }
   else // 0 or 1 samples
     {
@@ -208,6 +206,7 @@ op_princomp::direct_princomp
   arma_extra_debug_sigprint();
   
   typedef typename T1::elem_type eT;
+  typedef typename T1::pod_type   T;
   
   const unwrap_check<T1> Y( X.get_ref(), score_out );
   const Mat<eT>& in    = Y.M;
@@ -222,14 +221,11 @@ op_princomp::direct_princomp
     
     // singular value decomposition
     Mat<eT> U;
-    Col<eT> s;
+    Col< T> s;
     
     const bool svd_ok = svd(U, s, coeff_out, score_out);
     
     if(svd_ok == false)  { return false; }
-    
-    // normalize the eigenvalues
-    s /= std::sqrt( double(n_rows - 1) );
     
     // project the samples to the principals
     score_out *= coeff_out;
@@ -237,10 +233,6 @@ op_princomp::direct_princomp
     if(n_rows <= n_cols) // number of samples is less than their dimensionality
       {
       score_out.cols(n_rows-1,n_cols-1).zeros();
-      
-      Col<eT> s_tmp = zeros< Col<eT> >(n_cols);
-      s_tmp.rows(0,n_rows-2) = s.rows(0,n_rows-2);
-      s = s_tmp;
       }
     }
   else // 0 or 1 samples
