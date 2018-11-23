@@ -145,6 +145,6 @@ TEST_CASE("fn_princomp_6")
   REQUIRE(std::abs(coeff(2,0)) == Approx(2.4288979933e-01));
   REQUIRE(std::abs(coeff(2,1)) == Approx(3.4719806003e-17));
   REQUIRE(std::abs(coeff(2,2)) == Approx(1.2516285718e-02));
-  REQUIRE(std::abs(coeff(19,19)) == Approx(9.5528446175e-01));
+  REQUIRE(std::abs(coeff(19,19)) == Approx(9.5528446175e-01).epsilon(0.01));
   }
 
