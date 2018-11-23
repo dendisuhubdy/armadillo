@@ -80,16 +80,17 @@ op_princomp::direct_princomp
       // compute the Hotelling's T-squared
       s_tmp.rows(0,n_rows-2) = T(1) / s_tmp.rows(0,n_rows-2);
       
-      const Mat<eT> S = score_out * diagmat(Col<T>(s_tmp));   
-      tsquared_out = sum(S%S,1); 
+      const Mat<eT> S = score_out * diagmat(Col<T>(s_tmp));
+      tsquared_out = sum(S%S,1);
       }
     else
       {
-      // compute the Hotelling's T-squared   
+      // compute the Hotelling's T-squared
+      // TODO: replace with more robust approach
       const Mat<eT> S = score_out * diagmat(Col<T>( T(1) / s));
       tsquared_out = sum(S%S,1);
       }
-            
+    
     // compute the eigenvalues of the principal vectors
     latent_out = s%s;
     }
@@ -168,7 +169,7 @@ op_princomp::direct_princomp
       s_tmp.rows(0,n_rows-2) = s.rows(0,n_rows-2);
       s = s_tmp;
       }
-      
+    
     // compute the eigenvalues of the principal vectors
     latent_out = s%s;
     }
