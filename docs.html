@@ -12485,11 +12485,12 @@ The argument <i>tol</i> is optional; it specifies the tolerance for convergence
 <br>
 <li><b>Caveats:</b>
 <ul>
-<li>there is currently no check whether <i>X</i> is symmetric</li>
+<li>the number of obtained eigenvalues/eigenvectors may be lower than requested, depending on the given data</li>
 <li>
 it's more difficult to compute the smallest eigenvalues than the largest eigenvalues;
 <br>if the decomposition fails, try increasing <i>k</i> (number of eigenvalues) and/or the tolerance
 </li>
+<li>there is currently no check whether <i>X</i> is symmetric</li>
 </ul>
 </li>
 <br>
@@ -12579,9 +12580,14 @@ If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </ul>
 </li>
 <br>
-<li><b>Caveat:</b> it's more difficult to compute the smallest eigenvalues than the largest eigenvalues;
+<li><b>Caveats:</b>
+<ul>
+<li>the number of obtained eigenvalues/eigenvectors may be lower than requested, depending on the given data</li>
+<li>
+it's more difficult to compute the smallest eigenvalues than the largest eigenvalues;
 <br>if the decomposition fails, try increasing <i>k</i> (number of eigenvalues) and/or the tolerance
 </li>
+</ul>
 <br>
 <li>
 Examples:
