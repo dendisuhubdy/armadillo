@@ -3542,7 +3542,7 @@ X.<b>submat(&nbsp;</b>first_row<b>,</b>&nbsp;first_col<b>,</b>&nbsp;last_row<b>,
 X<b>(&nbsp;span(</b>first_row<b>,</b>&nbsp;last_row<b>),&nbsp;span(</b>first_col<b>,</b>&nbsp;last_col<b>)&nbsp;)</b><br>
 <br>
 X<b>(&nbsp;</b>first_row<b>,</b>&nbsp;first_col<b>,&nbsp;size(</b>n_rows<b>,&nbsp;</b>n_cols<b>)&nbsp;)</b><br>
-X<b>(&nbsp;</b>first_row<b>,</b>&nbsp;first_col<b>,&nbsp;size(</b>Y<b>)&nbsp;)</b>&nbsp;&nbsp;&nbsp;&nbsp;<i>(Y&nbsp;is&nbsp;a&nbsp;mat)</i><br>
+X<b>(&nbsp;</b>first_row<b>,</b>&nbsp;first_col<b>,&nbsp;size(</b>Y<b>)&nbsp;)</b>&nbsp;&nbsp;&nbsp;&nbsp;<i>[&nbsp;Y&nbsp;is&nbsp;a&nbsp;matrix&nbsp;]</i><br>
 <br>
 X<b>(</b>&nbsp;<b>span(</b>first_row<b>,</b>&nbsp;last_row<b>),</b>&nbsp;col_number&nbsp;<b>)</b><br>
 X<b>(</b>&nbsp;row_number<b>,</b>&nbsp;<b>span(</b>first_col<b>,</b>&nbsp;last_col<b>)&nbsp;)</b><br>
@@ -3553,7 +3553,7 @@ X.<b>head_rows(&nbsp;</b>number_of_rows<b>&nbsp;)</b><br>
 X.<b>tail_cols(&nbsp;</b>number_of_cols<b>&nbsp;)</b><br>
 X.<b>tail_rows(&nbsp;</b>number_of_rows<b>&nbsp;)</b><br>
 <br>
-X.<b>unsafe_col(&nbsp;</b>col_number<b>&nbsp;)</b><br>
+X.<b>unsafe_col(&nbsp;</b>col_number<b>&nbsp;)</b>&nbsp;&nbsp;&nbsp;&nbsp;<i>[&nbsp;use&nbsp;with&nbsp;caution&nbsp;]</i><br>
 </ul>
 </li>
 
@@ -3567,7 +3567,7 @@ contiguous views for vector V:
 V<b>(&nbsp;span(</b>first_index<b>,</b> last_index<b>)&nbsp;)</b><br>
 V.<b>subvec(&nbsp;</b>first_index<b>,</b> last_index<b>&nbsp;)</b><br>
 <br>
-V.<b>subvec(&nbsp;</b>first_index<b>, size(</b>W<b>)&nbsp;)</b>&nbsp;&nbsp;&nbsp;&nbsp;<i>(W&nbsp;is&nbsp;a&nbsp;vector)</i><br>
+V.<b>subvec(&nbsp;</b>first_index<b>, size(</b>W<b>)&nbsp;)</b>&nbsp;&nbsp;&nbsp;&nbsp;<i>[&nbsp;W&nbsp;is&nbsp;a&nbsp;vector&nbsp;]</i><br>
 <br>
 V.<b>head(&nbsp;</b>number_of_elements<b>&nbsp;)</b><br>
 V.<b>tail(&nbsp;</b>number_of_elements<b>&nbsp;)</b>
@@ -3610,7 +3610,7 @@ X<b>(</b>&nbsp;vector_of_row_indices<b>,</b>&nbsp;vector_of_column_indices&nbsp;
 <br>
 <br>
 
-<li>related views (documented separately)
+<li>related matrix views (documented separately)
 <ul>
 <br>
 X.<a href="#diag">diag()</a><br>
@@ -3777,7 +3777,7 @@ Q.<b>slices(</b>&nbsp;vector_of_slice_indices&nbsp;<b>)</b><br>
 </ul>
 </li>
 <br>
-<li>related views (documented separately)
+<li>related cube views (documented separately)
 <ul>
 <br>
 Q.<a href="#each_slice">each_slice()</a><br>
