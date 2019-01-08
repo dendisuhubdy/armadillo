@@ -6737,6 +6737,7 @@ Mat<eT>::reset()
 
 template<typename eT>
 inline
+arma_cold
 void
 Mat<eT>::soft_reset()
   {
