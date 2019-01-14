@@ -475,7 +475,7 @@ class Mat : public Base< eT, Mat<eT> >
   inline const Mat& eye(const uword in_rows, const uword in_cols);
   inline const Mat& eye(const SizeMat& s);
   
-  inline           void      reset();
+  inline arma_cold void      reset();
   inline arma_cold void soft_reset();
   
   
