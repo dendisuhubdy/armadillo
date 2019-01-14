@@ -317,11 +317,11 @@ trace(const SpGlue<T1, T2, spglue_schur>& expr)
 
 
 
-//! trace of sparse object; speedup for trace(A*B); non-complex elements
+//! trace of sparse object; speedup for trace(A*B)
 template<typename T1, typename T2>
 arma_warn_unused
 inline
-typename enable_if2< is_cx<typename T1::elem_type>::no, typename T1::elem_type>::result
+typename T1::elem_type
 trace(const SpGlue<T1, T2, spglue_times>& expr)
   {
   arma_extra_debug_sigprint();
