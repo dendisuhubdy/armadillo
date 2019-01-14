@@ -78,7 +78,7 @@ trace(const Op<T1, op_diagmat>& X)
 
 
 
-//! speedup for trace(A*B)
+//! speedup for trace(A*B); non-complex elements
 template<typename T1, typename T2>
 arma_warn_unused
 inline
@@ -317,7 +317,7 @@ trace(const SpGlue<T1, T2, spglue_schur>& expr)
 
 
 
-//! trace of sparse object; speedup for trace(A*B)
+//! trace of sparse object; speedup for trace(A*B); non-complex elements
 template<typename T1, typename T2>
 arma_warn_unused
 inline
