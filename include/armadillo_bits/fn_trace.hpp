@@ -82,7 +82,7 @@ trace(const Op<T1, op_diagmat>& X)
 template<typename T1, typename T2>
 arma_warn_unused
 inline
-typename T1::elem_type
+typename enable_if2< is_cx<typename T1::elem_type>::no, typename T1::elem_type>::result
 trace(const Glue<T1, T2, glue_times>& X)
   {
   arma_extra_debug_sigprint();
@@ -321,7 +321,7 @@ trace(const SpGlue<T1, T2, spglue_schur>& expr)
 template<typename T1, typename T2>
 arma_warn_unused
 inline
-typename T1::elem_type
+typename enable_if2< is_cx<typename T1::elem_type>::no, typename T1::elem_type>::result
 trace(const SpGlue<T1, T2, spglue_times>& expr)
   {
   arma_extra_debug_sigprint();
