@@ -208,6 +208,7 @@ trace(const Glue<T1, T2, glue_times>& X)
   {
   arma_extra_debug_sigprint();
   
+  typedef typename T1::pod_type   T;
   typedef typename T1::elem_type eT;
   
   const quasi_unwrap<T1> UA(X.A);
@@ -228,7 +229,9 @@ trace(const Glue<T1, T2, glue_times>& X)
   
   const uword N = (std::min)(A_n_rows, B_n_cols);
   
-  eT acc = eT(0);
+  // eT acc = eT(0);
+  T acc_real = T(0);
+  T acc_imag = T(0);
   
   for(uword k=0; k < N; ++k)
     {
@@ -238,11 +241,24 @@ trace(const Glue<T1, T2, glue_times>& X)
     
     for(uword i=0; i < A_n_cols; ++i)
       {
-      acc += A.at(k, i) * B_colptr[i];
+      // acc += A.at(k, i) * B_colptr[i];
+      
+      const std::complex<T>& xx = A.at(k, i);
+      const std::complex<T>& yy = B_colptr[i];
+      
+      const T a = xx.real();
+      const T b = xx.imag();
+      
+      const T c = yy.real();
+      const T d = yy.imag();
+      
+      acc_real += (a*c) - (b*d);
+      acc_imag += (a*d) + (b*c);
       }
     }
   
-  return acc;
+  // return acc;
+  return std::complex<T>(acc_real, acc_imag);
   }
 
 
