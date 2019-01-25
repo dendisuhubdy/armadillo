@@ -21,7 +21,7 @@
 template<typename T1>
 arma_warn_unused
 inline
-typename enable_if2< is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true), typename T1::elem_type >::result
+typename enable_if2< is_arma_type<T1>::value && resolves_to_vector<T1>::yes, typename T1::elem_type >::result
 max(const T1& X)
   {
   arma_extra_debug_sigprint();
@@ -34,7 +34,7 @@ max(const T1& X)
 template<typename T1>
 arma_warn_unused
 arma_inline
-typename enable_if2< is_arma_type<T1>::value && (resolves_to_vector<T1>::value == false), const Op<T1, op_max> >::result
+typename enable_if2< is_arma_type<T1>::value && resolves_to_vector<T1>::no, const Op<T1, op_max> >::result
 max(const T1& X)
   {
   arma_extra_debug_sigprint();

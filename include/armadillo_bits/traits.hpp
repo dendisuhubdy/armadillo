@@ -1232,10 +1232,20 @@ struct force_different_type<T1,T1>
 
 
 template<typename T1>
-struct resolves_to_vector_default { static const bool value = false;      };
+struct resolves_to_vector_default
+  {
+  static const bool value = false;
+  static const bool yes   = false;
+  static const bool no    = true;
+  };
 
 template<typename T1>
-struct resolves_to_vector_test    { static const bool value = T1::is_vct; };
+struct resolves_to_vector_test
+  {
+  static const bool value =  T1::is_vct;
+  static const bool yes   = (T1::is_vct == true);
+  static const bool no    = (T1::is_vct == false);
+  };
 
 
 template<typename T1, bool condition>
