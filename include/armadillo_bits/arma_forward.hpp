@@ -119,6 +119,7 @@ class op_hist;
 class op_chi2rnd;
 class op_roots;
 class op_prod;
+class op_range;
 
 class eop_conj;
 
