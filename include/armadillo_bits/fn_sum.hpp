@@ -21,7 +21,7 @@
 template<typename T1>
 arma_warn_unused
 inline
-typename enable_if2< resolves_to_vector<T1>::value == true, typename T1::elem_type >::result
+typename enable_if2< is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true), typename T1::elem_type >::result
 sum(const T1& X)
   {
   arma_extra_debug_sigprint();
@@ -34,7 +34,7 @@ sum(const T1& X)
 template<typename T1>
 arma_warn_unused
 arma_inline
-typename enable_if2< resolves_to_vector<T1>::value == false, const Op<T1, op_sum> >::result
+typename enable_if2< is_arma_type<T1>::value && (resolves_to_vector<T1>::value == false), const Op<T1, op_sum> >::result
 sum(const T1& X)
   {
   arma_extra_debug_sigprint();
@@ -47,7 +47,7 @@ sum(const T1& X)
 template<typename T1>
 arma_warn_unused
 arma_inline
-const Op<T1, op_sum>
+typename enable_if2< is_arma_type<T1>::value, const Op<T1, op_sum> >::result
 sum(const T1& X, const uword dim)
   {
   arma_extra_debug_sigprint();
