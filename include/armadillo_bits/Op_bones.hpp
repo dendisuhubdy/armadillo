@@ -128,6 +128,7 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
     || is_same_type<op_type, op_vectorise_all>::yes
     || is_same_type<op_type, op_min>::yes
     || is_same_type<op_type, op_max>::yes
+    || is_same_type<op_type, op_prod>::yes
     );
   };
 

@@ -118,6 +118,7 @@ class op_diff_default;
 class op_hist;
 class op_chi2rnd;
 class op_roots;
+class op_prod;
 
 class eop_conj;
 
