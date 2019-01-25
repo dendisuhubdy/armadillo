@@ -183,6 +183,7 @@ class Row<eT>::fixed : public Row<eT>
   
   static const bool is_col = false;
   static const bool is_row = true;
+  static const bool is_vct = true;
   
   static const uword n_rows;  // value provided below the class definition
   static const uword n_cols;  // value provided below the class definition

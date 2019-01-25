@@ -776,6 +776,7 @@ class Mat<eT>::fixed : public Mat<eT>
   
   static const bool is_col = (fixed_n_cols == 1);
   static const bool is_row = (fixed_n_rows == 1);
+  static const bool is_vct = is_col || is_row;
   
   static const uword n_rows;  // value provided below the class definition
   static const uword n_cols;  // value provided below the class definition
