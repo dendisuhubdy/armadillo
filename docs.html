@@ -148,7 +148,7 @@ hr.greyline
 <a class="noprint" style="display:scroll; position:fixed; bottom:5px; right:5px;" href="#top"><font size=-1>[top]</font></a>
 
 <a name="top"></a>
-<big><b>API Documentation for Armadillo 9.200</b></big>
+<big><b>API Documentation for Armadillo 9.299</b></big>
 <br>
 <br>
 <br>
@@ -484,8 +484,9 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><a href="#fft">fft&nbsp;/&nbsp;ifft</a></td><td>&nbsp;</td><td>1D fast Fourier transform and its inverse</td></tr>
 <tr><td><a href="#fft2">fft2&nbsp;/&nbsp;ifft2</a></td><td>&nbsp;</td><td>2D fast Fourier transform and its inverse</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#interp1">interp1</a></td><td>&nbsp;</td><td>1D interpolation</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#polyfit">polyfit</a></td><td>&nbsp;</td><td>find polynomial coefficients for data fitting</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#polyval">polyval</a></td><td>&nbsp;</td><td>evaluate polynomial</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#interp2">interp2</a></td><td>&nbsp;</td><td>2D interpolation</td></tr>
+<tr><td><a href="#polyfit">polyfit</a></td><td>&nbsp;</td><td>find polynomial coefficients for data fitting</td></tr>
+<tr><td><a href="#polyval">polyval</a></td><td>&nbsp;</td><td>evaluate polynomial</td></tr>
 </tbody>
 </table>
 </ul>
@@ -12971,6 +12972,7 @@ See also:
 <ul>
 <li><a href="#conv">conv()</a></li>
 <li><a href="#fft2">fft2()</a></li>
+<li><a href="#interp2">interp2()</a></li>
 <li><a href="http://mathworld.wolfram.com/Convolution.html">Convolution in MathWorld</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Convolution">Convolution in Wikipedia</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29">Kernel (image processing) in Wikipedia</a></li>
@@ -13139,10 +13141,100 @@ interp1(x, y, xx, yy, "nearest");
 <li>
 See also:
 <ul>
+<li><a href="#interp2">interp2()</a></li>
 <li><a href="#polyval">polyval()</a></li>
 <li><a href="#linspace">linspace()</a></li>
 <li><a href="#regspace">regspace()</a></li>
 <li><a href="#conv">conv()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="interp2"></a>
+<b>interp2( X, Y, Z, XI, YI, ZI )</b>
+<br><b>interp2( X, Y, Z, XI, YI, ZI, method )</b>
+<br><b>interp2( X, Y, Z, XI, YI, ZI, method, extrapolation_value )</b>
+<ul>
+<li>
+2D data interpolation
+</li>
+<br>
+<li>
+Given a 2D function specified by matrix <i>Z</i> with coordinates given by vectors <i>X</i> and <i>Y</i>,
+<br>generate matrix <i>ZI</i> which contains interpolated values at the coordinates given by vectors <i>XI</i> and <i>YI</i>
+</li>
+<br>
+<li>
+The vector pairs <i>(X,&nbsp;Y)</i> and <i>(XI,&nbsp;YI)</i> define 2D coordinates in a grid;
+<br>for example, <i>X</i> defines the horizontal coordinates and <i>Y</i> defines the corresponding vertical coordinates,
+<br>so that (&nbsp;<i>X(m)</i>,&nbsp;<i>Y(n)&nbsp;)</i> is the 2D coordinate of element <i>Z(n,m)</i>
+</li>
+<br>
+<li>
+The length of vector <i>X</i> must be equal to the number of columns in matrix <i>Z</i>
+</li>
+<br>
+<li>
+The length of vector <i>Y</i> must be equal to the number of rows in matrix <i>Z</i>
+</li>
+<br>
+<li>
+The vectors <i>X</i>, <i>Y</i>, <i>XI</i>, <i>YI</i> must be monotonically increasing
+</li>
+<br>
+<li>
+The <i>method</i> argument is optional; it is one of:
+<ul>
+<table>
+<tbody>
+<tr><td style="text-align: right;"><code>"nearest"</code></td><td>&nbsp;=&nbsp;</td><td>interpolate using nearest neighbours</td></tr>
+<tr><td style="text-align: right;"><code>"linear"</code></td><td>&nbsp;=&nbsp;</td><td>linear interpolation between nearest neighbours (<b>default setting</b>)</td></tr>
+</tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+If a coordinate in the 2D grid specified by <i>(XI,&nbsp;YI)</i> is outside the domain of the 2D grid specified by <i>(X,&nbsp;Y)</i>,
+<br>the corresponding value in <i>ZI</i> is set to <i>extrapolation_value</i>
+</li>
+<br>
+<li>
+The <i>extrapolation_value</i> argument is optional; by default it is <a href="#constants">datum::nan</a> (not-a-number)
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+
+mat Z;
+
+Z.load("input_image.pgm", pgm_binary);  // load an image in pgm format
+
+vec X = regspace(1, Z.n_cols);  // X = horizontal spacing
+vec Y = regspace(1, Z.n_rows);  // Y = vertical spacing
+
+vec XI = regspace(X.min(), 1.0/2.0, X.max()); // magnify by approx 2
+vec YI = regspace(Y.min(), 1.0/3.0, Y.max()); // magnify by approx 3
+
+mat ZI;
+
+interp2(X, Y, Z, XI, YI, ZI);  // use linear interpolation by default
+
+ZI.save("output_image.pgm", pgm_binary);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#interp1">interp1()</a></li>
+<li><a href="#regspace">regspace()</a></li>
+<li><a href="#conv2">conv2()</a></li>
 </ul>
 </li>
 <br>
@@ -17913,6 +18005,13 @@ List of additions and changes for each version:
 
 
 
+<a name="version_9300"></a>
+<li>Version 9.300:
+<ul>
+<li>added <a href="#interp2">interp2()</a> for 2D data interpolation</li>
+</ul>
+</li>
+<br>
 <a name="version_9200"></a>
 <li>Version 9.200:
 <ul>
