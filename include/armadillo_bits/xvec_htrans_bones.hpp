@@ -28,6 +28,7 @@ class xvec_htrans : public Base<eT, xvec_htrans<eT> >
   
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;  // TODO
   
   arma_aligned const eT* const mem;
   

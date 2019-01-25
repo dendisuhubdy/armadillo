@@ -32,6 +32,7 @@ class subview : public Base<eT, subview<eT> >
   
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
   
   const uword aux_row1;
   const uword aux_col1;
@@ -353,6 +354,7 @@ class subview_col : public subview<eT>
   
   static const bool is_row = false;
   static const bool is_col = true;
+  static const bool is_vct = true;
   
   const eT* colmem;
   
@@ -443,6 +445,7 @@ class subview_row : public subview<eT>
   
   static const bool is_row = true;
   static const bool is_col = false;
+  static const bool is_vct = true;
   
   inline void operator= (const subview<eT>& x);
   inline void operator= (const subview_row& x);
@@ -525,6 +528,7 @@ class subview_row_strans : public Base<eT, subview_row_strans<eT> >
   
   static const bool is_row = false;
   static const bool is_col = true;
+  static const bool is_vct = true;
   
   arma_aligned const subview_row<eT>& sv_row;
   
@@ -558,6 +562,7 @@ class subview_row_htrans : public Base<eT, subview_row_htrans<eT> >
   
   static const bool is_row = false;
   static const bool is_col = true;
+  static const bool is_vct = true;
   
   arma_aligned const subview_row<eT>& sv_row;
   

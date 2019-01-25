@@ -29,6 +29,7 @@ class SpCol : public SpMat<eT>
   
   static const bool is_row = false;
   static const bool is_col = true;
+  static const bool is_vct = true;
   
   
   inline          SpCol();

@@ -81,6 +81,8 @@ class op_htrans;
 class op_htrans2;
 class op_inv;
 class op_sum;
+class op_mean;
+class op_median;
 class op_abs;
 class op_arg;
 class op_diagmat;

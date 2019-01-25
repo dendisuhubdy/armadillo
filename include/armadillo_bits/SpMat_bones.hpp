@@ -29,6 +29,7 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
   
   const uword n_rows;    //!< number of rows             (read-only)
   const uword n_cols;    //!< number of columns          (read-only)

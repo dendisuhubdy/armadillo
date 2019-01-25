@@ -29,6 +29,7 @@ class SpRow : public SpMat<eT>
   
   static const bool is_row = true;
   static const bool is_col = false;
+  static const bool is_vct = true;
   
   
   inline          SpRow();

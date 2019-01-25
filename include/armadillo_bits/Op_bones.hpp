@@ -118,6 +118,14 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
       )
     )
     ;
+  
+  static const bool is_vct = \
+    (
+       (is_row || is_col)
+    || is_same_type<op_type, op_sum>::yes
+    || is_same_type<op_type, op_mean>::yes
+    || is_same_type<op_type, op_median>::yes
+    );
   };
 
 

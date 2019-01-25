@@ -29,6 +29,7 @@ class subview_elem2 : public Base<eT, subview_elem2<eT,T1,T2> >
   
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
   
   arma_aligned const Mat<eT>& m;
   

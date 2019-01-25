@@ -71,6 +71,7 @@ class mtOp : public Base<out_eT, mtOp<out_eT, T1, op_type> >
       )
     );
   
+  static const bool is_vct = is_row || is_col;
   
   inline explicit mtOp(const T1& in_m);
   inline          mtOp(const T1& in_m, const in_eT in_aux);

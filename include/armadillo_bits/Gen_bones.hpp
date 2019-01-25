@@ -34,6 +34,7 @@ class Gen
   
   static const bool is_row = T1::is_row;
   static const bool is_col = T1::is_col;
+  static const bool is_vct = is_row || is_col;
   
   arma_aligned const uword n_rows;
   arma_aligned const uword n_cols;

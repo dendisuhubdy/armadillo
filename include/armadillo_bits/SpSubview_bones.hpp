@@ -30,6 +30,7 @@ class SpSubview : public SpBase<eT, SpSubview<eT> >
   
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
   
   const uword aux_row1;
   const uword aux_col1;

@@ -28,6 +28,7 @@ class xtrans_mat : public Base<eT, xtrans_mat<eT, do_conj> >
   
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
   
   static const bool really_do_conj = (do_conj && is_cx<eT>::yes);
   

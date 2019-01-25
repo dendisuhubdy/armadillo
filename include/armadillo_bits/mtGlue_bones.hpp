@@ -43,6 +43,8 @@ class mtGlue : public Base<out_eT, mtGlue<out_eT, T1, T2, glue_type> >
     || (T1::is_col && is_same_type<glue_type, glue_histc_default>::yes)
     );
   
+  static const bool is_vct = is_row || is_col;
+  
   arma_inline  mtGlue(const T1& in_A, const T2& in_B);
   arma_inline  mtGlue(const T1& in_A, const T2& in_B, const uword in_aux_uword);
   arma_inline ~mtGlue();
