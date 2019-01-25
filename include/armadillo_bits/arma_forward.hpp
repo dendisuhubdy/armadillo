@@ -89,6 +89,7 @@ class op_diagmat;
 class op_trimat;
 class op_diagvec;
 class op_vectorise_col;
+class op_vectorise_all;
 class op_normalise_vec;
 class op_clamp;
 class op_cumsum_default;
