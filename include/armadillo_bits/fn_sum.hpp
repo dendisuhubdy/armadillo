@@ -93,7 +93,7 @@ inline
 typename
 enable_if2
   <
-  (is_arma_sparse_type<T1>::value == true) && (resolves_to_sparse_vector<T1>::value == true),
+  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == true),
   typename T1::elem_type
   >::result
 sum(const T1& x)
@@ -112,14 +112,14 @@ inline
 typename
 enable_if2
   <
-  (is_arma_sparse_type<T1>::value == true) && (resolves_to_sparse_vector<T1>::value == false),
+  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == false),
   const SpOp<T1,spop_sum>
   >::result
-sum(const T1& x, const uword dim = 0)
+sum(const T1& x)
   {
   arma_extra_debug_sigprint();
   
-  return SpOp<T1,spop_sum>(x, dim, 0);
+  return SpOp<T1,spop_sum>(x, 0, 0);
   }
 
 
@@ -127,26 +127,17 @@ sum(const T1& x, const uword dim = 0)
 template<typename T1>
 arma_warn_unused
 inline
-typename T1::elem_type
-sum(const SpOp<T1, spop_sum>& in)
-  {
-  arma_extra_debug_sigprint();
-  arma_extra_debug_print("sum(): two consecutive sum() calls detected");
-  
-  return accu(in.m);
-  }
-
-
-
-template<typename T1>
-arma_warn_unused
-arma_inline
-const SpOp<SpOp<T1, spop_sum>, spop_sum>
-sum(const SpOp<T1, spop_sum>& in, const uword dim)
+typename
+enable_if2
+  <
+  is_arma_sparse_type<T1>::value,
+  const SpOp<T1,spop_sum>
+  >::result
+sum(const T1& x, const uword dim)
   {
   arma_extra_debug_sigprint();
   
-  return SpOp<SpOp<T1, spop_sum>, spop_sum>(in, dim, 0);
+  return SpOp<T1,spop_sum>(x, dim, 0);
   }
 
 

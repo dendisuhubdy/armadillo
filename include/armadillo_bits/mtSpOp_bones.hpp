@@ -34,7 +34,11 @@ class mtSpOp : public SpBase<out_eT, mtSpOp<out_eT, T1, op_type> >
   
   static const bool is_row = false;
   static const bool is_col = false;
-  static const bool is_vct = false;  // TODO
+  static const bool is_vct = \
+    (
+       (T1::is_vct && is_spop_elem<op_type>::value)
+    || is_same_type<op_type, spop_var>::value
+    );
   
   inline explicit  mtSpOp(const T1& in_m);
   inline           mtSpOp(const T1& in_m, const uword aux_uword_a, const uword aux_uword_b);
