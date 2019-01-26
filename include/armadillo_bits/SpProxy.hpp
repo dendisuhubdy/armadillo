@@ -36,6 +36,7 @@ class SpProxy< SpMat<eT> >
 
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
 
   arma_aligned const SpMat<eT>& Q;
 
@@ -89,6 +90,7 @@ class SpProxy< SpCol<eT> >
   
   static const bool is_row = false;
   static const bool is_col = true;
+  static const bool is_vct = true;
   
   arma_aligned const SpCol<eT>& Q;
   
@@ -142,6 +144,7 @@ class SpProxy< SpRow<eT> >
   
   static const bool is_row = true;
   static const bool is_col = false;
+  static const bool is_vct = true;
   
   arma_aligned const SpRow<eT>& Q;
   
@@ -195,6 +198,7 @@ class SpProxy< SpSubview<eT> >
 
   static const bool is_row = false;
   static const bool is_col = false;
+  static const bool is_vct = false;
 
   arma_aligned const SpSubview<eT>& Q;
 
@@ -248,6 +252,7 @@ class SpProxy< spdiagview<eT> >
   
   static const bool is_row = false;
   static const bool is_col = true;
+  static const bool is_vct = true;
   
   arma_aligned const SpMat<eT> Q;
   
@@ -301,6 +306,7 @@ class SpProxy< SpOp<T1, spop_type> >
   
   static const bool is_row = SpOp<T1, spop_type>::is_row;
   static const bool is_col = SpOp<T1, spop_type>::is_col;
+  static const bool is_vct = SpOp<T1, spop_type>::is_vct;
   
   arma_aligned const SpMat<eT> Q;
   
@@ -354,6 +360,7 @@ class SpProxy< SpGlue<T1, T2, spglue_type> >
   
   static const bool is_row = SpGlue<T1, T2, spglue_type>::is_row;
   static const bool is_col = SpGlue<T1, T2, spglue_type>::is_col;
+  static const bool is_vct = SpGlue<T1, T2, spglue_type>::is_vct;
   
   arma_aligned const SpMat<eT> Q;
   
@@ -406,6 +413,7 @@ class SpProxy< mtSpOp<out_eT, T1, spop_type> >
   
   static const bool is_row = mtSpOp<out_eT, T1, spop_type>::is_row;
   static const bool is_col = mtSpOp<out_eT, T1, spop_type>::is_col;
+  static const bool is_vct = mtSpOp<out_eT, T1, spop_type>::is_vct;
   
   arma_aligned const SpMat<out_eT> Q;
   
