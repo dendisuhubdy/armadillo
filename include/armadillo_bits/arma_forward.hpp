@@ -240,6 +240,8 @@ class spop_real;
 class spop_imag;
 class spop_cx_abs;
 class spop_cx_arg;
+class spop_max;
+class spop_min;
 
 class spglue_plus;
 class spglue_minus;

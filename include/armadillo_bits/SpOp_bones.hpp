@@ -35,6 +35,8 @@ class SpOp : public SpBase<typename T1::elem_type, SpOp<T1, op_type> >
     || (T1::is_vct && is_spop_elem<op_type>::value)
     || is_same_type<op_type, spop_sum>::value
     || is_same_type<op_type, spop_mean>::value
+    || is_same_type<op_type, spop_max>::value
+    || is_same_type<op_type, spop_min>::value
     );
   
   inline explicit SpOp(const T1& in_m);
