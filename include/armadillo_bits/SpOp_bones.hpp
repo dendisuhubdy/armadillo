@@ -27,12 +27,11 @@ class SpOp : public SpBase<typename T1::elem_type, SpOp<T1, op_type> >
   typedef typename T1::elem_type                   elem_type;
   typedef typename get_pod_type<elem_type>::result pod_type;
   
-  static const bool is_row = (T1::is_row && is_spop_elem<op_type>::value) || ( T1::is_col && (is_same_type<op_type, spop_strans>::value || is_same_type<op_type, spop_htrans>::value) );
-  static const bool is_col = (T1::is_col && is_spop_elem<op_type>::value) || ( T1::is_row && (is_same_type<op_type, spop_strans>::value || is_same_type<op_type, spop_htrans>::value) );
-  static const bool is_vct = \
+  static const bool is_row  = (T1::is_row && is_spop_elem<op_type>::value) || ( T1::is_col && (is_same_type<op_type, spop_strans>::value || is_same_type<op_type, spop_htrans>::value) );
+  static const bool is_col  = (T1::is_col && is_spop_elem<op_type>::value) || ( T1::is_row && (is_same_type<op_type, spop_strans>::value || is_same_type<op_type, spop_htrans>::value) );
+  static const bool is_xvec = \
     (
-       (is_row || is_col)
-    || (T1::is_vct && is_spop_elem<op_type>::value)
+       (T1::is_xvec && is_spop_elem<op_type>::value)
     || is_same_type<op_type, spop_sum>::value
     || is_same_type<op_type, spop_mean>::value
     || is_same_type<op_type, spop_max>::value

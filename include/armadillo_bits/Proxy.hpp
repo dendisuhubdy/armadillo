@@ -33,7 +33,7 @@
 // 
 // is_row           = boolean indicating whether the Q object can be treated a row vector
 // is_col           = boolean indicating whether the Q object can be treated a column vector
-// is_vct           = boolean indicating whether the Q object has vector layout (row or column)
+// is_xvec          = boolean indicating whether the Q object is a vector with unknown orientation
 // 
 // Q                = object that can be unwrapped via the unwrap family of classes (ie. Q must be convertible to Mat)
 // 
@@ -79,9 +79,9 @@ struct Proxy_fixed
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = T1::is_row;
-  static const bool is_col = T1::is_col;
-  static const bool is_vct = T1::is_vct;
+  static const bool is_row  = T1::is_row;
+  static const bool is_col  = T1::is_col;
+  static const bool is_xvec = T1::is_xvec;
   
   arma_aligned const T1& Q;
   
@@ -159,9 +159,9 @@ class Proxy< Mat<eT> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   arma_aligned const Mat<eT>& Q;
   
@@ -209,9 +209,9 @@ class Proxy< Col<eT> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const Col<eT>& Q;
   
@@ -259,9 +259,9 @@ class Proxy< Row<eT> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = true;
-  static const bool is_col = false;
-  static const bool is_vct = true;
+  static const bool is_row  = true;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   arma_aligned const Row<eT>& Q;
   
@@ -309,9 +309,9 @@ class Proxy< Gen<T1, gen_type> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = Gen<T1, gen_type>::is_row;
-  static const bool is_col = Gen<T1, gen_type>::is_col;
-  static const bool is_vct = Gen<T1, gen_type>::is_vct;
+  static const bool is_row  = Gen<T1, gen_type>::is_row;
+  static const bool is_col  = Gen<T1, gen_type>::is_col;
+  static const bool is_xvec = Gen<T1, gen_type>::is_xvec;
   
   arma_aligned const Gen<T1, gen_type>& Q;
   
@@ -359,9 +359,9 @@ class Proxy< Gen<T1, gen_randu> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = Gen<T1, gen_randu>::is_row;
-  static const bool is_col = Gen<T1, gen_randu>::is_col;
-  static const bool is_vct = Gen<T1, gen_randu>::is_vct;
+  static const bool is_row  = Gen<T1, gen_randu>::is_row;
+  static const bool is_col  = Gen<T1, gen_randu>::is_col;
+  static const bool is_xvec = Gen<T1, gen_randu>::is_xvec;
   
   arma_aligned const Mat<elem_type> Q;
   
@@ -409,9 +409,9 @@ class Proxy< Gen<T1, gen_randn> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = Gen<T1, gen_randn>::is_row;
-  static const bool is_col = Gen<T1, gen_randn>::is_col;
-  static const bool is_vct = Gen<T1, gen_randn>::is_vct;
+  static const bool is_row  = Gen<T1, gen_randn>::is_row;
+  static const bool is_col  = Gen<T1, gen_randn>::is_col;
+  static const bool is_xvec = Gen<T1, gen_randn>::is_xvec;
   
   arma_aligned const Mat<elem_type> Q;
   
@@ -459,9 +459,9 @@ class Proxy< eOp<T1, eop_type> >
   static const bool has_subview = eOp<T1, eop_type>::has_subview;
   static const bool fake_mat    = eOp<T1, eop_type>::fake_mat;
   
-  static const bool is_row = eOp<T1, eop_type>::is_row;
-  static const bool is_col = eOp<T1, eop_type>::is_col;
-  static const bool is_vct = eOp<T1, eop_type>::is_vct;
+  static const bool is_row  = eOp<T1, eop_type>::is_row;
+  static const bool is_col  = eOp<T1, eop_type>::is_col;
+  static const bool is_xvec = eOp<T1, eop_type>::is_xvec;
   
   arma_aligned const eOp<T1, eop_type>& Q;
   
@@ -509,9 +509,9 @@ class Proxy< eGlue<T1, T2, eglue_type> >
   static const bool has_subview = eGlue<T1, T2, eglue_type>::has_subview;
   static const bool fake_mat    = eGlue<T1, T2, eglue_type>::fake_mat;
   
-  static const bool is_row = eGlue<T1, T2, eglue_type>::is_row;
-  static const bool is_col = eGlue<T1, T2, eglue_type>::is_col;
-  static const bool is_vct = eGlue<T1, T2, eglue_type>::is_vct;
+  static const bool is_row  = eGlue<T1, T2, eglue_type>::is_row;
+  static const bool is_col  = eGlue<T1, T2, eglue_type>::is_col;
+  static const bool is_xvec = eGlue<T1, T2, eglue_type>::is_xvec;
   
   arma_aligned const eGlue<T1, T2, eglue_type>& Q;
   
@@ -559,9 +559,9 @@ class Proxy< Op<T1, op_type> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = Op<T1, op_type>::is_row;
-  static const bool is_col = Op<T1, op_type>::is_col;
-  static const bool is_vct = Op<T1, op_type>::is_vct;
+  static const bool is_row  = Op<T1, op_type>::is_row;
+  static const bool is_col  = Op<T1, op_type>::is_col;
+  static const bool is_xvec = Op<T1, op_type>::is_xvec;
   
   arma_aligned const Mat<elem_type> Q;
   
@@ -609,9 +609,9 @@ class Proxy< Glue<T1, T2, glue_type> >
   static const bool use_mp      = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = Glue<T1, T2, glue_type>::is_row;
-  static const bool is_col = Glue<T1, T2, glue_type>::is_col;
-  static const bool is_vct = Glue<T1, T2, glue_type>::is_vct;
+  static const bool is_row  = Glue<T1, T2, glue_type>::is_row;
+  static const bool is_col  = Glue<T1, T2, glue_type>::is_col;
+  static const bool is_xvec = Glue<T1, T2, glue_type>::is_xvec;
   
   arma_aligned const Mat<elem_type> Q;
   
@@ -659,9 +659,9 @@ class Proxy< mtOp<out_eT, T1, op_type> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = mtOp<out_eT, T1, op_type>::is_row;
-  static const bool is_col = mtOp<out_eT, T1, op_type>::is_col;
-  static const bool is_vct = mtOp<out_eT, T1, op_type>::is_vct;
+  static const bool is_row  = mtOp<out_eT, T1, op_type>::is_row;
+  static const bool is_col  = mtOp<out_eT, T1, op_type>::is_col;
+  static const bool is_xvec = mtOp<out_eT, T1, op_type>::is_xvec;
   
   arma_aligned const Mat<out_eT> Q;
   
@@ -709,9 +709,9 @@ class Proxy< mtGlue<out_eT, T1, T2, glue_type> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = mtGlue<out_eT, T1, T2, glue_type>::is_row;
-  static const bool is_col = mtGlue<out_eT, T1, T2, glue_type>::is_col;
-  static const bool is_vct = mtGlue<out_eT, T1, T2, glue_type>::is_vct;
+  static const bool is_row  = mtGlue<out_eT, T1, T2, glue_type>::is_row;
+  static const bool is_col  = mtGlue<out_eT, T1, T2, glue_type>::is_col;
+  static const bool is_xvec = mtGlue<out_eT, T1, T2, glue_type>::is_xvec;
   
   arma_aligned const Mat<out_eT> Q;
   
@@ -759,9 +759,9 @@ class Proxy< subview<eT> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   arma_aligned const subview<eT>& Q;
   
@@ -809,9 +809,9 @@ class Proxy< subview_col<eT> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_col<eT>& Q;
   
@@ -859,9 +859,9 @@ class Proxy< subview_row<eT> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = true;
-  static const bool is_col = false;
-  static const bool is_vct = true;
+  static const bool is_row  = true;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_row<eT>& Q;
   
@@ -909,9 +909,9 @@ class Proxy< subview_elem1<eT,T1> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_elem1<eT,T1>& Q;
   arma_aligned const Proxy<T1>             R;
@@ -966,9 +966,9 @@ class Proxy< subview_elem2<eT,T1,T2> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   arma_aligned const Mat<eT> Q;
   
@@ -1016,9 +1016,9 @@ class Proxy< diagview<eT> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const diagview<eT>& Q;
   
@@ -1074,9 +1074,9 @@ class Proxy_diagvec_mat< Op<T1, op_diagvec> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const Mat<elem_type>&     R;
   arma_aligned const diagview<elem_type> Q;
@@ -1133,9 +1133,9 @@ class Proxy_diagvec_expr< Op<T1, op_diagvec> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const Mat<elem_type> Q;
   
@@ -1219,9 +1219,9 @@ struct Proxy_xtrans_default< Op<T1, op_htrans> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   const unwrap<T1>                 U;
   const xtrans_mat<elem_type,true> Q;
@@ -1263,9 +1263,9 @@ struct Proxy_xtrans_default< Op<T1, op_strans> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   const unwrap<T1>                  U;
   const xtrans_mat<elem_type,false> Q;
@@ -1314,9 +1314,9 @@ struct Proxy_xtrans_vector< Op<T1, op_htrans> >
   static const bool fake_mat    = true;
   
   // NOTE: the Op class takes care of swapping row and col for op_htrans
-  static const bool is_row = Op<T1, op_htrans>::is_row;
-  static const bool is_col = Op<T1, op_htrans>::is_col;
-  static const bool is_vct = Op<T1, op_htrans>::is_vct;
+  static const bool is_row  = Op<T1, op_htrans>::is_row;
+  static const bool is_col  = Op<T1, op_htrans>::is_col;
+  static const bool is_xvec = Op<T1, op_htrans>::is_xvec;
   
   arma_aligned const quasi_unwrap<T1> U; // avoid copy if T1 is a Row, Col or subview_col
   arma_aligned const Mat<elem_type>   Q;
@@ -1357,9 +1357,9 @@ struct Proxy_xtrans_vector< Op<T1, op_strans> >
   static const bool fake_mat    = true;
   
   // NOTE: the Op class takes care of swapping row and col for op_strans
-  static const bool is_row = Op<T1, op_strans>::is_row;
-  static const bool is_col = Op<T1, op_strans>::is_col;
-  static const bool is_vct = Op<T1, op_strans>::is_vct;
+  static const bool is_row  = Op<T1, op_strans>::is_row;
+  static const bool is_col  = Op<T1, op_strans>::is_col;
+  static const bool is_xvec = Op<T1, op_strans>::is_xvec;
   
   arma_aligned const quasi_unwrap<T1> U; // avoid copy if T1 is a Row, Col or subview_col
   arma_aligned const Mat<elem_type>   Q;
@@ -1427,9 +1427,9 @@ class Proxy< Op<T1, op_htrans> >
   static const bool has_subview = Proxy_xtrans::has_subview;
   static const bool fake_mat    = Proxy_xtrans::fake_mat;
   
-  static const bool is_row = Proxy_xtrans::is_row;
-  static const bool is_col = Proxy_xtrans::is_col;
-  static const bool is_vct = Proxy_xtrans::is_vct;
+  static const bool is_row  = Proxy_xtrans::is_row;
+  static const bool is_col  = Proxy_xtrans::is_col;
+  static const bool is_xvec = Proxy_xtrans::is_xvec;
   
   using Proxy_xtrans::Q;
   
@@ -1492,9 +1492,9 @@ class Proxy< Op<T1, op_strans> >
   static const bool has_subview = Proxy_xtrans::has_subview;
   static const bool fake_mat    = Proxy_xtrans::fake_mat;
   
-  static const bool is_row = Proxy_xtrans::is_row;
-  static const bool is_col = Proxy_xtrans::is_col;
-  static const bool is_vct = Proxy_xtrans::is_vct;
+  static const bool is_row  = Proxy_xtrans::is_row;
+  static const bool is_col  = Proxy_xtrans::is_col;
+  static const bool is_xvec = Proxy_xtrans::is_xvec;
   
   using Proxy_xtrans::Q;
   
@@ -1540,9 +1540,9 @@ struct Proxy_subview_row_htrans_cx
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_row_htrans<eT> Q;
   
@@ -1575,9 +1575,9 @@ struct Proxy_subview_row_htrans_non_cx
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_row_strans<eT> Q;
   
@@ -1638,9 +1638,9 @@ class Proxy< Op<subview_row<eT>, op_htrans> >
   static const bool has_subview = Proxy_sv_row_ht::has_subview;
   static const bool fake_mat    = Proxy_sv_row_ht::fake_mat;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   using Proxy_sv_row_ht::Q;
   
@@ -1688,9 +1688,9 @@ class Proxy< Op<subview_row<eT>, op_strans> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_row_strans<eT> Q;
   
@@ -1740,9 +1740,9 @@ class Proxy< Op< Row< std::complex<T> >, op_htrans> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   const xvec_htrans<eT> Q;
   const Row<eT>&        src;
@@ -1794,9 +1794,9 @@ class Proxy< Op< Col< std::complex<T> >, op_htrans> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = true;
-  static const bool is_col = false;
-  static const bool is_vct = true;
+  static const bool is_row  = true;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   const xvec_htrans<eT> Q;
   const Col<eT>&        src;
@@ -1848,9 +1848,9 @@ class Proxy< Op< subview_col< std::complex<T> >, op_htrans> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = true;
-  static const bool is_col = false;
-  static const bool is_vct = true;
+  static const bool is_row  = true;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   const xvec_htrans<eT>  Q;
   const subview_col<eT>& src;
@@ -1901,9 +1901,9 @@ class Proxy< Op<T1, op_htrans2> >
   static const bool fake_mat    = eOp< Op<T1, op_htrans>, eop_scalar_times>::fake_mat;
   
   // NOTE: the Op class takes care of swapping row and col for op_htrans
-  static const bool is_row = eOp< Op<T1, op_htrans>, eop_scalar_times>::is_row;
-  static const bool is_col = eOp< Op<T1, op_htrans>, eop_scalar_times>::is_col;
-  static const bool is_vct = eOp< Op<T1, op_htrans>, eop_scalar_times>::is_vct;
+  static const bool is_row  = eOp< Op<T1, op_htrans>, eop_scalar_times>::is_row;
+  static const bool is_col  = eOp< Op<T1, op_htrans>, eop_scalar_times>::is_col;
+  static const bool is_xvec = eOp< Op<T1, op_htrans>, eop_scalar_times>::is_xvec;
   
   arma_aligned const      Op<T1, op_htrans>                     R;
   arma_aligned const eOp< Op<T1, op_htrans>, eop_scalar_times > Q;
@@ -1953,9 +1953,9 @@ class Proxy< subview_row_strans<eT> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_row_strans<eT>& Q;
   
@@ -2003,9 +2003,9 @@ class Proxy< subview_row_htrans<eT> >
   static const bool has_subview = true;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const subview_row_htrans<eT>& Q;
   
@@ -2053,9 +2053,9 @@ class Proxy< xtrans_mat<eT, do_conj> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
   
   arma_aligned const Mat<eT> Q;
   
@@ -2103,9 +2103,9 @@ class Proxy< xvec_htrans<eT> >
   static const bool has_subview = false;
   static const bool fake_mat    = false;
   
-  static const bool is_row = false;
-  static const bool is_col = false;
-  static const bool is_vct = false;
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = true;
   
   arma_aligned const Mat<eT> Q;
   
@@ -2161,9 +2161,9 @@ class Proxy_vectorise_col_mat< Op<T1, op_vectorise_col> >
   static const bool has_subview = true;
   static const bool fake_mat    = true;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const unwrap<T1>     U;
   arma_aligned const Mat<elem_type> Q;
@@ -2221,9 +2221,9 @@ class Proxy_vectorise_col_expr< Op<T1, op_vectorise_col> >
   static const bool has_subview = Proxy<T1>::has_subview;
   static const bool fake_mat    = Proxy<T1>::fake_mat;
   
-  static const bool is_row = false;
-  static const bool is_col = true;
-  static const bool is_vct = true;
+  static const bool is_row  = false;
+  static const bool is_col  = true;
+  static const bool is_xvec = false;
   
   arma_aligned const Op<T1, op_vectorise_col>& Q;
   arma_aligned const Proxy<T1>                 R;

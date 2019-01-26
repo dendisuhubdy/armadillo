@@ -50,9 +50,9 @@ class Mat : public Base< eT, Mat<eT> >
   
   public:
   
-  static const bool is_col = false;
-  static const bool is_row = false;
-  static const bool is_vct = false;
+  static const bool is_col  = false;
+  static const bool is_row  = false;
+  static const bool is_xvec = false;
   
   inline ~Mat();
   inline  Mat();
@@ -774,9 +774,9 @@ class Mat<eT>::fixed : public Mat<eT>
   typedef eT                                elem_type;
   typedef typename get_pod_type<eT>::result pod_type;
   
-  static const bool is_col = (fixed_n_cols == 1);
-  static const bool is_row = (fixed_n_rows == 1);
-  static const bool is_vct = is_col || is_row;
+  static const bool is_col  = (fixed_n_cols == 1);
+  static const bool is_row  = (fixed_n_rows == 1);
+  static const bool is_xvec = false;
   
   static const uword n_rows;  // value provided below the class definition
   static const uword n_cols;  // value provided below the class definition

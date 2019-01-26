@@ -71,10 +71,9 @@ class mtOp : public Base<out_eT, mtOp<out_eT, T1, op_type> >
       )
     );
   
-  static const bool is_vct = \
+  static const bool is_xvec = \
     (
-       (is_row || is_col)
-    || (T1::is_vct && is_op_mixed_elem<op_type>::value)
+       (T1::is_xvec && is_op_mixed_elem<op_type>::value)
     || is_same_type<op_type, op_var>::value
     || is_same_type<op_type, op_stddev>::value
     || is_same_type<op_type, op_all>::value

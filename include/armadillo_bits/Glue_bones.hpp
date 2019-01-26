@@ -64,11 +64,10 @@ class Glue : public Base<typename T1::elem_type, Glue<T1, T2, glue_type> >
     || (is_same_type<glue_type,glue_intersect>::value && (T1::is_col || T2::is_col))
     || (is_same_type<glue_type,glue_affmul>::value  && T2::is_col);
   
-  static const bool is_vct = \
+  static const bool is_xvec = \
     (
-       is_row || is_col
-    || (is_same_type<glue_type,glue_max>::value && (T1::is_vct || T2::is_vct))
-    || (is_same_type<glue_type,glue_min>::value && (T1::is_vct || T2::is_vct))
+       (is_same_type<glue_type,glue_max>::value && (T1::is_xvec || T2::is_xvec))
+    || (is_same_type<glue_type,glue_min>::value && (T1::is_xvec || T2::is_xvec))
     );
   
   arma_inline  Glue(const T1& in_A, const T2& in_B);
