@@ -122,6 +122,9 @@ class op_chi2rnd;
 class op_roots;
 class op_prod;
 class op_range;
+class op_all;
+class op_any;
+
 
 class eop_conj;
 

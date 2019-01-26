@@ -76,6 +76,8 @@ class mtOp : public Base<out_eT, mtOp<out_eT, T1, op_type> >
        (is_row || is_col)
     || is_same_type<op_type, op_var>::value
     || is_same_type<op_type, op_stddev>::value
+    || is_same_type<op_type, op_all>::value
+    || is_same_type<op_type, op_any>::value
     );
   
   inline explicit mtOp(const T1& in_m);
