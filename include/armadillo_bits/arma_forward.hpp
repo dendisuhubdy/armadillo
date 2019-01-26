@@ -75,6 +75,8 @@ class diskio;
 
 class op_min;
 class op_max;
+class op_index_min;
+class op_index_max;
 
 class op_strans;
 class op_htrans;
