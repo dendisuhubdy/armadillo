@@ -93,7 +93,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == true),
+  is_arma_sparse_type<T1>::value && resolves_to_sparse_vector<T1>::yes,
   typename T1::elem_type
   >::result
 sum(const T1& x)
@@ -112,7 +112,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == false),
+  is_arma_sparse_type<T1>::value && resolves_to_sparse_vector<T1>::no,
   const SpOp<T1,spop_sum>
   >::result
 sum(const T1& x)

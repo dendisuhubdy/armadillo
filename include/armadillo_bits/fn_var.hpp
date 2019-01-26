@@ -25,7 +25,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true), 
+  is_arma_type<T1>::value && resolves_to_vector<T1>::yes, 
   typename T1::pod_type
   >::result
 var(const T1& X, const uword norm_type = 0)
@@ -43,7 +43,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_type<T1>::value && (resolves_to_vector<T1>::value == false), 
+  is_arma_type<T1>::value && resolves_to_vector<T1>::no, 
   const mtOp<typename T1::pod_type, T1, op_var>
   >::result
 var(const T1& X, const uword norm_type = 0)
@@ -90,7 +90,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == true), 
+  is_arma_sparse_type<T1>::value && resolves_to_sparse_vector<T1>::yes, 
   typename T1::pod_type
   >::result
 var(const T1& X, const uword norm_type = 0)
@@ -108,7 +108,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == false), 
+  is_arma_sparse_type<T1>::value && resolves_to_sparse_vector<T1>::no, 
   const mtSpOp<typename T1::pod_type, T1, spop_var>
   >::result
 var(const T1& X, const uword norm_type = 0)

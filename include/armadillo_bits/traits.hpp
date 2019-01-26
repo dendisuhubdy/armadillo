@@ -1242,9 +1242,9 @@ struct resolves_to_vector_default
 template<typename T1>
 struct resolves_to_vector_test
   {
-  static const bool value =  T1::is_vct;
-  static const bool yes   = (T1::is_vct == true);
-  static const bool no    = (T1::is_vct == false);
+  static const bool value =  (T1::is_col || T1::is_row || T1::is_vct);
+  static const bool yes   = ((T1::is_col || T1::is_row || T1::is_vct) == true);
+  static const bool no    = ((T1::is_col || T1::is_row || T1::is_vct) == false);
   };
 
 
