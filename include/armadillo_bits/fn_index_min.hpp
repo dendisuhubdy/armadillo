@@ -80,7 +80,7 @@ inline
 typename
 enable_if2
   <
-  (is_arma_sparse_type<T1>::value == true) && (resolves_to_sparse_vector<T1>::value == true),
+  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == true),
   typename T1::elem_type
   >::result
 index_min(const T1& x)
@@ -98,10 +98,32 @@ inline
 typename
 enable_if2
   <
-  (is_arma_sparse_type<T1>::value == true) && (resolves_to_sparse_vector<T1>::value == false),
+  is_arma_sparse_type<T1>::value && (resolves_to_sparse_vector<T1>::value == false),
   Mat<uword>
   >::result
-index_min(const T1& X, const uword dim = 0)
+index_min(const T1& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat<uword> out;
+  
+  op_index_min::apply(out, X, 0);
+  
+  return out;
+  }
+
+
+
+template<typename T1>
+arma_warn_unused
+inline
+typename
+enable_if2
+  <
+  is_arma_sparse_type<T1>::value,
+  Mat<uword>
+  >::result
+index_min(const T1& X, const uword dim)
   {
   arma_extra_debug_sigprint();
   
