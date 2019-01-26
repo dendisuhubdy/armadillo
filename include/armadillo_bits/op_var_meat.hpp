@@ -93,8 +93,6 @@ op_var::var_vec(const Base<typename T1::elem_type, T1>& X, const uword norm_type
   {
   arma_extra_debug_sigprint();
   
-  typedef typename T1::elem_type eT;
-  
   arma_debug_check( (norm_type > 1), "var(): parameter 'norm_type' must be 0 or 1" );
   
   const quasi_unwrap<T1> U(X.get_ref());
