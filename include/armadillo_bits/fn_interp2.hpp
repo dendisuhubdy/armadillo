@@ -215,13 +215,11 @@ interp2
   arma_debug_check( (UXG.M.n_elem != UZG.M.n_cols), "interp2(): number of elements in X must equal the number of columns in Z" );
   arma_debug_check( (UYG.M.n_elem != UZG.M.n_rows), "interp2(): number of elements in Y must equal the number of rows in Z"    );
   
-  // better-than-nothing checks
+  arma_debug_check( (UXG.M.is_sorted("strictascend") == false), "interp2(): X must be monotonically increasing" );
+  arma_debug_check( (UYG.M.is_sorted("strictascend") == false), "interp2(): Y must be monotonically increasing" );
   
-  arma_debug_check( (UXG.M.is_sorted() == false), "interp2(): X must be monotonically increasing" );
-  arma_debug_check( (UYG.M.is_sorted() == false), "interp2(): Y must be monotonically increasing" );
-  
-  arma_debug_check( (UXI.M.is_sorted() == false), "interp2(): XI must be monotonically increasing" );
-  arma_debug_check( (UYI.M.is_sorted() == false), "interp2(): YI must be monotonically increasing" );
+  arma_debug_check( (UXI.M.is_sorted("strictascend") == false), "interp2(): XI must be monotonically increasing" );
+  arma_debug_check( (UYI.M.is_sorted("strictascend") == false), "interp2(): YI must be monotonically increasing" );
   
   Mat<eT> tmp;
   
