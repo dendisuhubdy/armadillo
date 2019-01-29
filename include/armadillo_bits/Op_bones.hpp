@@ -55,8 +55,11 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
     // operations which result in a row vector if the input is a row vector
     T1::is_row &&
       (
-         is_same_type<op_type, op_sort_default>::yes
+         is_same_type<op_type, op_sort>::yes
+      || is_same_type<op_type, op_sort_default>::yes
+      || is_same_type<op_type, op_shift>::yes
       || is_same_type<op_type, op_shift_default>::yes
+      || is_same_type<op_type, op_shuffle>::yes
       || is_same_type<op_type, op_shuffle_default>::yes
       || is_same_type<op_type, op_cumsum_default>::yes
       || is_same_type<op_type, op_cumprod_default>::yes
@@ -94,8 +97,11 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
     // operations which result in a column vector if the input is a column vector
     T1::is_col &&
       (
-         is_same_type<op_type, op_sort_default>::yes
+         is_same_type<op_type, op_sort>::yes
+      || is_same_type<op_type, op_sort_default>::yes
+      || is_same_type<op_type, op_shift>::yes
       || is_same_type<op_type, op_shift_default>::yes
+      || is_same_type<op_type, op_shuffle>::yes
       || is_same_type<op_type, op_shuffle_default>::yes
       || is_same_type<op_type, op_cumsum_default>::yes
       || is_same_type<op_type, op_cumprod_default>::yes
@@ -128,6 +134,9 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
     || (T1::is_xvec && is_same_type<op_type, op_reverse>::yes)
     || (T1::is_xvec && is_same_type<op_type, op_fliplr>::yes)
     || (T1::is_xvec && is_same_type<op_type, op_flipud>::yes)
+    || (T1::is_xvec && is_same_type<op_type, op_sort>::yes)
+    || (T1::is_xvec && is_same_type<op_type, op_shift>::yes)
+    || (T1::is_xvec && is_same_type<op_type, op_shuffle>::yes)
     || is_same_type<op_type, op_unique>::yes
     || is_same_type<op_type, op_cumsum>::yes
     || is_same_type<op_type, op_cumprod>::yes
