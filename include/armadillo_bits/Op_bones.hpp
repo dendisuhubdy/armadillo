@@ -129,15 +129,8 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
   
   static const bool is_xvec = \
     (
-       (T1::is_xvec && is_same_type<op_type, op_strans>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_htrans>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_reverse>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_fliplr>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_flipud>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_sort>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_shift>::yes)
-    || (T1::is_xvec && is_same_type<op_type, op_shuffle>::yes)
-    || is_same_type<op_type, op_unique>::yes
+    // operations which always result in an xvec
+       is_same_type<op_type, op_unique>::yes
     || is_same_type<op_type, op_cumsum>::yes
     || is_same_type<op_type, op_cumprod>::yes
     || is_same_type<op_type, op_sum>::yes
@@ -148,6 +141,21 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
     || is_same_type<op_type, op_max>::yes
     || is_same_type<op_type, op_prod>::yes
     || is_same_type<op_type, op_range>::yes
+    )
+    ||
+    (
+    // operations which result in an xvec if the input is an xvec
+    T1::is_xvec &&
+      (
+         is_same_type<op_type, op_strans>::yes
+      || is_same_type<op_type, op_htrans>::yes
+      || is_same_type<op_type, op_reverse>::yes
+      || is_same_type<op_type, op_fliplr>::yes
+      || is_same_type<op_type, op_flipud>::yes
+      || is_same_type<op_type, op_sort>::yes
+      || is_same_type<op_type, op_shift>::yes
+      || is_same_type<op_type, op_shuffle>::yes
+      )
     );
   };
 
