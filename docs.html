@@ -5959,7 +5959,17 @@ If the object is a matrix, return a <i>bool</i> indicating whether the elements 
 </li>
 <br>
 <li>
-The <i>sort_direction</i> argument is optional; <i>sort_direction</i> is either <code>"ascend"</code> or <code>"descend"</code>; by default <code>"ascend"</code> is used
+The <i>sort_direction</i> argument is optional; <i>sort_direction</i> is one of:
+<ul>
+<table>
+<tbody>
+<tr><td><code>"ascend"</code></td><td>&nbsp;&mapsto;&nbsp;</td><td>elements are ascending; consecutive elements can be equal; this is the <b>default operation</b></td></tr>
+<tr><td><code>"descend"</code></td><td>&nbsp;&mapsto;&nbsp;</td><td>elements are descending; consecutive elements can be equal</td></tr>
+<tr><td><code>"strictascend"</code></td><td>&nbsp;&mapsto;&nbsp;</td><td>elements are strictly ascending; consecutive elements cannot be equal</td></tr>
+<tr><td><code>"strictdescend"</code></td><td>&nbsp;&mapsto;&nbsp;</td><td>elements are strictly descending; consecutive elements cannot be equal</td></tr>
+</tbody>
+</table>
+</ul>
 </li>
 <br>
 <li>
@@ -18032,6 +18042,7 @@ List of additions and changes for each version:
 <ul>
 <li>added <a href="#interp2">interp2()</a> for 2D data interpolation</li>
 <li>added <a href="#misc_fns">expm1()</a> and <a href="#misc_fns">log1p()</a></li>
+<li>expanded <a href="#is_sorted">.is_sorted()</a> with options <code>"strictascend"</code> and <code>"strictdescend"</code></li>
 </ul>
 </li>
 <br>
