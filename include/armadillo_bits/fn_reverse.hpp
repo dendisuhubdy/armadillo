@@ -22,12 +22,7 @@
 template<typename T1>
 arma_warn_unused
 inline
-typename
-enable_if2
-  <
-  (is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true)),
-  const Op<T1, op_reverse_vec>
-  >::result
+typename enable_if2< is_arma_type<T1>::value, const Op<T1, op_reverse_default> >::result
 reverse
   (
   const T1& X
@@ -35,7 +30,7 @@ reverse
   {
   arma_extra_debug_sigprint();
   
-  return Op<T1, op_reverse_vec>(X);
+  return Op<T1, op_reverse_default>(X);
   }
 
 
@@ -43,43 +38,16 @@ reverse
 template<typename T1>
 arma_warn_unused
 inline
-typename
-enable_if2
-  <
-  (is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true)),
-  const Op<T1, op_reverse_mat>
-  >::result
+typename enable_if2< is_arma_type<T1>::value, const Op<T1, op_reverse> >::result
 reverse
   (
-  const T1&   X,
+  const T1& X,
   const uword dim
   )
   {
   arma_extra_debug_sigprint();
   
-  return Op<T1, op_reverse_mat>(X, dim, 0);
-  }
-
-
-
-template<typename T1>
-arma_warn_unused
-inline
-typename
-enable_if2
-  <
-  (is_arma_type<T1>::value && (resolves_to_vector<T1>::value == false)),
-  const Op<T1, op_reverse_mat>
-  >::result
-reverse
-  (
-  const T1&   X,
-  const uword dim = 0
-  )
-  {
-  arma_extra_debug_sigprint();
-  
-  return Op<T1, op_reverse_mat>(X, dim, 0);
+  return Op<T1, op_reverse>(X, dim, 0);
   }
 
 

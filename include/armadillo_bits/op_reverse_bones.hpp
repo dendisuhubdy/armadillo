@@ -19,23 +19,22 @@
 
 
 
-class op_reverse_vec
+class op_reverse_default
   {
   public:
   
   template<typename T1>
-  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_vec>& in);
+  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_default>& in);
   };
 
 
 
-
-class op_reverse_mat
+class op_reverse
   {
   public:
   
   template<typename T1>
-  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_mat>& in);
+  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse>& in);
   };
 
 

@@ -22,7 +22,7 @@
 template<typename T1>
 inline
 void
-op_reverse_vec::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_vec>& in)
+op_reverse_default::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_default>& in)
   {
   arma_extra_debug_sigprint();
   
@@ -61,7 +61,7 @@ op_reverse_vec::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_v
 template<typename T1>
 inline
 void
-op_reverse_mat::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_mat>& in)
+op_reverse::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse>& in)
   {
   arma_extra_debug_sigprint();
   
