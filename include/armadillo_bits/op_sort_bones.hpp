@@ -110,4 +110,46 @@ struct arma_descend_sort_helper< std::complex<T> >
 
 
 
+//
+//
+//
+
+
+
+template<typename eT>
+struct arma_geq_helper
+  {
+  arma_inline bool operator() (const eT a, const eT b) const { return (a >= b); }
+  };
+
+
+
+template<typename eT>
+struct arma_leq_helper
+  {
+  arma_inline bool operator() (const eT a, const eT b) const { return (a <= b); }
+  };
+  
+
+
+template<typename T>
+struct arma_geq_helper< std::complex<T> >
+  {
+  typedef typename std::complex<T> eT;
+  
+  inline bool operator() (const eT& a, const eT& b) const { return (std::abs(a) >= std::abs(b)); }
+  };
+
+
+
+template<typename T>
+struct arma_leq_helper< std::complex<T> >
+  {
+  typedef typename std::complex<T> eT;
+  
+  inline bool operator() (const eT& a, const eT& b) const { return (std::abs(a) <= std::abs(b)); }
+  };
+
+
+
 //! @}
