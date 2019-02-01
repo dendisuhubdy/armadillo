@@ -44,14 +44,18 @@ class span : public span_base<>
   
   inline
   span()
-    : whole(true)
+    : a(0)
+    , b(0)
+    , whole(true)
     {
     }
   
   
   inline
   span(const span_alt&)
-    : whole(true)
+    : a(0)
+    , b(0)
+    , whole(true)
     {
     }
   
