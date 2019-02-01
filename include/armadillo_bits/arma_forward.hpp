@@ -121,6 +121,7 @@ class op_sort_index;
 class op_stable_sort_index;
 class op_unique;
 class op_unique_index;
+class op_diff;
 class op_diff_default;
 class op_hist;
 class op_chi2rnd;
