@@ -62,6 +62,11 @@ struct BaseCube
   
   inline arma_warn_unused uword index_min() const;
   inline arma_warn_unused uword index_max() const;
+  
+  // TODO: .is_empty()
+  // TODO: .is_finite()
+  // TODO: .has_inf()
+  // TODO: .has_nan()
   };
 
 
