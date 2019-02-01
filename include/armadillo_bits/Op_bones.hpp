@@ -150,11 +150,15 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
          is_same_type<op_type, op_strans>::yes
       || is_same_type<op_type, op_htrans>::yes
       || is_same_type<op_type, op_reverse>::yes
+      || is_same_type<op_type, op_reverse_default>::yes
       || is_same_type<op_type, op_fliplr>::yes
       || is_same_type<op_type, op_flipud>::yes
       || is_same_type<op_type, op_sort>::yes
+      || is_same_type<op_type, op_sort_default>::yes
       || is_same_type<op_type, op_shift>::yes
+      || is_same_type<op_type, op_shift_default>::yes
       || is_same_type<op_type, op_shuffle>::yes
+      || is_same_type<op_type, op_shuffle_default>::yes
       || is_same_type<op_type, op_normalise_vec>::yes
       )
     );
