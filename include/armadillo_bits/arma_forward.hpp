@@ -95,6 +95,7 @@ class op_diagvec;
 class op_vectorise_col;
 class op_vectorise_all;
 class op_normalise_vec;
+class op_normalise_mat;
 class op_clamp;
 class op_cumsum;
 class op_cumsum_default;

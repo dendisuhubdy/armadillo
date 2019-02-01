@@ -155,6 +155,7 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
       || is_same_type<op_type, op_sort>::yes
       || is_same_type<op_type, op_shift>::yes
       || is_same_type<op_type, op_shuffle>::yes
+      || is_same_type<op_type, op_normalise_vec>::yes
       )
     );
   };
