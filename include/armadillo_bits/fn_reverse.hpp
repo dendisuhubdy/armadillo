@@ -41,7 +41,7 @@ inline
 typename enable_if2< is_arma_type<T1>::value, const Op<T1, op_reverse> >::result
 reverse
   (
-  const T1& X,
+  const T1&   X,
   const uword dim
   )
   {
