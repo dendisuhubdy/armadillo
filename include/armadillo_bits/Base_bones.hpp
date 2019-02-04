@@ -142,9 +142,9 @@ struct Base
   inline arma_warn_unused bool is_vec()    const;
   inline arma_warn_unused bool is_colvec() const;
   inline arma_warn_unused bool is_rowvec() const;
+  inline arma_warn_unused bool is_finite() const;
   
   // TODO: .is_sorted()
-  // TODO: .is_finite()
   // TODO: .has_inf()
   // TODO: .has_nan()
   };

@@ -85,11 +85,12 @@ struct SpBase
   // TODO: is_rowvec()
   // TODO: is_colvec()
   // TODO: is_square()
-  // TODO: is_finite()
   // TODO: is_symmetric()
   // TODO: is_hermitian()
   // TODO: has_inf()
   // TODO: has_nan()
+  
+  inline arma_warn_unused bool is_finite() const;
   };
 
 

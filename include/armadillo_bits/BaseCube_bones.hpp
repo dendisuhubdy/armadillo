@@ -67,6 +67,8 @@ struct BaseCube
   // TODO: .is_finite()
   // TODO: .has_inf()
   // TODO: .has_nan()
+  
+  inline arma_warn_unused bool is_finite() const;
   };
 
 
