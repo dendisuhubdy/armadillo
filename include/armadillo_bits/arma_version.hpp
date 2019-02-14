@@ -39,7 +39,8 @@ struct arma_version
     {
     const char* nickname = ARMA_VERSION_NAME;
     
-    std::stringstream ss;
+    std::ostringstream ss;
+    
     ss << arma_version::major
        << '.'
        << arma_version::minor
