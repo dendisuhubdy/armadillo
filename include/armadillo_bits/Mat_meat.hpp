@@ -5714,7 +5714,8 @@ Mat<eT>::is_sorted(const char* direction, const uword dim) const
     // deliberately using the opposite direction comparator,
     // as we need to handle the case of two elements being equal
     
-    arma_descend_sort_helper<eT> comparator;
+    //arma_descend_sort_helper<eT> comparator;
+    arma_gt_helper<eT> comparator;
     
     return (*this).is_sorted_helper(comparator, dim);
     }
@@ -5726,7 +5727,8 @@ Mat<eT>::is_sorted(const char* direction, const uword dim) const
     // deliberately using the opposite direction comparator,
     // as we need to handle the case of two elements being equal
     
-    arma_ascend_sort_helper<eT> comparator;
+    //arma_ascend_sort_helper<eT> comparator;
+    arma_lt_helper<eT> comparator;
     
     return (*this).is_sorted_helper(comparator, dim);
     }

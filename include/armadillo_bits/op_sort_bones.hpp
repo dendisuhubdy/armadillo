@@ -55,7 +55,8 @@ class op_sort_default
 
 
 template<typename eT>
-struct arma_ascend_sort_helper
+//struct arma_ascend_sort_helper
+struct arma_lt_helper
   {
   arma_inline bool operator() (const eT a, const eT b) const { return (a < b); }
   };
@@ -63,7 +64,8 @@ struct arma_ascend_sort_helper
 
 
 template<typename eT>
-struct arma_descend_sort_helper
+//struct arma_descend_sort_helper
+struct arma_gt_helper
   {
   arma_inline bool operator() (const eT a, const eT b) const { return (a > b); }
   };
@@ -71,7 +73,8 @@ struct arma_descend_sort_helper
 
 
 template<typename T>
-struct arma_ascend_sort_helper< std::complex<T> >
+//struct arma_ascend_sort_helper< std::complex<T> >
+struct arma_lt_helper< std::complex<T> >
   {
   typedef typename std::complex<T> eT;
   
@@ -91,7 +94,8 @@ struct arma_ascend_sort_helper< std::complex<T> >
 
 
 template<typename T>
-struct arma_descend_sort_helper< std::complex<T> >
+//struct arma_descend_sort_helper< std::complex<T> >
+struct arma_gt_helper< std::complex<T> >
   {
   typedef typename std::complex<T> eT;
   
