@@ -510,9 +510,7 @@ Base<elem_type,derived>::is_finite() const
   
   const Proxy<derived> P( (*this).get_ref() );
   
-  const bool have_direct_mem = (is_Mat<typename Proxy<derived>::stored_type>::value) || (is_subview_col<typename Proxy<derived>::stored_type>::value);
-  
-  if(have_direct_mem)
+  if(is_Mat<typename Proxy<derived>::stored_type>::value)
     {
     const quasi_unwrap<typename Proxy<derived>::stored_type> U(P.Q);
     
@@ -525,17 +523,7 @@ Base<elem_type,derived>::is_finite() const
     
     const uword n_elem = P.get_n_elem();
     
-    uword i,j;
-    
-    for(i=0, j=1; j<n_elem; i+=2, j+=2)
-      {
-      const elem_type val_i = Pea[i];
-      const elem_type val_j = Pea[j];
-      
-      if( (arma_isfinite(val_i) == false) || (arma_isfinite(val_j) == false) )  { return false; }
-      }
-    
-    if(i < n_elem)
+    for(uword i=0; i<n_elem; ++i)
       {
       if(arma_isfinite(Pea[i]) == false)  { return false; }
       }
@@ -545,20 +533,10 @@ Base<elem_type,derived>::is_finite() const
     const uword n_rows = P.get_n_rows();
     const uword n_cols = P.get_n_cols();
     
-    if(n_rows == uword(1))
+    for(uword col=0; col<n_cols; ++col)
+    for(uword row=0; row<n_rows; ++row)
       {
-      for(uword col=0; col<n_cols; ++col)
-        {
-        if(arma_isfinite(P.at(0,col)) == false)  { return false; }
-        }
-      }
-    else
-      {
-      for(uword col=0; col<n_cols; ++col)
-      for(uword row=0; row<n_rows; ++row)
-        {
-        if(arma_isfinite(P.at(row,col)) == false)  { return false; }
-        }
+      if(arma_isfinite(P.at(row,col)) == false)  { return false; }
       }
     }
   
