@@ -313,7 +313,7 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><a href="#is_symmetric">.is_symmetric</a></td><td>&nbsp;</td><td>check whether matrix is symmetric</td></tr>
 <tr><td><a href="#is_hermitian">.is_hermitian</a></td><td>&nbsp;</td><td>check whether matrix is hermitian</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
-<tr><td><a href="#is_finite_member">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
+<tr><td><a href="#is_finite">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#has_inf">.has_inf</a></td><td>&nbsp;</td><td>check whether any element is +-Inf</td></tr>
 <tr><td><a href="#has_nan">.has_nan</a></td><td>&nbsp;</td><td>check whether any element is NaN</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
@@ -388,43 +388,42 @@ Conrad Sanderson and Ryan Curtin.
 <tr style="background-color: #F5F5F5;"><td><a href="#index_min_and_index_max_standalone">index_min / index_max</a></td><td>&nbsp;</td><td>indices of extremum values</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#inplace_trans">inplace_trans</a></td><td>&nbsp;</td><td>in-place transpose</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#intersect">intersect</a></td><td>&nbsp;</td><td>find common elements in two vectors/matrices</td></tr>
-<tr><td><a href="#is_finite">is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#join">join_rows / join_cols</a></td><td>&nbsp;</td><td>concatenation of matrices</td></tr>
 <tr><td><a href="#join_slices">join_slices</a></td><td>&nbsp;</td><td>concatenation of cubes</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#kron">kron</a></td><td>&nbsp;</td><td>Kronecker tensor product</td></tr>
+<tr><td><a href="#kron">kron</a></td><td>&nbsp;</td><td>Kronecker tensor product</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#log_det">log_det</a></td><td>&nbsp;</td><td>log determinant</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#logmat">logmat</a></td><td>&nbsp;</td><td>matrix logarithm</td></tr>
-<tr><td><a href="#logmat_sympd">logmat_sympd</a></td><td>&nbsp;</td><td>symmetric matrix logarithm</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#logmat_sympd">logmat_sympd</a></td><td>&nbsp;</td><td>symmetric matrix logarithm</td></tr>
 <tr><td><a href="#min_and_max">min&nbsp;/&nbsp;max</a></td><td>&nbsp;</td><td>return extremum values</td></tr>
 <tr><td><a href="#nonzeros">nonzeros</a></td><td>&nbsp;</td><td>return non-zero values</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#norm">norm</a></td><td>&nbsp;</td><td>various norms of vectors and matrices</td></tr>
+<tr><td><a href="#norm">norm</a></td><td>&nbsp;</td><td>various norms of vectors and matrices</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#normalise">normalise</a></td><td>&nbsp;</td><td>normalise vectors to unit <i>p</i>-norm</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#prod">prod</a></td><td>&nbsp;</td><td>product of elements</td></tr>
-<tr><td><a href="#rank">rank</a></td><td>&nbsp;</td><td>rank of matrix</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#rank">rank</a></td><td>&nbsp;</td><td>rank of matrix</td></tr>
 <tr><td><a href="#rcond">rcond</a></td><td>&nbsp;</td><td>reciprocal of condition number</td></tr>
 <tr><td><a href="#repelem">repelem</a></td><td>&nbsp;</td><td>replicate elements</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#repmat">repmat</a></td><td>&nbsp;</td><td>replicate matrix in block-like fashion</td></tr>
+<tr><td><a href="#repmat">repmat</a></td><td>&nbsp;</td><td>replicate matrix in block-like fashion</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#reshape">reshape</a></td><td>&nbsp;</td><td>change size while keeping elements</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#resize">resize</a></td><td>&nbsp;</td><td>change size while keeping elements and preserving layout</td></tr>
-<tr><td><a href="#reverse">reverse</a></td><td>&nbsp;</td><td>reverse order of elements</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#reverse">reverse</a></td><td>&nbsp;</td><td>reverse order of elements</td></tr>
 <tr><td><a href="#roots">roots</a></td><td>&nbsp;</td><td>roots of polynomial</td></tr>
 <tr><td><a href="#shift">shift</a></td><td>&nbsp;</td><td>shift elements</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#shuffle">shuffle</a></td><td>&nbsp;</td><td>randomly shuffle elements</td></tr>
+<tr><td><a href="#shuffle">shuffle</a></td><td>&nbsp;</td><td>randomly shuffle elements</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#size">size</a></td><td>&nbsp;</td><td>obtain dimensions of given object</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#sort">sort</a></td><td>&nbsp;</td><td>sort elements</td></tr>
-<tr><td><a href="#sort_index">sort_index</a></td><td>&nbsp;</td><td>vector describing sorted order of elements</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#sort_index">sort_index</a></td><td>&nbsp;</td><td>vector describing sorted order of elements</td></tr>
 <tr><td><a href="#sqrtmat">sqrtmat</a></td><td>&nbsp;</td><td>square root of matrix</td></tr>
 <tr><td><a href="#sqrtmat_sympd">sqrtmat_sympd</a></td><td>&nbsp;</td><td>square root of symmetric matrix</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#sum">sum</a></td><td>&nbsp;</td><td>sum of elements</td></tr>
+<tr><td><a href="#sum">sum</a></td><td>&nbsp;</td><td>sum of elements</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#sub2ind">sub2ind</a></td><td>&nbsp;</td><td>convert subscripts to linear index</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#symmat">symmatu&nbsp;/&nbsp;symmatl</a></td><td>&nbsp;</td><td>generate symmetric matrix from given matrix</td></tr>
-<tr><td><a href="#trace">trace</a></td><td>&nbsp;</td><td>sum of diagonal elements</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#trace">trace</a></td><td>&nbsp;</td><td>sum of diagonal elements</td></tr>
 <tr><td><a href="#trans">trans</a></td><td>&nbsp;</td><td>transpose of matrix</td></tr>
 <tr><td><a href="#trapz">trapz</a></td><td>&nbsp;</td><td>trapezoidal numerical integration</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#trimat">trimatu&nbsp;/&nbsp;trimatl</a></td><td>&nbsp;</td><td>copy upper/lower triangular part</td></tr>
+<tr><td><a href="#trimat">trimatu&nbsp;/&nbsp;trimatl</a></td><td>&nbsp;</td><td>copy upper/lower triangular part</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#unique">unique</a></td><td>&nbsp;</td><td>return unique elements</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#vectorise">vectorise</a></td><td>&nbsp;</td><td>convert matrix to vector</td></tr>
-<tr><td><a href="#misc_fns">misc&nbsp;functions</a></td><td>&nbsp;</td><td>miscellaneous element-wise functions:&nbsp;exp,&nbsp;log,&nbsp;pow,&nbsp;sqrt,&nbsp;round,&nbsp;sign,&nbsp;...</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#misc_fns">misc&nbsp;functions</a></td><td>&nbsp;</td><td>miscellaneous element-wise functions:&nbsp;exp,&nbsp;log,&nbsp;pow,&nbsp;sqrt,&nbsp;round,&nbsp;sign,&nbsp;...</td></tr>
 <tr><td><a href="#trig_fns">trig&nbsp;functions</a></td><td>&nbsp;</td><td>trigonometric element-wise functions:&nbsp;cos,&nbsp;sin,&nbsp;...</td></tr>
 </tbody>
 </table>
@@ -2010,7 +2009,7 @@ in this version, the following subset of operations works with sparse matrices:
 <li>generated matrices: <a href="#speye">speye()</a>, <a href="#spones">spones()</a>, <a href="#sprandu_sprandn">sprandu()</a>, <a href="#sprandu_sprandn">sprandn()</a>, <a href="#zeros_standalone">zeros()</a></li>
 <li>eigen and svd decomposition: <a href="#eigs_sym">eigs_sym()</a>, <a href="#eigs_gen">eigs_gen()</a>, <a href="#svds">svds()</a></li>
 <li>solution of sparse linear systems: <a href="#spsolve">spsolve()</a>
-<li>miscellaneous: <a href="#approx_equal">approx_equal()</a>, <a href="#element_access">element access</a>, <a href="#iterators_spmat">element iterators</a>, <a href="#for_each">.for_each()</a>, <a href="#print">.print()</a>, <a href="#replace">.replace()</a>, <a href="#transform">.transform()</a>, <a href="#is_finite_member">.is_finite()</a>, <a href="#is_symmetric">.is_symmetric()</a>, <a href="#is_hermitian">.is_hermitian()</a></li>
+<li>miscellaneous: <a href="#approx_equal">approx_equal()</a>, <a href="#element_access">element access</a>, <a href="#iterators_spmat">element iterators</a>, <a href="#for_each">.for_each()</a>, <a href="#print">.print()</a>, <a href="#replace">.replace()</a>, <a href="#transform">.transform()</a>, <a href="#is_finite">.is_finite()</a>, <a href="#is_symmetric">.is_symmetric()</a>, <a href="#is_hermitian">.is_hermitian()</a></li>
 </ul>
 </li>
 <br>
@@ -5863,7 +5862,7 @@ See also:
 <ul>
 <li><a href="#is_square">.is_square()</a></li>
 <li><a href="#is_vec">.is_vec()</a></li>
-<li><a href="#is_finite_member">.is_finite()</a></li>
+<li><a href="#is_finite">.is_finite()</a></li>
 <li><a href="#reset">.reset()</a></li>
 </ul>
 </li>
@@ -5934,7 +5933,7 @@ See also:
 <ul>
 <li><a href="#is_empty">.is_empty()</a></li>
 <li><a href="#is_square">.is_square()</a></li>
-<li><a href="#is_finite_member">.is_finite()</a></li>
+<li><a href="#is_finite">.is_finite()</a></li>
 </ul>
 </li>
 <br>
@@ -6045,7 +6044,7 @@ See also:
 <li><a href="#is_hermitian">.is_hermitian()</a></li>
 <li><a href="#is_empty">.is_empty()</a></li>
 <li><a href="#is_vec">.is_vec()</a></li>
-<li><a href="#is_finite_member">.is_finite()</a></li>
+<li><a href="#is_finite">.is_finite()</a></li>
 </ul>
 </li>
 <br>
@@ -6136,6 +6135,7 @@ See also:
 </ul>
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="is_finite"></a>
 <a name="is_finite_member"></a>
 <b>.is_finite()</b>
 <ul>
@@ -6171,7 +6171,6 @@ See also:
 <li><a href="#has_nan">.has_nan()</a></li>
 <li><a href="#find_finite">find_finite()</a></li>
 <li><a href="#find_nonfinite">find_nonfinite()</a></li>
-<li><a href="#is_finite">is_finite()</a> (standalone function)</li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
 </li>
@@ -6212,7 +6211,7 @@ See also:
 <ul>
 <li><a href="#has_nan">.has_nan()</a>
 <li><a href="#replace">.replace()</a></li>
-<li><a href="#is_finite_member">.is_finite()</a>
+<li><a href="#is_finite">.is_finite()</a>
 <li><a href="#find_nonfinite">find_nonfinite()</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
@@ -6259,7 +6258,7 @@ See also:
 <ul>
 <li><a href="#has_inf">.has_inf()</a>
 <li><a href="#replace">.replace()</a></li>
-<li><a href="#is_finite_member">.is_finite()</a>
+<li><a href="#is_finite">.is_finite()</a>
 <li><a href="#find_nonfinite">find_nonfinite()</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
@@ -8650,6 +8649,10 @@ See also:
 <ul>
 <li><a href="#find">find()</a></li>
 <li><a href="#find_nonfinite">find_nonfinite()</a></li>
+<li><a href="#is_finite">.is_finite()</a></li>
+<li><a href="#replace">.replace()</a></li>
+<li><a href="#has_inf">.has_inf()</a></li>
+<li><a href="#has_nan">.has_nan()</a></li>
 <li><a href="#submat">submatrix views</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
@@ -8696,6 +8699,7 @@ See also:
 <ul>
 <li><a href="#find">find()</a></li>
 <li><a href="#find_finite">find_finite()</a></li>
+<li><a href="#is_finite">.is_finite()</a></li>
 <li><a href="#replace">.replace()</a></li>
 <li><a href="#has_inf">.has_inf()</a></li>
 <li><a href="#has_nan">.has_nan()</a></li>
@@ -9114,53 +9118,6 @@ intersect(CC, iA, iB, A, B);
 <li><a href="#unique">unique()</a></li>
 <li><a href="#find_unique">find_unique()</a></li>
 <li><a href="#submat">submatrix views</a></li>
-</ul>
-</li>
-<br>
-</ul>
-
-<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
-<a name="is_finite"></a>
-<b>is_finite( X )</b>
-<ul>
-<li>
-Returns <i>true</i> if all elements in <i>X</i> are finite
-</li>
-<br>
-<li>
-Returns <i>false</i> if at least one element in <i>X</i> is non-finite (&plusmn;infinity or NaN)
-</li>
-<br>
-<li>
-<i>X</i> can be a scalar (eg. <i>double</i>), vector, matrix or cube
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A = randu&lt;mat&gt;(5,5);
-mat B = randu&lt;mat&gt;(5,5);
-
-B(1,1) = datum::inf;
-
-cout &lt;&lt; is_finite(A) &lt;&lt; endl;
-cout &lt;&lt; is_finite(B) &lt;&lt; endl;
-
-cout &lt;&lt; is_finite( 0.123456789 ) &lt;&lt; endl;
-cout &lt;&lt; is_finite( datum::nan  ) &lt;&lt; endl;
-cout &lt;&lt; is_finite( datum::inf  ) &lt;&lt; endl;
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#is_finite_member">.is_finite()</a> (member function of <i>Mat</i> and <i>Cube</i>)</li>
-<li><a href="#find_finite">find_finite()</a></li>
-<li><a href="#find_nonfinite">find_nonfinite()</a></li>
-<li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
 </li>
 <br>
@@ -15932,8 +15889,8 @@ and
 <li>
 <b>Caveat:</b>
 <code>datum::nan</code> is not equal to anything, even itself;
-to check whether a given number <i>x</i> is finite,
-use <a href="#is_finite">is_finite</a>(<i>x</i>)
+to check whether a scalar <i>x</i> is finite,
+use <a href="https://en.cppreference.com/w/cpp/numeric/math/isfinite">std::isfinite</a>(<i>x</i>)
 </li>
 <br>
 <li>
@@ -15962,7 +15919,7 @@ cout &lt;&lt; datum::log_max &lt;&lt; endl;
 <li>
 See also:
 <ul>
-<li><a href="#is_finite">is_finite()</a></li>
+<li><a href="#is_finite">.is_finite()</a></li>
 <li><a href="#fill">.fill()</a></li>
 <li><a href="http://en.wikipedia.org/wiki/NaN">NaN</a> in Wikipedia</li>
 <li><a href="http://en.wikipedia.org/wiki/Physical_constant">physical constant</a> in Wikipedia</li>
@@ -18732,7 +18689,6 @@ that do not return a bool indicating success now throw <i>std::runtime_error</i>
 <li>added <a href="#misc_fns">floor()</a> and <a href="#misc_fns">ceil()</a></li>
 <li>added representation of &ldquo;not a number&rdquo;: math::nan()</li>
 <li>added representation of infinity: math::inf()</li>
-<li>added standalone <a href="#is_finite">is_finite()</a></li>
 <li><a href="#in_range">.in_range()</a> expanded to use <b>span()</b> arguments</li>
 <li><a href="#adv_constructors_mat">fixed size</a> matrices and vectors can use auxiliary (external) memory</li>
 <li><a href="#submat">submatrices</a> and <a href="#subfield">subfields</a> can be accessed via <i><b>X(</b>&nbsp;<b>span(</b>a,b<b>)</b>,&nbsp;<b>span(</b>c,d<b>)</b>&nbsp;<b>)</b></i></li>
