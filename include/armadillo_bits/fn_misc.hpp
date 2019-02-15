@@ -189,6 +189,7 @@ log_add(eT log_a, eT log_b)
   
 
 
+//! kept for compatibility with old user code
 template<typename eT>
 arma_warn_unused
 arma_inline
@@ -202,6 +203,7 @@ is_finite(const eT x, const typename arma_scalar_only<eT>::result* junk = 0)
 
 
 
+//! kept for compatibility with old user code
 template<typename T1>
 arma_warn_unused
 inline
@@ -215,6 +217,7 @@ is_finite(const Base<typename T1::elem_type,T1>& X)
 
 
 
+//! kept for compatibility with old user code
 template<typename T1>
 arma_warn_unused
 inline
@@ -228,6 +231,7 @@ is_finite(const SpBase<typename T1::elem_type,T1>& X)
 
 
 
+//! kept for compatibility with old user code
 template<typename T1>
 arma_warn_unused
 inline

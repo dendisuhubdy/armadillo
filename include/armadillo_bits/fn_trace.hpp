@@ -263,6 +263,74 @@ trace(const Glue<T1, T2, glue_times>& X)
 
 
 
+//! speedup for trace(A.t()*B); complex elements
+template<typename T1, typename T2>
+arma_warn_unused
+inline
+typename enable_if2< is_cx<typename T1::elem_type>::yes, typename T1::elem_type>::result
+trace(const Glue< Op<T1, op_htrans>, T2, glue_times >& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::pod_type   T;
+  typedef typename T1::elem_type eT;
+  
+  const quasi_unwrap<T1> UA(X.A.m);
+  const quasi_unwrap<T2> UB(X.B);
+  
+  const Mat<eT>& A = UA.M;
+  const Mat<eT>& B = UB.M;
+  
+  const uword A_n_rows = A.n_rows;
+  const uword A_n_cols = A.n_cols;
+  
+  const uword B_n_rows = B.n_rows;
+  const uword B_n_cols = B.n_cols;
+  
+  // NOTE: deliberately swapped A_n_rows and A_n_cols to take into account the requested transpose operation
+  arma_debug_assert_mul_size(A_n_cols, A_n_rows, B_n_rows, B_n_cols, "matrix multiplication");
+  
+  if( (A.n_elem == 0) || (B.n_elem == 0) )  { return eT(0); }
+  
+  const uword N = (std::min)(A_n_cols, B_n_cols);
+  
+  // eT acc = eT(0);
+  T acc_real = T(0);
+  T acc_imag = T(0);
+  
+  for(uword k=0; k < N; ++k)
+    {
+    const eT* A_colptr = A.colptr(k);
+    const eT* B_colptr = B.colptr(k);
+    
+    // condition: A_n_rows = B_n_rows
+    
+    for(uword i=0; i < A_n_rows; ++i)
+      {
+      // acc += std::conj(A_colptr[i]) * B_colptr[i];
+      
+      const std::complex<T>& xx = A_colptr[i];
+      const std::complex<T>& yy = B_colptr[i];
+      
+      const T a = xx.real();
+      const T b = xx.imag();
+      
+      const T c = yy.real();
+      const T d = yy.imag();
+      
+      // take into account the complex conjugate of xx
+      
+      acc_real += (a*c) + (b*d);
+      acc_imag += (a*d) - (b*c);
+      }
+    }
+  
+  // return acc;
+  return std::complex<T>(acc_real, acc_imag);
+  }
+
+
+
 //! trace of sparse object; generic version
 template<typename T1>
 arma_warn_unused
