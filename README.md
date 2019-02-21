@@ -287,8 +287,7 @@ Faster and/or alternative implementations of BLAS and LAPACK are available:
   * http://icl.cs.utk.edu/lapack-for-windows/lapack/
   * http://software.intel.com/en-us/intel-mkl/
 
-The OpenBLAS and Intel MKL libraries are generally the fastest
-replacements for both BLAS and LAPACK.
+OpenBLAS and Intel MKL are generally the fastest replacements for both BLAS and LAPACK.
 
 **Caveat:** 
 for any high performance scientific/engineering workloads,
