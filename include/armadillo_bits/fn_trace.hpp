@@ -523,6 +523,7 @@ trace(const SpGlue<T1, T2, spglue_times>& expr)
   
   eT acc = eT(0);
   
+  // TODO: the threshold may need tuning for complex matrices
   if( (A.n_nonzero >= 5*N) || (B.n_nonzero >= 5*N) )
     {
     for(uword k=0; k < N; ++k)
@@ -641,6 +642,7 @@ trace(const SpGlue<SpOp<T1, spop_htrans>, T2, spglue_times>& expr)
   
   eT acc = eT(0);
   
+  // TODO: the threshold may need tuning for complex matrices
   if( (A.n_nonzero >= 5*N) || (B.n_nonzero >= 5*N) )
     {
     for(uword k=0; k < N; ++k)
