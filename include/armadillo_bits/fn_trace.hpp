@@ -612,4 +612,63 @@ trace(const SpGlue<SpOp<T1, spop_htrans>, T2, spglue_times>& expr)
 
 
 
+//! trace of sparse object; speedup for trace(A.t()*B); complex elements
+template<typename T1, typename T2>
+arma_warn_unused
+inline
+typename enable_if2< is_cx<typename T1::elem_type>::yes, typename T1::elem_type>::result
+trace(const SpGlue<SpOp<T1, spop_htrans>, T2, spglue_times>& expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const unwrap_spmat<T1> UA(expr.A.m);
+  const unwrap_spmat<T2> UB(expr.B);
+  
+  const SpMat<eT>& A = UA.M;
+  const SpMat<eT>& B = UB.M;
+  
+  // NOTE: deliberately swapped A.n_rows and A.n_cols to take into account the requested transpose operation
+  arma_debug_assert_mul_size(A.n_cols, A.n_rows, B.n_rows, B.n_cols, "matrix multiplication");
+  
+  if( (A.n_nonzero == 0) || (B.n_nonzero == 0) )
+    {
+    return eT(0);
+    }
+  
+  const uword N = (std::min)(A.n_cols, B.n_cols);
+  
+  eT acc = eT(0);
+  
+  if( (A.n_nonzero >= 5*N) || (B.n_nonzero >= 5*N) )
+    {
+    for(uword k=0; k < N; ++k)
+      {
+      typename SpMat<eT>::const_col_iterator B_it     = B.begin_col_no_sync(k);
+      typename SpMat<eT>::const_col_iterator B_it_end = B.end_col_no_sync(k);
+      
+      while(B_it != B_it_end)
+        {
+        const eT    B_val = (*B_it);
+        const uword i     = B_it.row();
+        
+        acc += std::conj(A.at(i,k)) * B_val;
+        
+        ++B_it;
+        }
+      }
+    }
+  else
+    {
+    const SpMat<eT> AtB = A.t() * B;
+    
+    acc = trace(AtB);
+    }
+  
+  return acc;
+  }
+
+
+
 //! @}
