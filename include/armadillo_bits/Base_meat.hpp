@@ -423,6 +423,31 @@ template<typename elem_type, typename derived>
 inline
 arma_warn_unused
 bool
+Base<elem_type,derived>::is_definite(typename get_pod_type<elem_type>::result tol) const
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename get_pod_type<elem_type>::result T;
+  
+  arma_debug_check( (tol < T(0)), "is_definite(): parameter 'tol' must be >= 0" );
+  
+  Mat<elem_type> X = static_cast<const derived&>(*this);
+  
+  if(tol == T(0))  { tol = T(100) * std::numeric_limits<T>::epsilon() * norm(X, "fro");  }
+  
+  if(X.is_hermitian(tol) == false)  { return false; }
+  
+  X.diag() -= elem_type(tol);
+  
+  return auxlib::chol_simple(X);
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
 Base<elem_type,derived>::is_empty() const
   {
   arma_extra_debug_sigprint();

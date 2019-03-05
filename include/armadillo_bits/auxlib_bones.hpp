@@ -132,6 +132,9 @@ class auxlib
   // chol
   
   template<typename eT>
+  inline static bool chol_simple(Mat<eT>& X);
+  
+  template<typename eT>
   inline static bool chol(Mat<eT>& X, const uword layout);
   
   template<typename eT>
