@@ -27,7 +27,8 @@ struct Base_extra_yes
   arma_deprecated inline const Op<derived,op_inv> i(const bool ) const;   //!< kept only for compatibility with old user code
   arma_deprecated inline const Op<derived,op_inv> i(const char*) const;   //!< kept only for compatibility with old user code
   
-  inline arma_warn_unused bool is_definite(typename get_pod_type<elem_type>::result tol = 0) const;
+  inline arma_warn_unused bool is_definite() const;
+  inline arma_warn_unused bool is_definite(typename get_pod_type<elem_type>::result tol) const;
   };
 
 
