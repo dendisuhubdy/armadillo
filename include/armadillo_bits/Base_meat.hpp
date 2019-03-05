@@ -423,31 +423,6 @@ template<typename elem_type, typename derived>
 inline
 arma_warn_unused
 bool
-Base<elem_type,derived>::is_definite(typename get_pod_type<elem_type>::result tol) const
-  {
-  arma_extra_debug_sigprint();
-  
-  typedef typename get_pod_type<elem_type>::result T;
-  
-  arma_debug_check( (tol < T(0)), "is_definite(): parameter 'tol' must be >= 0" );
-  
-  Mat<elem_type> X = static_cast<const derived&>(*this);
-  
-  if(tol == T(0))  { tol = T(100) * std::numeric_limits<T>::epsilon() * norm(X, "fro");  }
-  
-  if(X.is_hermitian(tol) == false)  { return false; }
-  
-  X.diag() -= elem_type(tol);
-  
-  return auxlib::chol_simple(X);
-  }
-
-
-
-template<typename elem_type, typename derived>
-inline
-arma_warn_unused
-bool
 Base<elem_type,derived>::is_empty() const
   {
   arma_extra_debug_sigprint();
@@ -571,23 +546,23 @@ Base<elem_type,derived>::is_finite() const
 
 
 //
-// extra functions defined in Base_inv_yes
+// extra functions defined in Base_extra_yes
 
-template<typename derived>
+template<typename elem_type, typename derived>
 arma_inline
 const Op<derived,op_inv>
-Base_inv_yes<derived>::i() const
+Base_extra_yes<elem_type, derived>::i() const
   {
   return Op<derived,op_inv>(static_cast<const derived&>(*this));
   }
 
 
 
-template<typename derived>
+template<typename elem_type, typename derived>
 arma_deprecated
 inline
 const Op<derived,op_inv>
-Base_inv_yes<derived>::i(const bool) const   // argument kept only for compatibility with old user code
+Base_extra_yes<elem_type, derived>::i(const bool) const   // argument kept only for compatibility with old user code
   {
   // arma_debug_warn(".i(bool) is deprecated and will be removed; change to .i()");
   
@@ -596,15 +571,42 @@ Base_inv_yes<derived>::i(const bool) const   // argument kept only for compatibi
 
 
 
-template<typename derived>
+template<typename elem_type, typename derived>
 arma_deprecated
 inline
 const Op<derived,op_inv>
-Base_inv_yes<derived>::i(const char*) const   // argument kept only for compatibility with old user code
+Base_extra_yes<elem_type, derived>::i(const char*) const   // argument kept only for compatibility with old user code
   {
   // arma_debug_warn(".i(char*) is deprecated and will be removed; change to .i()");
   
   return Op<derived,op_inv>(static_cast<const derived&>(*this));
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+Base_extra_yes<elem_type,derived>::is_definite(typename get_pod_type<elem_type>::result tol) const
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename get_pod_type<elem_type>::result T;
+  
+  arma_debug_check( (tol < T(0)), "is_definite(): parameter 'tol' must be >= 0" );
+  
+  Mat<elem_type> X = static_cast<const derived&>(*this);
+  
+  if(tol == T(0))  { tol = T(100) * std::numeric_limits<T>::epsilon() * norm(X, "fro"); }
+  
+  if(X.is_hermitian(tol) == false)  { return false; }
+  
+  if(X.is_empty())  { return false; }
+  
+  X.diag() -= elem_type(tol);
+  
+  return auxlib::chol_simple(X);
   }
 
 
