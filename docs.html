@@ -312,10 +312,9 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><a href="#is_square">.is_square</a></td><td>&nbsp;</td><td>check whether matrix is square sized</td></tr>
 <tr><td><a href="#is_symmetric">.is_symmetric</a></td><td>&nbsp;</td><td>check whether matrix is symmetric</td></tr>
 <tr><td><a href="#is_hermitian">.is_hermitian</a></td><td>&nbsp;</td><td>check whether matrix is hermitian</td></tr>
-<tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
-<tr><td><a href="#is_finite">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#is_definite">.is_definite</a></td><td>&nbsp;</td><td>check whether matrix is positive definite</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
+<tr><td><a href="#is_finite">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#has_inf">.has_inf</a></td><td>&nbsp;</td><td>check whether any element is +-Inf</td></tr>
 <tr><td><a href="#has_nan">.has_nan</a></td><td>&nbsp;</td><td>check whether any element is NaN</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
@@ -6138,49 +6137,6 @@ See also:
 </ul>
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
-<a name="is_finite"></a>
-<a name="is_finite_member"></a>
-<b>.is_finite()</b>
-<ul>
-<li>
-Member function of <i>Mat</i>, <i>Col</i>, <i>Row</i>, <i>Cube</i>, <i>SpMat</i>
-</li>
-<br>
-<li>Returns <i>true</i> if all elements of the object are finite
-</li>
-<br>
-<li>Returns <i>false</i> if at least one of the elements of the object is non-finite (&plusmn;infinity or NaN)
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A = randu&lt;mat&gt;(5,5);
-mat B = randu&lt;mat&gt;(5,5);
-
-B(1,1) = datum::inf;
-
-cout &lt;&lt; A.is_finite() &lt;&lt; endl;
-cout &lt;&lt; B.is_finite() &lt;&lt; endl;
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#has_inf">.has_inf()</a></li>
-<li><a href="#has_nan">.has_nan()</a></li>
-<li><a href="#find_finite">find_finite()</a></li>
-<li><a href="#find_nonfinite">find_nonfinite()</a></li>
-<li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
-</ul>
-</li>
-<br>
-</ul>
-
-<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_definite"></a>
 <b>.is_definite()</b>
 <br><b>.is_definite(&nbsp;tol&nbsp;)</b>
@@ -6220,6 +6176,49 @@ See also:
 <li><a href="#is_symmetric">.is_symmetric()</a></li>
 <li><a href="#is_hermitian">.is_hermitian()</a></li>
 <li><a href="#constants">datum::eps</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="is_finite"></a>
+<a name="is_finite_member"></a>
+<b>.is_finite()</b>
+<ul>
+<li>
+Member function of <i>Mat</i>, <i>Col</i>, <i>Row</i>, <i>Cube</i>, <i>SpMat</i>
+</li>
+<br>
+<li>Returns <i>true</i> if all elements of the object are finite
+</li>
+<br>
+<li>Returns <i>false</i> if at least one of the elements of the object is non-finite (&plusmn;infinity or NaN)
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A = randu&lt;mat&gt;(5,5);
+mat B = randu&lt;mat&gt;(5,5);
+
+B(1,1) = datum::inf;
+
+cout &lt;&lt; A.is_finite() &lt;&lt; endl;
+cout &lt;&lt; B.is_finite() &lt;&lt; endl;
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#has_inf">.has_inf()</a></li>
+<li><a href="#has_nan">.has_nan()</a></li>
+<li><a href="#find_finite">find_finite()</a></li>
+<li><a href="#find_nonfinite">find_nonfinite()</a></li>
+<li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
 </ul>
 </li>
 <br>
