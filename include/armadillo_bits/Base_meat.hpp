@@ -457,7 +457,7 @@ Base<elem_type,derived>::is_vec() const
   {
   arma_extra_debug_sigprint();
   
-  if( (Proxy<derived>::is_row) || (Proxy<derived>::is_col) )  { return true; }
+  if( (Proxy<derived>::is_row) || (Proxy<derived>::is_col) || (Proxy<derived>::is_xvec) )  { return true; }
   
   const Proxy<derived> P( (*this).get_ref() );
   
