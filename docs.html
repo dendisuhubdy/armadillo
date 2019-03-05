@@ -314,6 +314,8 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><a href="#is_hermitian">.is_hermitian</a></td><td>&nbsp;</td><td>check whether matrix is hermitian</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
 <tr><td><a href="#is_finite">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
+<tr><td><a href="#is_definite">.is_definite</a></td><td>&nbsp;</td><td>check whether matrix is positive definite</td></tr>
+<tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
 <tr><td><a href="#has_inf">.has_inf</a></td><td>&nbsp;</td><td>check whether any element is +-Inf</td></tr>
 <tr><td><a href="#has_nan">.has_nan</a></td><td>&nbsp;</td><td>check whether any element is NaN</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
@@ -6083,6 +6085,7 @@ cout &lt;&lt; B.is_symmetric() &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#is_hermitian">.is_hermitian()</a></li>
+<li><a href="#is_definite">.is_definite()</a></li>
 <li><a href="#is_square">.is_square()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Symmetric_matrix">Symmetric matrix in Wikipedia</a></li>
 <li><a href="http://mathworld.wolfram.com/SymmetricMatrix.html">Symmetric matrix in MathWorld</a></li>
@@ -6125,6 +6128,7 @@ cout &lt;&lt; B.is_hermitian() &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#is_symmetric">.is_symmetric()</a></li>
+<li><a href="#is_definite">.is_definite()</a></li>
 <li><a href="#is_square">.is_square()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Hermitian_matrix">Hermitian matrix in Wikipedia</a></li>
 <li><a href="http://mathworld.wolfram.com/HermitianMatrix.html">Hermitian matrix in MathWorld</a></li>
@@ -6171,6 +6175,51 @@ See also:
 <li><a href="#find_finite">find_finite()</a></li>
 <li><a href="#find_nonfinite">find_nonfinite()</a></li>
 <li><a href="#constants">constants (pi, nan, inf, ...)</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="is_definite"></a>
+<b>.is_definite()</b>
+<br><b>.is_definite(&nbsp;tol&nbsp;)</b>
+<ul>
+<li>
+Member function of <i>Mat</i> and any dense matrix expression
+</li>
+<br>
+<li>Returns <i>true</i> if the matrix is symmetric positive definite within the tolerance given by <i>tol</i>
+</li>
+<br>
+<li>Returns <i>false</i> otherwise
+</li>
+<br>
+<li>
+The <i>tol</i> argument is optional; if <i>tol</i> is not specified, <i>tol = 100 * datum::eps * norm(X, "fro")</i> is used
+<!--  the given matrix <i>X</i> is considered symmetric if <i>norm(X - X.st(), "inf") / norm (X, "inf") &leq; tol</i> -->
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A(5,5,fill::randu);
+
+mat B = A.t() * A;
+
+cout &lt;&lt; A.is_definite() &lt;&lt; endl;
+cout &lt;&lt; B.is_definite() &lt;&lt; endl;
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#is_symmetric">.is_symmetric()</a></li>
+<li><a href="#is_hermitian">.is_hermitian()</a></li>
+<li><a href="#constants">datum::eps</a></li>
 </ul>
 </li>
 <br>
