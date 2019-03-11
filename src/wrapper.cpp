@@ -336,6 +336,8 @@ extern "C"
       }
     
     
+    // TODO: arma_?geevx
+    
     
     void arma_fortran_prefix(arma_sggev)(char* jobvl, char* jobvr, blas_int* n,  float* a, blas_int* lda,  float* b, blas_int* ldb,  float* alphar,  float* alphai,  float* beta,  float* vl, blas_int* ldvl,  float* vr, blas_int* ldvr,  float* work, blas_int* lwork, blas_int* info)
       {
