@@ -43,6 +43,11 @@
   #define arma_cgeev  cgeev
   #define arma_zgeev  zgeev
   
+  #define arma_sgeevx sgeevx
+  #define arma_dgeevx dgeevx
+  #define arma_cgeevx cgeevx
+  #define arma_zgeevx zgeevx
+  
   #define arma_ssyev  ssyev
   #define arma_dsyev  dsyev
 
@@ -223,6 +228,11 @@
   #define arma_dgeev  DGEEV
   #define arma_cgeev  CGEEV
   #define arma_zgeev  ZGEEV
+  
+  #define arma_sgeevx SGEEVX
+  #define arma_dgeevx DGEEVX
+  #define arma_cgeevx CGEEVX
+  #define arma_zgeevx ZGEEVX
   
   #define arma_ssyev  SSYEV
   #define arma_dsyev  DSYEV
@@ -414,6 +424,14 @@ extern "C"
   // eigen decomposition of general matrix (complex)
   void arma_fortran(arma_cgeev)(const char* jobvl, const char* jobvr, const blas_int* N, void* a, const blas_int* lda, void* w, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, void* work, const blas_int* lwork,  float* rwork, blas_int* info);
   void arma_fortran(arma_zgeev)(const char* jobvl, const char* jobvr, const blas_int* N, void* a, const blas_int* lda, void* w, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, void* work, const blas_int* lwork, double* rwork, blas_int* info);
+  
+  // eigen decomposition of general matrix (real; advanced form)
+  void arma_fortran(arma_sgeevx)(const char* balanc, const char* jobvl, const char* jobvr, const char* sense, const blas_int* n,  float* a, const blas_int* lda,  float* wr,  float* wi,  float* vl, const blas_int* ldvl,  float* vr, const blast_int* ldvr, const blas_int* ilo, const blas_int* ihi,  float* scale,  float* abnrm,  float* rconde,  float* rcondv,  float* work, const blas_int* lwork, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_dgeevx)(const char* balanc, const char* jobvl, const char* jobvr, const char* sense, const blas_int* n, double* a, const blas_int* lda, double* wr, double* wi, double* vl, const blas_int* ldvl, double* vr, const blast_int* ldvr, const blas_int* ilo, const blas_int* ihi, double* scale, double* abnrm, double* rconde, double* rcondv, double* work, const blas_int* lwork, blas_int* iwork, blas_int* info);
+  
+  // eigen decomposition of general matrix (complex; advanced form)
+  // void arma_fortran(arma_cgeevx)(balanc, jobvl, jobvr, sense, n, a, lda, w, vl, ldvl, vr, ldvr, ilo, ihi, scale, abnrm, rconde, rcondv, work, lwork, rwork, info);
+  // void arma_fortran(arma_zgeevx)(balanc, jobvl, jobvr, sense, n, a, lda, w, vl, ldvl, vr, ldvr, ilo, ihi, scale, abnrm, rconde, rcondv, work, lwork, rwork, info);
   
   // eigen decomposition of symmetric real matrices
   void arma_fortran(arma_ssyev)(const char* jobz, const char* uplo, const blas_int* n,  float* a, const blas_int* lda,  float* w,  float* work, const blas_int* lwork, blas_int* info);
