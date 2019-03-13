@@ -35,20 +35,9 @@ inline
 void
 Base<elem_type,derived>::print(const std::string extra_text) const
   {
-  if(is_op_strans<derived>::value || is_op_htrans<derived>::value)
-    {
-    const Proxy<derived> P( (*this).get_ref() );
-    
-    const quasi_unwrap< typename Proxy<derived>::stored_type > tmp(P.Q);
-    
-    tmp.M.impl_print(extra_text);
-    }
-  else
-    {
-    const quasi_unwrap<derived> tmp( (*this).get_ref() );
-    
-    tmp.M.impl_print(extra_text);
-    }
+  const quasi_unwrap<derived> tmp( (*this).get_ref() );
+  
+  tmp.M.impl_print(extra_text);
   }
 
 
@@ -59,20 +48,9 @@ inline
 void
 Base<elem_type,derived>::print(std::ostream& user_stream, const std::string extra_text) const
   {
-  if(is_op_strans<derived>::value || is_op_htrans<derived>::value)
-    {
-    const Proxy<derived> P( (*this).get_ref() );
-    
-    const quasi_unwrap< typename Proxy<derived>::stored_type > tmp(P.Q);
-    
-    tmp.M.impl_print(user_stream, extra_text);
-    }
-  else
-    {
-    const quasi_unwrap<derived> tmp( (*this).get_ref() );
-    
-    tmp.M.impl_print(user_stream, extra_text);
-    }
+  const quasi_unwrap<derived> tmp( (*this).get_ref() );
+  
+  tmp.M.impl_print(user_stream, extra_text);
   }
   
 
@@ -83,20 +61,9 @@ inline
 void
 Base<elem_type,derived>::raw_print(const std::string extra_text) const
   {
-  if(is_op_strans<derived>::value || is_op_htrans<derived>::value)
-    {
-    const Proxy<derived> P( (*this).get_ref() );
-    
-    const quasi_unwrap< typename Proxy<derived>::stored_type > tmp(P.Q);
-    
-    tmp.M.impl_raw_print(extra_text);
-    }
-  else
-    {
-    const quasi_unwrap<derived> tmp( (*this).get_ref() );
-    
-    tmp.M.impl_raw_print(extra_text);
-    }
+  const quasi_unwrap<derived> tmp( (*this).get_ref() );
+  
+  tmp.M.impl_raw_print(extra_text);
   }
 
 
@@ -107,20 +74,9 @@ inline
 void
 Base<elem_type,derived>::raw_print(std::ostream& user_stream, const std::string extra_text) const
   {
-  if(is_op_strans<derived>::value || is_op_htrans<derived>::value)
-    {
-    const Proxy<derived> P( (*this).get_ref() );
-    
-    const quasi_unwrap< typename Proxy<derived>::stored_type > tmp(P.Q);
-    
-    tmp.M.impl_raw_print(user_stream, extra_text);
-    }
-  else
-    {
-    const quasi_unwrap<derived> tmp( (*this).get_ref() );
-    
-    tmp.M.impl_raw_print(user_stream, extra_text);
-    }
+  const quasi_unwrap<derived> tmp( (*this).get_ref() );
+  
+  tmp.M.impl_raw_print(user_stream, extra_text);
   }
 
 
