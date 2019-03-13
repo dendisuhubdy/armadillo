@@ -312,7 +312,7 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><a href="#is_square">.is_square</a></td><td>&nbsp;</td><td>check whether matrix is square sized</td></tr>
 <tr><td><a href="#is_symmetric">.is_symmetric</a></td><td>&nbsp;</td><td>check whether matrix is symmetric</td></tr>
 <tr><td><a href="#is_hermitian">.is_hermitian</a></td><td>&nbsp;</td><td>check whether matrix is hermitian</td></tr>
-<tr><td><a href="#is_definite">.is_definite</a></td><td>&nbsp;</td><td>check whether matrix is positive definite</td></tr>
+<tr><td><a href="#is_sympd">.is_sympd</a></td><td>&nbsp;</td><td>check whether matrix is positive definite</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
 <tr><td><a href="#is_finite">.is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#has_inf">.has_inf</a></td><td>&nbsp;</td><td>check whether any element is +-Inf</td></tr>
@@ -6084,7 +6084,7 @@ cout &lt;&lt; B.is_symmetric() &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#is_hermitian">.is_hermitian()</a></li>
-<li><a href="#is_definite">.is_definite()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="#is_square">.is_square()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Symmetric_matrix">Symmetric matrix in Wikipedia</a></li>
 <li><a href="http://mathworld.wolfram.com/SymmetricMatrix.html">Symmetric matrix in MathWorld</a></li>
@@ -6127,7 +6127,7 @@ cout &lt;&lt; B.is_hermitian() &lt;&lt; endl;
 See also:
 <ul>
 <li><a href="#is_symmetric">.is_symmetric()</a></li>
-<li><a href="#is_definite">.is_definite()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="#is_square">.is_square()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Hermitian_matrix">Hermitian matrix in Wikipedia</a></li>
 <li><a href="http://mathworld.wolfram.com/HermitianMatrix.html">Hermitian matrix in MathWorld</a></li>
@@ -6137,9 +6137,9 @@ See also:
 </ul>
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
-<a name="is_definite"></a>
-<b>.is_definite()</b>
-<br><b>.is_definite(&nbsp;tol&nbsp;)</b>
+<a name="is_sympd"></a>
+<b>.is_sympd()</b>
+<br><b>.is_sympd(&nbsp;tol&nbsp;)</b>
 <ul>
 <li>
 Member function of <i>Mat</i> and any dense matrix expression
@@ -6163,8 +6163,8 @@ mat A(5,5,fill::randu);
 
 mat B = A.t() * A;
 
-cout &lt;&lt; A.is_definite() &lt;&lt; endl;
-cout &lt;&lt; B.is_definite() &lt;&lt; endl;
+cout &lt;&lt; A.is_sympd() &lt;&lt; endl;
+cout &lt;&lt; B.is_sympd() &lt;&lt; endl;
 </pre>
 </ul>
 </li>
@@ -18072,7 +18072,7 @@ List of additions and changes for each version:
 <ul>
 <li>faster handling compound complex matrix expressions by <a href="#trace">trace()</a></li>
 <li>more efficient handling of element access for inplace modifications in <a href="#SpMat">sparse matrices</a></li>
-<li>added <a href="#is_definite">.is_definite()</a></li>
+<li>added <a href="#is_sympd">.is_sympd()</a> to check whether a matrix is positive definite</li>
 <li>added <a href="#interp2">interp2()</a> for 2D data interpolation</li>
 <li>added <a href="#misc_fns">expm1()</a> and <a href="#misc_fns">log1p()</a></li>
 <li>expanded <a href="#is_sorted">.is_sorted()</a> with options <code>"strictascend"</code> and <code>"strictdescend"</code></li>

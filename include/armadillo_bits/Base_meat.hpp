@@ -588,7 +588,7 @@ template<typename elem_type, typename derived>
 inline
 arma_warn_unused
 bool
-Base_extra_yes<elem_type,derived>::is_definite() const
+Base_extra_yes<elem_type,derived>::is_sympd() const
   {
   arma_extra_debug_sigprint();
   
@@ -614,13 +614,13 @@ template<typename elem_type, typename derived>
 inline
 arma_warn_unused
 bool
-Base_extra_yes<elem_type,derived>::is_definite(typename get_pod_type<elem_type>::result tol) const
+Base_extra_yes<elem_type,derived>::is_sympd(typename get_pod_type<elem_type>::result tol) const
   {
   arma_extra_debug_sigprint();
   
   typedef typename get_pod_type<elem_type>::result T;
   
-  arma_debug_check( (tol < T(0)), "is_definite(): parameter 'tol' must be >= 0" );
+  arma_debug_check( (tol < T(0)), "is_sympd(): parameter 'tol' must be >= 0" );
   
   Mat<elem_type> X = static_cast<const derived&>(*this);
   
