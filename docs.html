@@ -6102,7 +6102,7 @@ See also:
 Member function of <i>Mat</i> and <i>SpMat</i>
 </li>
 <br>
-<li>Returns <i>true</i> if the matrix is hermitian</li>
+<li>Returns <i>true</i> if the matrix is hermitian (self-adjoint)</li>
 <br>
 <li>Returns <i>false</i> if the matrix is not hermitian</li>
 <br>
@@ -8556,7 +8556,7 @@ See also:
 </ul>
 </li>
 <br>
-<li><b>Caveat</b>: there is currently no check whether <i>A</i> is symmetric</li>
+<li><b>Caveat</b>: there is no explicit check whether <i>A</i> is symmetric/hermitian</li>
 <br>
 <li><b>Caveat</b>: the matrix exponential operation is generally <b>not</b> the same as applying the <a href="#misc_fns">exp()</a> function to each element</li>
 <br>
@@ -8579,6 +8579,8 @@ See also:
 <li><a href="#expmat">expmat()</a></li>
 <li><a href="#logmat_sympd">logmat_sympd()</a></li>
 <li><a href="#sqrtmat_sympd">sqrtmat_sympd()</a></li>
+<li><a href="#is_symmetric">.is_symmetric()</a></li>
+<li><a href="#is_hermitian">.is_hermitian()</a></li>
 <li><a href="#misc_fns">miscellaneous element-wise functions</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Matrix_exponential">matrix exponential in Wikipedia</a></li>
 <li><a href="http://mathworld.wolfram.com/MatrixExponential.html">matrix exponential in MathWorld</a></li>
@@ -9433,7 +9435,7 @@ See also:
 </ul>
 </li>
 <br>
-<li><b>Caveat</b>: there is currently no check whether <i>A</i> is symmetric</li>
+<li><b>Caveat</b>: there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite</li>
 <br>
 <li><b>Caveat</b>: the matrix logarithm operation is generally <b>not</b> the same as applying the <a href="#misc_fns">log()</a> function to each element</li>
 <br>
@@ -9456,6 +9458,7 @@ See also:
 <li><a href="#logmat">logmat()</a></li>
 <li><a href="#expmat_sym">expmat_sym()</a></li>
 <li><a href="#sqrtmat_sympd">sqrtmat_sympd()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="#misc_fns">miscellaneous element-wise functions</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Logarithm_of_a_matrix">matrix logarithm in Wikipedia</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Positive-definite_matrix">positive definite matrix in Wikipedia</a></li>
@@ -10438,7 +10441,7 @@ See also:
 </ul>
 </li>
 <br>
-<li><b>Caveat</b>: there is currently no check whether <i>A</i> is symmetric</li>
+<li><b>Caveat</b>: there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite</li>
 <br>
 <li><b>Caveat</b>: the matrix square root operation is generally <b>not</b> the same as applying the <a href="#misc_fns">sqrt()</a> function to each element</li>
 <br>
@@ -10462,6 +10465,7 @@ See also:
 <li><a href="#expmat_sym">expmat_sym()</a></li>
 <li><a href="#logmat_sympd">logmat_sympd()</a></li>
 <li><a href="#chol">chol()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="#misc_fns">miscellaneous element-wise functions</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Square_root_of_a_matrix">square root of a matrix in Wikipedia</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Positive-definite_matrix">positive definite matrix in Wikipedia</a></li>
@@ -11338,6 +11342,7 @@ See also:
 <li><a href="#sqrtmat">sqrtmat()</a></li>
 <li><a href="#lu">lu()</a></li>
 <li><a href="#qr">qr()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="http://mathworld.wolfram.com/CholeskyDecomposition.html">Cholesky decomposition in MathWorld</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Cholesky_decomposition">Cholesky decomposition in Wikipedia</a></li>
 </ul>
@@ -11387,7 +11392,7 @@ the divide-and-conquer method provides slightly different results than the stand
 </ul>
 </li>
 <br>
-<li><b>Caveat:</b> there is currently no check whether <i>X</i> is symmetric</li>
+<li><b>Caveat:</b> there is no explicit check whether <i>X</i> is symmetric/hermitian</li>
 <br>
 <li>
 Examples:
@@ -11426,6 +11431,8 @@ See also:
 <li><a href="#svd_econ">svd_econ()</a></li>
 <li><a href="#princomp">princomp()</a></li>
 <li><a href="#eigs_sym">eigs_sym()</a></li>
+<li><a href="#is_symmetric">.is_symmetric()</a></li>
+<li><a href="#is_hermitian">.is_hermitian()</a></li>
 <li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Divide-and-conquer_eigenvalue_algorithm">divide &amp; conquer eigenvalue algorithm in Wikipedia</a></li>
@@ -11690,15 +11697,15 @@ Inverse of symmetric/hermitian positive definite matrix <i>A</i>
 If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
-<li>
-There is currently no explicit check whether <i>A</i> is symmetric/hermitian
-</li>
-<br>
 <li>If <i>A</i> appears to be singular or not positive definite:
 <ul>
 <li><i>B = inv_sympd(A)</i> resets <i>B</i> and throws a <i>std::runtime_error</i> exception</li>
 <li><i>inv_sympd(B,A)</i> resets <i>B</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
 </ul>
+</li>
+<br>
+<li>
+<b>Caveat:</b> there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite
 </li>
 <br>
 <li>
@@ -11726,6 +11733,7 @@ See also:
 <li><a href="#pinv">pinv()</a>
 <li><a href="#solve">solve()</a></li>
 <li><a href="#eig_sym">eig_sym()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="http://mathworld.wolfram.com/MatrixInverse.html">matrix inverse in MathWorld</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Invertible_matrix">invertible matrix in Wikipedia</a></li>
 <li><a href="http://mathworld.wolfram.com/PositiveDefiniteMatrix.html">positive definite matrix in MathWorld</a></li>
@@ -12552,7 +12560,7 @@ The argument <i>tol</i> is optional; it specifies the tolerance for convergence
 it's more difficult to compute the smallest eigenvalues than the largest eigenvalues;
 <br>if the decomposition fails, try increasing <i>k</i> (number of eigenvalues) and/or the tolerance
 </li>
-<li>there is currently no check whether <i>X</i> is symmetric</li>
+<li>there is no explicit check whether <i>X</i> is symmetric</li>
 </ul>
 </li>
 <br>
@@ -12578,6 +12586,7 @@ See also:
 <li><a href="#eigs_gen">eigs_gen()</a></li>
 <li><a href="#eig_sym">eig_sym()</a></li>
 <li><a href="#svds">svds()</a></li>
+<li><a href="#is_symmetric">.is_symmetric()</a></li>
 <li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
 </ul>
@@ -14047,6 +14056,7 @@ See also:
 <li><a href="#chi2rnd">chi2rnd()</a></li>
 <li><a href="#wishrnd">wishrnd()</a></li>
 <li><a href="#cov">cov()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="#gmm_diag">gmm_diag</a> &amp; <a href="#gmm_full">gmm_full</a> - model and evaluate data using Gaussian Mixture Models (GMMs)</li>
 <li><a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">multivariate normal distribution in Wikipedia</a></li>
 </ul>
@@ -14171,6 +14181,7 @@ See also:
 <li><a href="#chol">chol()</a></li>
 <li><a href="#cov">cov()</a></li>
 <li><a href="#randu_randn_standalone">randn()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Wishart_distribution">Wishart distribution in Wikipedia</a></li>
 </ul>
 </li>
@@ -14227,6 +14238,7 @@ See also:
 <li><a href="#wishrnd">wishrnd()</a></li>
 <li><a href="#chol">chol()</a></li>
 <li><a href="#inv_sympd">inv_sympd()</a></li>
+<li><a href="#is_sympd">.is_sympd()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Inverse-Wishart_distribution">inverse Wishart distribution in Wikipedia</a></li>
 </ul>
 </li>
