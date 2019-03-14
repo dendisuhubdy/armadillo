@@ -174,7 +174,7 @@ namespace lapack
   template<typename eT>
   inline
   void
-  geevx(char* balanc, char* jobvl, char* jobvr, char* sense, const blas_int* n, eT* a, const blas_int* lda, eT* wr, eT* wi, eT* vl, const blas_int* ldvl, eT* vr, const blas_int* ldvr, const blas_int* ilo, const blas_int* ihi, eT* scale, eT* abnrm, eT* rconde, eT* rcondv, eT* work, const blas_int* lwork, blas_int* iwork, blas_int* info)
+  geevx(char* balanc, char* jobvl, char* jobvr, char* sense, blas_int* n, eT* a, blas_int* lda, eT* wr, eT* wi, eT* vl, blas_int* ldvl, eT* vr, blas_int* ldvr, blas_int* ilo, blas_int* ihi, eT* scale, eT* abnrm, eT* rconde, eT* rcondv, eT* work, blas_int* lwork, blas_int* iwork, blas_int* info)
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
 
