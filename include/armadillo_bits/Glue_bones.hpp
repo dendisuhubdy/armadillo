@@ -40,35 +40,39 @@ class Glue : public Base<typename T1::elem_type, Glue<T1, T2, glue_type> >
   typedef typename T1::elem_type                   elem_type;
   typedef typename get_pod_type<elem_type>::result pod_type;
   
-  static const bool is_row = \
-       (is_same_type<glue_type,glue_times>::value && T1::is_row)
-    || (is_same_type<glue_type,glue_conv>::value  && T1::is_row)
-    || (is_same_type<glue_type,glue_join_rows>::value && T1::is_row && T2::is_row)
-    || (is_same_type<glue_type,glue_atan2>::value && (T1::is_row || T2::is_row))
-    || (is_same_type<glue_type,glue_hypot>::value && (T1::is_row || T2::is_row))
-    || (is_same_type<glue_type,glue_max>::value && (T1::is_row || T2::is_row))
-    || (is_same_type<glue_type,glue_min>::value && (T1::is_row || T2::is_row))
-    || (is_same_type<glue_type,glue_polyval>::value && T2::is_row)
-    || (is_same_type<glue_type,glue_intersect>::value && T1::is_row && T2::is_row);
-    
-  static const bool is_col = \
-       (is_same_type<glue_type,glue_times>::value && T2::is_col)
-    || (is_same_type<glue_type,glue_conv>::value  && T1::is_col)
-    || (is_same_type<glue_type,glue_join_cols>::value && T1::is_col && T2::is_col)
-    || (is_same_type<glue_type,glue_atan2>::value && (T1::is_col || T2::is_col))
-    || (is_same_type<glue_type,glue_hypot>::value && (T1::is_col || T2::is_col))
-    || (is_same_type<glue_type,glue_max>::value && (T1::is_col || T2::is_col))
-    || (is_same_type<glue_type,glue_min>::value && (T1::is_col || T2::is_col))
-    || (is_same_type<glue_type,glue_polyfit>::value)
-    || (is_same_type<glue_type,glue_polyval>::value && T2::is_col)
-    || (is_same_type<glue_type,glue_intersect>::value && (T1::is_col || T2::is_col))
-    || (is_same_type<glue_type,glue_affmul>::value  && T2::is_col);
+  static const bool is_row  = glue_type::template traits<T1,T2>::is_row;
+  static const bool is_col  = glue_type::template traits<T1,T2>::is_col;
+  static const bool is_xvec = glue_type::template traits<T1,T2>::is_xvec;
   
-  static const bool is_xvec = \
-    (
-       (is_same_type<glue_type,glue_max>::value && (T1::is_xvec || T2::is_xvec))
-    || (is_same_type<glue_type,glue_min>::value && (T1::is_xvec || T2::is_xvec))
-    );
+  // static const bool is_row = \
+  //      (is_same_type<glue_type,glue_times>::value && T1::is_row)
+  //   || (is_same_type<glue_type,glue_conv>::value  && T1::is_row)
+  //   || (is_same_type<glue_type,glue_join_rows>::value && T1::is_row && T2::is_row)
+  //   || (is_same_type<glue_type,glue_atan2>::value && (T1::is_row || T2::is_row))
+  //   || (is_same_type<glue_type,glue_hypot>::value && (T1::is_row || T2::is_row))
+  //   || (is_same_type<glue_type,glue_max>::value && (T1::is_row || T2::is_row))
+  //   || (is_same_type<glue_type,glue_min>::value && (T1::is_row || T2::is_row))
+  //   || (is_same_type<glue_type,glue_polyval>::value && T2::is_row)
+  //   || (is_same_type<glue_type,glue_intersect>::value && T1::is_row && T2::is_row);
+  //   
+  // static const bool is_col = \
+  //      (is_same_type<glue_type,glue_times>::value && T2::is_col)
+  //   || (is_same_type<glue_type,glue_conv>::value  && T1::is_col)
+  //   || (is_same_type<glue_type,glue_join_cols>::value && T1::is_col && T2::is_col)
+  //   || (is_same_type<glue_type,glue_atan2>::value && (T1::is_col || T2::is_col))
+  //   || (is_same_type<glue_type,glue_hypot>::value && (T1::is_col || T2::is_col))
+  //   || (is_same_type<glue_type,glue_max>::value && (T1::is_col || T2::is_col))
+  //   || (is_same_type<glue_type,glue_min>::value && (T1::is_col || T2::is_col))
+  //   || (is_same_type<glue_type,glue_polyfit>::value)
+  //   || (is_same_type<glue_type,glue_polyval>::value && T2::is_col)
+  //   || (is_same_type<glue_type,glue_intersect>::value && (T1::is_col || T2::is_col))
+  //   || (is_same_type<glue_type,glue_affmul>::value  && T2::is_col);
+  // 
+  // static const bool is_xvec = \
+  //   (
+  //      (is_same_type<glue_type,glue_max>::value && (T1::is_xvec || T2::is_xvec))
+  //   || (is_same_type<glue_type,glue_min>::value && (T1::is_xvec || T2::is_xvec))
+  //   );
   
   arma_inline  Glue(const T1& in_A, const T2& in_B);
   arma_inline  Glue(const T1& in_A, const T2& in_B, const uword in_aux_uword);
