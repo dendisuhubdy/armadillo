@@ -20,7 +20,7 @@
 
 //! Class for finding mean values of a matrix
 class op_mean
-  : public op_default_traits
+  : public op_default_xvec_traits
   {
   public:
   
