@@ -19,6 +19,7 @@
 
 
 class op_cond
+  : public op_default_traits
   {
   public:
   

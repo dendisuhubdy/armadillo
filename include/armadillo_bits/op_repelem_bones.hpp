@@ -21,6 +21,7 @@
 
 
 class op_repelem
+  : public op_default_traits
   {
   public:
   

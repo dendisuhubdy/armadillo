@@ -21,6 +21,7 @@
 
 
 class op_clamp
+  : public op_default_traits
   {
   public:
   

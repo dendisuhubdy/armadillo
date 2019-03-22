@@ -21,6 +21,7 @@
 
 
 class glue_max
+  : public glue_default_traits
   {
   public:
   

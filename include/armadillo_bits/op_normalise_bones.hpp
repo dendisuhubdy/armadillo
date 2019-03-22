@@ -21,6 +21,7 @@
 
 
 class op_normalise_vec
+  : public op_default_traits
   {
   public:
   
@@ -30,6 +31,7 @@ class op_normalise_vec
 
 
 class op_normalise_mat
+  : public op_default_traits
   {
   public:
   

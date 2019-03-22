@@ -21,6 +21,7 @@
 
 //! Class for finding variance values of a matrix
 class op_var
+  : public op_default_traits
   {
   public:
   

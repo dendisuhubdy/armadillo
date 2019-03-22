@@ -203,6 +203,32 @@ class op_internal_div;
 
 
 
+struct op_default_traits
+  {
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = false;
+    static const bool is_xvec = false;
+    };
+  };
+
+
+
+struct glue_default_traits
+  {
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = false;
+    static const bool is_xvec = false;
+    };
+  };
+
+
+
 template<const bool, const bool, const bool, const bool> class gemm;
 template<const bool, const bool, const bool>             class gemv;
 

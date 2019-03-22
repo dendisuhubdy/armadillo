@@ -21,6 +21,7 @@
 
 
 class glue_polyfit
+  : public glue_default_traits
   {
   public:
   

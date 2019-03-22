@@ -20,6 +20,7 @@
 
 
 class op_cumsum
+  : public op_default_traits
   {
   public:
   
@@ -33,6 +34,7 @@ class op_cumsum
 
 
 class op_cumsum_default
+  : public op_default_traits
   {
   public:
   

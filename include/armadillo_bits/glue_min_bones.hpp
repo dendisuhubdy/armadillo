@@ -21,6 +21,7 @@
 
 
 class glue_min
+  : public glue_default_traits
   {
   public:
   

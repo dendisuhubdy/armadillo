@@ -21,6 +21,7 @@
 
 
 class glue_hypot
+  : public glue_default_traits
   {
   public:
   

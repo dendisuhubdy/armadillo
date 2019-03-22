@@ -19,6 +19,7 @@
 
 
 class op_prod
+  : public op_default_traits
   {
   public:
   

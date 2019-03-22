@@ -21,6 +21,7 @@
 
 
 class glue_cross
+  : public glue_default_traits
   {
   public:
 

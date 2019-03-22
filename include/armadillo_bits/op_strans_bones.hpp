@@ -21,6 +21,7 @@
 //! 'matrix transpose' operation (simple transpose, ie. without taking the conjugate of the elements)
 
 class op_strans
+  : public op_default_traits
   {
   public:
   
@@ -60,6 +61,7 @@ class op_strans
 
 
 class op_strans2
+  : public op_default_traits
   {
   public:
   

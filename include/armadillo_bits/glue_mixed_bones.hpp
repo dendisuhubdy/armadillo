@@ -20,6 +20,7 @@
 
 
 class glue_mixed_times
+  : public glue_default_traits
   {
   public:
   
@@ -30,6 +31,7 @@ class glue_mixed_times
 
 
 class glue_mixed_plus
+  : public glue_default_traits
   {
   public:
   
@@ -43,6 +45,7 @@ class glue_mixed_plus
 
 
 class glue_mixed_minus
+  : public glue_default_traits
   {
   public:
   
@@ -56,6 +59,7 @@ class glue_mixed_minus
 
 
 class glue_mixed_div
+  : public glue_default_traits
   {
   public:
   
@@ -69,6 +73,7 @@ class glue_mixed_div
 
 
 class glue_mixed_schur
+  : public glue_default_traits
   {
   public:
   

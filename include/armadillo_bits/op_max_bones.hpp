@@ -19,6 +19,7 @@
 
 
 class op_max
+  : public op_default_traits
   {
   public:
   

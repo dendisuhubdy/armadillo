@@ -19,6 +19,7 @@
 
 
 class op_range
+  : public op_default_traits
   {
   public:
   

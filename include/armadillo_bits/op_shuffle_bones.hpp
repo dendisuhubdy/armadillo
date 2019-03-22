@@ -21,6 +21,7 @@
 
 
 class op_shuffle
+  : public op_default_traits
   {
   public:
   
@@ -32,6 +33,7 @@ class op_shuffle
 
 
 class op_shuffle_default
+  : public op_default_traits
   {
   public:
   

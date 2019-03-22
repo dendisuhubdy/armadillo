@@ -20,6 +20,7 @@
 
 
 class op_rel_lt_pre
+  : public op_default_traits
   {
   public:
   
@@ -33,6 +34,7 @@ class op_rel_lt_pre
 
 
 class op_rel_lt_post
+  : public op_default_traits
   {
   public:
   
@@ -46,6 +48,7 @@ class op_rel_lt_post
 
 
 class op_rel_gt_pre
+  : public op_default_traits
   {
   public:
   
@@ -59,6 +62,7 @@ class op_rel_gt_pre
 
 
 class op_rel_gt_post
+  : public op_default_traits
   {
   public:
   
@@ -72,6 +76,7 @@ class op_rel_gt_post
 
 
 class op_rel_lteq_pre
+  : public op_default_traits
   {
   public:
   
@@ -85,6 +90,7 @@ class op_rel_lteq_pre
 
 
 class op_rel_lteq_post
+  : public op_default_traits
   {
   public:
   
@@ -98,6 +104,7 @@ class op_rel_lteq_post
 
 
 class op_rel_gteq_pre
+  : public op_default_traits
   {
   public:
   
@@ -111,6 +118,7 @@ class op_rel_gteq_pre
 
 
 class op_rel_gteq_post
+  : public op_default_traits
   {
   public:
   
@@ -124,6 +132,7 @@ class op_rel_gteq_post
 
 
 class op_rel_eq
+  : public op_default_traits
   {
   public:
   
@@ -137,6 +146,7 @@ class op_rel_eq
 
 
 class op_rel_noteq
+  : public op_default_traits
   {
   public:
   

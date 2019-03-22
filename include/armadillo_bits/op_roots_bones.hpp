@@ -20,6 +20,7 @@
 
 
 class op_roots
+  : public op_default_traits
   {
   public:
   

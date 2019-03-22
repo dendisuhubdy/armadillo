@@ -19,6 +19,7 @@
 
 
 class op_sum
+  : public op_default_traits
   {
   public:
   

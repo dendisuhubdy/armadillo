@@ -21,6 +21,7 @@
 
 
 class op_resize
+  : public op_default_traits
   {
   public:
   

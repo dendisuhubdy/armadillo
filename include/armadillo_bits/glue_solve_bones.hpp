@@ -21,6 +21,7 @@
 
 
 class glue_solve_gen
+  : public glue_default_traits
   {
   public:
   
@@ -32,6 +33,7 @@ class glue_solve_gen
 
 
 class glue_solve_tri
+  : public glue_default_traits
   {
   public:
   

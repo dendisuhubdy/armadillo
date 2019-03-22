@@ -21,6 +21,7 @@
 
 
 class glue_toeplitz
+  : public glue_default_traits
   {
   public:
   

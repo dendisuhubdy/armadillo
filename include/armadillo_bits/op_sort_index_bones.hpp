@@ -20,6 +20,7 @@
 
 
 class op_sort_index
+  : public op_default_traits
   {
   public:
   
@@ -33,6 +34,7 @@ class op_sort_index
 
 
 class op_stable_sort_index
+  : public op_default_traits
   {
   public:
   

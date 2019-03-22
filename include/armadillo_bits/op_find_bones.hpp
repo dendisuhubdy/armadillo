@@ -21,6 +21,7 @@
 
 
 class op_find
+  : public op_default_traits
   {
   public:
   
@@ -81,6 +82,7 @@ class op_find
 
 
 class op_find_simple
+  : public op_default_traits
   {
   public:
   
@@ -91,6 +93,7 @@ class op_find_simple
 
 
 class op_find_finite
+  : public op_default_traits
   {
   public:
   
@@ -101,6 +104,7 @@ class op_find_finite
 
 
 class op_find_nonfinite
+  : public op_default_traits
   {
   public:
   

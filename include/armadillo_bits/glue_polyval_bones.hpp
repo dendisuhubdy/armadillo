@@ -21,6 +21,7 @@
 
 
 class glue_polyval
+  : public glue_default_traits
   {
   public:
   

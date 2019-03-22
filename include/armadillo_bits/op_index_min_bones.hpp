@@ -19,6 +19,7 @@
 
 
 class op_index_min
+  : public op_default_traits
   {
   public:
   

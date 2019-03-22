@@ -21,6 +21,7 @@
 
 
 class glue_kron
+  : public glue_default_traits
   {
   public:
 

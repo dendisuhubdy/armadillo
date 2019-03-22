@@ -20,6 +20,7 @@
 
 
 class op_flipud
+  : public op_default_traits
   {
   public:
   
@@ -37,6 +38,7 @@ class op_flipud
 
 
 class op_fliplr
+  : public op_default_traits
   {
   public:
   

@@ -20,6 +20,7 @@
 
 
 class op_diff
+  : public op_default_traits
   {
   public:
   
@@ -33,6 +34,7 @@ class op_diff
 
 
 class op_diff_default
+  : public op_default_traits
   {
   public:
   

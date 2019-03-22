@@ -21,6 +21,7 @@
 
 
 class glue_conv
+  : public glue_default_traits
   {
   public:
 
@@ -32,6 +33,7 @@ class glue_conv
 
 
 class glue_conv2
+  : public glue_default_traits
   {
   public:
   

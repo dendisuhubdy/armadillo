@@ -21,6 +21,7 @@
 
 
 class glue_cov
+  : public glue_default_traits
   {
   public:
 

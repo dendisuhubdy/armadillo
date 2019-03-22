@@ -21,6 +21,7 @@
 
 
 class glue_join_cols
+  : public glue_default_traits
   {
   public:
   
@@ -34,6 +35,7 @@ class glue_join_cols
 
 
 class glue_join_rows
+  : public glue_default_traits
   {
   public:
   

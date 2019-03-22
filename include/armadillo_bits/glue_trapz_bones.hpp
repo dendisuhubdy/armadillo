@@ -21,6 +21,7 @@
 
 
 class glue_trapz
+  : public glue_default_traits
   {
   public:
   
@@ -32,6 +33,7 @@ class glue_trapz
 
 
 class op_trapz
+  : public op_default_traits
   {
   public:
   

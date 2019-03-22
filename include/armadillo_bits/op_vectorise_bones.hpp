@@ -21,6 +21,7 @@
 
 
 class op_vectorise_col
+  : public op_default_traits
   {
   public:
   
@@ -34,6 +35,7 @@ class op_vectorise_col
 
 
 class op_vectorise_row
+  : public op_default_traits
   {
   public:
   
@@ -45,6 +47,7 @@ class op_vectorise_row
 
 
 class op_vectorise_all
+  : public op_default_traits
   {
   public:
   
@@ -54,6 +57,7 @@ class op_vectorise_all
 
 
 class op_vectorise_cube_col
+  : public op_default_traits
   {
   public:
   

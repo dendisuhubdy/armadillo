@@ -20,6 +20,7 @@
 
 
 class op_chol
+  : public op_default_traits
   {
   public:
   

@@ -21,6 +21,7 @@
 //! 'hermitian transpose' operation
 
 class op_htrans
+  : public op_default_traits
   {
   public:
   
@@ -76,6 +77,7 @@ class op_htrans
 
 
 class op_htrans2
+  : public op_default_traits
   {
   public:
   

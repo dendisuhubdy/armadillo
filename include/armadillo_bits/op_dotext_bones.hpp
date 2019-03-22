@@ -20,6 +20,7 @@
 
 
 class op_dotext
+  : public op_default_traits
   {
   public:
   

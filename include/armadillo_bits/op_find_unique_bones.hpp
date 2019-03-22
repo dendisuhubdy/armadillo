@@ -20,6 +20,7 @@
 
 
 class op_find_unique
+  : public op_default_traits
   {
   public:
   

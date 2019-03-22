@@ -21,6 +21,7 @@
 
 
 class op_unique
+  : public op_default_traits
   {
   public:
   

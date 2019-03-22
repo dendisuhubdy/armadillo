@@ -20,6 +20,7 @@
 
 
 class glue_affmul
+  : public glue_default_traits
   {
   public:
   

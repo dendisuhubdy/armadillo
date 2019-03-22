@@ -20,6 +20,7 @@
 
 
 class op_cumprod
+  : public op_default_traits
   {
   public:
   
@@ -33,6 +34,7 @@ class op_cumprod
 
 
 class op_cumprod_default
+  : public op_default_traits
   {
   public:
   

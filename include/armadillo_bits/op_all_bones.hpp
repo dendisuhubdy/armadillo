@@ -21,6 +21,7 @@
 
 
 class op_all
+  : public op_default_traits
   {
   public:
   

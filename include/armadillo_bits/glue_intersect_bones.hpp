@@ -20,6 +20,7 @@
 
 
 class glue_intersect
+  : public glue_default_traits
   {
   public:
   

@@ -20,6 +20,7 @@
 
 
 class op_diagvec
+  : public op_default_traits
   {
   public:
   
