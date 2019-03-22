@@ -20,7 +20,7 @@
 
 
 class op_sort
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   
@@ -46,7 +46,7 @@ class op_sort
 
 
 class op_sort_default
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   

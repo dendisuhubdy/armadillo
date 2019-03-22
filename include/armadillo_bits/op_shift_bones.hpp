@@ -21,7 +21,7 @@
 
 
 class op_shift_default
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   
@@ -31,7 +31,7 @@ class op_shift_default
 
 
 class op_shift
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   

@@ -229,6 +229,19 @@ struct op_default_xvec_traits
 
 
 
+struct op_passthru_traits
+  {
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = T1::is_row;
+    static const bool is_col  = T1::is_col;
+    static const bool is_xvec = T1::is_xvec;
+    };
+  };
+
+
+
 struct glue_default_traits
   {
   template<typename T1, typename T2>

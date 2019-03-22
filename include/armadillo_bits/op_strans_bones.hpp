@@ -27,9 +27,9 @@ class op_strans
   template<typename T1>
   struct traits
     {
-    static const is_row  = T1::is_col;  // deliberately swapped
-    static const is_col  = T1::is_row;
-    static const is_xvec = T1::is_xvec;
+    static const bool is_row  = T1::is_col;  // deliberately swapped
+    static const bool is_col  = T1::is_row;
+    static const bool is_xvec = T1::is_xvec;
     };
   
   template<const bool do_flip, const uword row, const uword col>
@@ -74,9 +74,9 @@ class op_strans2
   template<typename T1>
   struct traits
     {
-    static const is_row  = T1::is_col;  // deliberately swapped
-    static const is_col  = T1::is_row;
-    static const is_xvec = T1::is_xvec;
+    static const bool is_row  = T1::is_col;  // deliberately swapped
+    static const bool is_col  = T1::is_row;
+    static const bool is_xvec = T1::is_xvec;
     };
   
   template<const bool do_flip, const uword row, const uword col>
