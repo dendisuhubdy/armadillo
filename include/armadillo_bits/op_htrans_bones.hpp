@@ -21,9 +21,16 @@
 //! 'hermitian transpose' operation
 
 class op_htrans
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const is_row  = T1::is_col;  // deliberately swapped
+    static const is_col  = T1::is_row;
+    static const is_xvec = T1::is_xvec;
+    };
   
   template<typename eT>
   arma_hot arma_inline static void apply_mat_noalias(Mat<eT>& out, const Mat<eT>& A, const typename arma_not_cx<eT>::result* junk = 0);
@@ -77,9 +84,16 @@ class op_htrans
 
 
 class op_htrans2
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const is_row  = T1::is_col;  // deliberately swapped
+    static const is_col  = T1::is_row;
+    static const is_xvec = T1::is_xvec;
+    };
   
   template<typename eT>
   arma_hot inline static void apply_noalias(Mat<eT>& out, const Mat<eT>& A, const eT val);

@@ -21,9 +21,16 @@
 //! 'matrix transpose' operation (simple transpose, ie. without taking the conjugate of the elements)
 
 class op_strans
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const is_row  = T1::is_col;  // deliberately swapped
+    static const is_col  = T1::is_row;
+    static const is_xvec = T1::is_xvec;
+    };
   
   template<const bool do_flip, const uword row, const uword col>
   struct pos
@@ -61,9 +68,16 @@ class op_strans
 
 
 class op_strans2
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const is_row  = T1::is_col;  // deliberately swapped
+    static const is_col  = T1::is_row;
+    static const is_xvec = T1::is_xvec;
+    };
   
   template<const bool do_flip, const uword row, const uword col>
   struct pos
