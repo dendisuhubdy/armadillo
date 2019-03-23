@@ -21,9 +21,16 @@
 
 
 class glue_polyfit
-  : public glue_default_traits
   {
   public:
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = true;
+    static const bool is_xvec = false;
+    };
   
   template<typename eT> inline static bool apply_noalias(Mat<eT>& out, const Col<eT>& X, const Col<eT>& Y, const uword N);
   

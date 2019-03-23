@@ -255,6 +255,19 @@ struct glue_default_traits
 
 
 
+struct glue_fuse_or_traits
+  {
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = (T1::is_row  || T2::is_row );
+    static const bool is_col  = (T1::is_col  || T2::is_col );
+    static const bool is_xvec = (T1::is_xvec || T2::is_xvec);
+    };
+  };
+
+
+
 template<const bool, const bool, const bool, const bool> class gemm;
 template<const bool, const bool, const bool>             class gemv;
 
