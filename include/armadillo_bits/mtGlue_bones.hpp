@@ -27,23 +27,27 @@ class mtGlue : public Base<out_eT, mtGlue<out_eT, T1, T2, glue_type> >
   typedef          out_eT                       elem_type;
   typedef typename get_pod_type<out_eT>::result pod_type;
   
-  static const bool is_row = \
-    (
-       ((T1::is_row || T2::is_row) && is_glue_mixed_elem<glue_type>::value)
-    || (T1::is_row && is_glue_mixed_times<glue_type>::value)
-    || (T1::is_row && is_same_type<glue_type, glue_hist_default>::yes)
-    || (T1::is_row && is_same_type<glue_type, glue_histc_default>::yes)
-    );
+  static const bool is_row  = glue_type::template traits<T1,T2>::is_row;
+  static const bool is_col  = glue_type::template traits<T1,T2>::is_col;
+  static const bool is_xvec = glue_type::template traits<T1,T2>::is_xvec;
   
-  static const bool is_col = \
-    ( 
-       ((T1::is_col || T2::is_col) && is_glue_mixed_elem<glue_type>::value)
-    || (T2::is_col && is_glue_mixed_times<glue_type>::value)
-    || (T1::is_col && is_same_type<glue_type, glue_hist_default>::yes)
-    || (T1::is_col && is_same_type<glue_type, glue_histc_default>::yes)
-    );
-  
-  static const bool is_xvec = ((T1::is_xvec || T2::is_xvec) && is_glue_mixed_elem<glue_type>::value);
+  // static const bool is_row = \
+  //   (
+  //      ((T1::is_row || T2::is_row) && is_glue_mixed_elem<glue_type>::value)
+  //   || (T1::is_row && is_glue_mixed_times<glue_type>::value)
+  //   || (T1::is_row && is_same_type<glue_type, glue_hist_default>::yes)
+  //   || (T1::is_row && is_same_type<glue_type, glue_histc_default>::yes)
+  //   );
+  // 
+  // static const bool is_col = \
+  //   ( 
+  //      ((T1::is_col || T2::is_col) && is_glue_mixed_elem<glue_type>::value)
+  //   || (T2::is_col && is_glue_mixed_times<glue_type>::value)
+  //   || (T1::is_col && is_same_type<glue_type, glue_hist_default>::yes)
+  //   || (T1::is_col && is_same_type<glue_type, glue_histc_default>::yes)
+  //   );
+  // 
+  // static const bool is_xvec = ((T1::is_xvec || T2::is_xvec) && is_glue_mixed_elem<glue_type>::value);
   
   arma_inline  mtGlue(const T1& in_A, const T2& in_B);
   arma_inline  mtGlue(const T1& in_A, const T2& in_B, const uword in_aux_uword);

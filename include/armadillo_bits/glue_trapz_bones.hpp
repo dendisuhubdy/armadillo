@@ -21,9 +21,16 @@
 
 
 class glue_trapz
-  : public glue_default_traits
   {
   public:
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = false;
+    static const bool is_xvec = true;
+    };
   
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_trapz>& in);
   
@@ -33,7 +40,7 @@ class glue_trapz
 
 
 class op_trapz
-  : public op_default_traits
+  : public op_default_xvec_traits
   {
   public:
   

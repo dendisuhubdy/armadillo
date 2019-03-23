@@ -1315,6 +1315,7 @@ template<>                   struct is_glue_mixed_times<glue_mixed_times> { stat
 
 
 
+// TODO: these may not be required anymore due to the glue traits rework
 template<typename glue_type> struct is_glue_mixed_elem { static const bool value = false; };
 
 template<>                   struct is_glue_mixed_elem<glue_mixed_plus>  { static const bool value = true;  };

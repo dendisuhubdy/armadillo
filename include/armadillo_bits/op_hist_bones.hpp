@@ -21,7 +21,7 @@
 
 
 class op_hist
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   

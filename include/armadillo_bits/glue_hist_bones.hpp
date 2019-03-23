@@ -22,7 +22,7 @@ class glue_hist
   : public glue_default_traits
   {
   public:
-
+  
   template<typename eT>
   inline static void apply_noalias(Mat<uword>& out, const Mat<eT>& X, const Mat<eT>& C, const uword dim);
 
@@ -36,7 +36,7 @@ class glue_hist_default
   : public glue_default_traits
   {
   public:
-
+  
   template<typename T1, typename T2>
   inline static void apply(Mat<uword>& out, const mtGlue<uword,T1,T2,glue_hist_default>& expr);
   };

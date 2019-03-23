@@ -21,9 +21,16 @@
 
 
 class glue_solve_gen
-  : public glue_default_traits
   {
   public:
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = T2::is_col;
+    static const bool is_xvec = false;
+    };
   
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve_gen>& X);
   
@@ -33,9 +40,16 @@ class glue_solve_gen
 
 
 class glue_solve_tri
-  : public glue_default_traits
   {
   public:
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = T2::is_col;
+    static const bool is_xvec = false;
+    };
   
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve_tri>& X);
   

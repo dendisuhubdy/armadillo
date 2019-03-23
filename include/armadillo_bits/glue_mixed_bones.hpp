@@ -20,9 +20,16 @@
 
 
 class glue_mixed_times
-  : public glue_default_traits
   {
   public:
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = T1::is_row;
+    static const bool is_col  = T2::is_col;
+    static const bool is_xvec = false;
+    };
   
   template<typename T1, typename T2>
   inline static void apply(Mat<typename eT_promoter<T1,T2>::eT>& out, const mtGlue<typename eT_promoter<T1,T2>::eT, T1, T2, glue_mixed_times>& X);
@@ -31,7 +38,7 @@ class glue_mixed_times
 
 
 class glue_mixed_plus
-  : public glue_default_traits
+  : public glue_fuse_or_traits
   {
   public:
   
@@ -45,7 +52,7 @@ class glue_mixed_plus
 
 
 class glue_mixed_minus
-  : public glue_default_traits
+  : public glue_fuse_or_traits
   {
   public:
   
@@ -59,7 +66,7 @@ class glue_mixed_minus
 
 
 class glue_mixed_div
-  : public glue_default_traits
+  : public glue_fuse_or_traits
   {
   public:
   
@@ -73,7 +80,7 @@ class glue_mixed_div
 
 
 class glue_mixed_schur
-  : public glue_default_traits
+  : public glue_fuse_or_traits
   {
   public:
   
