@@ -20,9 +20,16 @@
 
 
 class op_sort_index
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = true;
+    static const bool is_xvec = false;
+    };
   
   template<typename T1>
   static inline bool apply_noalias(Mat<uword>& out, const Proxy<T1>& P, const uword sort_type);
@@ -34,9 +41,16 @@ class op_sort_index
 
 
 class op_stable_sort_index
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = true;
+    static const bool is_xvec = false;
+    };
   
   template<typename T1>
   static inline bool apply_noalias(Mat<uword>& out, const Proxy<T1>& P, const uword sort_type);

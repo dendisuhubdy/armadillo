@@ -21,7 +21,7 @@
 
 
 class op_any
-  : public op_default_traits
+  : public op_default_xvec_traits
   {
   public:
   

@@ -20,9 +20,16 @@
 
 
 class op_roots
-  : public op_default_traits
   {
   public:
+  
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = true;
+    static const bool is_xvec = false;
+    };
   
   template<typename T1>
   inline static void apply(Mat< std::complex<typename T1::pod_type> >& out, const mtOp<std::complex<typename T1::pod_type>, T1, op_roots>& expr);
