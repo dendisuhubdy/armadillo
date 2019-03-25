@@ -20,7 +20,7 @@
 
 
 class op_real
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   
@@ -34,7 +34,7 @@ class op_real
 
 
 class op_imag
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   
@@ -48,7 +48,7 @@ class op_imag
 
 
 class op_abs
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   
@@ -62,7 +62,7 @@ class op_abs
 
 
 class op_arg
-  : public op_default_traits
+  : public op_passthru_traits
   {
   public:
   

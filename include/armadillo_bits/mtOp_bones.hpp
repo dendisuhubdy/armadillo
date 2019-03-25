@@ -31,57 +31,61 @@ class mtOp : public Base<out_eT, mtOp<out_eT, T1, op_type> >
   
   typedef typename T1::elem_type                in_eT;
   
-  static const bool is_row = \
-    (
-    // operations which result in a row vector if the input is a row vector
-    T1::is_row &&
-      (
-         is_op_mixed_elem<op_type>::value
-      || is_same_type<op_type, op_clamp>::value
-      || is_same_type<op_type, op_hist>::value
-      || is_same_type<op_type, op_real>::value
-      || is_same_type<op_type, op_imag>::value
-      || is_same_type<op_type, op_abs>::value
-      || is_same_type<op_type, op_arg>::value
-      )
-    );
+  static const bool is_row  = op_type::template traits<T1>::is_row;
+  static const bool is_col  = op_type::template traits<T1>::is_col;
+  static const bool is_xvec = op_type::template traits<T1>::is_xvec;
   
-  static const bool is_col = \
-    (
-    // operations which always result in a column vector
-       (is_same_type<op_type, op_find>::value)
-    || (is_same_type<op_type, op_find_simple>::value)
-    || (is_same_type<op_type, op_find_unique>::value)
-    || (is_same_type<op_type, op_sort_index>::value)
-    || (is_same_type<op_type, op_stable_sort_index>::value)
-    || (is_same_type<op_type, op_roots>::value)
-    )
-    ||
-    (
-    // operations which result in a column vector if the input is a column vector
-    T1::is_col &&
-      (
-         is_op_mixed_elem<op_type>::value
-      || is_same_type<op_type, op_clamp>::value
-      || is_same_type<op_type, op_hist>::value
-      || is_same_type<op_type, op_real>::value
-      || is_same_type<op_type, op_imag>::value
-      || is_same_type<op_type, op_abs>::value
-      || is_same_type<op_type, op_arg>::value
-      )
-    );
-  
-  static const bool is_xvec = \
-    (
-       (T1::is_xvec && is_op_mixed_elem<op_type>::value)
-    || (T1::is_xvec && is_same_type<op_type, op_clamp>::value)
-    || is_same_type<op_type, op_var>::value
-    || is_same_type<op_type, op_stddev>::value
-    || is_same_type<op_type, op_all>::value
-    || is_same_type<op_type, op_any>::value
-    || is_same_type<op_type, op_index_max>::value
-    || is_same_type<op_type, op_index_min>::value
-    );
+  // static const bool is_row = \
+  //   (
+  //   // operations which result in a row vector if the input is a row vector
+  //   T1::is_row &&
+  //     (
+  //        is_op_mixed_elem<op_type>::value
+  //     || is_same_type<op_type, op_clamp>::value
+  //     || is_same_type<op_type, op_hist>::value
+  //     || is_same_type<op_type, op_real>::value
+  //     || is_same_type<op_type, op_imag>::value
+  //     || is_same_type<op_type, op_abs>::value
+  //     || is_same_type<op_type, op_arg>::value
+  //     )
+  //   );
+  // 
+  // static const bool is_col = \
+  //   (
+  //   // operations which always result in a column vector
+  //      (is_same_type<op_type, op_find>::value)
+  //   || (is_same_type<op_type, op_find_simple>::value)
+  //   || (is_same_type<op_type, op_find_unique>::value)
+  //   || (is_same_type<op_type, op_sort_index>::value)
+  //   || (is_same_type<op_type, op_stable_sort_index>::value)
+  //   || (is_same_type<op_type, op_roots>::value)
+  //   )
+  //   ||
+  //   (
+  //   // operations which result in a column vector if the input is a column vector
+  //   T1::is_col &&
+  //     (
+  //        is_op_mixed_elem<op_type>::value
+  //     || is_same_type<op_type, op_clamp>::value
+  //     || is_same_type<op_type, op_hist>::value
+  //     || is_same_type<op_type, op_real>::value
+  //     || is_same_type<op_type, op_imag>::value
+  //     || is_same_type<op_type, op_abs>::value
+  //     || is_same_type<op_type, op_arg>::value
+  //     )
+  //   );
+  // 
+  // static const bool is_xvec = \
+  //   (
+  //      (T1::is_xvec && is_op_mixed_elem<op_type>::value)
+  //   || (T1::is_xvec && is_same_type<op_type, op_clamp>::value)
+  //   || is_same_type<op_type, op_var>::value
+  //   || is_same_type<op_type, op_stddev>::value
+  //   || is_same_type<op_type, op_all>::value
+  //   || is_same_type<op_type, op_any>::value
+  //   || is_same_type<op_type, op_index_max>::value
+  //   || is_same_type<op_type, op_index_min>::value
+  //   );
   
   inline explicit mtOp(const T1& in_m);
   inline          mtOp(const T1& in_m, const in_eT in_aux);
