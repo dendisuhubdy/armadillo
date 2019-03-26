@@ -73,4 +73,21 @@ any(const T1& X, const uword dim)
 
 
 
+//! for compatibility purposes: allows compiling user code designed for earlier versions of Armadillo
+template<typename T>
+arma_warn_unused
+arma_inline
+typename
+enable_if2
+  <
+  is_supported_elem_type<T>::value,
+  bool
+  >::result
+any(const T& val)
+  {
+  return (val != T(0));
+  }
+
+
+
 //! @}

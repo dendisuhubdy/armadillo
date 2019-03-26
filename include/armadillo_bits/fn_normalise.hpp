@@ -90,4 +90,25 @@ normalise
 
 
 
+//! for compatibility purposes: allows compiling user code designed for earlier versions of Armadillo
+template<typename T>
+arma_warn_unused
+arma_inline
+typename
+enable_if2
+  <
+  is_supported_blas_type<T>::value,
+  Col<T>
+  >::result
+normalise(const T& val)
+  {
+  Col<T> out(1);
+  
+  out[0] = (val != T(0)) ? T(val / (std::abs)(val)) : T(val);
+  
+  return out;
+  }
+
+
+
 //! @}
