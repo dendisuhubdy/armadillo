@@ -1334,6 +1334,7 @@ template<>                   struct is_glue_mixed_elem<glue_rel_or>    { static 
 
 
 
+// TODO: these may not be required anymore due to the glue traits rework
 template<typename op_type> struct is_op_mixed_elem { static const bool value = false; };
 
 template<>                 struct is_op_mixed_elem<op_cx_scalar_times>      { static const bool value = true; };
