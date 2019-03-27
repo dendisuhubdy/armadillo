@@ -20,6 +20,7 @@
 
 
 class spglue_kron
+  : public glue_default_traits
   {
   public:
   

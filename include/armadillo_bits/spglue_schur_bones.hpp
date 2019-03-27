@@ -20,6 +20,7 @@
 
 
 class spglue_schur
+  : public glue_fuse_or_traits
   {
   public:
   
@@ -36,6 +37,7 @@ class spglue_schur
 
 
 class spglue_schur_misc
+  : public glue_fuse_or_traits
   {
   public:
   
@@ -46,6 +48,7 @@ class spglue_schur_misc
 
 
 class spglue_schur_mixed
+  : public glue_fuse_or_traits
   {
   public:
   

@@ -21,6 +21,7 @@
 
 //! Class for finding variance values of a sparse matrix
 class spop_var
+  : public op_default_xvec_traits
   {
   public:
 

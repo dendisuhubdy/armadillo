@@ -19,6 +19,7 @@
 
 
 class spop_min
+  : public op_default_xvec_traits
   {
   public:
   

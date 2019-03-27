@@ -19,6 +19,7 @@
 
 
 class spop_normalise
+  : public op_passthru_traits
   {
   public:
   
