@@ -1357,6 +1357,7 @@ template<>                 struct is_op_mixed_elem<op_rel_noteq>     { static co
 
 
 
+// TODO: these may not be required anymore due to the glue traits rework
 template<typename spop_type> struct is_spop_elem                       { static const bool value = false; };
 template<>                   struct is_spop_elem<spop_scalar_times>    { static const bool value = true;  };
 template<>                   struct is_spop_elem<spop_cx_scalar_times> { static const bool value = true;  };
