@@ -370,7 +370,8 @@ struct state_type
 template<                 typename T1, typename spop_type> class   SpOp;
 template<typename out_eT, typename T1, typename spop_type> class mtSpOp;
 
-template<typename T1, typename T2, typename spglue_type> class SpGlue;
+template<                 typename T1, typename T2, typename spglue_type> class   SpGlue;
+template<typename out_eT, typename T1, typename T2, typename spglue_type> class mtSpGlue;
 
 
 template<typename T1> class SpProxy;

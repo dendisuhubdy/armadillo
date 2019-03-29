@@ -1613,7 +1613,7 @@ SpMat<eT>::SpMat(const SpOp<T1, spop_type>& X)
   , col_ptrs(NULL)
   {
   arma_extra_debug_sigprint_this(this);
-
+  
   arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   spop_type::apply(*this, X);
@@ -1631,7 +1631,7 @@ SpMat<eT>&
 SpMat<eT>::operator=(const SpOp<T1, spop_type>& X)
   {
   arma_extra_debug_sigprint();
-
+  
   arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   spop_type::apply(*this, X);
@@ -1753,13 +1753,128 @@ SpMat<eT>::SpMat(const SpGlue<T1, T2, spglue_type>& X)
   , col_ptrs(NULL)
   {
   arma_extra_debug_sigprint_this(this);
-
+  
   arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   spglue_type::apply(*this, X);
   
   sync_csc();          // in case apply() used element accessors
   invalidate_cache();  // in case apply() modified the CSC representation
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
+SpMat<eT>&
+SpMat<eT>::operator=(const SpGlue<T1, T2, spglue_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  spglue_type::apply(*this, X);
+  
+  sync_csc();          // in case apply() used element accessors
+  invalidate_cache();  // in case apply() modified the CSC representation
+  
+  return *this;
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
+SpMat<eT>&
+SpMat<eT>::operator+=(const SpGlue<T1, T2, spglue_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  sync_csc();
+  
+  const SpMat<eT> m(X);
+  
+  return (*this).operator+=(m);
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
+SpMat<eT>&
+SpMat<eT>::operator-=(const SpGlue<T1, T2, spglue_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  sync_csc();
+  
+  const SpMat<eT> m(X);
+  
+  return (*this).operator-=(m);
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
+SpMat<eT>&
+SpMat<eT>::operator*=(const SpGlue<T1, T2, spglue_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  sync_csc();
+  
+  const SpMat<eT> m(X);
+  
+  return (*this).operator*=(m);
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
+SpMat<eT>&
+SpMat<eT>::operator%=(const SpGlue<T1, T2, spglue_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  sync_csc();
+  
+  const SpMat<eT> m(X);
+  
+  return (*this).operator%=(m);
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
+SpMat<eT>&
+SpMat<eT>::operator/=(const SpGlue<T1, T2, spglue_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  sync_csc();
+  
+  const SpMat<eT> m(X);
+  
+  return (*this).operator/=(m);
   }
 
 
@@ -1778,7 +1893,7 @@ SpMat<eT>::SpMat(const mtSpOp<eT, T1, spop_type>& X)
   , col_ptrs(NULL)
   {
   arma_extra_debug_sigprint_this(this);
-
+  
   spop_type::apply(*this, X);
   
   sync_csc();          // in case apply() used element accessors
@@ -1794,7 +1909,7 @@ SpMat<eT>&
 SpMat<eT>::operator=(const mtSpOp<eT, T1, spop_type>& X)
   {
   arma_extra_debug_sigprint();
-
+  
   spop_type::apply(*this, X);
   
   sync_csc();          // in case apply() used element accessors
@@ -1893,12 +2008,33 @@ SpMat<eT>::operator/=(const mtSpOp<eT, T1, spop_type>& X)
 template<typename eT>
 template<typename T1, typename T2, typename spglue_type>
 inline
+SpMat<eT>::SpMat(const mtSpGlue<eT, T1, T2, spglue_type>& X)
+  : n_rows(0)
+  , n_cols(0)
+  , n_elem(0)
+  , n_nonzero(0)
+  , vec_state(0)
+  , values(NULL)
+  , row_indices(NULL)
+  , col_ptrs(NULL)
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  spglue_type::apply(*this, X);
+  
+  sync_csc();          // in case apply() used element accessors
+  invalidate_cache();  // in case apply() modified the CSC representation
+  }
+
+
+
+template<typename eT>
+template<typename T1, typename T2, typename spglue_type>
+inline
 SpMat<eT>&
-SpMat<eT>::operator=(const SpGlue<T1, T2, spglue_type>& X)
+SpMat<eT>::operator=(const mtSpGlue<eT, T1, T2, spglue_type>& X)
   {
   arma_extra_debug_sigprint();
-
-  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   spglue_type::apply(*this, X);
   
@@ -1914,11 +2050,9 @@ template<typename eT>
 template<typename T1, typename T2, typename spglue_type>
 inline
 SpMat<eT>&
-SpMat<eT>::operator+=(const SpGlue<T1, T2, spglue_type>& X)
+SpMat<eT>::operator+=(const mtSpGlue<eT, T1, T2, spglue_type>& X)
   {
   arma_extra_debug_sigprint();
-  
-  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   sync_csc();
   
@@ -1933,11 +2067,9 @@ template<typename eT>
 template<typename T1, typename T2, typename spglue_type>
 inline
 SpMat<eT>&
-SpMat<eT>::operator-=(const SpGlue<T1, T2, spglue_type>& X)
+SpMat<eT>::operator-=(const mtSpGlue<eT, T1, T2, spglue_type>& X)
   {
   arma_extra_debug_sigprint();
-  
-  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   sync_csc();
   
@@ -1952,11 +2084,9 @@ template<typename eT>
 template<typename T1, typename T2, typename spglue_type>
 inline
 SpMat<eT>&
-SpMat<eT>::operator*=(const SpGlue<T1, T2, spglue_type>& X)
+SpMat<eT>::operator*=(const mtSpGlue<eT, T1, T2, spglue_type>& X)
   {
   arma_extra_debug_sigprint();
-  
-  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   sync_csc();
   
@@ -1971,11 +2101,9 @@ template<typename eT>
 template<typename T1, typename T2, typename spglue_type>
 inline
 SpMat<eT>&
-SpMat<eT>::operator%=(const SpGlue<T1, T2, spglue_type>& X)
+SpMat<eT>::operator%=(const mtSpGlue<eT, T1, T2, spglue_type>& X)
   {
   arma_extra_debug_sigprint();
-  
-  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   sync_csc();
   
@@ -1990,11 +2118,9 @@ template<typename eT>
 template<typename T1, typename T2, typename spglue_type>
 inline
 SpMat<eT>&
-SpMat<eT>::operator/=(const SpGlue<T1, T2, spglue_type>& X)
+SpMat<eT>::operator/=(const mtSpGlue<eT, T1, T2, spglue_type>& X)
   {
   arma_extra_debug_sigprint();
-  
-  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
   
   sync_csc();
   

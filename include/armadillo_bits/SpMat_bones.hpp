@@ -188,6 +188,15 @@ class SpMat : public SpBase< eT, SpMat<eT> >
   template<typename T1, typename spop_type> inline SpMat& operator%=(const mtSpOp<eT, T1, spop_type>& X);
   template<typename T1, typename spop_type> inline SpMat& operator/=(const mtSpOp<eT, T1, spop_type>& X);
   
+  // delayed mixed-type binary ops
+  template<typename T1, typename T2, typename spglue_type> inline             SpMat(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  template<typename T1, typename T2, typename spglue_type> inline SpMat&  operator=(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  template<typename T1, typename T2, typename spglue_type> inline SpMat& operator+=(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  template<typename T1, typename T2, typename spglue_type> inline SpMat& operator-=(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  template<typename T1, typename T2, typename spglue_type> inline SpMat& operator*=(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  template<typename T1, typename T2, typename spglue_type> inline SpMat& operator%=(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  template<typename T1, typename T2, typename spglue_type> inline SpMat& operator/=(const mtSpGlue<eT, T1, T2, spglue_type>& X);
+  
   
   arma_inline       SpSubview<eT> row(const uword row_num);
   arma_inline const SpSubview<eT> row(const uword row_num) const;
