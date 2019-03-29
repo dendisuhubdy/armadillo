@@ -77,8 +77,8 @@ class spglue_times_mixed
     };
   
   template<typename T1, typename T2>
-  inline static void sparse_times_sparse(SpMat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >& out, const T1& X, const T2& Y);
-
+  inline static void apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSpGlue<typename eT_promoter<T1,T2>::eT, T1, T2, spglue_times_mixed>& expr);
+  
   template<typename T1, typename T2>
   inline static void sparse_times_dense(Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >& out, const T1& X, const T2& Y);
 
