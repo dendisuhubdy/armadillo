@@ -2460,10 +2460,12 @@ Not recommended for use unless your code has been thoroughly debugged.</td>
 <br>
 <a name="element_access_bounds_check_note"></a>
 <li>
-The bounds checks used by the <i>(n)</i>, <i>(i,j)</i> and <i>(i,j,k)</i> access forms
+The bounds checks used by the <i>(n)</i>, <i>(i,j)</i> and <i>(i,j,k)</i> element access forms
 can be disabled by defining the <a href="#config_hpp_arma_no_debug">ARMA_NO_DEBUG</a> macro
 before including the <i>armadillo</i> header file (eg. <i>#define ARMA_NO_DEBUG</i>).
-Disabling the bounds checks is not recommended until your code has been thoroughly debugged
+Alternatively, the <i>.at(n)</i>, <i>.at(i,j)</i> and <i>.at(i,j,k)</i> element access forms can be used,
+which do not have bounds checks.
+Either way, disabling the bounds checks is not recommended until your code has been thoroughly tested and debugged
 -- it's better to write correct code first, and then maximise its speed.
 </li>
 <br>
