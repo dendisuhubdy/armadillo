@@ -49,7 +49,7 @@ class SpOp : public SpBase<typename T1::elem_type, SpOp<T1, op_type> >
   
   arma_inline bool is_alias(const SpMat<elem_type>& X) const;
   
-  arma_aligned const T1&       m;            //!< storage of reference to the operand (eg. a matrix)
+  arma_aligned const T1&       m;            //!< storage of reference to the operand; must be derived from SpBase
   arma_aligned       elem_type aux;          //!< storage of auxiliary data, user defined format
   arma_aligned       uword     aux_uword_a;  //!< storage of auxiliary data, uword format
   arma_aligned       uword     aux_uword_b;  //!< storage of auxiliary data, uword format

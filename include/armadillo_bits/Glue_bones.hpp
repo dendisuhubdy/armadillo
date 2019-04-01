@@ -48,8 +48,8 @@ class Glue : public Base<typename T1::elem_type, Glue<T1, T2, glue_type> >
   arma_inline  Glue(const T1& in_A, const T2& in_B, const uword in_aux_uword);
   arma_inline ~Glue();
   
-  const T1&   A;          //!< first operand
-  const T2&   B;          //!< second operand
+  const T1&   A;          //!< first operand;  must be derived from Base
+  const T2&   B;          //!< second operand; must be derived from Base
         uword aux_uword;  //!< storage of auxiliary data, uword format
   };
 

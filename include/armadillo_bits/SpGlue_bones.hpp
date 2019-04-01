@@ -41,8 +41,8 @@ class SpGlue : public SpBase<typename T1::elem_type, SpGlue<T1, T2, spglue_type>
   
   arma_inline bool is_alias(const SpMat<elem_type>& X) const;
   
-  const T1&       A;    //!< first operand
-  const T2&       B;    //!< second operand
+  const T1&       A;    //!< first operand;  must be derived from SpBase
+  const T2&       B;    //!< second operand; must be derived from SpBase
         elem_type aux;
   };
 

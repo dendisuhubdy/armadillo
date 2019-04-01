@@ -44,7 +44,7 @@ class mtOpCube : public BaseCube<out_eT, mtOpCube<out_eT, T1, op_type> >
   inline         ~mtOpCube();
   
   
-  arma_aligned const T1&    m;            //!< storage of reference to the operand (eg. a matrix)
+  arma_aligned const T1&    m;            //!< storage of reference to the operand; must be derived from BaseCube
   arma_aligned       in_eT  aux;          //!< storage of auxiliary data, using the element type as used by T1
   arma_aligned       out_eT aux_out_eT;   //!< storage of auxiliary data, using the element type as specified by the out_eT template parameter
   arma_aligned       uword  aux_uword_a;  //!< storage of auxiliary data, uword format
