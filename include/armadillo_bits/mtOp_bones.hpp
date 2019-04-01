@@ -99,11 +99,11 @@ class mtOp : public Base<out_eT, mtOp<out_eT, T1, op_type> >
   inline         ~mtOp();
     
   
-  arma_aligned const T1&    m;            //!< storage of reference to the operand; must be derived from Base
-  arma_aligned       in_eT  aux;          //!< storage of auxiliary data, using the element type as used by T1
-  arma_aligned       out_eT aux_out_eT;   //!< storage of auxiliary data, using the element type as specified by the out_eT template parameter
-  arma_aligned       uword  aux_uword_a;  //!< storage of auxiliary data, uword format
-  arma_aligned       uword  aux_uword_b;  //!< storage of auxiliary data, uword format
+  arma_aligned const T1&    m;            //!< the operand; must be derived from Base
+  arma_aligned       in_eT  aux;          //!< auxiliary data, using the element type as used by T1
+  arma_aligned       out_eT aux_out_eT;   //!< auxiliary data, using the element type as specified by the out_eT template parameter
+  arma_aligned       uword  aux_uword_a;  //!< auxiliary data, uword format
+  arma_aligned       uword  aux_uword_b;  //!< auxiliary data, uword format
   
   };
 
