@@ -205,7 +205,7 @@ spglue_plus_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSp
     
     const SpMat<out_eT>& BB = reinterpret_cast< const SpMat<out_eT>& >(B);
     
-    spglue_plus::apply_noalias(out, AA, BB);
+    out = AA + BB;
     }
   else
   if( (is_same_type<eT1,out_eT>::yes) && (is_same_type<eT2,out_eT>::no) )
@@ -224,7 +224,7 @@ spglue_plus_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSp
     
     for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
     
-    spglue_plus::apply_noalias(out, AA, BB);
+    out = AA + BB;
     }
   else
     {
@@ -242,7 +242,7 @@ spglue_plus_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSp
     for(uword i=0; i < A.n_nonzero; ++i)  { access::rw(AA.values[i]) = out_eT(A.values[i]); }
     for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
     
-    spglue_plus::apply_noalias(out, AA, BB);
+    out = AA + BB;
     }
   }
 
