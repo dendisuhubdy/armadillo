@@ -1566,6 +1566,12 @@ auxlib::eig_sym(Col<eT>& eigval, const Base<eT,T1>& X)
       return true;
       }
     
+    if(auxlib::rudimentary_sym_check(A) == false)
+      {
+      eigval.reset();
+      return false;
+      }
+    
     arma_debug_assert_blas_size(A);
     
     eigval.set_size(A.n_rows);
@@ -1618,6 +1624,12 @@ auxlib::eig_sym(Col<T>& eigval, const Base<std::complex<T>,T1>& X)
       return true;
       }
     
+    if(auxlib::rudimentary_sym_check(A) == false)
+      {
+      eigval.reset();
+      return false;
+      }
+    
     arma_debug_assert_blas_size(A);
     
     eigval.set_size(A.n_rows);
@@ -1668,6 +1680,13 @@ auxlib::eig_sym(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
       eigval.reset();
       eigvec.reset();
       return true;
+      }
+    
+    if(auxlib::rudimentary_sym_check(eigvec) == false)
+      {
+      eigval.reset();
+      eigvec.reset();
+      return false;
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1724,6 +1743,13 @@ auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::
       return true;
       }
     
+    if(auxlib::rudimentary_sym_check(eigvec) == false)
+      {
+      eigval.reset();
+      eigvec.reset();
+      return false;
+      }
+    
     arma_debug_assert_blas_size(eigvec);
     
     eigval.set_size(eigvec.n_rows);
@@ -1775,6 +1801,13 @@ auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
       eigval.reset();
       eigvec.reset();
       return true;
+      }
+    
+    if(auxlib::rudimentary_sym_check(eigvec) == false)
+      {
+      eigval.reset();
+      eigvec.reset();
+      return false;
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1831,6 +1864,13 @@ auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<st
       eigval.reset();
       eigvec.reset();
       return true;
+      }
+    
+    if(auxlib::rudimentary_sym_check(eigvec) == false)
+      {
+      eigval.reset();
+      eigvec.reset();
+      return false;
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1917,6 +1957,11 @@ bool
 auxlib::chol(Mat<eT>& X, const uword layout)
   {
   arma_extra_debug_sigprint();
+  
+  if(auxlib::rudimentary_sym_check(X) == false)
+    {
+    return false;
+    }
   
   #if defined(ARMA_USE_ATLAS)
     {
@@ -5451,6 +5496,63 @@ auxlib::crippled_lapack(const Base<typename T1::elem_type, T1>&)
     return false;
     }
   #endif
+  }
+
+
+
+template<typename eT>
+inline
+bool
+auxlib::rudimentary_sym_check(const Mat<eT>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  const uword N   = X.n_rows;
+  const uword Nm1 = N-1;
+  
+  if(N != X.n_cols)  { return false; }
+  if(N <= uword(1))  { return true;  }
+  
+  const eT* X_mem = X.memptr();
+  
+  const eT A = X_mem[Nm1  ];  // bottom-left corner (ie. last value in first column)
+  const eT B = X_mem[Nm1*N];  // top-right   corner (ie. first value in last column)
+  
+  const eT delta = A - B;
+  
+  const eT threshold = eT(100)*std::numeric_limits<eT>::epsilon();  // allow some leeway
+  
+  return (delta <= threshold);
+  }
+
+
+
+template<typename T>
+inline
+bool
+auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename std::complex<T> eT;
+  
+  const uword N   = X.n_rows;
+  const uword Nm1 = N-1;
+  
+  if(N != X.n_cols)  { return false; }
+  if(N == uword(0))  { return true;  }
+  
+  const eT* X_mem = X.memptr();
+  
+  const eT& A = X_mem[Nm1  ];  // bottom-left corner (ie. last value in first column)
+  const eT& B = X_mem[Nm1*N];  // top-right   corner (ie. first value in last column)
+  
+  const T delta1 = A.real() - B.real();
+  const T delta2 = A.imag() + B.imag();  // take into account the conjugate
+  
+  const T threshold = T(100)*std::numeric_limits<T>::epsilon();  // allow some leeway
+  
+  return ( (delta1 <= threshold) && (delta2 <= threshold) );
   }
 
 
