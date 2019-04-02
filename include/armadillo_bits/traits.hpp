@@ -587,6 +587,7 @@ struct is_op_rel< mtOp<out_eT, T1, op_rel_noteq> >
 //
 
 
+// TODO: is_basevec may no longer be required for the xvec rework
 
 template<typename T>
 struct is_basevec
@@ -787,7 +788,16 @@ struct is_mtSpOp
 template<typename eT, typename T1, typename spop_type>
 struct is_mtSpOp< mtSpOp<eT, T1, spop_type> >
   { static const bool value = true; };
+
+
+template<typename T>
+struct is_mtSpGlue
+  { static const bool value = false; };
  
+template<typename eT, typename T1, typename T2, typename spglue_type>
+struct is_mtSpGlue< mtSpGlue<eT, T1, T2, spglue_type> >
+  { static const bool value = true; };
+
 
 
 template<typename T1>
@@ -800,6 +810,7 @@ struct is_arma_sparse_type
   || is_SpOp<T1>::value
   || is_SpGlue<T1>::value
   || is_mtSpOp<T1>::value
+  || is_mtSpGlue<T1>::value
   ;
   };
 
