@@ -42,8 +42,8 @@ class SpToDOp : public Base<typename T1::elem_type, SpToDOp<T1, op_type> >
   inline          SpToDOp(const T1& in_m, const elem_type in_aux);
   inline         ~SpToDOp();
 
-  arma_aligned const T1&       m;            //!< storage of reference to the operand (eg. a matrix)
-  arma_aligned       elem_type aux;          //!< storage of auxiliary data, user defined format
+  arma_aligned const T1&       m;            //!< the operand; must be derived from SpBase
+  arma_aligned       elem_type aux;          //!< auxiliary data, using the element type as used by T1
 
   static const bool is_row  = op_type::template traits<T1>::is_row;
   static const bool is_col  = op_type::template traits<T1>::is_col;
