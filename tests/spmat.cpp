@@ -51,9 +51,9 @@ TEST_CASE("insertion_test")
   arma_test(1, 2) = 1;
   arma_test(2, 2) = 4;
 
-  for (size_t i = 0; i < 3; i++)
+  for (uword i = 0; i < 3; i++)
     {
-    for (size_t j = 0; j < 4; j++)
+    for (uword j = 0; j < 4; j++)
       {
       REQUIRE( (int) arma_test(i, j) == correctResult[i][j] );
       }
@@ -93,9 +93,9 @@ TEST_CASE("full_sparse_sparse_matrix_multiplication_test")
   REQUIRE( spa.n_rows == 3 );
   REQUIRE( spa.n_cols == 2 );
 
-  for (size_t i = 0; i < 3; i++)
+  for (uword i = 0; i < 3; i++)
     {
-    for (size_t j = 0; j < 2; j++)
+    for (uword j = 0; j < 2; j++)
       {
       REQUIRE( (int) spa(i, j) == correctResult[i][j] );
       }
@@ -133,9 +133,9 @@ TEST_CASE("sparse_sparse_matrix_multiplication_test")
 
   spaa *= spaa;
 
-  for (size_t i = 0; i < 10; i++)
+  for (uword i = 0; i < 10; i++)
     {
-    for (size_t j = 0; j < 10; j++)
+    for (uword j = 0; j < 10; j++)
       {
       REQUIRE( (double) spaa(i, j) == Approx(correctResultB[i][j]) );
       }
@@ -167,9 +167,9 @@ TEST_CASE("hadamard_product_test")
 
   a %= b;
 
-  for (size_t i = 0; i < 4; i++)
+  for (uword i = 0; i < 4; i++)
     {
-    for (size_t j = 0; j < 4; j++)
+    for (uword j = 0; j < 4; j++)
       {
       REQUIRE( a(i, j) == correctResult[i][j] );
       }
@@ -219,7 +219,7 @@ TEST_CASE("insert_delete_test")
   sp.set_size(10, 10);
 
   // Ensure everything is empty.
-  for (size_t i = 0; i < 100; i++)
+  for (uword i = 0; i < 100; i++)
     {
     REQUIRE( sp(i) == 0.0 );
     }
@@ -261,9 +261,9 @@ TEST_CASE("value_operator_test")
   work = sp;
   work *= 2;
   REQUIRE( work.n_nonzero == 7 );
-  for (size_t i = 0; i < 3; i++)
+  for (uword i = 0; i < 3; i++)
     {
-    for (size_t j = 0; j < 4; j++)
+    for (uword j = 0; j < 4; j++)
       {
       REQUIRE((double) work(i, j) == Approx(correctResult[i][j] * 2.0) );
       }
@@ -273,9 +273,9 @@ TEST_CASE("value_operator_test")
   work = sp;
   work /= 5.5;
   REQUIRE( work.n_nonzero == 7 );
-  for (size_t i = 0; i < 3; i++)
+  for (uword i = 0; i < 3; i++)
     {
-    for (size_t j = 0; j < 4; j++)
+    for (uword j = 0; j < 4; j++)
       {
       REQUIRE((double) work(i, j) == Approx(correctResult[i][j] / 5.5) );
       }
@@ -1242,7 +1242,7 @@ TEST_CASE("spmat_diskio_tests")
       }
     }
 
-  for (size_t i = 0; i < 7; ++i)
+  for (uword i = 0; i < 7; ++i)
     {
     remove(file_names[i].c_str());
     }
@@ -2617,7 +2617,7 @@ TEST_CASE("spmat_const_row_col_iterator_test")
   // Make sure default constructor works okay.
   mat::const_row_col_iterator it;
   // Make sure ++ operator, operator* and comparison operators work fine.
-  size_t count = 0;
+  uword count = 0;
   for (it = X.begin_row_col(); it != X.end_row_col(); ++it)
     {
     // Check iterator value.
@@ -2653,12 +2653,12 @@ TEST_CASE("spmat_row_col_iterator_test")
   {
   mat X;
   X.zeros(5, 5);
-  for (size_t i = 0; i < 5; ++i)
+  for (uword i = 0; i < 5; ++i)
     {
     X.col(i) += i;
     }
 
-  for (size_t i = 0; i < 5; ++i)
+  for (uword i = 0; i < 5; ++i)
     {
     X.row(i) += 3 * i;
     }
@@ -2666,7 +2666,7 @@ TEST_CASE("spmat_row_col_iterator_test")
   // Make sure default constructor works okay.
   mat::row_col_iterator it;
   // Make sure ++ operator, operator* and comparison operators work fine.
-  size_t count = 0;
+  uword count = 0;
   for (it = X.begin_row_col(); it != X.end_row_col(); ++it)
     {
     // Check iterator value.
@@ -2701,12 +2701,12 @@ TEST_CASE("spmat_row_col_iterator_test")
 TEST_CASE("spmat_const_sprow_col_iterator_test")
   {
   sp_mat X(5, 5);
-  for (size_t i = 0; i < 5; ++i)
+  for (uword i = 0; i < 5; ++i)
     {
     X.col(i) += i;
     }
 
-  for (size_t i = 0; i < 5; ++i)
+  for (uword i = 0; i < 5; ++i)
     {
     X.row(i) += 3 * i;
     }
@@ -2714,7 +2714,7 @@ TEST_CASE("spmat_const_sprow_col_iterator_test")
   // Make sure default constructor works okay.
   sp_mat::const_row_col_iterator it;
   // Make sure ++ operator, operator* and comparison operators work fine.
-  size_t count = 1;
+  uword count = 1;
   for (it = X.begin_row_col(); it != X.end_row_col(); ++it)
     {
     // Check iterator value.
@@ -2749,12 +2749,12 @@ TEST_CASE("spmat_const_sprow_col_iterator_test")
 TEST_CASE("spmat_sprow_col_iterator_test")
   {
   sp_mat X(5, 5);
-  for (size_t i = 0; i < 5; ++i)
+  for (uword i = 0; i < 5; ++i)
     {
     X.col(i) += i;
     }
 
-  for (size_t i = 0; i < 5; ++i)
+  for (uword i = 0; i < 5; ++i)
     {
     X.row(i) += 3 * i;
     }
@@ -2762,7 +2762,7 @@ TEST_CASE("spmat_sprow_col_iterator_test")
   // Make sure default constructor works okay.
   sp_mat::row_col_iterator it;
   // Make sure ++ operator, operator* and comparison operators work fine.
-  size_t count = 1;
+  uword count = 1;
   for (it = X.begin_row_col(); it != X.end_row_col(); ++it)
     {
     // Check iterator value.
@@ -2823,4 +2823,183 @@ TEST_CASE("spmat_row_iterator_constructor")
   REQUIRE( cri.row() == 2 );
   REQUIRE( cri.col() == 1 );
   REQUIRE( (*cri) == Approx(7.5) );
+  }
+
+
+// Check that sparse + scalar works.
+TEST_CASE("spmat_scalar_add")
+  {
+  sp_mat m;
+  m.sprandu(100, 100, 0.1);
+
+  mat y = m + 3.0;
+  mat z = 3.0 + m;
+
+  for (uword i = 0; i < m.n_cols; ++i)
+    {
+    for (uword j = 0; j < m.n_rows; ++j)
+      {
+      REQUIRE(m(j, i) == Approx(z(j, i) - 3));
+      REQUIRE(m(j, i) == Approx(y(j, i) - 3));
+      }
+    }
+  }
+
+
+// Check that sparse - scalar works.
+TEST_CASE("spmat_scalar_minus")
+  {
+  sp_mat m;
+  m.sprandu(100, 100, 0.1);
+
+  mat y = m - 3.0;
+  mat z = 3.0 - m;
+
+  for (uword i = 0; i < m.n_cols; ++i)
+    {
+    for (uword j = 0; j < m.n_rows; ++j)
+      {
+      REQUIRE(m(j, i) == Approx(3 - z(j, i)));
+      REQUIRE(m(j, i) == Approx(y(j, i) + 3));
+      }
+    }
+  }
+
+
+// Check that sparse / (sparse + eps) works.  (and also for (sparse - eps) and (eps - sparse).
+TEST_CASE("spmat_div_test")
+  {
+  sp_mat m;
+  m.sprandu(100, 100, 0.1);
+
+  sp_mat m2;
+  m2.sprandu(100, 100, 0.5); // higher probability of collision
+
+  sp_mat out = m / (m2 + 1.0);
+  sp_mat out2 = m / (m2 - 2.0);
+  sp_mat out3 = m / (2.0 - m2);
+
+  REQUIRE(out.n_rows == m.n_rows);
+  REQUIRE(out.n_cols == m.n_cols);
+  REQUIRE(out.n_nonzero == m.n_nonzero);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_rows; ++r)
+      {
+      if (m(r, c) != 0.0)
+        {
+        REQUIRE((m(r, c) / (m2(r, c) + 1.0)) == Approx(out(r, c)));
+        REQUIRE((m(r, c) / (m2(r, c) - 2.0)) == Approx(out2(r, c)));
+        REQUIRE((m(r, c) / (2.0 - m2(r, c))) == Approx(out3(r, c)));
+        }
+      else
+        {
+        REQUIRE(out(r, c) == 0.0);
+        REQUIRE(out2(r, c) == 0.0);
+        REQUIRE(out3(r, c) == 0.0);
+        }
+      }
+    }
+  }
+
+
+
+// Check that sparse % (sparse + eps) works.  (and also for (sparse - eps) and (eps - sparse).
+TEST_CASE("spmat_schur_test")
+  {
+  sp_mat m;
+  m.sprandu(100, 100, 0.1);
+
+  sp_mat m2;
+  m2.sprandu(100, 100, 0.5); // higher probability of collision
+
+  sp_mat out = m % (m2 + 1.0);
+  sp_mat out2 = m % (m2 - 2.0);
+  sp_mat out3 = m % (2.0 - m2);
+
+  REQUIRE(out.n_rows == m.n_rows);
+  REQUIRE(out.n_cols == m.n_cols);
+  REQUIRE(out.n_nonzero == m.n_nonzero);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_rows; ++r)
+      {
+      if (m(r, c) != 0.0)
+        {
+        REQUIRE((m(r, c) * (m2(r, c) + 1.0)) == Approx(out(r, c)));
+        REQUIRE((m(r, c) * (m2(r, c) - 2.0)) == Approx(out2(r, c)));
+        REQUIRE((m(r, c) * (2.0 - m2(r, c))) == Approx(out3(r, c)));
+        }
+      else
+        {
+        REQUIRE(out(r, c) == 0.0);
+        REQUIRE(out2(r, c) == 0.0);
+        REQUIRE(out3(r, c) == 0.0);
+        }
+      }
+    }
+  }
+
+
+
+// Make sure this compiles and works.
+TEST_CASE("spmat_repeated_add_subtract")
+  {
+  sp_mat m;
+  m.sprandu(100, 100, 0.1);
+
+  // p: plus, m: minus, n: pre-minus
+  mat out_pp = m + 3 + 3;
+  mat out_pm = m + 3 - 3;
+  mat out_pn = 3 - (m + 3);
+  mat out_mp = m - 3 + 3;
+  mat out_mm = m - 3 - 3;
+  mat out_mn = 3 - (m - 3);
+  mat out_np = (3 - m) + 3;
+  mat out_nm = (3 - m) - 3;
+  mat out_nn = 3 - (3 - m);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_rows; ++r)
+      {
+      REQUIRE(out_pp(r, c) == Approx(m(r, c) + 6));
+      REQUIRE(out_pm(r, c) == Approx(m(r, c)));
+      REQUIRE(out_pn(r, c) == Approx(-m(r, c)));
+      REQUIRE(out_mp(r, c) == Approx(m(r, c)));
+      REQUIRE(out_mm(r, c) == Approx(m(r, c) - 6));
+      REQUIRE(out_mn(r, c) == Approx(6 - m(r, c)));
+      REQUIRE(out_np(r, c) == Approx(6 - m(r, c)));
+      REQUIRE(out_nm(r, c) == Approx(-m(r, c)));
+      REQUIRE(out_nn(r, c) == Approx(m(r, c)));
+      }
+    }
+  }
+
+
+
+// If we wrap an sp_mat() constructor around a (sparse + plus) it should force
+// evaluate into a sparse matrix.
+TEST_CASE("spmat_force_plus_minus_sparse")
+  {
+  // We can't test that our desired optimization is used but we can test that it
+  // compiles.
+  sp_mat m;
+  m.sprandu(100, 100, 0.1);
+
+  sp_mat out1(m + 1);
+  sp_mat out2(m - 1);
+  sp_mat out3(2 - m);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_rows; ++r)
+      {
+      REQUIRE(out1(r, c) == Approx(m(r, c) + 1));
+      REQUIRE(out2(r, c) == Approx(m(r, c) - 1));
+      REQUIRE(out3(r, c) == Approx(2 - m(r, c)));
+      }
+    }
   }

@@ -130,6 +130,9 @@ class op_prod;
 class op_range;
 class op_all;
 class op_any;
+class op_sp_plus;
+class op_sp_minus_pre;
+class op_sp_minus_post;
 
 
 class eop_conj;
@@ -274,9 +277,10 @@ template<const bool, const bool, const bool>             class gemv;
 
 template<                 typename eT, typename gen_type> class  Gen; 
 
-template<                 typename T1, typename  op_type> class   Op; 
-template<                 typename T1, typename eop_type> class  eOp;
-template<typename out_eT, typename T1, typename  op_type> class mtOp;
+template<                 typename T1, typename  op_type> class      Op; 
+template<                 typename T1, typename eop_type> class     eOp;
+template<                 typename T1, typename  op_type> class SpToDOp; 
+template<typename out_eT, typename T1, typename  op_type> class    mtOp;
 
 template<                 typename T1, typename T2, typename  glue_type> class   Glue;
 template<                 typename T1, typename T2, typename eglue_type> class  eGlue;

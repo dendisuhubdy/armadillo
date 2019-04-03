@@ -159,7 +159,7 @@ class Mat : public Base< eT, Mat<eT> >
   template<typename T1, typename T2> inline Mat& operator*=(const subview_elem2<eT,T1,T2>& X);
   template<typename T1, typename T2> inline Mat& operator%=(const subview_elem2<eT,T1,T2>& X);
   template<typename T1, typename T2> inline Mat& operator/=(const subview_elem2<eT,T1,T2>& X);
-  
+
   // Operators on sparse matrices (and subviews)
   template<typename T1> inline explicit    Mat(const SpBase<eT, T1>& m);
   template<typename T1> inline Mat&  operator=(const SpBase<eT, T1>& m);
@@ -335,6 +335,14 @@ class Mat : public Base< eT, Mat<eT> >
   template<typename T1, typename op_type> inline Mat& operator*=(const mtOp<eT, T1, op_type>& X);
   template<typename T1, typename op_type> inline Mat& operator%=(const mtOp<eT, T1, op_type>& X);
   template<typename T1, typename op_type> inline Mat& operator/=(const mtOp<eT, T1, op_type>& X);
+
+  template<typename T1, typename op_type> inline             Mat(const SpToDOp<T1, op_type>& X);
+  template<typename T1, typename op_type> inline Mat&  operator=(const SpToDOp<T1, op_type>& X);
+  template<typename T1, typename op_type> inline Mat& operator+=(const SpToDOp<T1, op_type>& X);
+  template<typename T1, typename op_type> inline Mat& operator-=(const SpToDOp<T1, op_type>& X);
+  template<typename T1, typename op_type> inline Mat& operator*=(const SpToDOp<T1, op_type>& X);
+  template<typename T1, typename op_type> inline Mat& operator%=(const SpToDOp<T1, op_type>& X);
+  template<typename T1, typename op_type> inline Mat& operator/=(const SpToDOp<T1, op_type>& X);
   
   template<typename T1, typename T2, typename glue_type> inline             Mat(const Glue<T1, T2, glue_type>& X);
   template<typename T1, typename T2, typename glue_type> inline Mat&  operator=(const Glue<T1, T2, glue_type>& X);

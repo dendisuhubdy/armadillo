@@ -148,6 +148,64 @@ operator%
 
 
 
+//! optimization: sparse % (sparse +/- scalar) can be done without forming the dense result of the (sparse +/- scalar) term
+template<typename T1, typename T2, typename op_type>
+inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
+      (is_same_type<op_type, op_sp_plus>::value ||
+       is_same_type<op_type, op_sp_minus_pre>::value ||
+       is_same_type<op_type, op_sp_minus_post>::value)),
+  SpMat<typename T1::elem_type>
+  >::result
+operator%
+  (
+  const T1& x,
+  const SpToDOp<T2, op_type>& y
+  )
+  {
+  arma_extra_debug_sigprint();
+
+  SpMat<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result> out;
+
+  op_type::apply_inside_schur(out, x, y);
+
+  return out;
+  }
+
+
+
+//! optimization: sparse % (sparse +/- scalar) can be done without forming the dense result of the (sparse +/- scalar) term
+template<typename T1, typename T2, typename op_type>
+inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
+      (is_same_type<op_type, op_sp_plus>::value ||
+       is_same_type<op_type, op_sp_minus_pre>::value ||
+       is_same_type<op_type, op_sp_minus_post>::value)),
+  SpMat<typename T1::elem_type>
+  >::result
+operator%
+  (
+  const SpToDOp<T2, op_type>& y,
+  const T1& x
+  )
+  {
+  arma_extra_debug_sigprint();
+
+  SpMat<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result> out;
+
+  op_type::apply_inside_schur(out, x, y);
+
+  return out;
+  }
+
+
+
 //! element-wise multiplication of two sparse objects with different element types
 template<typename T1, typename T2>
 inline

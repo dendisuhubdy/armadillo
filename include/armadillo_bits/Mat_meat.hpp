@@ -4956,6 +4956,134 @@ Mat<eT>::operator/=(const mtOp<eT, T1, op_type>& X)
 
 
 
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>::Mat(const SpToDOp<T1, op_type>& X)
+  : n_rows(0)
+  , n_cols(0)
+  , n_elem(0)
+  , vec_state(0)
+  , mem_state(0)
+  , mem()
+  {
+  arma_extra_debug_sigprint_this(this);
+
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+
+  op_type::apply(*this, X);
+  }
+
+
+
+//! create a matrix from an SpToDOp, i.e. run the previously delayed unary operations
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>&
+Mat<eT>::operator=(const SpToDOp<T1, op_type>& X)
+  {
+  arma_extra_debug_sigprint();
+
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  op_type::apply(*this, X);
+  
+  return *this;
+  }
+
+
+
+//! in-place matrix addition, with the right-hand-side operand having delayed operations
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>&
+Mat<eT>::operator+=(const SpToDOp<T1, op_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  const Mat<eT> m(X);
+  
+  return (*this).operator+=(m);
+  }
+
+
+
+//! in-place matrix subtraction, with the right-hand-side operand having delayed operations
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>&
+Mat<eT>::operator-=(const SpToDOp<T1, op_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  const Mat<eT> m(X);
+  
+  return (*this).operator-=(m);
+  }
+
+
+
+//! in-place matrix multiplication, with the right-hand-side operand having delayed operations
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>&
+Mat<eT>::operator*=(const SpToDOp<T1, op_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  glue_times::apply_inplace(*this, X);
+  
+  return *this;
+  }
+
+
+
+//! in-place matrix element-wise multiplication, with the right-hand-side operand having delayed operations
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>&
+Mat<eT>::operator%=(const SpToDOp<T1, op_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  const Mat<eT> m(X);
+  
+  return (*this).operator%=(m);
+  }
+
+
+
+//! in-place matrix element-wise division, with the right-hand-side operand having delayed operations
+template<typename eT>
+template<typename T1, typename op_type>
+inline
+Mat<eT>&
+Mat<eT>::operator/=(const SpToDOp<T1, op_type>& X)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_type_check(( is_same_type< eT, typename T1::elem_type >::no ));
+  
+  const Mat<eT> m(X);
+  
+  return (*this).operator/=(m);
+  }
+
+
+
 //! create a matrix from Glue, i.e. run the previously delayed binary operations
 template<typename eT>
 template<typename T1, typename T2, typename glue_type>
