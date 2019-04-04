@@ -32,10 +32,13 @@ op_sp_plus::apply(Mat<typename T1::elem_type>& out, const SpToDOp<T1,op_sp_plus>
 
   out.set_size(proxy.get_n_rows(), proxy.get_n_cols());
   out.fill(in.aux);
-
-  for (typename SpProxy<T1>::const_iterator_type it = in.m.begin(); it != in.m.end(); ++it)
+  
+  typename SpProxy<T1>::const_iterator_type it     = proxy.begin();
+  typename SpProxy<T1>::const_iterator_type it_end = proxy.end();
+  
+  for(; it != it_end; ++it)
     {
-    out(it.row(), it.col()) += (*it);
+    out.at(it.row(), it.col()) += (*it);
     }
   }
 
@@ -53,16 +56,19 @@ op_sp_plus::apply(SpMat<typename T1::elem_type>& out, const SpToDOp<T1,op_sp_plu
 
   // Note that T1 will be a sparse type, so we use SpProxy.
   SpProxy<T1> proxy(in.m);
-
-  out.set_size(proxy.get_n_rows(), proxy.get_n_cols());
-
+  
+  const uword n_rows = proxy.get_n_rows();
+  const uword n_cols = proxy.get_n_cols();
+  
+  out.set_size(n_rows, n_cols);
+  
+  const eT k = in.aux;
+  
   // We have to loop over all the elements.
-  for (uword c = 0; c < proxy.get_n_cols(); ++c)
+  for(uword c = 0; c < n_cols; ++c)
+  for(uword r = 0; r < n_rows; ++r)
     {
-    for (uword r = 0; r < proxy.get_n_rows(); ++r)
-      {
-      out(r, c) = proxy.at(r, c) + in.aux;
-      }
+    out.at(r, c) = proxy.at(r, c) + k;
     }
   }
 
@@ -79,13 +85,21 @@ op_sp_plus::apply_inside_schur(SpMat<eT>& out, const T2& x, const SpToDOp<T3, op
   SpProxy<T2> proxy2(x);
   SpProxy<T3> proxy3(y.m);
 
-  arma_debug_assert_same_size(proxy2.get_n_rows(), proxy2.get_n_cols(), proxy3.get_n_rows(), proxy3.get_n_cols(), "elementwise multiplication");
+  arma_debug_assert_same_size(proxy2.get_n_rows(), proxy2.get_n_cols(), proxy3.get_n_rows(), proxy3.get_n_cols(), "element-wise multiplication");
 
-  out.zeros(x.n_rows, x.n_cols);
-
-  for (typename SpProxy<T2>::const_iterator_type it = proxy2.begin(); it != proxy2.end(); ++it)
+  out.zeros(proxy2.get_n_rows(), proxy2.get_n_cols());
+  
+  typename SpProxy<T2>::const_iterator_type it     = proxy2.begin();
+  typename SpProxy<T2>::const_iterator_type it_end = proxy2.end();
+  
+  const eT k = y.aux;
+  
+  for(; it != it_end; ++it)
     {
-    out(it.row(), it.col()) = (*it) * (proxy3.at(it.row(), it.col()) + y.aux);
+    const uword it_row = it.row();
+    const uword it_col = it.col();
+    
+    out.at(it_row, it_col) = (*it) * (proxy3.at(it_row, it_col) + k);
     }
   }
 
@@ -102,13 +116,21 @@ op_sp_plus::apply_inside_div(SpMat<eT>& out, const T2& x, const SpToDOp<T3, op_s
   SpProxy<T2> proxy2(x);
   SpProxy<T3> proxy3(y.m);
 
-  arma_debug_assert_same_size(proxy2.get_n_rows(), proxy2.get_n_cols(), proxy3.get_n_rows(), proxy3.get_n_cols(), "elementwise division");
+  arma_debug_assert_same_size(proxy2.get_n_rows(), proxy2.get_n_cols(), proxy3.get_n_rows(), proxy3.get_n_cols(), "element-wise division");
 
   out.zeros(proxy2.get_n_rows(), proxy2.get_n_cols());
-
-  for (typename SpProxy<T2>::const_iterator_type it = proxy2.begin(); it != proxy2.end(); ++it)
+  
+  typename SpProxy<T2>::const_iterator_type it     = proxy2.begin();
+  typename SpProxy<T2>::const_iterator_type it_end = proxy2.end();
+  
+  const eT k = y.aux;
+  
+  for(; it != it_end; ++it)
     {
-    out(it.row(), it.col()) = (*it) / (proxy3.at(it.row(), it.col()) + y.aux);
+    const uword it_row = it.row();
+    const uword it_col = it.col();
+    
+    out.at(it_row, it_col) = (*it) / (proxy3.at(it_row, it_col) + k);
     }
   }
 
