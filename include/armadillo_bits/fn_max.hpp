@@ -179,6 +179,152 @@ max(const T1& X, const uword dim)
 
 
 
+// elementwise sparse max
+template<typename T1, typename T2>
+arma_warn_unused
+inline
+typename
+enable_if2
+  <
+  is_arma_sparse_type<T1>::value &&
+  is_arma_sparse_type<T2>::value &&
+  is_same_type<typename T1::elem_type, typename T2::elem_type>::value,
+  SpGlue<T1, T2, spglue_max>
+  >::result
+max(const T1& x, const T2& y)
+  {
+  arma_extra_debug_sigprint();
+
+  return SpGlue<T1, T2, spglue_max>(x, y);
+  }
+
+
+
+// elementwise sparse max with different types
+template<typename T1, typename T2>
+arma_warn_unused
+inline
+typename
+enable_if2
+  <
+  is_arma_sparse_type<T1>::value &&
+  is_arma_sparse_type<T2>::value &&
+  is_same_type<typename T1::elem_type, typename T2::elem_type>::no,
+  mtSpGlue<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result, T1, T2, spglue_max_mixed>
+  >::result
+max(const T1& x, const T2& y)
+  {
+  arma_extra_debug_sigprint();
+
+  return mtSpGlue<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result, T1, T2, spglue_max_mixed>(x, y);
+  }
+
+
+
+//! elementwise max of sparse and non-sparse objects with the same element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_type<T1>::value && is_arma_sparse_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::value),
+  Mat<typename T1::elem_type>
+  >::result
+max
+  (
+  const T1& x,
+  const T2& y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat< typename T1::elem_type > out;
+  
+  spglue_max_mixed::dense_sparse_max(out, x, y);
+  
+  return out;
+  }
+
+
+
+//! elementwise max of sparse and non-sparse objects with the same element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_arma_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::value),
+  Mat<typename T1::elem_type>
+  >::result
+max
+  (
+  const T1& x,
+  const T2& y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat< typename T1::elem_type > out;
+  
+  spglue_max_mixed::dense_sparse_max(out, y, x);
+  
+  return out;
+  }
+
+
+
+//! elementwise max of sparse and non-sparse objects with different element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_type<T1>::value && is_arma_sparse_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::no),
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >
+  >::result
+max
+  (
+  const T1& x,
+  const T2& y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result > out;
+  
+  spglue_max_mixed::dense_sparse_max(out, x, y);
+  
+  return out;
+  }
+
+
+
+//! elementwise max of sparse and non-sparse objects with different element types
+template<typename T1, typename T2>
+inline
+typename
+enable_if2
+  <
+  (is_arma_sparse_type<T1>::value && is_arma_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::no),
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result >
+  >::result
+max
+  (
+  const T1& x,
+  const T2& y
+  )
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type>::result > out;
+  
+  spglue_max_mixed::dense_sparse_max(out, y, x);
+  
+  return out;
+  }
+
+
+
 arma_warn_unused
 inline
 uword
