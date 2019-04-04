@@ -154,10 +154,13 @@ inline
 typename
 enable_if2
   <
-  (is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
+  (
+  is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
+  is_same_type<typename T1::elem_type, typename T2::elem_type>::yes &&
       (is_same_type<op_type, op_sp_plus>::value ||
        is_same_type<op_type, op_sp_minus_pre>::value ||
-       is_same_type<op_type, op_sp_minus_post>::value)),
+       is_same_type<op_type, op_sp_minus_post>::value)
+  ),
   SpMat<typename T1::elem_type>
   >::result
 operator%
@@ -167,40 +170,45 @@ operator%
   )
   {
   arma_extra_debug_sigprint();
-
-  SpMat<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result> out;
-
+  
+  SpMat<typename T1::elem_type> out;
+  
   op_type::apply_inside_schur(out, x, y);
-
+  
   return out;
   }
 
 
 
-//! optimization: sparse % (sparse +/- scalar) can be done without forming the dense result of the (sparse +/- scalar) term
+//! optimization: (sparse +/- scalar) % sparse can be done without forming the dense result of the (sparse +/- scalar) term
 template<typename T1, typename T2, typename op_type>
 inline
 typename
 enable_if2
   <
-  (is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
+  (
+  is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
+  is_same_type<typename T1::elem_type, typename T2::elem_type>::yes &&
       (is_same_type<op_type, op_sp_plus>::value ||
        is_same_type<op_type, op_sp_minus_pre>::value ||
-       is_same_type<op_type, op_sp_minus_post>::value)),
+       is_same_type<op_type, op_sp_minus_post>::value)
+  ),
   SpMat<typename T1::elem_type>
   >::result
 operator%
   (
-  const SpToDOp<T2, op_type>& y,
-  const T1& x
+  const SpToDOp<T1, op_type>& x,
+  const T2& y
   )
   {
   arma_extra_debug_sigprint();
-
-  SpMat<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result> out;
-
-  op_type::apply_inside_schur(out, x, y);
-
+  
+  SpMat<typename T1::elem_type> out;
+  
+  // Just call the other order (these operations are commutative)
+  // TODO: if there is a matrix size mismatch, the debug assert will print the matrix sizes in wrong order
+  op_type::apply_inside_schur(out, y, x);
+  
   return out;
   }
 
