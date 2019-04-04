@@ -203,7 +203,7 @@ spglue_max_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSpG
     
     const SpMat<out_eT>& BB = reinterpret_cast< const SpMat<out_eT>& >(B);
     
-    out = max(AA, BB);
+    out = arma::max(AA, BB);
     }
   else
   if( (is_same_type<eT1,out_eT>::yes) && (is_same_type<eT2,out_eT>::no) )
@@ -222,7 +222,7 @@ spglue_max_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSpG
     
     for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
     
-    out = max(AA, BB);
+    out = arma::max(AA, BB);
     }
   else
     {
@@ -240,7 +240,7 @@ spglue_max_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSpG
     for(uword i=0; i < A.n_nonzero; ++i)  { access::rw(AA.values[i]) = out_eT(A.values[i]); }
     for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
     
-    out = max(AA, BB);
+    out = arma::max(AA, BB);
     }
   }
 
