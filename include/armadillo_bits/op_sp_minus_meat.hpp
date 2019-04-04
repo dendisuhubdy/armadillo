@@ -116,7 +116,7 @@ op_sp_minus_pre::apply_inside_div(SpMat<eT>& out, const T2& x, const SpToDOp<T3,
   SpProxy<T2> proxy2(x);
   SpProxy<T3> proxy3(y.m);
 
-  arma_debug_assert_same_size(proxy2.get_n_rows(), proxy2.get_n_cols(), proxy3.get_n_rows(), proxy3.get_n_cols(), "elementwise multiplication");
+  arma_debug_assert_same_size(proxy2.get_n_rows(), proxy2.get_n_cols(), proxy3.get_n_rows(), proxy3.get_n_cols(), "element-wise multiplication");
 
   out.zeros(proxy2.get_n_rows(), proxy2.get_n_cols());
   

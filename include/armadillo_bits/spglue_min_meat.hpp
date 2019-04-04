@@ -56,7 +56,7 @@ spglue_min::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy<T
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "elementwise min");
+  arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "element-wise min");
   
   if(pa.get_n_nonzero() == 0)  { out = pb.Q; return; }
   if(pb.get_n_nonzero() == 0)  { out = pa.Q; return; }
@@ -275,7 +275,7 @@ spglue_min_mixed::dense_sparse_min(Mat< typename promote_type<typename T1::elem_
   
   const SpProxy<T2> pb(Y);
   
-  arma_debug_assert_same_size( out.n_rows, out.n_cols, pb.get_n_rows(), pb.get_n_cols(), "elementwise min" );
+  arma_debug_assert_same_size( out.n_rows, out.n_cols, pb.get_n_rows(), pb.get_n_cols(), "element-wise min" );
   
   typename SpProxy<T2>::const_iterator_type it     = pb.begin();
   typename SpProxy<T2>::const_iterator_type it_end = pb.end();
