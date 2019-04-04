@@ -3003,3 +3003,181 @@ TEST_CASE("spmat_force_plus_minus_sparse")
       }
     }
   }
+
+
+
+// Test elementwise max().
+TEST_CASE("spmat_elementwise_max")
+  {
+  sp_mat m, n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_mat out = max(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise max() with two different types.
+TEST_CASE("spmat_elementwise_max_different_types")
+  {
+  sp_mat m;
+  sp_fmat n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_mat out = max(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise max() with a dense object.
+TEST_CASE("spmat_mat_elementwise_max")
+  {
+  sp_mat m;
+  mat n;
+  m.sprandu(100, 100, 0.1);
+  n.randu(100, 100);
+  n -= 0.5;
+
+  mat out1 = max(m, n);
+  mat out2 = max(n, m);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out1(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
+      REQUIRE(out2(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise max() with a dense object of a different type.
+TEST_CASE("spmat_mat_elementwise_max_different_types")
+  {
+  sp_mat m;
+  fmat n;
+  m.sprandu(100, 100, 0.1);
+  n.randu(100, 100);
+  n -= 0.5;
+
+  mat out1 = max(m, n);
+  mat out2 = max(n, m);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out1(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
+      REQUIRE(out2(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise min().
+TEST_CASE("spmat_elementwise_min")
+  {
+  sp_mat m, n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_mat out = min(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise min() with two different types.
+TEST_CASE("spmat_elementwise_min_different_types")
+  {
+  sp_mat m;
+  sp_fmat n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_mat out = min(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise min() with a dense object.
+TEST_CASE("spmat_mat_elementwise_min")
+  {
+  sp_mat m;
+  mat n;
+  m.sprandu(100, 100, 0.1);
+  n.randu(100, 100);
+  n -= 0.5;
+
+  mat out1 = min(m, n);
+  mat out2 = min(n, m);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out1(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      REQUIRE(out2(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise max() with a dense object of a different type.
+TEST_CASE("spmat_mat_elementwise_min_different_types")
+  {
+  sp_mat m;
+  fmat n;
+  m.sprandu(100, 100, 0.1);
+  n.randu(100, 100);
+  n -= 0.5;
+
+  mat out1 = min(m, n);
+  mat out2 = min(n, m);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      REQUIRE(out1(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      REQUIRE(out2(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
