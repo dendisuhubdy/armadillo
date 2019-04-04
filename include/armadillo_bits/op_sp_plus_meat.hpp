@@ -24,12 +24,10 @@ void
 op_sp_plus::apply(Mat<typename T1::elem_type>& out, const SpToDOp<T1,op_sp_plus>& in)
   {
   arma_extra_debug_sigprint();
-
-  typedef typename T1::elem_type eT;
-
+  
   // Note that T1 will be a sparse type, so we use SpProxy.
   SpProxy<T1> proxy(in.m);
-
+  
   out.set_size(proxy.get_n_rows(), proxy.get_n_cols());
   out.fill(in.aux);
   
