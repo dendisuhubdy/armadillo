@@ -273,41 +273,6 @@ operator/
 
 
 
-// TODO: this operation doesn't make sense, as val / 0 = inf
-// TODO: this operation isn't commutative like element-wise multiplication
-// 
-// //! optimization: element-wise division of (sparse +/- scalar) / sparse
-// template<typename T1, typename T2, typename op_type>
-// inline
-// typename
-// enable_if2
-//   <
-//   (
-//   is_arma_sparse_type<T1>::value && is_arma_sparse_type<T2>::value &&
-//   is_same_type<typename T1::elem_type, typename T2::elem_type>::yes &&
-//       (is_same_type<op_type, op_sp_plus>::value ||
-//        is_same_type<op_type, op_sp_minus_pre>::value ||
-//        is_same_type<op_type, op_sp_minus_post>::value)
-//   ),
-//   SpMat<typename T1::elem_type>
-//   >::result
-// operator/
-//   (
-//   const SpToDOp<T2, op_type>& x,
-//   const T1& y
-//   )
-//   {
-//   arma_extra_debug_sigprint();
-//   
-//   SpMat<typename T1::elem_type> out;
-//   
-//   op_type::apply_inside_div(out, y, x);  // BUG: operation is not commutative
-//   
-//   return out;
-//   }
-
-
-
 //! element-wise division of one dense and one sparse object
 template<typename T1, typename T2>
 inline
