@@ -328,13 +328,13 @@ inline
 typename enable_if2< is_arma_sparse_type<T1>::value, const SpToDOp<T1, op_sp_plus> >::result
 operator+
   (
-  const T1& t1,
-  const typename T1::elem_type t2
+  const T1&                    X,
+  const typename T1::elem_type k
   )
   {
   arma_extra_debug_sigprint();
-
-  return SpToDOp<T1, op_sp_plus>(t1, t2);
+  
+  return SpToDOp<T1, op_sp_plus>(X, k);
   };
 
 
@@ -344,13 +344,13 @@ inline
 typename enable_if2< is_arma_sparse_type<T1>::value, const SpToDOp<T1, op_sp_plus> >::result
 operator+
   (
-  const typename T1::elem_type t2,
-  const T1& t1
+  const typename T1::elem_type k,
+  const T1&                    X
   )
   {
   arma_extra_debug_sigprint();
 
-  return SpToDOp<T1, op_sp_plus>(t1, t2);
+  return SpToDOp<T1, op_sp_plus>(X, k);  // NOTE: swapped order
   };
 
 
