@@ -90,7 +90,7 @@ spglue_min::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy<T
     
     if(x_it == y_it)
       {
-      out_val = (std::min)(eT(*x_it), eT(*y_it));
+      out_val = elem_min(eT(*x_it), eT(*y_it));
       
       ++x_it;
       ++y_it;
@@ -99,14 +99,14 @@ spglue_min::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy<T
       {
       if((x_it_col < y_it_col) || ((x_it_col == y_it_col) && (x_it_row < y_it_row))) // if y is closer to the end
         {
-        out_val = (std::min)(eT(*x_it), eT(0));
+        out_val = elem_min(eT(*x_it), eT(0));
         
         ++x_it;
         }
       else
         {
-        out_val = (std::min)(eT(*y_it), eT(0));
-        
+        out_val = elem_min(eT(*y_it), eT(0));
+
         ++y_it;
         
         use_y_loc = true;
@@ -165,6 +165,28 @@ spglue_min::apply_noalias(SpMat<eT>& out, const SpMat<eT>& A, const SpMat<eT>& B
   const SpProxy< SpMat<eT> > pb(B);
   
   spglue_min::apply_noalias(out, pa, pb);
+  }
+
+
+
+// Get min of non-complex elements.
+template<typename eT>
+inline
+typename enable_if2<is_cx<eT>::no, eT>::result
+spglue_min::elem_min(const eT& a, const eT& b)
+  {
+  return (std::min)(a, b);
+  }
+
+
+
+// Get min of complex elements.
+template<typename eT>
+inline
+typename enable_if2<is_cx<eT>::yes, eT>::result
+spglue_min::elem_min(const eT& a, const eT& b)
+  {
+  return ( std::abs(a) < std::abs(b) ) ? a : b;
   }
 
 
@@ -284,9 +306,33 @@ spglue_min_mixed::dense_sparse_min(Mat< typename promote_type<typename T1::elem_
     {
     for (size_t r = 0; r < pb.get_n_rows(); ++r)
       {
-      out.at(r, c) = (std::min)(out.at(r, c), (out_eT) pb.at(r, c));
+      out.at(r, c) = elem_min(out.at(r, c), (out_eT) pb.at(r, c));
       }
     }
+  }
+
+
+
+// Get min of non-complex elements.
+template<typename eT1, typename eT2>
+inline
+typename enable_if2<is_cx<eT1>::no && is_cx<eT2>::no, typename promote_type<eT1, eT2>::result>::result
+spglue_min_mixed::elem_min(const eT1& a, const eT2& b)
+  {
+  typedef typename promote_type<eT1, eT2>::result out_eT;
+  return std::min((out_eT) a, (out_eT) b);
+  }
+
+
+
+// Get min of complex elements.
+template<typename eT1, typename eT2>
+inline
+typename enable_if2<is_cx<eT1>::yes && is_cx<eT2>::yes, typename promote_type<eT1, eT2>::result>::result
+spglue_min_mixed::elem_min(const eT1& a, const eT2& b)
+  {
+  typedef typename promote_type<eT1, eT2>::result out_eT;
+  return ( std::abs((out_eT) a) < std::abs((out_eT) b) ) ? (out_eT) a : (out_eT) b;
   }
 
 

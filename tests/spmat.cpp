@@ -3095,6 +3095,53 @@ TEST_CASE("spmat_mat_elementwise_max_different_types")
 
 
 
+// Test elementwise complex max().
+TEST_CASE("spmat_elementwise_max_cx")
+  {
+  sp_cx_mat m, n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_cx_mat out = arma::max(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      if (std::abs(std::complex<double>(m(r, c))) > std::abs(std::complex<double>(n(r, c))))
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
+      else
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
+      }
+    }
+  }
+
+
+
+// Test elementwise max() with two different complex types.
+TEST_CASE("spmat_elementwise_max_cx_different_types")
+  {
+  sp_cx_mat m;
+  sp_cx_fmat n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_cx_mat out = arma::max(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      if (std::abs(std::complex<double>(m(r, c))) > std::abs(std::complex<double>(n(r, c))))
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
+      else
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
+      }
+    }
+  }
+
+
+
 // Test elementwise min().
 TEST_CASE("spmat_elementwise_min")
   {
@@ -3178,6 +3225,53 @@ TEST_CASE("spmat_mat_elementwise_min_different_types")
       {
       REQUIRE(out1(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
       REQUIRE(out2(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
+      }
+    }
+  }
+
+
+
+// Test elementwise complex min().
+TEST_CASE("spmat_elementwise_min_cx")
+  {
+  sp_cx_mat m, n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_cx_mat out = arma::min(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      if (std::abs(std::complex<double>(m(r, c))) < std::abs(std::complex<double>(n(r, c))))
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
+      else
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
+      }
+    }
+  }
+
+
+
+// Test elementwise min() with two different complex types.
+TEST_CASE("spmat_elementwise_min_cx_different_types")
+  {
+  sp_cx_mat m;
+  sp_cx_fmat n;
+  m.sprandu(100, 100, 0.1);
+  n.sprandu(100, 100, 0.1);
+
+  sp_cx_mat out = arma::min(m, n);
+
+  for (uword c = 0; c < m.n_cols; ++c)
+    {
+    for (uword r = 0; r < m.n_cols; ++r)
+      {
+      if (std::abs(std::complex<double>(m(r, c))) < std::abs(std::complex<double>(n(r, c))))
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
+      else
+        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
       }
     }
   }

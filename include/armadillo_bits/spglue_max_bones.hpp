@@ -32,6 +32,20 @@ class spglue_max
   
   template<typename eT>
   inline static void apply_noalias(SpMat<eT>& out, const SpMat<eT>& A, const SpMat<eT>& B);
+
+  // Get min of non-complex elements.
+  template<typename eT>
+  inline
+  static
+  typename enable_if2<is_cx<eT>::no, eT>::result
+  elem_max(const eT& a, const eT& b);
+
+  // Get min of complex elements.
+  template<typename eT>
+  inline
+  static
+  typename enable_if2<is_cx<eT>::yes, eT>::result
+  elem_max(const eT& a, const eT& b);
   };
 
 
@@ -46,6 +60,20 @@ class spglue_max_mixed
   
   template<typename T1, typename T2>
   inline static void dense_sparse_max(Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type >::result>& out, const T1& X, const T2& Y);
+
+  // Get min of non-complex elements.
+  template<typename eT1, typename eT2>
+  inline
+  static
+  typename enable_if2<is_cx<eT1>::no && is_cx<eT2>::no, typename promote_type<eT1, eT2>::result>::result
+  elem_max(const eT1& a, const eT2& b);
+
+  // Get min of complex elements.
+  template<typename eT1, typename eT2>
+  inline
+  static
+  typename enable_if2<is_cx<eT1>::yes && is_cx<eT2>::yes, typename promote_type<eT1, eT2>::result>::result
+  elem_max(const eT1& a, const eT2& b);
   };
 
 
