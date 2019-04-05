@@ -287,6 +287,8 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   
   if(out.is_empty())  { return true; }
   
+  if(auxlib::rudimentary_sym_check(out) == false)  { return false; }
+  
   if(out.n_rows <= 4)
     {
     Mat<eT> tmp;
