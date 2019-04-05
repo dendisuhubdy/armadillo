@@ -354,6 +354,8 @@ operator+
   };
 
 
+
+// TODO: this is an uncommon use case; remove?
 //! multiple applications of add/subtract scalars can be condensed
 template<typename T1, typename op_type>
 inline
@@ -380,6 +382,7 @@ operator+
 
 
 
+// TODO: this is an uncommon use case; remove?
 //! multiple applications of add/subtract scalars can be condensed
 template<typename T1, typename op_type>
 inline
@@ -403,6 +406,7 @@ operator+
 
 
 
+// TODO: this is an uncommon use case; remove?
 //! multiple applications of add/subtract scalars can be condensed
 template<typename T1, typename op_type>
 inline
@@ -429,6 +433,7 @@ operator+
 
 
 
+// TODO: this is an uncommon use case; remove?
 //! multiple applications of add/subtract scalars can be condensed
 template<typename T1, typename op_type>
 inline
