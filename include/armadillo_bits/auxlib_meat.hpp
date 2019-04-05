@@ -5522,7 +5522,7 @@ auxlib::rudimentary_sym_check(const Mat<eT>& X)
   
   const eT delta = std::abs(A - B);
   
-  const eT threshold = eT(100)*std::numeric_limits<eT>::epsilon();  // allow some leeway
+  const eT threshold = eT(1000)*std::numeric_limits<eT>::epsilon();  // allow some leeway
   
   return (delta <= threshold);
   }
@@ -5552,7 +5552,7 @@ auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
   const T delta1 = std::abs(A.real() - B.real());
   const T delta2 = std::abs(A.imag() + B.imag());  // take into account the conjugate
   
-  const T threshold = T(100)*std::numeric_limits<T>::epsilon();  // allow some leeway
+  const T threshold = T(1000)*std::numeric_limits<T>::epsilon();  // allow some leeway
   
   return ( (delta1 <= threshold) && (delta2 <= threshold) );
   }
