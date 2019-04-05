@@ -8557,8 +8557,10 @@ See also:
 <li><i>expmat_sym(B,A)</i> resets <i>B</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
 </ul>
 </li>
+<!--
 <br>
 <li><b>Caveat</b>: there is no explicit check whether <i>A</i> is symmetric/hermitian</li>
+-->
 <br>
 <li><b>Caveat</b>: the matrix exponential operation is generally <b>not</b> the same as applying the <a href="#misc_fns">exp()</a> function to each element</li>
 <br>
@@ -9436,8 +9438,10 @@ See also:
 <li><i>logmat_sympd(B,A)</i> resets <i>B</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
 </ul>
 </li>
+<!--
 <br>
 <li><b>Caveat</b>: there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite</li>
+-->
 <br>
 <li><b>Caveat</b>: the matrix logarithm operation is generally <b>not</b> the same as applying the <a href="#misc_fns">log()</a> function to each element</li>
 <br>
@@ -10442,8 +10446,10 @@ See also:
 <li><i>sqrtmat_sympd(B,A)</i> resets <i>B</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
 </ul>
 </li>
+<!--
 <br>
 <li><b>Caveat</b>: there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite</li>
+-->
 <br>
 <li><b>Caveat</b>: the matrix square root operation is generally <b>not</b> the same as applying the <a href="#misc_fns">sqrt()</a> function to each element</li>
 <br>
@@ -11393,8 +11399,10 @@ the divide-and-conquer method provides slightly different results than the stand
 <li><i>eig_sym(eigval,eigvec,X)</i> resets <i>eigval</i> &amp; <i>eigvec</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
 </ul>
 </li>
+<!--
 <br>
 <li><b>Caveat:</b> there is no explicit check whether <i>X</i> is symmetric/hermitian</li>
+-->
 <br>
 <li>
 Examples:
@@ -11705,10 +11713,10 @@ If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 <li><i>inv_sympd(B,A)</i> resets <i>B</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
 </ul>
 </li>
+<!--
 <br>
-<li>
-<b>Caveat:</b> there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite
-</li>
+<li><b>Caveat:</b> there is no explicit check whether <i>A</i> is symmetric/hermitian positive definite</li>
+-->
 <br>
 <li>
 <b>Caveat:</b> 
@@ -18086,6 +18094,7 @@ List of additions and changes for each version:
 <ul>
 <li>expanded element-wise versions of <a href="#min_and_max">max()</a> and <a href="#min_and_max">min()</a> to handle sparse matrices</li>
 <li>optimised handling of sparse matrix expressions: sparse&nbsp;%&nbsp;(sparse&nbsp;+-&nbsp;scalar) and sparse&nbsp;/&nbsp;(sparse&nbsp;+-&nbsp;scalar)</li>
+<li><a href="#eig_sym">eig_sym()</a> and <a href="#chol">chol()</a> now perform a rudimentary check for symmetry on the input matrix</li>
 <li>more consistent detection of vector expressions</li>
 </ul>
 </li>
