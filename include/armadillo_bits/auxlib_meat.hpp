@@ -5518,7 +5518,7 @@ auxlib::rudimentary_sym_check(const Mat<eT>& X)
   const eT A = X_mem[Nm1  ];  // bottom-left corner (ie. last value in first column)
   const eT B = X_mem[Nm1*N];  // top-right   corner (ie. first value in last column)
   
-  const eT delta = A - B;
+  const eT delta = std::abs(A - B);
   
   const eT threshold = eT(100)*std::numeric_limits<eT>::epsilon();  // allow some leeway
   
@@ -5547,8 +5547,8 @@ auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
   const eT& A = X_mem[Nm1  ];  // bottom-left corner (ie. last value in first column)
   const eT& B = X_mem[Nm1*N];  // top-right   corner (ie. first value in last column)
   
-  const T delta1 = A.real() - B.real();
-  const T delta2 = A.imag() + B.imag();  // take into account the conjugate
+  const T delta1 = std::abs(A.real() - B.real());
+  const T delta2 = std::abs(A.imag() + B.imag());  // take into account the conjugate
   
   const T threshold = T(100)*std::numeric_limits<T>::epsilon();  // allow some leeway
   
