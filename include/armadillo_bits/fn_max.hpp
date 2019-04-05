@@ -189,7 +189,7 @@ enable_if2
   is_arma_sparse_type<T1>::value &&
   is_arma_sparse_type<T2>::value &&
   is_same_type<typename T1::elem_type, typename T2::elem_type>::value,
-  SpGlue<T1, T2, spglue_max>
+  const SpGlue<T1, T2, spglue_max>
   >::result
 max(const T1& x, const T2& y)
   {
@@ -210,7 +210,7 @@ enable_if2
   is_arma_sparse_type<T1>::value &&
   is_arma_sparse_type<T2>::value &&
   is_same_type<typename T1::elem_type, typename T2::elem_type>::no,
-  mtSpGlue<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result, T1, T2, spglue_max_mixed>
+  const mtSpGlue<typename promote_type<typename T1::elem_type, typename T2::elem_type>::result, T1, T2, spglue_max_mixed>
   >::result
 max(const T1& x, const T2& y)
   {
