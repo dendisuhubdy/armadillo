@@ -32,48 +32,21 @@ class spglue_min
   
   template<typename eT>
   inline static void apply_noalias(SpMat<eT>& out, const SpMat<eT>& A, const SpMat<eT>& B);
-
-  // Get min of non-complex elements.
+  
+  template<typename eT, typename T1, typename T2>
+  inline static void dense_sparse_min(Mat<eT>& out, const Base<eT,T1>& X, const SpBase<eT,T2>& Y);
+  
   template<typename eT>
   inline
   static
   typename enable_if2<is_cx<eT>::no, eT>::result
   elem_min(const eT& a, const eT& b);
-
-  // Get min of complex elements.
+  
   template<typename eT>
   inline
   static
   typename enable_if2<is_cx<eT>::yes, eT>::result
   elem_min(const eT& a, const eT& b);
-  };
-
-
-
-class spglue_min_mixed
-  : public glue_fuse_or_traits
-  {
-  public:
-  
-  template<typename T1, typename T2>
-  inline static void apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSpGlue<typename eT_promoter<T1,T2>::eT, T1, T2, spglue_min_mixed>& expr);
-  
-  template<typename T1, typename T2>
-  inline static void dense_sparse_min(Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type >::result>& out, const T1& X, const T2& Y);
-
-  // Get min of non-complex elements.
-  template<typename eT1, typename eT2>
-  inline
-  static
-  typename enable_if2<is_cx<eT1>::no && is_cx<eT2>::no, typename promote_type<eT1, eT2>::result>::result
-  elem_min(const eT1& a, const eT2& b);
-
-  // Get min of complex elements.
-  template<typename eT1, typename eT2>
-  inline
-  static
-  typename enable_if2<is_cx<eT1>::yes && is_cx<eT2>::yes, typename promote_type<eT1, eT2>::result>::result
-  elem_min(const eT1& a, const eT2& b);
   };
 
 

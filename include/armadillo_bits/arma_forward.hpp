@@ -329,8 +329,6 @@ class spglue_plus_mixed;
 class spglue_minus_mixed;  // TODO
 class spglue_schur_mixed;  // TODO
 class spglue_times_mixed;
-class spglue_max_mixed;
-class spglue_min_mixed;
 
 
 struct state_type

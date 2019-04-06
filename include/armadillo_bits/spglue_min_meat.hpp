@@ -56,7 +56,7 @@ spglue_min::apply_noalias(SpMat<eT>& out, const SpProxy<T1>& pa, const SpProxy<T
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "element-wise min");
+  arma_debug_assert_same_size(pa.get_n_rows(), pa.get_n_cols(), pb.get_n_rows(), pb.get_n_cols(), "element-wise minimum");
   
   if(pa.get_n_nonzero() == 0)  { out = pb.Q; return; }
   if(pb.get_n_nonzero() == 0)  { out = pa.Q; return; }
@@ -169,7 +169,35 @@ spglue_min::apply_noalias(SpMat<eT>& out, const SpMat<eT>& A, const SpMat<eT>& B
 
 
 
-// Get min of non-complex elements.
+template<typename eT, typename T1, typename T2>
+inline
+void
+spglue_min::dense_sparse_min(Mat<eT>& out, const Base<eT,T1>& X, const SpBase<eT,T2>& Y)
+  {
+  arma_extra_debug_sigprint();
+  
+  // NOTE: this function assumes there is no aliasing between matrix 'out' and X
+  
+  const   Proxy<T1> pa(X.get_ref());
+  const SpProxy<T2> pb(Y.get_ref());
+  
+  const uword n_rows = pa.get_n_rows();
+  const uword n_cols = pa.get_n_cols();
+  
+  arma_debug_assert_same_size( n_rows, n_cols, pb.get_n_rows(), pb.get_n_cols(), "element-wise minimum" );
+  
+  out.set_size(n_rows, n_cols);
+  
+  for(uword c=0; c < n_cols; ++c)
+  for(uword r=0; r < n_rows; ++r)
+    {
+    out.at(r,c) = elem_min(pa.at(r,c), pb.at(r,c));
+    }
+  }
+
+
+
+// min of non-complex elements
 template<typename eT>
 inline
 typename enable_if2<is_cx<eT>::no, eT>::result
@@ -180,159 +208,13 @@ spglue_min::elem_min(const eT& a, const eT& b)
 
 
 
-// Get min of complex elements.
+// min of complex elements
 template<typename eT>
 inline
 typename enable_if2<is_cx<eT>::yes, eT>::result
 spglue_min::elem_min(const eT& a, const eT& b)
   {
-  return ( std::abs(a) < std::abs(b) ) ? a : b;
-  }
-
-
-
-//
-
-
-
-template<typename T1, typename T2>
-inline
-void
-spglue_min_mixed::apply(SpMat<typename eT_promoter<T1,T2>::eT>& out, const mtSpGlue<typename eT_promoter<T1,T2>::eT, T1, T2, spglue_min_mixed>& expr)
-  {
-  arma_extra_debug_sigprint();
-  
-  typedef typename T1::elem_type eT1;
-  typedef typename T2::elem_type eT2;
-  
-  typedef typename promote_type<eT1,eT2>::result out_eT;
-  
-  promote_type<eT1,eT2>::check();
-  
-  if( (is_same_type<eT1,out_eT>::no) && (is_same_type<eT2,out_eT>::yes) )
-    {
-    // upgrade T1
-    
-    const unwrap_spmat<T1> UA(expr.A);
-    const unwrap_spmat<T2> UB(expr.B);
-    
-    const SpMat<eT1>& A = UA.M;
-    const SpMat<eT2>& B = UB.M;
-    
-    SpMat<out_eT> AA(arma_layout_indicator(), A);
-    
-    for(uword i=0; i < A.n_nonzero; ++i)  { access::rw(AA.values[i]) = out_eT(A.values[i]); }
-    
-    const SpMat<out_eT>& BB = reinterpret_cast< const SpMat<out_eT>& >(B);
-    
-    out = arma::min(AA, BB);
-    }
-  else
-  if( (is_same_type<eT1,out_eT>::yes) && (is_same_type<eT2,out_eT>::no) )
-    {
-    // upgrade T2 
-    
-    const unwrap_spmat<T1> UA(expr.A);
-    const unwrap_spmat<T2> UB(expr.B);
-    
-    const SpMat<eT1>& A = UA.M;
-    const SpMat<eT2>& B = UB.M;
-    
-    const SpMat<out_eT>& AA = reinterpret_cast< const SpMat<out_eT>& >(A);
-    
-    SpMat<out_eT> BB(arma_layout_indicator(), B);
-    
-    for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
-    
-    out = arma::min(AA, BB);
-    }
-  else
-    {
-    // upgrade T1 and T2
-    
-    const unwrap_spmat<T1> UA(expr.A);
-    const unwrap_spmat<T2> UB(expr.B);
-    
-    const SpMat<eT1>& A = UA.M;
-    const SpMat<eT2>& B = UB.M;
-    
-    SpMat<out_eT> AA(arma_layout_indicator(), A);
-    SpMat<out_eT> BB(arma_layout_indicator(), B);
-    
-    for(uword i=0; i < A.n_nonzero; ++i)  { access::rw(AA.values[i]) = out_eT(A.values[i]); }
-    for(uword i=0; i < B.n_nonzero; ++i)  { access::rw(BB.values[i]) = out_eT(B.values[i]); }
-    
-    out = arma::min(AA, BB);
-    }
-  }
-
-
-
-template<typename T1, typename T2>
-inline
-void
-spglue_min_mixed::dense_sparse_min(Mat< typename promote_type<typename T1::elem_type, typename T2::elem_type >::result>& out, const T1& X, const T2& Y)
-  {
-  arma_extra_debug_sigprint();
-  
-  typedef typename T1::elem_type eT1;
-  typedef typename T2::elem_type eT2;
-  
-  typedef typename promote_type<eT1,eT2>::result out_eT;
-  
-  promote_type<eT1,eT2>::check();
-  
-  if(is_same_type<eT1,out_eT>::no)
-    {
-    out = conv_to< Mat<out_eT> >::from(X);
-    }
-  else
-    {
-    const quasi_unwrap<T1> UA(X);
-    
-    const Mat<eT1>& A = UA.M;
-    
-    out = reinterpret_cast< const Mat<out_eT>& >(A);
-    }
-  
-  const SpProxy<T2> pb(Y);
-  
-  arma_debug_assert_same_size( out.n_rows, out.n_cols, pb.get_n_rows(), pb.get_n_cols(), "element-wise min" );
-  
-  typename SpProxy<T2>::const_iterator_type it     = pb.begin();
-  typename SpProxy<T2>::const_iterator_type it_end = pb.end();
-  
-  for (size_t c = 0; c < pb.get_n_cols(); ++c)
-    {
-    for (size_t r = 0; r < pb.get_n_rows(); ++r)
-      {
-      out.at(r, c) = elem_min(out.at(r, c), (out_eT) pb.at(r, c));
-      }
-    }
-  }
-
-
-
-// Get min of non-complex elements.
-template<typename eT1, typename eT2>
-inline
-typename enable_if2<is_cx<eT1>::no && is_cx<eT2>::no, typename promote_type<eT1, eT2>::result>::result
-spglue_min_mixed::elem_min(const eT1& a, const eT2& b)
-  {
-  typedef typename promote_type<eT1, eT2>::result out_eT;
-  return std::min((out_eT) a, (out_eT) b);
-  }
-
-
-
-// Get min of complex elements.
-template<typename eT1, typename eT2>
-inline
-typename enable_if2<is_cx<eT1>::yes && is_cx<eT2>::yes, typename promote_type<eT1, eT2>::result>::result
-spglue_min_mixed::elem_min(const eT1& a, const eT2& b)
-  {
-  typedef typename promote_type<eT1, eT2>::result out_eT;
-  return ( std::abs((out_eT) a) < std::abs((out_eT) b) ) ? (out_eT) a : (out_eT) b;
+  return (std::abs(a) < std::abs(b)) ? a : b;
   }
 
 

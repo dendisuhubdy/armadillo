@@ -2830,7 +2830,7 @@ TEST_CASE("spmat_row_iterator_constructor")
 TEST_CASE("spmat_scalar_add")
   {
   sp_mat m;
-  m.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
 
   mat y = m + 3.0;
   mat z = 3.0 + m;
@@ -2850,7 +2850,7 @@ TEST_CASE("spmat_scalar_add")
 TEST_CASE("spmat_scalar_minus")
   {
   sp_mat m;
-  m.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
 
   mat y = m - 3.0;
   mat z = 3.0 - m;
@@ -2870,10 +2870,10 @@ TEST_CASE("spmat_scalar_minus")
 TEST_CASE("spmat_div_test")
   {
   sp_mat m;
-  m.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
 
   sp_mat m2;
-  m2.sprandu(100, 100, 0.5); // higher probability of collision
+  m2.sprandu(100, 200, 0.5); // higher probability of collision
 
   sp_mat out = m / (m2 + 1.0);
   sp_mat out2 = m / (m2 - 2.0);
@@ -2909,10 +2909,10 @@ TEST_CASE("spmat_div_test")
 TEST_CASE("spmat_schur_test")
   {
   sp_mat m;
-  m.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
 
   sp_mat m2;
-  m2.sprandu(100, 100, 0.5); // higher probability of collision
+  m2.sprandu(100, 200, 0.5); // higher probability of collision
 
   sp_mat out = m % (m2 + 1.0);
   sp_mat out2 = m % (m2 - 2.0);
@@ -2948,7 +2948,7 @@ TEST_CASE("spmat_schur_test")
 TEST_CASE("spmat_repeated_add_subtract")
   {
   sp_mat m;
-  m.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
 
   // p: plus, m: minus, n: pre-minus
   mat out_pp = m + 3 + 3;
@@ -2987,7 +2987,7 @@ TEST_CASE("spmat_force_plus_minus_sparse")
   // We can't test that our desired optimization is used but we can test that it
   // compiles.
   sp_mat m;
-  m.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
 
   sp_mat out1(m + 1);
   sp_mat out2(m - 1);
@@ -3010,35 +3010,14 @@ TEST_CASE("spmat_force_plus_minus_sparse")
 TEST_CASE("spmat_elementwise_max")
   {
   sp_mat m, n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
+  n.sprandu(100, 200, 0.2);
 
   sp_mat out = max(m, n);
 
   for (uword c = 0; c < m.n_cols; ++c)
     {
-    for (uword r = 0; r < m.n_cols; ++r)
-      {
-      REQUIRE(out(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
-      }
-    }
-  }
-
-
-
-// Test elementwise max() with two different types.
-TEST_CASE("spmat_elementwise_max_different_types")
-  {
-  sp_mat m;
-  sp_fmat n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
-
-  sp_mat out = max(m, n);
-
-  for (uword c = 0; c < m.n_cols; ++c)
-    {
-    for (uword r = 0; r < m.n_cols; ++r)
+    for (uword r = 0; r < m.n_rows; ++r)
       {
       REQUIRE(out(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
       }
@@ -3052,8 +3031,8 @@ TEST_CASE("spmat_mat_elementwise_max")
   {
   sp_mat m;
   mat n;
-  m.sprandu(100, 100, 0.1);
-  n.randu(100, 100);
+  m.sprandu(100, 200, 0.1);
+  n.randu(100, 200);
   n -= 0.5;
 
   mat out1 = max(m, n);
@@ -3061,31 +3040,7 @@ TEST_CASE("spmat_mat_elementwise_max")
 
   for (uword c = 0; c < m.n_cols; ++c)
     {
-    for (uword r = 0; r < m.n_cols; ++r)
-      {
-      REQUIRE(out1(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
-      REQUIRE(out2(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
-      }
-    }
-  }
-
-
-
-// Test elementwise max() with a dense object of a different type.
-TEST_CASE("spmat_mat_elementwise_max_different_types")
-  {
-  sp_mat m;
-  fmat n;
-  m.sprandu(100, 100, 0.1);
-  n.randu(100, 100);
-  n -= 0.5;
-
-  mat out1 = max(m, n);
-  mat out2 = max(n, m);
-
-  for (uword c = 0; c < m.n_cols; ++c)
-    {
-    for (uword r = 0; r < m.n_cols; ++r)
+    for (uword r = 0; r < m.n_rows; ++r)
       {
       REQUIRE(out1(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
       REQUIRE(out2(r, c) == Approx(std::max((double) m(r, c), (double) n(r, c))));
@@ -3099,43 +3054,19 @@ TEST_CASE("spmat_mat_elementwise_max_different_types")
 TEST_CASE("spmat_elementwise_max_cx")
   {
   sp_cx_mat m, n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
+  n.sprandu(100, 200, 0.2);
 
   sp_cx_mat out = arma::max(m, n);
 
   for (uword c = 0; c < m.n_cols; ++c)
     {
-    for (uword r = 0; r < m.n_cols; ++r)
+    for (uword r = 0; r < m.n_rows; ++r)
       {
       if (std::abs(std::complex<double>(m(r, c))) > std::abs(std::complex<double>(n(r, c))))
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
+        REQUIRE(std::abs(std::complex<double>(out(r, c)) - std::complex<double>(m(r, c))) == Approx(0.0));
       else
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
-      }
-    }
-  }
-
-
-
-// Test elementwise max() with two different complex types.
-TEST_CASE("spmat_elementwise_max_cx_different_types")
-  {
-  sp_cx_mat m;
-  sp_cx_fmat n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
-
-  sp_cx_mat out = arma::max(m, n);
-
-  for (uword c = 0; c < m.n_cols; ++c)
-    {
-    for (uword r = 0; r < m.n_cols; ++r)
-      {
-      if (std::abs(std::complex<double>(m(r, c))) > std::abs(std::complex<double>(n(r, c))))
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
-      else
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
+        REQUIRE(std::abs(std::complex<double>(out(r, c)) - std::complex<double>(n(r, c))) == Approx(0.0));
       }
     }
   }
@@ -3146,35 +3077,14 @@ TEST_CASE("spmat_elementwise_max_cx_different_types")
 TEST_CASE("spmat_elementwise_min")
   {
   sp_mat m, n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
+  n.sprandu(100, 200, 0.2);
 
   sp_mat out = min(m, n);
 
   for (uword c = 0; c < m.n_cols; ++c)
     {
-    for (uword r = 0; r < m.n_cols; ++r)
-      {
-      REQUIRE(out(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
-      }
-    }
-  }
-
-
-
-// Test elementwise min() with two different types.
-TEST_CASE("spmat_elementwise_min_different_types")
-  {
-  sp_mat m;
-  sp_fmat n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
-
-  sp_mat out = min(m, n);
-
-  for (uword c = 0; c < m.n_cols; ++c)
-    {
-    for (uword r = 0; r < m.n_cols; ++r)
+    for (uword r = 0; r < m.n_rows; ++r)
       {
       REQUIRE(out(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
       }
@@ -3188,8 +3098,8 @@ TEST_CASE("spmat_mat_elementwise_min")
   {
   sp_mat m;
   mat n;
-  m.sprandu(100, 100, 0.1);
-  n.randu(100, 100);
+  m.sprandu(100, 200, 0.1);
+  n.randu(100, 200);
   n -= 0.5;
 
   mat out1 = min(m, n);
@@ -3197,31 +3107,7 @@ TEST_CASE("spmat_mat_elementwise_min")
 
   for (uword c = 0; c < m.n_cols; ++c)
     {
-    for (uword r = 0; r < m.n_cols; ++r)
-      {
-      REQUIRE(out1(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
-      REQUIRE(out2(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
-      }
-    }
-  }
-
-
-
-// Test elementwise max() with a dense object of a different type.
-TEST_CASE("spmat_mat_elementwise_min_different_types")
-  {
-  sp_mat m;
-  fmat n;
-  m.sprandu(100, 100, 0.1);
-  n.randu(100, 100);
-  n -= 0.5;
-
-  mat out1 = min(m, n);
-  mat out2 = min(n, m);
-
-  for (uword c = 0; c < m.n_cols; ++c)
-    {
-    for (uword r = 0; r < m.n_cols; ++r)
+    for (uword r = 0; r < m.n_rows; ++r)
       {
       REQUIRE(out1(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
       REQUIRE(out2(r, c) == Approx(std::min((double) m(r, c), (double) n(r, c))));
@@ -3235,43 +3121,22 @@ TEST_CASE("spmat_mat_elementwise_min_different_types")
 TEST_CASE("spmat_elementwise_min_cx")
   {
   sp_cx_mat m, n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
+  m.sprandu(100, 200, 0.1);
+  n.sprandu(100, 200, 0.2);
 
   sp_cx_mat out = arma::min(m, n);
 
   for (uword c = 0; c < m.n_cols; ++c)
     {
-    for (uword r = 0; r < m.n_cols; ++r)
+    for (uword r = 0; r < m.n_rows; ++r)
       {
       if (std::abs(std::complex<double>(m(r, c))) < std::abs(std::complex<double>(n(r, c))))
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
+        REQUIRE(std::abs(std::complex<double>(out(r, c)) - std::complex<double>(m(r, c))) == Approx(0.0));
       else
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
+        REQUIRE(std::abs(std::complex<double>(out(r, c)) - std::complex<double>(n(r, c))) == Approx(0.0));
       }
     }
   }
 
 
 
-// Test elementwise min() with two different complex types.
-TEST_CASE("spmat_elementwise_min_cx_different_types")
-  {
-  sp_cx_mat m;
-  sp_cx_fmat n;
-  m.sprandu(100, 100, 0.1);
-  n.sprandu(100, 100, 0.1);
-
-  sp_cx_mat out = arma::min(m, n);
-
-  for (uword c = 0; c < m.n_cols; ++c)
-    {
-    for (uword r = 0; r < m.n_cols; ++r)
-      {
-      if (std::abs(std::complex<double>(m(r, c))) < std::abs(std::complex<double>(n(r, c))))
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(m(r, c)))));
-      else
-        REQUIRE(std::abs(std::complex<double>(out(r, c))) == Approx(std::abs(std::complex<double>(n(r, c)))));
-      }
-    }
-  }
