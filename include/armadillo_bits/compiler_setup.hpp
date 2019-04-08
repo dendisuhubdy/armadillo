@@ -157,17 +157,17 @@
 
 #if !defined(ARMA_ALLOW_FAKE_GCC)
   #if (defined(__GNUG__) || defined(__GNUC__)) && (defined(__INTEL_COMPILER) || defined(__NVCC__) || defined(__CUDACC__) || defined(__PGI) || defined(__PATHSCALE__) || defined(__ARMCC_VERSION) || defined(__IBMCPP__))
-    #undef  ARMA_FAKE_GCC_DETECTED
-    #define ARMA_FAKE_GCC_DETECTED
+    #undef  ARMA_DETECTED_FAKE_GCC
+    #define ARMA_DETECTED_FAKE_GCC
     
     #pragma message ("WARNING: this compiler is pretending to be GCC;")
-    #pragma message ("WARNING: to allow use of GCC specific features under this compiler,")
+    #pragma message ("WARNING: to allow use of GCC extensions under this compiler,")
     #pragma message ("WARNING: #define ARMA_ALLOW_FAKE_GCC before #include <armadillo>")
   #endif
 #endif
 
 
-#if defined(__GNUG__) && (!defined(__clang__) && !defined(ARMA_FAKE_GCC_DETECTED))
+#if defined(__GNUG__) && (!defined(__clang__) && !defined(ARMA_DETECTED_FAKE_GCC))
   
   // #pragma message ("using GCC extensions")
   
@@ -250,17 +250,17 @@
 
 #if !defined(ARMA_ALLOW_FAKE_CLANG)
   #if defined(__clang__) && (defined(__INTEL_COMPILER) || defined(__NVCC__) || defined(__CUDACC__) || defined(__PGI) || defined(__PATHSCALE__) || defined(__ARMCC_VERSION) || defined(__IBMCPP__))
-    #undef  ARMA_FAKE_CLANG_DETECTED
-    #define ARMA_FAKE_CLANG_DETECTED
+    #undef  ARMA_DETECTED_FAKE_CLANG
+    #define ARMA_DETECTED_FAKE_CLANG
     
     #pragma message ("WARNING: this compiler is pretending to be Clang;")
-    #pragma message ("WARNING: to allow use of Clang specific features under this compiler,")
+    #pragma message ("WARNING: to allow use of Clang extensions under this compiler,")
     #pragma message ("WARNING: #define ARMA_ALLOW_FAKE_CLANG before #include <armadillo>")
   #endif
 #endif
 
 
-#if defined(__clang__) && !defined(ARMA_FAKE_CLANG_DETECTED)
+#if defined(__clang__) && !defined(ARMA_DETECTED_FAKE_CLANG)
   
   // #pragma message ("using Clang extensions")
   
