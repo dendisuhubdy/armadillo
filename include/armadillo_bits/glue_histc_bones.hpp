@@ -33,10 +33,17 @@ class glue_histc
 
 
 class glue_histc_default
-  : public glue_default_traits
   {
   public:
-
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const bool is_row  = T1::is_row;
+    static const bool is_col  = T1::is_col;
+    static const bool is_xvec = false;
+    };
+  
   template<typename T1, typename T2>
   inline static void apply(Mat<uword>& C, const mtGlue<uword,T1,T2,glue_histc_default>& expr);
   };
