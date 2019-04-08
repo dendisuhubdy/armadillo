@@ -287,8 +287,16 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   
   if(out.is_empty())  { return true; }
   
-  //if(auxlib::rudimentary_sym_check(out) == false)  { arma_debug_warn("inv_sympd(): given matrix is not symmetric"); return false; }
-  if((arma_config::debug) && (auxlib::rudimentary_sym_check(out) == false))  { arma_debug_warn("inv_sympd(): given matrix is not symmetric"); }
+  // if(auxlib::rudimentary_sym_check(out) == false)
+  //   {
+  //   arma_debug_warn("inv_sympd(): given matrix is not symmetric");
+  //   return false;
+  //   }
+  
+  if((arma_config::debug) && (auxlib::rudimentary_sym_check(out) == false))
+    {
+    arma_debug_warn("inv_sympd(): given matrix is not symmetric");
+    }
   
   if(out.n_rows <= 4)
     {
@@ -1572,12 +1580,14 @@ auxlib::eig_sym(Col<eT>& eigval, const Base<eT,T1>& X)
     // if(auxlib::rudimentary_sym_check(A) == false)
     //   {
     //   arma_debug_warn("eig_sym(): given matrix is not symmetric");
-    //   eigval.reset();
     //   return false;
     //   }
     
-    if((arma_config::debug) && (auxlib::rudimentary_sym_check(A) == false))  { arma_debug_warn("eig_sym(): given matrix is not symmetric"); }
-  
+    if((arma_config::debug) && (auxlib::rudimentary_sym_check(A) == false))
+      {
+      arma_debug_warn("eig_sym(): given matrix is not symmetric");
+      }
+    
     arma_debug_assert_blas_size(A);
     
     eigval.set_size(A.n_rows);
@@ -1630,10 +1640,14 @@ auxlib::eig_sym(Col<T>& eigval, const Base<std::complex<T>,T1>& X)
       return true;
       }
     
-    if(auxlib::rudimentary_sym_check(A) == false)
+    // if(auxlib::rudimentary_sym_check(A) == false)
+    //   {
+    //   return false;
+    //   }
+    
+    if((arma_config::debug) && (auxlib::rudimentary_sym_check(A) == false))
       {
-      eigval.reset();
-      return false;
+      arma_debug_warn("eig_sym(): given matrix is not symmetric");
       }
     
     arma_debug_assert_blas_size(A);
@@ -1668,16 +1682,16 @@ auxlib::eig_sym(Col<T>& eigval, const Base<std::complex<T>,T1>& X)
 
 
 //! eigenvalues and eigenvectors of a symmetric real matrix
-template<typename eT, typename T1>
+template<typename eT>
 inline
 bool
-auxlib::eig_sym(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
+auxlib::eig_sym(Col<eT>& eigval, Mat<eT>& eigvec, const Mat<eT>& X)
   {
   arma_extra_debug_sigprint();
   
   #if defined(ARMA_USE_LAPACK)
     {
-    eigvec = X.get_ref();
+    eigvec = X;
     
     arma_debug_check( (eigvec.is_square() == false), "eig_sym(): given matrix must be square sized" );
     
@@ -1686,13 +1700,6 @@ auxlib::eig_sym(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
       eigval.reset();
       eigvec.reset();
       return true;
-      }
-    
-    if(auxlib::rudimentary_sym_check(eigvec) == false)
-      {
-      eigval.reset();
-      eigvec.reset();
-      return false;
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1727,10 +1734,10 @@ auxlib::eig_sym(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
 
 
 //! eigenvalues and eigenvectors of a hermitian complex matrix
-template<typename T, typename T1>
+template<typename T>
 inline
 bool
-auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::complex<T>,T1>& X)
+auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Mat< std::complex<T> >& X)
   {
   arma_extra_debug_sigprint();
   
@@ -1738,7 +1745,7 @@ auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::
     {
     typedef typename std::complex<T> eT;
     
-    eigvec = X.get_ref();
+    eigvec = X;
     
     arma_debug_check( (eigvec.is_square() == false), "eig_sym(): given matrix must be square sized" );
     
@@ -1747,13 +1754,6 @@ auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::
       eigval.reset();
       eigvec.reset();
       return true;
-      }
-    
-    if(auxlib::rudimentary_sym_check(eigvec) == false)
-      {
-      eigval.reset();
-      eigvec.reset();
-      return false;
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1789,16 +1789,16 @@ auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::
 
 
 //! eigenvalues and eigenvectors of a symmetric real matrix (divide and conquer algorithm)
-template<typename eT, typename T1>
+template<typename eT>
 inline
 bool
-auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X, const char* caller_sig)
+auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Mat<eT>& X)
   {
   arma_extra_debug_sigprint();
   
   #if defined(ARMA_USE_LAPACK)
     {
-    eigvec = X.get_ref();
+    eigvec = X;
     
     arma_debug_check( (eigvec.is_square() == false), "eig_sym(): given matrix must be square sized" );
     
@@ -1807,19 +1807,6 @@ auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X, const
       eigval.reset();
       eigvec.reset();
       return true;
-      }
-    
-    // if(auxlib::rudimentary_sym_check(eigvec) == false)
-    //   {
-    //   arma_debug_warn(caller_sig, ": given matrix is not symmetric");
-    //   eigval.reset();
-    //   eigvec.reset();
-    //   return false;
-    //   }
-    
-    if((arma_config::debug) && (auxlib::rudimentary_sym_check(eigvec) == false))
-      {
-      arma_debug_warn(caller_sig, ": given matrix is not symmetric");
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1856,10 +1843,10 @@ auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X, const
 
 
 //! eigenvalues and eigenvectors of a hermitian complex matrix (divide and conquer algorithm)
-template<typename T, typename T1>
+template<typename T>
 inline
 bool
-auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::complex<T>,T1>& X, const char* caller_sig)
+auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Mat< std::complex<T> >& X)
   {
   arma_extra_debug_sigprint();
   
@@ -1867,7 +1854,7 @@ auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<st
     {
     typedef typename std::complex<T> eT;
     
-    eigvec = X.get_ref();
+    eigvec = X;
     
     arma_debug_check( (eigvec.is_square() == false), "eig_sym(): given matrix must be square sized" );
     
@@ -1876,19 +1863,6 @@ auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<st
       eigval.reset();
       eigvec.reset();
       return true;
-      }
-    
-    // if(auxlib::rudimentary_sym_check(eigvec) == false)
-    //   {
-    //   arma_debug_warn(caller_sig, ": given matrix is not symmetric");
-    //   eigval.reset();
-    //   eigvec.reset();
-    //   return false;
-    //   }
-    
-    if((arma_config::debug) && (auxlib::rudimentary_sym_check(eigvec) == false))
-      {
-      arma_debug_warn(caller_sig, ": given matrix is not symmetric");
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -5533,7 +5507,7 @@ auxlib::rudimentary_sym_check(const Mat<eT>& X)
   
   const eT delta = std::abs(A - B);
   
-  const eT threshold = eT(1000)*std::numeric_limits<eT>::epsilon();  // allow some leeway
+  const eT threshold = eT(100)*std::numeric_limits<eT>::epsilon();  // allow some leeway
   
   return (delta <= threshold);
   }
@@ -5563,7 +5537,7 @@ auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
   const T delta1 = std::abs(A.real() - B.real());
   const T delta2 = std::abs(A.imag() + B.imag());  // take into account the conjugate
   
-  const T threshold = T(1000)*std::numeric_limits<T>::epsilon();  // allow some leeway
+  const T threshold = T(100)*std::numeric_limits<T>::epsilon();  // allow some leeway
   
   return ( (delta1 <= threshold) && (delta2 <= threshold) );
   }
