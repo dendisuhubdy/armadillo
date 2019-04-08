@@ -104,7 +104,7 @@ glue_mvnrnd::apply_noalias(Mat<eT>& out, const Mat<eT>& M, const Mat<eT>& C, con
     Col<eT> eigval;  // NOTE: eT is constrained to be real (ie. float or double) in fn_mvnrnd.hpp
     Mat<eT> eigvec;
     
-    const bool eig_status = auxlib::eig_sym_dc(eigval, eigvec, C);
+    const bool eig_status = auxlib::eig_sym_dc(eigval, eigvec, C, "mvnrnd()");
     
     if(eig_status == false)  { return false; }
     

@@ -287,7 +287,8 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   
   if(out.is_empty())  { return true; }
   
-  if(auxlib::rudimentary_sym_check(out) == false)  { return false; }
+  //if(auxlib::rudimentary_sym_check(out) == false)  { arma_debug_warn("inv_sympd(): given matrix is not symmetric"); return false; }
+  if((arma_config::debug) && (auxlib::rudimentary_sym_check(out) == false))  { arma_debug_warn("inv_sympd(): given matrix is not symmetric"); }
   
   if(out.n_rows <= 4)
     {
@@ -1568,12 +1569,15 @@ auxlib::eig_sym(Col<eT>& eigval, const Base<eT,T1>& X)
       return true;
       }
     
-    if(auxlib::rudimentary_sym_check(A) == false)
-      {
-      eigval.reset();
-      return false;
-      }
+    // if(auxlib::rudimentary_sym_check(A) == false)
+    //   {
+    //   arma_debug_warn("eig_sym(): given matrix is not symmetric");
+    //   eigval.reset();
+    //   return false;
+    //   }
     
+    if((arma_config::debug) && (auxlib::rudimentary_sym_check(A) == false))  { arma_debug_warn("eig_sym(): given matrix is not symmetric"); }
+  
     arma_debug_assert_blas_size(A);
     
     eigval.set_size(A.n_rows);
@@ -1788,7 +1792,7 @@ auxlib::eig_sym(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::
 template<typename eT, typename T1>
 inline
 bool
-auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
+auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X, const char* caller_sig)
   {
   arma_extra_debug_sigprint();
   
@@ -1805,11 +1809,17 @@ auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
       return true;
       }
     
-    if(auxlib::rudimentary_sym_check(eigvec) == false)
+    // if(auxlib::rudimentary_sym_check(eigvec) == false)
+    //   {
+    //   arma_debug_warn(caller_sig, ": given matrix is not symmetric");
+    //   eigval.reset();
+    //   eigvec.reset();
+    //   return false;
+    //   }
+    
+    if((arma_config::debug) && (auxlib::rudimentary_sym_check(eigvec) == false))
       {
-      eigval.reset();
-      eigvec.reset();
-      return false;
+      arma_debug_warn(caller_sig, ": given matrix is not symmetric");
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1849,7 +1859,7 @@ auxlib::eig_sym_dc(Col<eT>& eigval, Mat<eT>& eigvec, const Base<eT,T1>& X)
 template<typename T, typename T1>
 inline
 bool
-auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::complex<T>,T1>& X)
+auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<std::complex<T>,T1>& X, const char* caller_sig)
   {
   arma_extra_debug_sigprint();
   
@@ -1868,11 +1878,17 @@ auxlib::eig_sym_dc(Col<T>& eigval, Mat< std::complex<T> >& eigvec, const Base<st
       return true;
       }
     
-    if(auxlib::rudimentary_sym_check(eigvec) == false)
+    // if(auxlib::rudimentary_sym_check(eigvec) == false)
+    //   {
+    //   arma_debug_warn(caller_sig, ": given matrix is not symmetric");
+    //   eigval.reset();
+    //   eigvec.reset();
+    //   return false;
+    //   }
+    
+    if((arma_config::debug) && (auxlib::rudimentary_sym_check(eigvec) == false))
       {
-      eigval.reset();
-      eigvec.reset();
-      return false;
+      arma_debug_warn(caller_sig, ": given matrix is not symmetric");
       }
     
     arma_debug_assert_blas_size(eigvec);
@@ -1959,11 +1975,6 @@ bool
 auxlib::chol(Mat<eT>& X, const uword layout)
   {
   arma_extra_debug_sigprint();
-  
-  if(auxlib::rudimentary_sym_check(X) == false)
-    {
-    return false;
-    }
   
   #if defined(ARMA_USE_ATLAS)
     {

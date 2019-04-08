@@ -102,7 +102,7 @@ eig_sym
   
   bool status = false;
   
-  if(sig == 'd')       { status = auxlib::eig_sym_dc(eigval, eigvec_out, P.Q); }
+  if(sig == 'd')       { status = auxlib::eig_sym_dc(eigval, eigvec_out, P.Q, "eig_sym()"); }
   
   if(status == false)  { status = auxlib::eig_sym(eigval, eigvec_out, P.Q);    }
   

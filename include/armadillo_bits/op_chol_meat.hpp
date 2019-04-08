@@ -50,6 +50,9 @@ op_chol::apply_direct(Mat<typename T1::elem_type>& out, const Base<typename T1::
   
   if(out.is_empty())  { return true; }
   
+  // if(auxlib::rudimentary_sym_check(out) == false)  { arma_debug_warn("chol(): given matrix is not symmetric"); return false; }
+  if((arma_config::debug) && (auxlib::rudimentary_sym_check(out) == false))  { arma_debug_warn("chol(): given matrix is not symmetric"); }
+  
   uword KD = 0;
   
   const bool is_band = (auxlib::crippled_lapack(out)) ? false : ((layout == 0) ? band_helper::is_band_upper(KD, out, uword(32)) : band_helper::is_band_lower(KD, out, uword(32)));
