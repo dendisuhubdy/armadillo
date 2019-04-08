@@ -18095,13 +18095,14 @@ List of additions and changes for each version:
 <li>expanded element-wise versions of <a href="#min_and_max">max()</a> and <a href="#min_and_max">min()</a> to handle sparse matrices</li>
 <li>optimised handling of sparse matrix expressions: sparse&nbsp;%&nbsp;(sparse&nbsp;+-&nbsp;scalar) and sparse&nbsp;/&nbsp;(sparse&nbsp;+-&nbsp;scalar)</li>
 <li>
-a rudimentary check of the input matrix for symmetry is now done by
+expanded
 <a href="#eig_sym">eig_sym()</a>,
 <a href="#chol">chol()</a>,
 <a href="#expmat_sym">expmat_sym()</a>,
 <a href="#logmat_sympd">logmat_sympd()</a>,
 <a href="#sqrtmat_sympd">sqrtmat_sympd()</a>,
 <a href="#inv_sympd">inv_sympd()</a>
+to print a warning if the given matrix is not symmetric
 </li>
 <li>more consistent detection of vector expressions</li>
 </ul>
