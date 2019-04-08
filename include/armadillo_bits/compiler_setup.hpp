@@ -155,13 +155,21 @@
 #endif
 
 
-#if (defined(__GNUG__) || defined(__GNUC__)) && (defined(__clang__) || defined(__INTEL_COMPILER) || defined(__NVCC__) || defined(__CUDACC__) || defined(__PGI) || defined(__PATHSCALE__) || defined(__ARMCC_VERSION) || defined(__IBMCPP__))
-  #undef  ARMA_FAKE_GCC
-  #define ARMA_FAKE_GCC
+#if !defined(ARMA_ALLOW_FAKE_GCC)
+  #if (defined(__GNUG__) || defined(__GNUC__)) && (defined(__INTEL_COMPILER) || defined(__NVCC__) || defined(__CUDACC__) || defined(__PGI) || defined(__PATHSCALE__) || defined(__ARMCC_VERSION) || defined(__IBMCPP__))
+    #undef  ARMA_FAKE_GCC_DETECTED
+    #define ARMA_FAKE_GCC_DETECTED
+    
+    #pragma message ("WARNING: this compiler is pretending to be GCC;")
+    #pragma message ("WARNING: to allow use of GCC specific features under this compiler,")
+    #pragma message ("WARNING: #define ARMA_ALLOW_FAKE_GCC before #include <armadillo>")
+  #endif
 #endif
 
 
-#if defined(__GNUG__) && !defined(ARMA_FAKE_GCC)
+#if defined(__GNUG__) && (!defined(__clang__) && !defined(ARMA_FAKE_GCC_DETECTED))
+  
+  // #pragma message ("using GCC extensions")
   
   #undef  ARMA_GCC_VERSION
   #define ARMA_GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
@@ -240,13 +248,21 @@
 #endif
 
 
-#if defined(__clang__) && (defined(__INTEL_COMPILER) || defined(__NVCC__) || defined(__CUDACC__) || defined(__PGI) || defined(__PATHSCALE__) || defined(__ARMCC_VERSION) || defined(__IBMCPP__))
-  #undef  ARMA_FAKE_CLANG
-  #define ARMA_FAKE_CLANG
+#if !defined(ARMA_ALLOW_FAKE_CLANG)
+  #if defined(__clang__) && (defined(__INTEL_COMPILER) || defined(__NVCC__) || defined(__CUDACC__) || defined(__PGI) || defined(__PATHSCALE__) || defined(__ARMCC_VERSION) || defined(__IBMCPP__))
+    #undef  ARMA_FAKE_CLANG_DETECTED
+    #define ARMA_FAKE_CLANG_DETECTED
+    
+    #pragma message ("WARNING: this compiler is pretending to be Clang;")
+    #pragma message ("WARNING: to allow use of Clang specific features under this compiler,")
+    #pragma message ("WARNING: #define ARMA_ALLOW_FAKE_CLANG before #include <armadillo>")
+  #endif
 #endif
 
 
-#if defined(__clang__) && !defined(ARMA_FAKE_CLANG)
+#if defined(__clang__) && !defined(ARMA_FAKE_CLANG_DETECTED)
+  
+  // #pragma message ("using Clang extensions")
   
   #define ARMA_GOOD_COMPILER
   
