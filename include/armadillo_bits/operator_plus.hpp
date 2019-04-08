@@ -335,7 +335,7 @@ operator+
   arma_extra_debug_sigprint();
   
   return SpToDOp<T1, op_sp_plus>(X, k);
-  };
+  }
 
 
 
@@ -351,7 +351,7 @@ operator+
   arma_extra_debug_sigprint();
 
   return SpToDOp<T1, op_sp_plus>(X, k);  // NOTE: swapped order
-  };
+  }
 
 
 
