@@ -160,8 +160,8 @@
     #undef  ARMA_DETECTED_FAKE_GCC
     #define ARMA_DETECTED_FAKE_GCC
     
-    #pragma message ("WARNING: this compiler is pretending to be GCC;")
-    #pragma message ("WARNING: to allow use of GCC extensions under this compiler,")
+    #pragma message ("WARNING: this compiler is pretending to be GCC but it may not be fully compatible;")
+    #pragma message ("WARNING: to allow this compiler to use GCC features such as data alignment attributes,")
     #pragma message ("WARNING: #define ARMA_ALLOW_FAKE_GCC before #include <armadillo>")
   #endif
 #endif
@@ -253,8 +253,8 @@
     #undef  ARMA_DETECTED_FAKE_CLANG
     #define ARMA_DETECTED_FAKE_CLANG
     
-    #pragma message ("WARNING: this compiler is pretending to be Clang;")
-    #pragma message ("WARNING: to allow use of Clang extensions under this compiler,")
+    #pragma message ("WARNING: this compiler is pretending to be Clang but it may not be fully compatible;")
+    #pragma message ("WARNING: to allow this compiler to use Clang features such as data alignment attributes,")
     #pragma message ("WARNING: #define ARMA_ALLOW_FAKE_CLANG before #include <armadillo>")
   #endif
 #endif
