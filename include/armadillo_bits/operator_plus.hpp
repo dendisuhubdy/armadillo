@@ -369,8 +369,8 @@ enable_if2
   >::result
 operator+
   (
-  const SpToDOp<T1, op_type> x,
-  const typename T1::elem_type   k
+  const SpToDOp<T1, op_type>&  x,
+  const typename T1::elem_type k
   )
   {
   arma_extra_debug_sigprint();
@@ -395,8 +395,8 @@ enable_if2
   >::result
 operator+
   (
-  const SpToDOp<T1, op_type> x,
-  const typename T1::elem_type   k
+  const SpToDOp<T1, op_type>&  x,
+  const typename T1::elem_type k
   )
   {
   arma_extra_debug_sigprint();
@@ -420,8 +420,8 @@ enable_if2
   >::result
 operator+
   (
-  const typename T1::elem_type   k,
-  const SpToDOp<T1, op_type> x
+  const typename T1::elem_type k,
+  const SpToDOp<T1, op_type>&  x
   )
   {
   arma_extra_debug_sigprint();
@@ -446,8 +446,8 @@ enable_if2
   >::result
 operator+
   (
-  const typename T1::elem_type   k,
-  const SpToDOp<T1, op_type> x
+  const typename T1::elem_type k,
+  const SpToDOp<T1, op_type>&  x
   )
   {
   arma_extra_debug_sigprint();
