@@ -32,10 +32,10 @@ template<typename T>
 struct is_Mat_fixed_only
   {
   typedef char yes[1];
-  typedef char no[2];
+  typedef char  no[2];
   
   template<typename X> static yes& check(typename X::Mat_fixed_type*);
-  template<typename>   static no&  check(...);
+  template<typename>   static  no& check(...);
   
   static const bool value = ( sizeof(check<T>(0)) == sizeof(yes) );
   };
@@ -46,10 +46,10 @@ template<typename T>
 struct is_Row_fixed_only
   {
   typedef char yes[1];
-  typedef char no[2];
+  typedef char  no[2];
   
   template<typename X> static yes& check(typename X::Row_fixed_type*);
-  template<typename>   static no&  check(...);
+  template<typename>   static  no& check(...);
   
   static const bool value = ( sizeof(check<T>(0)) == sizeof(yes) );
   };
@@ -60,10 +60,10 @@ template<typename T>
 struct is_Col_fixed_only
   {
   typedef char yes[1];
-  typedef char no[2];
+  typedef char  no[2];
   
   template<typename X> static yes& check(typename X::Col_fixed_type*);
-  template<typename>   static no&  check(...);
+  template<typename>   static  no& check(...);
   
   static const bool value = ( sizeof(check<T>(0)) == sizeof(yes) );
   };
@@ -1429,6 +1429,21 @@ struct has_op_inv< Glue<Op<T1,op_inv>, T2, glue_times> >
 template<typename T1, typename T2>
 struct has_op_inv< Glue<T1, Op<T2,op_inv>, glue_times> >
   { static const bool value = true;  };
+
+
+
+template<typename T>
+struct has_nested_traits
+  {
+  typedef char yes[1];
+  typedef char  no[2];
+  
+  template<typename X> static yes& check(typename X::template traits<void>*);
+  template<typename X> static yes& check(typename X::template traits<void,void>*);
+  template<typename>   static  no& check(...);
+  
+  static const bool value = ( sizeof(check<T>(0)) == sizeof(yes) );
+  };
 
 
 

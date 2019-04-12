@@ -19,18 +19,31 @@
 
 
 
-//! Class for storing data required for delayed unary operations,
-//! such as the operand (e.g. the matrix to which the operation is to be applied) and the unary operator (e.g. inverse).
-//! The operand is stored as a reference (which can be optimised away),
-//! while the operator is "stored" through the template definition (op_type).
-//! The operands can be 'Mat', 'Row', 'Col', 'Op', and 'Glue'.
-//! Note that as 'Glue' can be one of the operands, more than one matrix can be stored.
-//!
-//! For example, we could have:
-//! Op< Glue< Mat, Mat, glue_times >, op_htrans >
+template<typename T1, typename op_type, bool condition>
+struct Op_traits {};
+  
 
 template<typename T1, typename op_type>
-class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
+struct Op_traits<T1, op_type, true>
+  {
+  static const bool is_row  = op_type::template traits<T1>::is_row;
+  static const bool is_col  = op_type::template traits<T1>::is_col;
+  static const bool is_xvec = op_type::template traits<T1>::is_xvec;
+  };
+
+template<typename T1, typename op_type>
+struct Op_traits<T1, op_type, false>
+  {
+  static const bool is_row  = false;
+  static const bool is_col  = false;
+  static const bool is_xvec = false;
+  };
+
+
+template<typename T1, typename op_type>
+class Op
+  : public Base<typename T1::elem_type, Op<T1, op_type> >
+  , public Op_traits<T1, op_type, has_nested_traits<op_type>::value >
   {
   public:
   
@@ -50,9 +63,7 @@ class Op : public Base<typename T1::elem_type, Op<T1, op_type> >
   arma_aligned       uword     aux_uword_b;  //!< auxiliary data, uword format
   arma_aligned       uword     aux_uword_c;  //!< auxiliary data, uword format
   
-  static const bool is_row  = op_type::template traits<T1>::is_row;
-  static const bool is_col  = op_type::template traits<T1>::is_col;
-  static const bool is_xvec = op_type::template traits<T1>::is_xvec;
+  
   
   // static const bool is_row = \
   //   (
