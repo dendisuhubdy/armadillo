@@ -25,9 +25,6 @@ class op_cov
   {
   public:
   
-  template<typename eT> inline static void direct_cov       (Mat<eT>& out, const Mat<eT>& X, const uword norm_type);
-  template<typename eT> inline static void direct_cov_htrans(Mat<eT>& out, const Mat<eT>& X, const uword norm_type);
-  
   template<typename T1> inline static void apply(Mat<typename T1::elem_type>& out, const Op< T1,               op_cov>& in);
   template<typename T1> inline static void apply(Mat<typename T1::elem_type>& out, const Op< Op<T1,op_htrans>, op_cov>& in);
   };

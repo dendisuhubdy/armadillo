@@ -20,50 +20,6 @@
 
 
 
-template<typename eT>
-inline
-void
-op_cov::direct_cov(Mat<eT>& out, const Mat<eT>& A, const uword norm_type)
-  {
-  arma_extra_debug_sigprint();
-  
-  const Mat<eT> B( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
-  
-  const Mat<eT>& C = (A.n_rows == 1) ? B : A;
-  
-  const uword N        = C.n_rows;
-  const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
-  
-  const Mat<eT> tmp = C.each_row() - mean(C,0);
-  
-  out = tmp.t() * tmp;
-  out /= norm_val;
-  }
-
-
-
-template<typename eT>
-inline
-void
-op_cov::direct_cov_htrans(Mat<eT>& out, const Mat<eT>& A, const uword norm_type)
-  {
-  arma_extra_debug_sigprint();
-  
-  const Mat<eT> B( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
-  
-  const Mat<eT>& C = (A.n_cols == 1) ? B : A;
-  
-  const uword N        = C.n_cols;
-  const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
-  
-  const Mat<eT> tmp = C.each_col() - mean(C,1);
-  
-  out = tmp * tmp.t();
-  out /= norm_val;
-  }
-
-
-
 template<typename T1>
 inline
 void
@@ -75,21 +31,20 @@ op_cov::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_cov>& in)
   
   const uword norm_type = in.aux_uword_a;
   
-  const quasi_unwrap<T1> U(in.m);
-  const Mat<eT>& A     = U.M;
+  const unwrap<T1>   U(in.m);
+  const Mat<eT>& A = U.M;
   
-  if(U.is_alias(out))
-    {
-    Mat<eT> tmp;
-    
-    op_cov::direct_cov(tmp, A, norm_type);
-    
-    out.steal_mem(tmp);
-    }
-  else
-    {
-    op_cov::direct_cov(out, A, norm_type);
-    }
+  const Mat<eT> AA( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
+  
+  const Mat<eT>& AAA = (A.n_rows == 1) ? AA : A;
+  
+  const uword N        = AAA.n_rows;
+  const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
+  
+  const Mat<eT> tmp = AAA.each_row() - mean(AAA,0);
+  
+  out = tmp.t() * tmp;
+  out /= norm_val;
   }
 
 
@@ -105,29 +60,28 @@ op_cov::apply(Mat<typename T1::elem_type>& out, const Op< Op<T1,op_htrans>, op_c
   
   const uword norm_type = in.aux_uword_a;
   
-  if(is_cx<eT>::no)
-    {
-    const quasi_unwrap<T1> U(in.m.m);
-    const Mat<eT>& A     = U.M;
-    
-    if(U.is_alias(out))
-      {
-      Mat<eT> tmp;
-      
-      op_cov::direct_cov_htrans(tmp, A, norm_type);
-      
-      out.steal_mem(tmp);
-      }
-    else
-      {
-      op_cov::direct_cov_htrans(out, A, norm_type);
-      }
-    }
-  else
+  if(is_cx<eT>::yes)
     {
     const Mat<eT> tmp = in.m;  // force the evaluation of Op<T1,op_htrans>
     
-    op_cov::direct_cov(out, tmp, norm_type);
+    out = cov(tmp, norm_type);
+    }
+  else
+    {
+    const unwrap<T1>   U(in.m.m);
+    const Mat<eT>& A = U.M;
+    
+    const Mat<eT> AA( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
+    
+    const Mat<eT>& AAA = (A.n_cols == 1) ? AA : A;
+    
+    const uword N        = AAA.n_cols;
+    const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
+    
+    const Mat<eT> tmp = AAA.each_col() - mean(AAA,1);
+    
+    out = tmp * tmp.t();
+    out /= norm_val;
     }
   }
 
