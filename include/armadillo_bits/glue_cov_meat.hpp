@@ -36,19 +36,22 @@ glue_cov::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_cov>& X)
   const Mat<eT>& A = UA.M;
   const Mat<eT>& B = UB.M;
   
-  const Mat<eT> AA( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
-  const Mat<eT> BB( const_cast<eT*>(B.memptr()), B.n_cols, B.n_rows, false, true);
+  const Mat<eT>& AA = (A.n_rows == 1) ? Mat<eT>( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
+  const Mat<eT>& BB = (B.n_rows == 1) ? Mat<eT>( const_cast<eT*>(B.memptr()), B.n_cols, B.n_rows, false, true) : B;
   
-  const Mat<eT>& AAA = (A.n_rows == 1) ? AA : A;
-  const Mat<eT>& BBB = (B.n_rows == 1) ? BB : B;
+  arma_debug_assert_mul_size(AA, BB, true, false, "cov()");
   
-  arma_debug_assert_mul_size(AAA, BBB, true, false, "cov()");
+  if( (A.n_elem == 0) || (B.n_elem == 0) )
+    {
+    out.reset();
+    return;
+    }
   
-  const uword N        = AAA.n_rows;
+  const uword N        = AA.n_rows;
   const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
   
-  const Mat<eT> tmp1 = AAA.each_row() - mean(AAA,0);
-  const Mat<eT> tmp2 = BBB.each_row() - mean(BBB,0);
+  const Mat<eT> tmp1 = AA.each_row() - mean(AA,0);
+  const Mat<eT> tmp2 = BB.each_row() - mean(BB,0);
   
   out = tmp1.t() * tmp2;
   out /= norm_val;

@@ -34,6 +34,12 @@ op_cov::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_cov>& in)
   const unwrap<T1>   U(in.m);
   const Mat<eT>& A = U.M;
   
+  if(A.n_elem == 0)
+    {
+    out.reset();
+    return;
+    }
+  
   const Mat<eT>& AA = (A.n_rows == 1) ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
   
   const uword N        = AA.n_rows;
@@ -68,6 +74,12 @@ op_cov::apply(Mat<typename T1::elem_type>& out, const Op< Op<T1,op_htrans>, op_c
     {
     const unwrap<T1>   U(in.m.m);
     const Mat<eT>& A = U.M;
+    
+    if(A.n_elem == 0)
+      {
+      out.reset();
+      return;
+      }
     
     const Mat<eT>& AA = (A.n_cols == 1) ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
     
