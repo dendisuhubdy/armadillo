@@ -34,14 +34,12 @@ op_cov::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_cov>& in)
   const unwrap<T1>   U(in.m);
   const Mat<eT>& A = U.M;
   
-  const Mat<eT> AA( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
+  const Mat<eT>& AA = (A.n_rows == 1) ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
   
-  const Mat<eT>& AAA = (A.n_rows == 1) ? AA : A;
-  
-  const uword N        = AAA.n_rows;
+  const uword N        = AA.n_rows;
   const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
   
-  const Mat<eT> tmp = AAA.each_row() - mean(AAA,0);
+  const Mat<eT> tmp = AA.each_row() - mean(AA,0);
   
   out = tmp.t() * tmp;
   out /= norm_val;
@@ -71,14 +69,12 @@ op_cov::apply(Mat<typename T1::elem_type>& out, const Op< Op<T1,op_htrans>, op_c
     const unwrap<T1>   U(in.m.m);
     const Mat<eT>& A = U.M;
     
-    const Mat<eT> AA( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true);
+    const Mat<eT>& AA = (A.n_cols == 1) ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
     
-    const Mat<eT>& AAA = (A.n_cols == 1) ? AA : A;
-    
-    const uword N        = AAA.n_cols;
+    const uword N        = AA.n_cols;
     const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
     
-    const Mat<eT> tmp = AAA.each_col() - mean(AAA,1);
+    const Mat<eT> tmp = AA.each_col() - mean(AA,1);
     
     out = tmp * tmp.t();
     out /= norm_val;
