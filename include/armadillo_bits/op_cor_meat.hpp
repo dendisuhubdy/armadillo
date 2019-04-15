@@ -47,7 +47,9 @@ op_cor::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_cor>& in)
     return;
     }
   
-  const Mat<eT>& AA = (A.n_rows == 1) ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
+  const Mat<eT>& AA = (A.n_rows == 1) 
+                      ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, false)
+                      : Mat<eT>(const_cast<eT*>(A.memptr()), A.n_rows, A.n_cols, false, false);
   
   const uword N        = AA.n_rows;
   const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);
@@ -99,7 +101,9 @@ op_cor::apply(Mat<typename T1::elem_type>& out, const Op< Op<T1,op_htrans>, op_c
       return;
       }
     
-    const Mat<eT>& AA = (A.n_cols == 1) ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
+    const Mat<eT>& AA = (A.n_cols == 1)
+                        ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, false)
+                        : Mat<eT>(const_cast<eT*>(A.memptr()), A.n_rows, A.n_cols, false, false);
     
     const uword N        = AA.n_cols;
     const eT    norm_val = (norm_type == 0) ? ( (N > 1) ? eT(N-1) : eT(1) ) : eT(N);

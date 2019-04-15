@@ -36,8 +36,13 @@ glue_cor::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_cor>& X)
   const Mat<eT>& A = UA.M;
   const Mat<eT>& B = UB.M;
   
-  const Mat<eT>& AA = (A.n_rows == 1) ? Mat<eT>( const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, true) : A;
-  const Mat<eT>& BB = (B.n_rows == 1) ? Mat<eT>( const_cast<eT*>(B.memptr()), B.n_cols, B.n_rows, false, true) : B;
+  const Mat<eT>& AA = (A.n_rows == 1)
+                      ? Mat<eT>(const_cast<eT*>(A.memptr()), A.n_cols, A.n_rows, false, false)
+                      : Mat<eT>(const_cast<eT*>(A.memptr()), A.n_rows, A.n_cols, false, false);
+  
+  const Mat<eT>& BB = (B.n_rows == 1)
+                      ? Mat<eT>(const_cast<eT*>(B.memptr()), B.n_cols, B.n_rows, false, false)
+                      : Mat<eT>(const_cast<eT*>(B.memptr()), B.n_rows, B.n_cols, false, false);
   
   arma_debug_assert_mul_size(AA, BB, true, false, "cor()");
   
