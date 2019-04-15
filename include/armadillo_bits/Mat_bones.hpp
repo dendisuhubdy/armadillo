@@ -297,6 +297,9 @@ class Mat : public Base< eT, Mat<eT> >
   inline void shed_rows(const uword in_row1, const uword in_row2);
   inline void shed_cols(const uword in_col1, const uword in_col2);
   
+  template<typename T1> inline void shed_rows(const Base<uword, T1>& indices);
+  template<typename T1> inline void shed_cols(const Base<uword, T1>& indices);
+  
   inline void insert_rows(const uword row_num, const uword N, const bool set_to_zero = true);
   inline void insert_cols(const uword col_num, const uword N, const bool set_to_zero = true);
   

@@ -4220,6 +4220,140 @@ Mat<eT>::shed_cols(const uword in_col1, const uword in_col2)
 
 
 
+//! remove specified rows
+template<typename eT>
+template<typename T1>
+inline
+void
+Mat<eT>::shed_rows(const Base<uword, T1>& indices)
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat<uword> tmp1 = indices.get_ref();
+  
+  arma_debug_check( ((tmp1.is_vec() == false) && (tmp1.is_empty() == false)), "shed_rows(): list of indices must be a vector" );
+  
+  if(tmp1.is_empty()) { return; }
+  
+  const Col<uword> tmp2(tmp1.memptr(), tmp1.n_elem, false, false);
+  
+  const Col<uword>& rows_to_shed = (tmp2.is_sorted("strictascend") == false) ? Col<uword>(unique(tmp2)) : tmp2;
+  
+  const uword* rows_to_shed_mem = rows_to_shed.memptr();
+  const uword  N                = rows_to_shed.n_elem;
+  
+  if(arma_config::debug)
+    {
+    for(uword i=0; i<N; ++i)
+      {
+      arma_debug_check( (rows_to_shed_mem[i] >= n_rows), "Mat::shed_rows(): indices out of bounds" );
+      }
+    }
+  
+  Col<uword> tmp3(n_rows);
+  
+  uword* tmp3_mem = tmp3.memptr();
+  
+  uword i     = 0;
+  uword count = 0;
+  
+  for(uword j=0; j < n_rows; ++j)
+    {
+    if(i < N)
+      {
+      if( j != rows_to_shed_mem[i] )
+        {
+        tmp3_mem[count] = j;
+        ++count;
+        }
+      else
+        {
+        ++i;
+        }
+      }
+    else
+      {
+      tmp3_mem[count] = j;
+      ++count;
+      }
+    }
+  
+  const Col<uword> rows_to_keep(tmp3.memptr(), count, false, false);
+  
+  Mat<eT> X = (*this).rows(rows_to_keep);
+  
+  steal_mem(X);
+  }
+
+
+
+//! remove specified columns
+template<typename eT>
+template<typename T1>
+inline
+void
+Mat<eT>::shed_cols(const Base<uword, T1>& indices)
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat<uword> tmp1 = indices.get_ref();
+  
+  arma_debug_check( ((tmp1.is_vec() == false) && (tmp1.is_empty() == false)), "shed_cols(): list of indices must be a vector" );
+  
+  if(tmp1.is_empty()) { return; }
+  
+  const Col<uword> tmp2(tmp1.memptr(), tmp1.n_elem, false, false);
+  
+  const Col<uword>& cols_to_shed = (tmp2.is_sorted("strictascend") == false) ? Col<uword>(unique(tmp2)) : tmp2;
+  
+  const uword* cols_to_shed_mem = cols_to_shed.memptr();
+  const uword  N                = cols_to_shed.n_elem;
+  
+  if(arma_config::debug)
+    {
+    for(uword i=0; i<N; ++i)
+      {
+      arma_debug_check( (cols_to_shed_mem[i] >= n_cols), "Mat::shed_cols(): indices out of bounds" );
+      }
+    }
+  
+  Col<uword> tmp3(n_cols);
+  
+  uword* tmp3_mem = tmp3.memptr();
+  
+  uword i     = 0;
+  uword count = 0;
+  
+  for(uword j=0; j < n_cols; ++j)
+    {
+    if(i < N)
+      {
+      if( j != cols_to_shed_mem[i] )
+        {
+        tmp3_mem[count] = j;
+        ++count;
+        }
+      else
+        {
+        ++i;
+        }
+      }
+    else
+      {
+      tmp3_mem[count] = j;
+      ++count;
+      }
+    }
+  
+  const Col<uword> cols_to_keep(tmp3.memptr(), count, false, false);
+  
+  Mat<eT> X = (*this).cols(cols_to_keep);
+  
+  steal_mem(X);
+  }
+
+
+
 //! insert N rows at the specified row position,
 //! optionally setting the elements of the inserted rows to zero
 template<typename eT>
