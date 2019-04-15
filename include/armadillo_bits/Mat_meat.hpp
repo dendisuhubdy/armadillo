@@ -4229,13 +4229,16 @@ Mat<eT>::shed_rows(const Base<uword, T1>& indices)
   {
   arma_extra_debug_sigprint();
   
-  Mat<uword> tmp1 = indices.get_ref();
+  const quasi_unwrap<T1>  U(indices.get_ref());
+  const Mat<uword>& U_M = U.M;
   
-  arma_debug_check( ((tmp1.is_vec() == false) && (tmp1.is_empty() == false)), "shed_rows(): list of indices must be a vector" );
+  const Mat<uword>& tmp1 = U.is_alias(*this) ? Mat<uword>(U_M) : U_M;
+  
+  arma_debug_check( ((tmp1.is_vec() == false) && (tmp1.is_empty() == false)), "Mat::shed_rows(): list of indices must be a vector" );
   
   if(tmp1.is_empty()) { return; }
   
-  const Col<uword> tmp2(tmp1.memptr(), tmp1.n_elem, false, false);
+  const Col<uword> tmp2(const_cast<uword*>(tmp1.memptr()), tmp1.n_elem, false, false);
   
   const Col<uword>& rows_to_shed = (tmp2.is_sorted("strictascend") == false) ? Col<uword>(unique(tmp2)) : tmp2;
   
@@ -4296,13 +4299,16 @@ Mat<eT>::shed_cols(const Base<uword, T1>& indices)
   {
   arma_extra_debug_sigprint();
   
-  Mat<uword> tmp1 = indices.get_ref();
+  const quasi_unwrap<T1>  U(indices.get_ref());
+  const Mat<uword>& U_M = U.M;
   
-  arma_debug_check( ((tmp1.is_vec() == false) && (tmp1.is_empty() == false)), "shed_cols(): list of indices must be a vector" );
+  const Mat<uword>& tmp1 = U.is_alias(*this) ? Mat<uword>(U_M) : U_M;
+  
+  arma_debug_check( ((tmp1.is_vec() == false) && (tmp1.is_empty() == false)), "Mat::shed_cols(): list of indices must be a vector" );
   
   if(tmp1.is_empty()) { return; }
   
-  const Col<uword> tmp2(tmp1.memptr(), tmp1.n_elem, false, false);
+  const Col<uword> tmp2(const_cast<uword*>(tmp1.memptr()), tmp1.n_elem, false, false);
   
   const Col<uword>& cols_to_shed = (tmp2.is_sorted("strictascend") == false) ? Col<uword>(unique(tmp2)) : tmp2;
   
