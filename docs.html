@@ -4345,9 +4345,16 @@ See also:
       <b>.shed_row(&nbsp;</b>row_number<b>&nbsp;)</b>
       <br>
       <b>.shed_rows(&nbsp;</b>first_row, last_row<b>&nbsp;)</b>
+      <br>
+      <b>.shed_rows(&nbsp;</b>vector_of_indices<b>&nbsp;)</b>
       </td>
       <td>&nbsp;</td>
-      <td style="vertical-align: top;">(member functions of <i>Mat</i>, <i>Col</i>, <i>SpMat</i> and <i>Cube</i>)
+      <td style="vertical-align: top;">
+      (member function of <i>Mat</i>, <i>Col</i>, <i>SpMat</i>, <i>Cube</i>)
+      <br>
+      (member function of <i>Mat</i>, <i>Col</i>, <i>SpMat</i>, <i>Cube</i>)
+      <br>
+      (member function of <i>Mat</i>, <i>Col</i>)
       </td>
     </tr>
     <tr>
@@ -4358,9 +4365,16 @@ See also:
       <b>.shed_col(&nbsp;</b>column_number<b>&nbsp;)</b>
       <br>
       <b>.shed_cols(&nbsp;</b>first_column, last_column<b>&nbsp;)</b>
+      <br>
+      <b>.shed_cols(&nbsp;</b>vector_of_indices<b>&nbsp;)</b>
       </td>
       <td>&nbsp;</td>
-      <td style="vertical-align: top;">(member functions of <i>Mat</i>, <i>Row</i>, <i>SpMat</i> and <i>Cube</i>)
+      <td style="vertical-align: top;">
+      (member function of <i>Mat</i>, <i>Row</i>, <i>SpMat</i>, <i>Cube</i>)
+      <br>
+      (member function of <i>Mat</i>, <i>Row</i>, <i>SpMat</i>, <i>Cube</i>)
+      <br>
+      (member function of <i>Mat</i>, <i>Row</i>)
       </td>
     </tr>
     <tr>
@@ -4380,13 +4394,15 @@ See also:
 </table>
 <ul>
 <li>
-Single argument functions:
-remove the specified row/column/slice
+Functions with single scalar argument: remove the specified row/column/slice
 </li>
 <br>
 <li>
-Two argument functions:
-remove the specified range of rows/columns/slices
+Functions with two scalar arguments: remove the specified range of rows/columns/slices
+</li>
+<br>
+<li>
+The <i>vector_of_indices</i> must evaluate to a vector of type <a href="#Col">uvec</a>; it contains the indices of rows/columns to remove
 </li>
 <br>
 <li>
@@ -4394,9 +4410,13 @@ Examples:
 <ul>
 <pre>
 mat A = randu&lt;mat&gt;(5,10);
+mat B = randu&lt;mat&gt;(5,10);
 
 A.shed_row(2);
 A.shed_cols(2,4);
+
+uvec indices = {4, 6, 8};
+B.shed_cols(indices);
 </pre>
 </ul>
 </li>
@@ -18092,6 +18112,7 @@ List of additions and changes for each version:
 <a name="version_9400"></a>
 <li>Version 9.400:
 <ul>
+<li>expanded <a href="#shed">.shed_rows()</a> and <a href="#shed">.shed_cols()</a> to remove rows/columns specified in a vector</li>
 <li>expanded element-wise versions of <a href="#min_and_max">max()</a> and <a href="#min_and_max">min()</a> to handle sparse matrices</li>
 <li>optimised handling of sparse matrix expressions: sparse&nbsp;%&nbsp;(sparse&nbsp;+-&nbsp;scalar) and sparse&nbsp;/&nbsp;(sparse&nbsp;+-&nbsp;scalar)</li>
 <li>
