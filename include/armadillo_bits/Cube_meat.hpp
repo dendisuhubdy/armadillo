@@ -2090,7 +2090,9 @@ Cube<eT>::shed_slices(const Base<uword, T1>& indices)
   
   const Col<uword> tmp2(const_cast<uword*>(tmp1.memptr()), tmp1.n_elem, false, false);
   
-  const Col<uword>& slices_to_shed = (tmp2.is_sorted("strictascend") == false) ? Col<uword>(unique(tmp2)) : tmp2;
+  const Col<uword>& slices_to_shed = (tmp2.is_sorted("strictascend") == false)
+                                     ? Col<uword>(unique(tmp2))
+                                     : Col<uword>(const_cast<uword*>(tmp2.memptr()), tmp2.n_elem, false, false);
   
   const uword* slices_to_shed_mem = slices_to_shed.memptr();
   const uword  N                  = slices_to_shed.n_elem;
