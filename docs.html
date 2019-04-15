@@ -4385,6 +4385,8 @@ See also:
       <b>.shed_slice(&nbsp;</b>slice_number<b>&nbsp;)</b>
       <br>
       <b>.shed_slices(&nbsp;</b>first_slice, last_slice<b>&nbsp;)</b>
+      <br>
+      <b>.shed_slices(&nbsp;</b>vector_of_indices<b>&nbsp;)</b>
       </td>
       <td>&nbsp;</td>
       <td style="vertical-align: top;">(member functions of <i>Cube</i>)
@@ -4402,7 +4404,7 @@ Functions with two scalar arguments: remove the specified range of rows/columns/
 </li>
 <br>
 <li>
-The <i>vector_of_indices</i> must evaluate to a vector of type <a href="#Col">uvec</a>; it contains the indices of rows/columns to remove
+The <i>vector_of_indices</i> must evaluate to a vector of type <a href="#Col">uvec</a>; it contains the indices of rows/columns/slices to remove
 </li>
 <br>
 <li>
@@ -18112,7 +18114,7 @@ List of additions and changes for each version:
 <a name="version_9400"></a>
 <li>Version 9.400:
 <ul>
-<li>expanded <a href="#shed">.shed_rows()</a> and <a href="#shed">.shed_cols()</a> to remove rows/columns specified in a vector</li>
+<li>expanded <a href="#shed">.shed_rows()</a> / <a href="#shed">.shed_cols()</a> / <a href="#shed">.shed_slices()</a> to remove rows/columns/slices specified in a vector</li>
 <li>expanded element-wise versions of <a href="#min_and_max">max()</a> and <a href="#min_and_max">min()</a> to handle sparse matrices</li>
 <li>optimised handling of sparse matrix expressions: sparse&nbsp;%&nbsp;(sparse&nbsp;+-&nbsp;scalar) and sparse&nbsp;/&nbsp;(sparse&nbsp;+-&nbsp;scalar)</li>
 <li>
