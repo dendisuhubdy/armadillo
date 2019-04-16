@@ -228,16 +228,9 @@ class spop_sign
 
 
 class spop_diagvec
+  : public op_default_col_traits
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = true;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1>
   inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_diagvec>& in);
