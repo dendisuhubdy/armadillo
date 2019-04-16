@@ -122,7 +122,7 @@ class op_stable_sort_index;
 class op_unique;
 class op_unique_index;
 class op_diff;
-class op_diff_default;
+class op_diff_vec;
 class op_hist;
 class op_chi2rnd;
 class op_roots;
