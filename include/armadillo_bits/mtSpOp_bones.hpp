@@ -22,8 +22,8 @@
 
 
 
-template<typename out_eT, typename T1, typename op_type>
-class mtSpOp : public SpBase<out_eT, mtSpOp<out_eT, T1, op_type> >
+template<typename out_eT, typename T1, typename spop_type>
+class mtSpOp : public SpBase<out_eT, mtSpOp<out_eT, T1, spop_type> >
   {
   public:
   
@@ -32,13 +32,9 @@ class mtSpOp : public SpBase<out_eT, mtSpOp<out_eT, T1, op_type> >
   
   typedef typename T1::elem_type                in_eT;
   
-  static const bool is_row  = op_type::template traits<T1>::is_row;
-  static const bool is_col  = op_type::template traits<T1>::is_col;
-  static const bool is_xvec = op_type::template traits<T1>::is_xvec;
-  
-  // static const bool is_row  = (T1::is_row  && is_spop_elem<op_type>::value);
-  // static const bool is_col  = (T1::is_col  && is_spop_elem<op_type>::value);
-  // static const bool is_xvec = (T1::is_xvec && is_spop_elem<op_type>::value) || is_same_type<op_type, spop_var>::value;
+  static const bool is_row  = spop_type::template traits<T1>::is_row;
+  static const bool is_col  = spop_type::template traits<T1>::is_col;
+  static const bool is_xvec = spop_type::template traits<T1>::is_xvec;
   
   inline explicit  mtSpOp(const T1& in_m);
   inline           mtSpOp(const T1& in_m, const uword aux_uword_a, const uword aux_uword_b);
