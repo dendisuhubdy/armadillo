@@ -20,7 +20,7 @@
 
 
 class op_cumsum
-  : public op_passthru_traits
+  : public op_default_traits
   {
   public:
   
@@ -33,13 +33,13 @@ class op_cumsum
 
 
 
-class op_cumsum_default
+class op_cumsum_vec
   : public op_passthru_traits
   {
   public:
   
   template<typename T1>
-  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_cumsum_default>& in);
+  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_cumsum_vec>& in);
   };
 
 

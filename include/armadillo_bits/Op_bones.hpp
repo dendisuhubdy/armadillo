@@ -105,7 +105,7 @@ class Op
   //   // operations which always result in a column vector
   //      is_same_type<op_type, op_diagvec>::yes             DONE
   //   || is_same_type<op_type, op_vectorise_col>::yes       DONE
-  //   || is_same_type<op_type, op_nonzeros>::yes
+  //   || is_same_type<op_type, op_nonzeros>::yes            DONE
   //   )
   //   ||
   //   (

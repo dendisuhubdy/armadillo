@@ -98,7 +98,7 @@ class op_normalise_vec;
 class op_normalise_mat;
 class op_clamp;
 class op_cumsum;
-class op_cumsum_default;
+class op_cumsum_vec;
 class op_cumprod;
 class op_cumprod_default;
 class op_shift;
