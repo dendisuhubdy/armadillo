@@ -21,10 +21,17 @@
 
 
 class glue_cov
-  : public glue_default_traits
   {
   public:
-
+  
+  template<typename T1, typename T2>
+  struct traits
+    {
+    static const is_row  = false; // T1::is_col;  // TODO: check
+    static const is_col  = false; // T2::is_col;  // TODO: check
+    static const is_xvec = false;
+    };
+  
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_cov>& X);
   };
 
