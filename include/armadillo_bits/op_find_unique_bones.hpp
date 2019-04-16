@@ -20,7 +20,7 @@
 
 
 class op_find_unique
-  : public op_default_traits
+  : public op_default_col_traits
   {
   public:
   

@@ -21,16 +21,9 @@
 
 
 class op_find
+  : public op_default_col_traits
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = true;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1>
   inline static uword
@@ -89,16 +82,9 @@ class op_find
 
 
 class op_find_simple
+  : public op_default_col_traits
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = true;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1>
   inline static void apply(Mat<uword>& out, const mtOp<uword, T1, op_find_simple>& X);
@@ -107,16 +93,9 @@ class op_find_simple
 
 
 class op_find_finite
+  : public op_default_col_traits
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = true;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1>
   inline static void apply(Mat<uword>& out, const mtOp<uword, T1, op_find_finite>& X);
@@ -125,16 +104,9 @@ class op_find_finite
 
 
 class op_find_nonfinite
+  : public op_default_col_traits
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = true;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1>
   inline static void apply(Mat<uword>& out, const mtOp<uword, T1, op_find_nonfinite>& X);

@@ -234,6 +234,20 @@ struct op_default_xvec_traits
 
 
 
+// TODO: rename op_default_xvec_traits to traits_op_xvec
+struct op_default_col_traits
+  {
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = false;
+    static const bool is_col  = true;
+    static const bool is_xvec = false;
+    };
+  };
+
+
+
 // TODO: rename op_passthru_traits to traits_op_passthru
 struct op_passthru_traits
   {
