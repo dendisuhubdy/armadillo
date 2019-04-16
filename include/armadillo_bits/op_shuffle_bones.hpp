@@ -21,7 +21,7 @@
 
 
 class op_shuffle
-  : public op_passthru_traits
+  : public op_default_traits
   {
   public:
   
@@ -32,12 +32,12 @@ class op_shuffle
 
 
 
-class op_shuffle_default
+class op_shuffle_vec
   : public op_passthru_traits
   {
   public:
   
-  template<typename T1> inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_shuffle_default>& in);
+  template<typename T1> inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_shuffle_vec>& in);
   };
 
 

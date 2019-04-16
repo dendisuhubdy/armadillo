@@ -104,7 +104,7 @@ class op_cumprod_vec;
 class op_shift;
 class op_shift_vec;
 class op_shuffle;
-class op_shuffle_default;
+class op_shuffle_vec;
 class op_sort;
 class op_sort_default;
 class op_find;
