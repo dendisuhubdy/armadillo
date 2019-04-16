@@ -106,7 +106,7 @@ class op_shift_vec;
 class op_shuffle;
 class op_shuffle_vec;
 class op_sort;
-class op_sort_default;
+class op_sort_vec;
 class op_find;
 class op_find_simple;
 class op_find_unique;
