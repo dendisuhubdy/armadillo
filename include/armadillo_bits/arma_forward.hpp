@@ -206,6 +206,7 @@ class op_internal_div;
 
 
 
+// TODO: rename op_default_traits to traits_op_default
 struct op_default_traits
   {
   template<typename T1>
@@ -219,6 +220,7 @@ struct op_default_traits
 
 
 
+// TODO: rename op_default_xvec_traits to traits_op_xvec
 struct op_default_xvec_traits
   {
   template<typename T1>
@@ -232,6 +234,7 @@ struct op_default_xvec_traits
 
 
 
+// TODO: rename op_passthru_traits to traits_op_passthru
 struct op_passthru_traits
   {
   template<typename T1>
@@ -245,6 +248,7 @@ struct op_passthru_traits
 
 
 
+// TODO: rename glue_default_traits to traits_glue_default
 struct glue_default_traits
   {
   template<typename T1, typename T2>
@@ -258,6 +262,7 @@ struct glue_default_traits
 
 
 
+// TODO: rename glue_fuse_or_traits to traits_glue_or
 struct glue_fuse_or_traits
   {
   template<typename T1, typename T2>
