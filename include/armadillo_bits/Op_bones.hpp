@@ -70,12 +70,12 @@ class Op
   //   // operations which result in a row vector if the input is a row vector
   //   T1::is_row &&
   //     (
-  //        is_same_type<op_type, op_sort>::yes
-  //     || is_same_type<op_type, op_sort_default>::yes
-  //     || is_same_type<op_type, op_shift>::yes
-  //     || is_same_type<op_type, op_shift_default>::yes
-  //     || is_same_type<op_type, op_shuffle>::yes
-  //     || is_same_type<op_type, op_shuffle_default>::yes
+  //        is_same_type<op_type, op_sort>::yes              DONE
+  //     || is_same_type<op_type, op_sort_default>::yes      DONE
+  //     || is_same_type<op_type, op_shift>::yes             DONE
+  //     || is_same_type<op_type, op_shift_default>::yes     DONE
+  //     || is_same_type<op_type, op_shuffle>::yes           DONE
+  //     || is_same_type<op_type, op_shuffle_default>::yes   DONE
   //     || is_same_type<op_type, op_cumsum_default>::yes
   //     || is_same_type<op_type, op_cumprod_default>::yes
   //     || is_same_type<op_type, op_flipud>::yes
@@ -93,9 +93,9 @@ class Op
   //   // operations which result in a row vector if the input is a column vector
   //   T1::is_col &&
   //     (
-  //        is_same_type<op_type, op_strans>::yes
-  //     || is_same_type<op_type, op_htrans>::yes
-  //     || is_same_type<op_type, op_htrans2>::yes
+  //        is_same_type<op_type, op_strans>::yes    DONE
+  //     || is_same_type<op_type, op_htrans>::yes    DONE
+  //     || is_same_type<op_type, op_htrans2>::yes   DONE
   //     )
   //   )
   //   ;
@@ -103,8 +103,8 @@ class Op
   // static const bool is_col = \
   //   (
   //   // operations which always result in a column vector
-  //      is_same_type<op_type, op_diagvec>::yes
-  //   || is_same_type<op_type, op_vectorise_col>::yes
+  //      is_same_type<op_type, op_diagvec>::yes             DONE
+  //   || is_same_type<op_type, op_vectorise_col>::yes       DONE
   //   || is_same_type<op_type, op_nonzeros>::yes
   //   )
   //   ||

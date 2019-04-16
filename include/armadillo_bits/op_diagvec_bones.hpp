@@ -20,16 +20,9 @@
 
 
 class op_diagvec
+  : public op_default_col_traits
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = true;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1>
   inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_diagvec>& X);

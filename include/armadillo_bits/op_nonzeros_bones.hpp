@@ -21,7 +21,7 @@
 
 
 class op_nonzeros
-  : public op_default_traits
+  : public op_default_col_traits
   {
   public:
   
