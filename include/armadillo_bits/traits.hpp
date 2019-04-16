@@ -1275,32 +1275,6 @@ struct resolves_to_colvector : public resolves_to_colvector_redirect<T1, is_arma
 
 
 
-template<typename glue_type> struct is_glue_mixed_times                   { static const bool value = false; };
-template<>                   struct is_glue_mixed_times<glue_mixed_times> { static const bool value = true;  };
-
-
-
-// TODO: these may not be required anymore due to the glue traits rework
-template<typename spop_type> struct is_spop_elem                       { static const bool value = false; };
-template<>                   struct is_spop_elem<spop_scalar_times>    { static const bool value = true;  };
-template<>                   struct is_spop_elem<spop_cx_scalar_times> { static const bool value = true;  };
-template<>                   struct is_spop_elem<spop_real>            { static const bool value = true;  };
-template<>                   struct is_spop_elem<spop_imag>            { static const bool value = true;  };
-template<>                   struct is_spop_elem<spop_cx_abs>          { static const bool value = true;  };
-template<>                   struct is_spop_elem<spop_cx_arg>          { static const bool value = true;  };
-
-
-template<typename spglue_type> struct is_spglue_elem                { static const bool value = false; };
-template<>                     struct is_spglue_elem<spglue_plus>   { static const bool value = true;  };
-template<>                     struct is_spglue_elem<spglue_minus>  { static const bool value = true;  };
-template<>                     struct is_spglue_elem<spglue_schur>  { static const bool value = true;  };
-
-
-template<typename spglue_type> struct is_spglue_times               { static const bool value = false; };
-template<>                     struct is_spglue_times<spglue_times> { static const bool value = true;  };
-
-
-
 template<typename T1>
 struct is_outer_product
   { static const bool value = false; };
