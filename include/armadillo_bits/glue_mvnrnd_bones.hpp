@@ -18,6 +18,8 @@
 //! @{
 
 
+// TODO: to allow detection of vector output, split class into glue_mvnrnd_default and glue_mvnrnd
+
 class glue_mvnrnd
   : public glue_default_traits
   {
