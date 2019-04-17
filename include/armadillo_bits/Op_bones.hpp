@@ -84,8 +84,8 @@ class Op
   //     || is_same_type<op_type, op_reverse_default>::yes   DONE
   //     || is_same_type<op_type, op_unique>::yes            DONE
   //     || is_same_type<op_type, op_diff_default>::yes      DONE
-  //     || is_same_type<op_type, op_normalise_vec>::yes
-  //     || is_same_type<op_type, op_chi2rnd>::yes
+  //     || is_same_type<op_type, op_normalise_vec>::yes     DONE
+  //     || is_same_type<op_type, op_chi2rnd>::yes           DONE
   //     )
   //   )
   //   ||
