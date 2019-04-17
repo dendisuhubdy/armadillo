@@ -384,19 +384,6 @@ struct is_mtGlue< const mtGlue<eT, T1, T2, glue_type> >
 
 
 template<typename T>
-struct is_glue_times
-  { static const bool value = false; };
-
-template<typename T1, typename T2>
-struct is_glue_times< Glue<T1,T2,glue_times> >
-  { static const bool value = true; };
-
-template<typename T1, typename T2>
-struct is_glue_times< const Glue<T1,T2,glue_times> >
-  { static const bool value = true; };
-
-
-template<typename T>
 struct is_glue_times_diag
   { static const bool value = false; };
 
@@ -419,45 +406,6 @@ struct is_op_diagmat< Op<T1,op_diagmat> >
 
 template<typename T1>
 struct is_op_diagmat< const Op<T1,op_diagmat> >
-  { static const bool value = true; };
-
-
-template<typename T>
-struct is_op_strans
-  { static const bool value = false; };
- 
-template<typename T1>
-struct is_op_strans< Op<T1,op_strans> >
-  { static const bool value = true; };
-
-template<typename T1>
-struct is_op_strans< const Op<T1,op_strans> >
-  { static const bool value = true; };
-
-
-template<typename T>
-struct is_op_htrans
-  { static const bool value = false; };
- 
-template<typename T1>
-struct is_op_htrans< Op<T1,op_htrans> >
-  { static const bool value = true; };
-
-template<typename T1>
-struct is_op_htrans< const Op<T1,op_htrans> >
-  { static const bool value = true; };
-
-
-template<typename T>
-struct is_op_htrans2
-  { static const bool value = false; };
- 
-template<typename T1>
-struct is_op_htrans2< Op<T1,op_htrans2> >
-  { static const bool value = true; };
-
-template<typename T1>
-struct is_op_htrans2< const Op<T1,op_htrans2> >
   { static const bool value = true; };
 
 
@@ -543,57 +491,6 @@ struct is_mtGlueCube
 template<typename eT, typename T1, typename T2, typename glue_type>
 struct is_mtGlueCube< mtGlueCube<eT, T1, T2, glue_type> >
   { static const bool value = true; };
-
-
-//
-//
-//
-
-
-template<typename T>
-struct is_op_rel
-  { static const bool value = false; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_lt_pre> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_lt_post> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_gt_pre> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_gt_post> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_lteq_pre> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_lteq_post> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_gteq_pre> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_gteq_post> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_eq> >
-  { static const bool value = true; };
-
-template<typename out_eT, typename T1>
-struct is_op_rel< mtOp<out_eT, T1, op_rel_noteq> >
-  { static const bool value = true; };
-
 
 
 //
