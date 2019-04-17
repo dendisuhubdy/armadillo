@@ -34,6 +34,12 @@ glue_hist::apply_noalias(Mat<uword>& out, const Mat<eT>& X, const Mat<eT>& C, co
   
   if( C_n_elem == 0 )  { out.reset(); return; }
   
+  arma_debug_check
+    (
+    ((Col<eT>(const_cast<eT*>(C.memptr()), C_n_elem, false, false)).is_sorted("strictascend") == false),
+    "hist(): given 'centers' vector does not contain monotonically increasing values"
+    );
+  
   const eT* C_mem    = C.memptr();
   const eT  center_0 = C_mem[0];
   

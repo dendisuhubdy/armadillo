@@ -34,6 +34,12 @@ glue_histc::apply_noalias(Mat<uword>& C, const Mat<eT>& A, const Mat<eT>& B, con
   
   if( B_n_elem == uword(0) )  { C.reset(); return; }
   
+  arma_debug_check
+    (
+    ((Col<eT>(const_cast<eT*>(B.memptr()), B_n_elem, false, false)).is_sorted("strictascend") == false),
+    "hist(): given 'edges' vector does not contain monotonically increasing values"
+    );
+  
   const eT*   B_mem       = B.memptr();
   const uword B_n_elem_m1 = B_n_elem - 1;
   
