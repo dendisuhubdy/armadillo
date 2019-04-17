@@ -34,7 +34,7 @@ class op_cumsum
 
 
 class op_cumsum_vec
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   

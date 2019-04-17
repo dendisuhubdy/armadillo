@@ -31,7 +31,7 @@ class op_reverse
 
 
 class op_reverse_vec
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   

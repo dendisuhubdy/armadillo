@@ -21,7 +21,7 @@
 
 
 class op_clamp
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   

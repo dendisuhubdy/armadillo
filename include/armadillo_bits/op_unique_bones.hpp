@@ -35,7 +35,7 @@ class op_unique
 
 
 class op_unique_vec
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   

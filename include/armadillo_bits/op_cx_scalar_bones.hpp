@@ -20,7 +20,7 @@
 
 
 class op_cx_scalar_times
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -44,7 +44,7 @@ class op_cx_scalar_times
 
 
 class op_cx_scalar_plus
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -68,7 +68,7 @@ class op_cx_scalar_plus
 
 
 class op_cx_scalar_minus_pre
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -92,7 +92,7 @@ class op_cx_scalar_minus_pre
 
 
 class op_cx_scalar_minus_post
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -116,7 +116,7 @@ class op_cx_scalar_minus_post
 
 
 class op_cx_scalar_div_pre
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -140,7 +140,7 @@ class op_cx_scalar_div_pre
 
 
 class op_cx_scalar_div_post
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   

@@ -158,8 +158,7 @@ struct traits_op_col
 
 
 
-// TODO: rename op_passthru_traits to traits_op_passthru
-struct op_passthru_traits
+struct traits_op_passthru
   {
   template<typename T1>
   struct traits

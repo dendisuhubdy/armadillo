@@ -19,7 +19,7 @@
 
 
 class op_chi2rnd
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   

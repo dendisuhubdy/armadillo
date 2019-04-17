@@ -19,7 +19,7 @@
 
 
 class spop_scalar_times
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -30,7 +30,7 @@ class spop_scalar_times
 
 
 class spop_cx_scalar_times
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -41,7 +41,7 @@ class spop_cx_scalar_times
 
 
 class spop_square
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -52,7 +52,7 @@ class spop_square
 
 
 class spop_sqrt
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -63,7 +63,7 @@ class spop_sqrt
 
 
 class spop_abs
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -74,7 +74,7 @@ class spop_abs
 
 
 class spop_cx_abs
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -85,7 +85,7 @@ class spop_cx_abs
 
 
 class spop_arg
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -96,7 +96,7 @@ class spop_arg
 
 
 class spop_cx_arg
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -107,7 +107,7 @@ class spop_cx_arg
 
 
 class spop_real
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -118,7 +118,7 @@ class spop_real
 
 
 class spop_imag
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -129,7 +129,7 @@ class spop_imag
 
 
 class spop_conj
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -173,7 +173,7 @@ class spop_resize
 
 
 class spop_floor
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -184,7 +184,7 @@ class spop_floor
 
 
 class spop_ceil
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -195,7 +195,7 @@ class spop_ceil
 
 
 class spop_round
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -206,7 +206,7 @@ class spop_round
 
 
 class spop_trunc
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -217,7 +217,7 @@ class spop_trunc
 
 
 class spop_sign
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -239,7 +239,7 @@ class spop_diagvec
 
 
 class spop_flipud
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
@@ -250,7 +250,7 @@ class spop_flipud
 
 
 class spop_fliplr
-  : public op_passthru_traits
+  : public traits_op_passthru
   {
   public:
   
