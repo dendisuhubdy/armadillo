@@ -40,7 +40,7 @@ class glue_conv
 
 
 class glue_conv2
-  : public glue_default_traits
+  : public traits_glue_default
   {
   public:
   

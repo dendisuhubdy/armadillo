@@ -19,7 +19,7 @@
 
 
 class glue_hist
-  : public glue_default_traits
+  : public traits_glue_default
   {
   public:
   

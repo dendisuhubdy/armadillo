@@ -37,7 +37,7 @@ class glue_mvnrnd_vec
 
 
 class glue_mvnrnd
-  : public glue_default_traits
+  : public traits_glue_default
   {
   public:
   

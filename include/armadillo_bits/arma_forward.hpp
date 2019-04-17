@@ -171,8 +171,7 @@ struct traits_op_passthru
 
 
 
-// TODO: rename glue_default_traits to traits_glue_default
-struct glue_default_traits
+struct traits_glue_default
   {
   template<typename T1, typename T2>
   struct traits

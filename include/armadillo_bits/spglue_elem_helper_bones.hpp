@@ -20,7 +20,7 @@
 
 
 class spglue_elem_helper
-  : public glue_default_traits
+  : public traits_glue_default
   {
   public:
   
