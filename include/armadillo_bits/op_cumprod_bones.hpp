@@ -20,7 +20,7 @@
 
 
 class op_cumprod
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

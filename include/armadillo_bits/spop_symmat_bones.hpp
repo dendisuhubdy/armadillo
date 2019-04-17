@@ -20,7 +20,7 @@
 
 
 class spop_symmat
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   
@@ -31,7 +31,7 @@ class spop_symmat
 
 
 class spop_symmat_cx
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

@@ -119,8 +119,7 @@ class op_internal_div;
 
 
 
-// TODO: rename op_default_traits to traits_op_default
-struct op_default_traits
+struct traits_op_default
   {
   template<typename T1>
   struct traits

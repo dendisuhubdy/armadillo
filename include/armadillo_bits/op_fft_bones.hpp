@@ -21,7 +21,7 @@
 
 
 class op_fft_real
-  : public op_default_traits
+  : public traits_op_default  // TODO
   {
   public:
   
@@ -32,7 +32,7 @@ class op_fft_real
 
 
 class op_fft_cx
-  : public op_default_traits
+  : public traits_op_default  // TODO
   {
   public:
   
@@ -50,7 +50,7 @@ class op_fft_cx
 
 
 class op_ifft_cx
-  : public op_default_traits
+  : public traits_op_default  // TODO
   {
   public:
   

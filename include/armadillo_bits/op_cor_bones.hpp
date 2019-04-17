@@ -21,7 +21,7 @@
 
 
 class op_cor
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

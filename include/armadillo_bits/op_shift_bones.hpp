@@ -31,7 +31,7 @@ class op_shift_vec
 
 
 class op_shift
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

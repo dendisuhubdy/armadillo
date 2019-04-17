@@ -20,7 +20,7 @@
 
 
 class op_sort
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

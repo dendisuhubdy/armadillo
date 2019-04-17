@@ -21,7 +21,7 @@
 
 
 class op_expmat
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   
@@ -35,7 +35,7 @@ class op_expmat
 
 
 class op_expmat_sym
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

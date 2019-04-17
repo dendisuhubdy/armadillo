@@ -20,7 +20,7 @@
 
 
 class op_diagmat
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   
@@ -31,7 +31,7 @@ class op_diagmat
 
 
 class op_diagmat2
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

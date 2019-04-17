@@ -21,7 +21,7 @@
 
 
 class op_orth
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   
@@ -35,7 +35,7 @@ class op_orth
 
 
 class op_null
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

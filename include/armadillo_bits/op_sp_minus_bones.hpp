@@ -21,7 +21,7 @@
 
 // Subtract a sparse object from a scalar; the output will be a dense object.
 class op_sp_minus_pre
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
 
@@ -45,7 +45,7 @@ class op_sp_minus_pre
 
 // Subtract a scalar from a sparse object; the output will be a dense object.
 class op_sp_minus_post
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
 

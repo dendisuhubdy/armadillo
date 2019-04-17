@@ -140,7 +140,7 @@ class spop_conj
 
 
 class spop_repelem
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   
@@ -151,7 +151,7 @@ class spop_repelem
 
 
 class spop_reshape
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   
@@ -162,7 +162,7 @@ class spop_reshape
 
 
 class spop_resize
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
   

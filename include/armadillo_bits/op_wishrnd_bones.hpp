@@ -19,7 +19,7 @@
 
 
 class op_wishrnd
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
 
@@ -39,7 +39,7 @@ class op_wishrnd
 
 
 class op_iwishrnd
-  : public op_default_traits
+  : public traits_op_default
   {
   public:
 
