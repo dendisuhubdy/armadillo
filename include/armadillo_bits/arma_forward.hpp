@@ -253,7 +253,7 @@ class spglue_min;
 
 class spglue_plus_mixed;
 class spglue_minus_mixed;  // TODO
-class spglue_schur_mixed;  // TODO
+class spglue_schur_mixed;
 class spglue_times_mixed;
 
 
