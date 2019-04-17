@@ -80,9 +80,9 @@ class Op
   //     || is_same_type<op_type, op_cumprod_default>::yes   DONE
   //     || is_same_type<op_type, op_flipud>::yes            DONE
   //     || is_same_type<op_type, op_fliplr>::yes            DONE
-  //     || is_same_type<op_type, op_reverse>::yes
-  //     || is_same_type<op_type, op_reverse_default>::yes
-  //     || is_same_type<op_type, op_unique>::yes
+  //     || is_same_type<op_type, op_reverse>::yes           DONE
+  //     || is_same_type<op_type, op_reverse_default>::yes   DONE
+  //     || is_same_type<op_type, op_unique>::yes            DONE
   //     || is_same_type<op_type, op_diff_default>::yes      DONE
   //     || is_same_type<op_type, op_normalise_vec>::yes
   //     || is_same_type<op_type, op_chi2rnd>::yes

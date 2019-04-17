@@ -21,23 +21,26 @@
 
 
 class op_unique
-  : public op_default_traits
+  : public op_default_col_traits
   {
   public:
   
   template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = T1::is_row;
-    static const bool is_col  = T1::is_col;
-    static const bool is_xvec = true;
-    };
-  
-  template<typename T1>
-  inline static bool apply_helper(Mat<typename T1::elem_type>& out, const Proxy<T1>& P);
+  inline static bool apply_helper(Mat<typename T1::elem_type>& out, const Proxy<T1>& P, const bool P_is_row);
   
   template<typename T1>
   inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_unique>& in);
+  };
+
+
+
+class op_unique_vec
+  : public op_passthru_traits
+  {
+  public:
+  
+  template<typename T1>
+  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_unique_vec>& in);
   };
 
 
