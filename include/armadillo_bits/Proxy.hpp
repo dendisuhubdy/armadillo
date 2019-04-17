@@ -1452,7 +1452,7 @@ class Proxy< Op<T1, op_htrans> >
     Proxy_xtrans_redirect
       <
       Op<T1, op_htrans>,
-      ((is_complex<typename T1::elem_type>::value == false) && ((Op<T1, op_htrans>::is_row) || (Op<T1, op_htrans>::is_col)) )
+      ((is_cx<typename T1::elem_type>::no) && ((Op<T1, op_htrans>::is_row) || (Op<T1, op_htrans>::is_col)) )
       >::result
   {
   public:
@@ -1462,7 +1462,7 @@ class Proxy< Op<T1, op_htrans> >
   Proxy_xtrans_redirect
     <
     Op<T1, op_htrans>,
-    ((is_complex<typename T1::elem_type>::value == false) && ((Op<T1, op_htrans>::is_row) || (Op<T1, op_htrans>::is_col)) )
+    ((is_cx<typename T1::elem_type>::no) && ((Op<T1, op_htrans>::is_row) || (Op<T1, op_htrans>::is_col)) )
     >::result
   Proxy_xtrans;
   
@@ -1663,7 +1663,7 @@ class Proxy< Op<subview_row<eT>, op_htrans> >
     Proxy_subview_row_htrans_redirect
       <
       eT,
-      is_complex<eT>::value
+      is_cx<eT>::yes
       >::result
   {
   public:
@@ -1673,7 +1673,7 @@ class Proxy< Op<subview_row<eT>, op_htrans> >
   Proxy_subview_row_htrans_redirect
       <
       eT,
-      is_complex<eT>::value
+      is_cx<eT>::yes
       >::result
   Proxy_sv_row_ht;
   
