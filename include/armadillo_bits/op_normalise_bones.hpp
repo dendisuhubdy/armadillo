@@ -31,7 +31,7 @@ class op_normalise_vec
 
 
 class op_normalise_mat
-  : public op_passthru_traits
+  : public op_default_traits
   {
   public:
   

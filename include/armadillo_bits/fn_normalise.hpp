@@ -25,7 +25,7 @@ inline
 typename
 enable_if2
   <
-  (is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true)),
+  is_arma_type<T1>::value && resolves_to_vector<T1>::yes,
   const Op<T1, op_normalise_vec>
   >::result
 normalise
@@ -51,7 +51,7 @@ inline
 typename
 enable_if2
   <
-  (is_arma_type<T1>::value && (resolves_to_vector<T1>::value == false)),
+  is_arma_type<T1>::value && resolves_to_vector<T1>::no,
   const Op<T1, op_normalise_mat>
   >::result
 normalise
