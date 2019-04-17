@@ -28,6 +28,23 @@
 template<typename T1, typename T2>
 inline
 void
+glue_mvnrnd_vec::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_mvnrnd_vec>& expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  const bool status = glue_mvnrnd::apply_direct(out, expr.A, expr.B, uword(1));
+  
+  if(status == false)
+    {
+    arma_stop_runtime_error("mvnrnd(): given covariance matrix is not symmetric positive semi-definite");
+    }
+  }
+
+
+
+template<typename T1, typename T2>
+inline
+void
 glue_mvnrnd::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_mvnrnd>& expr)
   {
   arma_extra_debug_sigprint();
