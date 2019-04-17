@@ -56,7 +56,7 @@ shuffle
   {
   arma_extra_debug_sigprint();
   
-  return Op<T1, op_shuffle>(X);
+  return Op<T1, op_shuffle>(X, 0, 0);
   }
 
 
