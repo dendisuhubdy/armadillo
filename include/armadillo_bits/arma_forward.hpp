@@ -184,8 +184,7 @@ struct traits_glue_default
 
 
 
-// TODO: rename glue_fuse_or_traits to traits_glue_or
-struct glue_fuse_or_traits
+struct traits_glue_or
   {
   template<typename T1, typename T2>
   struct traits

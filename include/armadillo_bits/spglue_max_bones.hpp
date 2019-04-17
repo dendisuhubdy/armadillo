@@ -20,7 +20,7 @@
 
 
 class spglue_max
-  : public glue_fuse_or_traits
+  : public traits_glue_or
   {
   public:
   

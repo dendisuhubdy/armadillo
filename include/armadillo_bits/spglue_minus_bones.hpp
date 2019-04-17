@@ -20,7 +20,7 @@
 
 
 class spglue_minus
-  : public glue_fuse_or_traits
+  : public traits_glue_or
   {
   public:
   
@@ -37,7 +37,7 @@ class spglue_minus
 
 
 class spglue_minus_mixed
-  : public glue_fuse_or_traits
+  : public traits_glue_or
   {
   public:
   
