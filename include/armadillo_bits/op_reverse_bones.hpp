@@ -19,24 +19,24 @@
 
 
 
-class op_reverse_default
-  : public op_passthru_traits
-  {
-  public:
-  
-  template<typename T1>
-  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_default>& in);
-  };
-
-
-
 class op_reverse
-  : public op_passthru_traits
+  : public op_default_traits
   {
   public:
   
   template<typename T1>
   inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse>& in);
+  };
+
+
+
+class op_reverse_vec
+  : public op_passthru_traits
+  {
+  public:
+  
+  template<typename T1>
+  inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_reverse_vec>& in);
   };
 
 
