@@ -25,7 +25,7 @@ inline
 typename
 enable_if2
   <
-  is_arma_type<T1>::value && (resolves_to_vector<T1>::value == true), 
+  is_arma_type<T1>::value && resolves_to_vector<T1>::yes,
   bool
   >::result
 all(const T1& X)
@@ -43,7 +43,7 @@ arma_inline
 typename
 enable_if2
   <
-  is_arma_type<T1>::value && (resolves_to_vector<T1>::value == false), 
+  is_arma_type<T1>::value && resolves_to_vector<T1>::no,
   const mtOp<uword, T1, op_all>
   >::result
 all(const T1& X)
