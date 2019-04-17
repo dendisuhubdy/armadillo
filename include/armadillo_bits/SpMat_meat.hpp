@@ -848,8 +848,8 @@ SpMat<eT>::SpMat
   typedef typename T1::elem_type T;
   
   // Make sure eT is complex and T is not (compile-time check).
-  arma_type_check(( is_complex<eT>::value == false ));
-  arma_type_check(( is_complex< T>::value == true  ));
+  arma_type_check(( is_cx<eT>::no  ));
+  arma_type_check(( is_cx< T>::yes ));
   
   // Compile-time abort if types are not compatible.
   arma_type_check(( is_same_type< std::complex<T>, eT >::no ));
