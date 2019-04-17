@@ -20,7 +20,7 @@
 
 
 class op_diagvec
-  : public op_default_col_traits
+  : public traits_op_col
   {
   public:
   

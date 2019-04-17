@@ -20,7 +20,7 @@
 
 
 class op_sort_index
-  : public op_default_col_traits
+  : public traits_op_col
   {
   public:
   
@@ -34,7 +34,7 @@ class op_sort_index
 
 
 class op_stable_sort_index
-  : public op_default_col_traits
+  : public traits_op_col
   {
   public:
   

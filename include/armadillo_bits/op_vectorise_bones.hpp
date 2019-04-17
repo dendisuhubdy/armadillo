@@ -21,7 +21,7 @@
 
 
 class op_vectorise_col
-  : public op_default_col_traits
+  : public traits_op_col
   {
   public:
   
@@ -71,7 +71,7 @@ class op_vectorise_all
 
 
 class op_vectorise_cube_col
-  : public op_default_col_traits
+  : public traits_op_col
   {
   public:
   
