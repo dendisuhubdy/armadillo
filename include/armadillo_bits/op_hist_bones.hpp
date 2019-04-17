@@ -26,7 +26,7 @@ class op_hist
   public:
   
   template<typename eT>
-  inline static void apply_noalias(Mat<uword>& out, const Mat<eT>& A, const uword n_bins, const bool A_is_row);
+  inline static void apply_noalias(Mat<uword>& out, const Mat<eT>& A, const uword n_bins, const uword dim);
   
   template<typename T1>
   inline static void apply(Mat<uword>& out, const mtOp<uword, T1, op_hist>& X);
