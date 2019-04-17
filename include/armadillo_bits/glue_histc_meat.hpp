@@ -139,8 +139,7 @@ glue_histc_default::apply(Mat<uword>& C, const mtGlue<uword,T1,T2,glue_histc_def
   const quasi_unwrap<T1> UA(expr.A);
   const quasi_unwrap<T2> UB(expr.B);
   
-  //const uword dim = ( (T1::is_row) || ((UA.M.vec_state == 0) && (UA.M.n_elem <= 1) && (C.vec_state == 2)) ) ? 1 : 0;
-  const uword dim = (T1::is_row) ? 1 : 0;
+  const uword dim = (T1::is_xvec) ? uword(UA.M.is_rowvec() ? 1 : 0) : uword((T1::is_row) ? 1 : 0);
   
   if(UA.is_alias(C) || UB.is_alias(C))
     {

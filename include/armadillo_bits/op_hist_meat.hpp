@@ -89,17 +89,19 @@ op_hist::apply(Mat<uword>& out, const mtOp<uword, T1, op_hist>& X)
   
   const quasi_unwrap<T1> U(X.m);
   
+  const bool A_is_row = (T1::is_xvec) ? bool(U.M.is_rowvec()) : bool(T1::is_row);
+  
   if(U.is_alias(out))
     {
     Mat<uword> tmp;
     
-    op_hist::apply_noalias(tmp, U.M, n_bins, (T1::is_row));
+    op_hist::apply_noalias(tmp, U.M, n_bins, A_is_row);
     
     out.steal_mem(tmp);
     }
   else
     {
-    op_hist::apply_noalias(out, U.M, n_bins, (T1::is_row));
+    op_hist::apply_noalias(out, U.M, n_bins, A_is_row);
     }
   }
 

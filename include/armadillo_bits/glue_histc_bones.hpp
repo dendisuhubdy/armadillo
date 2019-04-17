@@ -41,7 +41,7 @@ class glue_histc_default
     {
     static const bool is_row  = T1::is_row;
     static const bool is_col  = T1::is_col;
-    static const bool is_xvec = false;
+    static const bool is_xvec = T1::is_xvec;
     };
   
   template<typename T1, typename T2>
