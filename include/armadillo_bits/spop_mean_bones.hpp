@@ -20,7 +20,7 @@
 
 //! Class for finding mean values of a sparse matrix
 class spop_mean
-  : public op_default_xvec_traits
+  : public traits_op_xvec
   {
   public:
 

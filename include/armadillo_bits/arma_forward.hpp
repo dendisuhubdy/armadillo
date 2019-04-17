@@ -132,8 +132,7 @@ struct traits_op_default
 
 
 
-// TODO: rename op_default_xvec_traits to traits_op_xvec
-struct op_default_xvec_traits
+struct traits_op_xvec
   {
   template<typename T1>
   struct traits
@@ -146,7 +145,7 @@ struct op_default_xvec_traits
 
 
 
-// TODO: rename op_default_xvec_traits to traits_op_xvec
+// TODO: rename op_default_col_traits to traits_op_col
 struct op_default_col_traits
   {
   template<typename T1>

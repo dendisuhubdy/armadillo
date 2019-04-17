@@ -19,7 +19,7 @@
 
 //! Class for finding the standard deviation
 class op_stddev
-  : public op_default_xvec_traits
+  : public traits_op_xvec
   {
   public:
   
