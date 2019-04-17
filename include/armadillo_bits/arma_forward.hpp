@@ -230,19 +230,8 @@ template<typename T1> class ProxyCube;
 
 template<typename T1> class diagmat_proxy;
 
-class spop_sum;
-class spop_mean;
-class spop_var;
 class spop_strans;
 class spop_htrans;
-class spop_scalar_times;
-class spop_cx_scalar_times;
-class spop_real;
-class spop_imag;
-class spop_cx_abs;
-class spop_cx_arg;
-class spop_max;
-class spop_min;
 
 class spglue_plus;
 class spglue_minus;
@@ -250,11 +239,6 @@ class spglue_schur;
 class spglue_times;
 class spglue_max;
 class spglue_min;
-
-class spglue_plus_mixed;
-class spglue_minus_mixed;  // TODO
-class spglue_schur_mixed;
-class spglue_times_mixed;
 
 
 struct state_type
