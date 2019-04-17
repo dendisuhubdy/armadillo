@@ -73,84 +73,16 @@ class arma_empty_class {};
 
 class diskio;
 
-// class op_min;
-// class op_max;
-// class op_index_min;
-// class op_index_max;
-// 
 class op_strans;
 class op_htrans;
 class op_htrans2;
 class op_inv;
-// class op_sum;
-// class op_mean;
-// class op_var;
-// class op_stddev;
-// class op_median;
-// class op_abs;
-// class op_arg;
 class op_diagmat;
 class op_trimat;
-// class op_diagvec;
 class op_vectorise_col;
-// class op_vectorise_all;
-// class op_normalise_vec;
-// class op_normalise_mat;
-// class op_clamp;
-// class op_cumsum;
-// class op_cumsum_vec;
-// class op_cumprod;
-// class op_cumprod_vec;
-// class op_shift;
-// class op_shift_vec;
-// class op_shuffle;
-// class op_shuffle_vec;
-// class op_sort;
-// class op_sort_vec;
-// class op_find;
-// class op_find_simple;
-// class op_find_unique;
-// class op_flipud;
-// class op_fliplr;
-// class op_reverse;
-// class op_reverse_vec;
-// class op_real;
-// class op_imag;
-// class op_nonzeros;
-// class op_sort_index;
-// class op_stable_sort_index;
-// class op_unique;
-// class op_unique_index;
-// class op_diff;
-// class op_diff_vec;
-// class op_hist;
-// class op_chi2rnd;
-// class op_roots;
-// class op_prod;
-// class op_range;
-// class op_all;
-// class op_any;
-// class op_sp_plus;
-// class op_sp_minus_pre;
-// class op_sp_minus_post;
-// 
-// 
-// class eop_conj;
-// 
 class glue_times;
 class glue_times_diag;
-// class glue_conv;
-// class glue_join_cols;
-// class glue_join_rows;
-// class glue_atan2;
-// class glue_hypot;
-// class glue_max;
-// class glue_min;
-// class glue_polyfit;
-// class glue_polyval;
-// class glue_intersect;
-// class glue_affmul;
-// 
+
 class glue_rel_lt;
 class glue_rel_gt;
 class glue_rel_lteq;
@@ -176,25 +108,6 @@ class gen_ones;
 class gen_zeros;
 class gen_randu;
 class gen_randn;
-// 
-// class glue_mixed_plus;
-// class glue_mixed_minus;
-// class glue_mixed_div;
-// class glue_mixed_schur;
-// class glue_mixed_times;
-// 
-// class glue_hist;
-// class glue_hist_default;
-// 
-// class glue_histc;
-// class glue_histc_default;
-// 
-// class op_cx_scalar_times;
-// class op_cx_scalar_plus;
-// class op_cx_scalar_minus_pre;
-// class op_cx_scalar_minus_post;
-// class op_cx_scalar_div_pre;
-// class op_cx_scalar_div_post;
 
 
 
