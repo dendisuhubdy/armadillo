@@ -43,7 +43,7 @@ struct Op_traits<T1, op_type, false>
 template<typename T1, typename op_type>
 class Op
   : public Base<typename T1::elem_type, Op<T1, op_type> >
-  , public Op_traits<T1, op_type, has_nested_traits<op_type>::value >
+  , public Op_traits<T1, op_type, has_nested_op_traits<op_type>::value >
   {
   public:
   

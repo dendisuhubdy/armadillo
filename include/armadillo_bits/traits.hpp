@@ -1191,18 +1191,28 @@ struct has_op_inv< Glue<T1, Op<T2,op_inv>, glue_times> >
 
 
 template<typename T>
-struct has_nested_traits
+struct has_nested_op_traits
   {
   typedef char yes[1];
   typedef char  no[2];
   
   template<typename X> static yes& check(typename X::template traits<void>*);
-  template<typename X> static yes& check(typename X::template traits<void,void>*);
   template<typename>   static  no& check(...);
   
   static const bool value = ( sizeof(check<T>(0)) == sizeof(yes) );
   };
 
+template<typename T>
+struct has_nested_glue_traits
+  {
+  typedef char yes[1];
+  typedef char  no[2];
+  
+  template<typename X> static yes& check(typename X::template traits<void,void>*);
+  template<typename>   static  no& check(...);
+  
+  static const bool value = ( sizeof(check<T>(0)) == sizeof(yes) );
+  };
 
 
 //! @}
