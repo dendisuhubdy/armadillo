@@ -5524,6 +5524,9 @@ auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
   {
   arma_extra_debug_sigprint();
   
+  // NOTE: the function name is a misnomer, as it checks for hermitian complex matrices;
+  // NOTE: for simplicity of use, the function name is the same as for real matrices
+  
   typedef typename std::complex<T> eT;
   
   const uword N   = X.n_rows;
