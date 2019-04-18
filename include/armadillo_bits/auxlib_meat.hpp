@@ -289,13 +289,15 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   
   // if(auxlib::rudimentary_sym_check(out) == false)
   //   {
-  //   arma_debug_warn("inv_sympd(): given matrix is not symmetric");
+  //   if(is_cx<eT>::no )  { arma_debug_warn("inv_sympd(): given matrix is not symmetric"); }
+  //   if(is_cx<eT>::yes)  { arma_debug_warn("inv_sympd(): given matrix is not hermitian"); }
   //   return false;
   //   }
   
   if((arma_config::debug) && (auxlib::rudimentary_sym_check(out) == false))
     {
-    arma_debug_warn("inv_sympd(): given matrix is not symmetric");
+    if(is_cx<eT>::no )  { arma_debug_warn("inv_sympd(): given matrix is not symmetric"); }
+    if(is_cx<eT>::yes)  { arma_debug_warn("inv_sympd(): given matrix is not hermitian"); }
     }
   
   if(out.n_rows <= 4)
@@ -1642,12 +1644,13 @@ auxlib::eig_sym(Col<T>& eigval, const Base<std::complex<T>,T1>& X)
     
     // if(auxlib::rudimentary_sym_check(A) == false)
     //   {
+    //   arma_debug_warn("eig_sym(): given matrix is not hermitian");
     //   return false;
     //   }
     
     if((arma_config::debug) && (auxlib::rudimentary_sym_check(A) == false))
       {
-      arma_debug_warn("eig_sym(): given matrix is not symmetric");
+      arma_debug_warn("eig_sym(): given matrix is not hermitian");
       }
     
     arma_debug_assert_blas_size(A);
