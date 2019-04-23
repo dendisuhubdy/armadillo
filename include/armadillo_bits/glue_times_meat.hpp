@@ -550,7 +550,7 @@ glue_times::apply_inplace_plus(Mat<typename T1::elem_type>& out, const Glue<T1, 
   typedef typename T1::elem_type            eT;
   typedef typename get_pod_type<eT>::result  T;
   
-  if( (is_outer_product<T1>::value) || (has_op_inv<T1>::value) || (has_op_inv<T2>::value) )
+  if( (is_outer_product<T1>::value) || (has_op_inv<T1>::value) || (has_op_inv<T2>::value) || (has_op_inv_sympd<T1>::value) || (has_op_inv_sympd<T2>::value) )
     {
     // partial workaround for corner cases
     
