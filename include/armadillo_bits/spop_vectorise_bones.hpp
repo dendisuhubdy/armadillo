@@ -23,10 +23,10 @@ class spop_vectorise_col
   : public traits_op_col
   {
   public:
-
+  
   template<typename T1> inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_col>& in);
-
-  template<typename T1> inline static void apply_proxy(SpMat<typename T1::elem_type>& out, const SpProxy<T1>& p);
+  
+  template<typename T1> inline static void apply_direct(SpMat<typename T1::elem_type>& out, const T1& expr);
   };
 
 
@@ -34,17 +34,19 @@ class spop_vectorise_col
 class spop_vectorise_row
   {
   public:
-
+  
   template<typename T1>
   struct traits
     {
-    static const bool is_row = true;
-    static const bool is_col = false;
+    static const bool is_row  = true;
+    static const bool is_col  = false;
     static const bool is_xvec = false;
     };
-
+  
   template<typename T1> inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_row>& in);
-
+  
+  template<typename T1> inline static void apply_direct(SpMat<typename T1::elem_type>& out, const T1& expr);
+  
   template<typename T1> inline static void apply_proxy(SpMat<typename T1::elem_type>& out, const SpProxy<T1>& p);
   };
 
@@ -53,15 +55,15 @@ class spop_vectorise_row
 class spop_vectorise_all
   {
   public:
-
+  
   template<typename T1>
   struct traits
     {
-    static const bool is_row = false;
-    static const bool is_col = false;
+    static const bool is_row  = false;
+    static const bool is_col  = false;
     static const bool is_xvec = true;
     };
-
+  
   template<typename T1> inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_all>& in);
   };
 

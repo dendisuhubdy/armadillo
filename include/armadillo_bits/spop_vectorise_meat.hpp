@@ -19,45 +19,36 @@
 //! @{
 
 
+
 template<typename T1>
 inline
 void
 spop_vectorise_col::apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_col>& in)
   {
   arma_extra_debug_sigprint();
-
-  SpProxy<T1> P(in.m);
-
-  spop_vectorise_col::apply_proxy(out, P);
+  
+  spop_vectorise_col::apply_direct(out, in.m);
   }
+
 
 
 template<typename T1>
 inline
 void
-spop_vectorise_col::apply_proxy(SpMat<typename T1::elem_type>& out, const SpProxy<T1>& P)
+spop_vectorise_col::apply_direct(SpMat<typename T1::elem_type>& out, const T1& expr)
   {
-  // Check for aliasing.
-  if (P.is_alias(out))
+  arma_extra_debug_sigprint();
+  
+  out = expr;
+  
+  if( (out.n_elem == 0) || (out.n_nonzero == 0) )
     {
-    // If it's an alias, it's just a reshape...
-    out.reshape(P.get_n_elem(), 1);
-    return;
+    out.zeros(out.n_elem, 1);
     }
-
-  // It's not an alias---so copy elements over.  It's easiest to just use the
-  // iterator regardless.
-  out.zeros(P.get_n_elem(), 1);
-  typename SpProxy<T1>::const_iterator_type it = P.begin();
-  const typename SpProxy<T1>::const_iterator_type end = P.end();
-  while (it != end)
+  else
     {
-    out.at((it.col() * P.get_n_rows()) + it.row(), 0) = (*it);
-
-    ++it;
+    out.reshape(out.n_elem, 1);
     }
-
-  out.sync();
   }
 
 
@@ -68,43 +59,32 @@ void
 spop_vectorise_row::apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_row>& in)
   {
   arma_extra_debug_sigprint();
-
-  const SpProxy<T1> P(in.m);
-
-  spop_vectorise_row::apply_proxy(out, P);
+  
+  spop_vectorise_row::apply_direct(out, in.m);
   }
+
 
 
 template<typename T1>
 inline
 void
-spop_vectorise_row::apply_proxy(SpMat<typename T1::elem_type>& out, const SpProxy<T1>& P)
+spop_vectorise_row::apply_direct(SpMat<typename T1::elem_type>& out, const T1& expr)
   {
-  // Check for aliasing.
-  bool is_alias = P.is_alias(out);
-  SpMat<typename T1::elem_type> tmp;
-  SpMat<typename T1::elem_type>& out_alias = (is_alias) ? tmp : out;
-
-  // We have to iterate row-wise.
-  typename SpProxy<T1>::const_row_iterator_type it = P.begin_row();
-  typename SpProxy<T1>::const_row_iterator_type end = P.end_row();
-
-  out_alias.zeros(1, P.get_n_elem());
-
-  while (it != end)
+  arma_extra_debug_sigprint();
+  
+  out = trans(expr);
+  
+  if( (out.n_elem == 0) || (out.n_nonzero == 0) )
     {
-    out_alias.at(0, it.row() * P.get_n_cols() + it.col()) = (*it);
-
-    ++it;
+    out.zeros(1, out.n_elem);
     }
-
-  out_alias.sync();
-
-  if (is_alias)
+  else
     {
-    out.steal_mem(tmp);
+    out.reshape(1, out.n_elem);
     }
   }
+
+
 
 template<typename T1>
 inline
@@ -112,18 +92,19 @@ void
 spop_vectorise_all::apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_all>& in)
   {
   arma_extra_debug_sigprint();
-
-  const SpProxy<T1> P(in.m);
-
+  
   const uword dim = in.aux_uword_a;
-
-  if (dim == 0)
+  
+  if(dim == 0)
     {
-    spop_vectorise_col::apply_proxy(out, P);
+    spop_vectorise_col::apply_direct(out, in.m);
     }
   else
     {
-    spop_vectorise_row::apply_proxy(out, P);
+    spop_vectorise_row::apply_direct(out, in.m);
     }
   }
+
+
+
 //! @}
