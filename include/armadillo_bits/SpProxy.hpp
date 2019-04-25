@@ -528,7 +528,6 @@ class SpProxy< SpOp<T1, spop_vectorise_col> >
     : Q(A.m)
     {
     arma_extra_debug_sigprint();
-    std::cout << "create SpProxy\n";
     }
   
   arma_inline uword get_n_rows()    const { return Q.get_n_elem();    }
