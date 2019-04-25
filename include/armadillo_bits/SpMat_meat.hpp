@@ -5564,7 +5564,21 @@ SpMat<eT>::steal_mem_simple(SpMat<eT>& x)
   {
   arma_extra_debug_sigprint();
   
-  if(this != &x)
+  if(this == &x)  { return; }
+  
+  bool layout_ok = false;
+  
+  if((*this).vec_state == x.vec_state)
+    {
+    layout_ok = true;
+    }
+  else
+    {
+    if( ((*this).vec_state == 1) && (x.n_cols == 1) )  { layout_ok = true; }
+    if( ((*this).vec_state == 2) && (x.n_rows == 1) )  { layout_ok = true; }
+    }
+  
+  if(layout_ok)
     {
     if(values     )  { memory::release(access::rw(values));      }
     if(row_indices)  { memory::release(access::rw(row_indices)); }
@@ -5588,6 +5602,10 @@ SpMat<eT>::steal_mem_simple(SpMat<eT>& x)
     access::rw(x.values)      = NULL;
     access::rw(x.row_indices) = NULL;
     access::rw(x.col_ptrs)    = NULL;
+    }
+  else
+    {
+    (*this).operator=(x);
     }
   }
 
