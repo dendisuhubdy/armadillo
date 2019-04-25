@@ -3920,6 +3920,12 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
   
   if( (n_rows == in_rows) && (n_cols == in_cols) )  { return; }
   
+  if( (n_elem == 0) || (n_nonzero == 0) )
+    {
+    (*this).zeros(in_rows, in_cols);
+    return;
+    }
+  
   sync_csc();
   invalidate_cache();
   
