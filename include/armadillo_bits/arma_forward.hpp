@@ -234,8 +234,8 @@ template<typename T1> class diagmat_proxy;
 
 class spop_strans;
 class spop_htrans;
+class spop_vectorise_row;
 class spop_vectorise_col;
-class spop_vectorise_all;
 
 class spglue_plus;
 class spglue_minus;
