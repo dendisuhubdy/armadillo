@@ -522,7 +522,7 @@ class SpProxy< SpOp<T1, spop_vectorise_col> >
   static const bool is_col  = true;
   static const bool is_xvec = false;
   
-  arma_aligned const SpProxy<T1> Q;
+  arma_aligned const SpProxy<T1> Q;  // TODO: refactor so unwrap_spmat can be applied on Q
   
   inline explicit SpProxy(const SpOp<T1, spop_vectorise_col>& A)
     : Q(A.m)
