@@ -298,6 +298,7 @@ Conrad Sanderson and Ryan Curtin.
 <tr><td><a href="#iterators_submat">iterators&nbsp;(submatrices)</a></td><td>&nbsp;</td><td>iterators and associated member functions for submatrices &amp; subcubes</td></tr>
 <tr><td><a href="#compat_container_fns">compat.&nbsp;container&nbsp;functions</a></td><td>&nbsp;</td><td>compatibility container functions</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
+<tr><td><a href="#as_col_row">.as_col&nbsp;/&nbsp;.as_row&nbsp;</a></td><td>&nbsp;</td><td>return flattened matrix as column or row vector</td></tr>
 <tr><td><a href="#t_st_members">.t&nbsp;/&nbsp;.st&nbsp;</a></td><td>&nbsp;</td><td>return matrix transpose</td></tr>
 <tr><td><a href="#i_member">.i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td><td>&nbsp;</td><td>return inverse of square matrix</td></tr>
 <tr><td><a href="#min_and_max_member">.min&nbsp;/&nbsp;.max</a></td><td>&nbsp;</td><td>return extremum value</td></tr>
@@ -3331,7 +3332,7 @@ to grow/shrink the object while preserving the elements <b>as well as</b> the la
 use <a href="#resize_member">.resize()</a> instead
 </li>
 <li>
-to flatten a matrix into a vector, use <a href="#vectorise">vectorise()</a> instead
+to flatten a matrix into a vector, use <a href="#vectorise">vectorise()</a> or <a href="#as_col_row">.as_col()&nbsp;/&nbsp;.as_row()</a> instead
 </li>
 </ul>
 </li>
@@ -3354,6 +3355,7 @@ A.reshape(5,4);
 <li><a href="#copy_size">.copy_size()</a></li>
 <li><a href="#zeros_member">.zeros()</a></li>
 <li><a href="#reset">.reset()</a></li>
+<li><a href="#as_col_row">.as_col()&nbsp;/&nbsp;.as_row()</a></li>
 <li><a href="#reshape">reshape()</a> (standalone function)</li>
 <li><a href="#vectorise">vectorise()</a></li>
 <li><a href="#size">size()</a></li>
@@ -5485,6 +5487,51 @@ See also:
 </ul>
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="as_col_row"></a>
+<b>
+.as_col()
+<br>.as_row()
+</b>
+<ul>
+<li>
+Member functions of any matrix expression
+</li>
+<br>
+<li>
+<i>.as_col()</i>: return a flattened version of the matrix as a column vector; flattening is done by concatenating all columns
+</li>
+<br>
+<li>
+<i>.as_row()</i>: return a flattened version of the matrix as a row vector; flattening is done by concatenating all rows
+</li>
+<br>
+<li>
+<b>Caveat:</b> concatenating columns is faster than concatenating rows
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat X = randu&lt;mat&gt;(4,5);
+vec v = X.as_col();
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#reshape_member">.reshape()</a></li>
+<li><a href="#t_st_members">.t()&nbsp;/&nbsp;.st()</a></li>
+<li><a href="#as_scalar">as_scalar()</a></li>
+<li><a href="#vectorise">vectorise()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="t_st_members"></a>
 <b>
 .t()
@@ -5527,6 +5574,7 @@ See also:
 <li><a href="#trans">trans()</a></li>
 <li><a href="#flip">fliplr() &amp; flipud()</a></li>
 <li><a href="#reverse">reverse()</a></li>
+<li><a href="#as_col_row">.as_col()&nbsp;/&nbsp;.as_row()</a></li>
 </ul>
 </li>
 <br>
@@ -7964,6 +8012,7 @@ double d = as_scalar(r*inv(diagmat(X))*q);
 <li>
 See also:
 <ul>
+<li><a href="#as_col_row">.as_col()&nbsp;/&nbsp;.as_row()</a></li>
 <li><a href="#vectorise">vectorise()</a></li>
 <li><a href="#accu">accu()</a></li>
 <li><a href="#trace">trace()</a></li>
@@ -9990,7 +10039,7 @@ to grow/shrink a matrix while preserving the elements <b>as well as</b> the layo
 use <a href="#resize">resize()</a> instead
 </li>
 <li>
-to flatten a matrix into a vector, use <a href="#vectorise">vectorise()</a> instead
+to flatten a matrix into a vector, use <a href="#vectorise">vectorise()</a> or <a href="#as_col_row">.as_col()&nbsp;/&nbsp;.as_row()</a> instead
 </li>
 </ul>
 </li>
@@ -10920,7 +10969,7 @@ For <i>dim=1</i>, the elements are copied from <i>X</i> row-wise; equivalent to 
 </li>
 <br>
 <li>
-Concatenating columns is faster than concatenating rows
+<b>Caveat:</b> concatenating columns is faster than concatenating rows
 </li>
 <br>
 <li>
@@ -10937,6 +10986,7 @@ vec v = vectorise(X);
 <li>
 See also:
 <ul>
+<li><a href="#as_col_row">.as_col()&nbsp;/&nbsp;.as_row()</a></li>
 <li><a href="#nonzeros">nonzeros()</a></li>
 <li><a href="#reshape">reshape()</a></li>
 <li><a href="#resize">resize()</a></li>
