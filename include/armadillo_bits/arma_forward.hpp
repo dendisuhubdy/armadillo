@@ -80,6 +80,7 @@ class op_inv;
 class op_inv_sympd;
 class op_diagmat;
 class op_trimat;
+class op_vectorise_row;
 class op_vectorise_col;
 class glue_times;
 class glue_times_diag;
