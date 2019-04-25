@@ -3139,4 +3139,93 @@ TEST_CASE("spmat_elementwise_min_cx")
   }
 
 
+// Test vectorise() on a matrix.
+TEST_CASE("spmat_vectorise_matrix")
+  {
+  sp_mat m;
+  m.sprandu(10, 10, 0.1);
 
+  sp_vec c = vectorise(m);
+  sp_mat d = vectorise(m);
+  sp_rowvec e = vectorise(m).t();
+
+  for (uword i = 0; i < c.n_elem; ++i)
+    {
+    REQUIRE(c[i] == Approx(m[i]));
+    REQUIRE(d[i] == Approx(m[i]));
+    REQUIRE(e[i] == Approx(m[i]));
+    }
+  }
+
+
+
+// Test vectorise() as an alias.
+TEST_CASE("spmat_vectorise_alias")
+  {
+  sp_mat m;
+  m.sprandu(10, 10, 0.1);
+
+  sp_mat n(m);
+  n = vectorise(n);
+
+  REQUIRE(n.n_rows == 100);
+  REQUIRE(n.n_cols == 1);
+  for (uword i = 0; i < n.n_elem; ++i)
+    {
+    REQUIRE(n[i] == Approx(m[i]));
+    }
+  }
+
+
+
+// Test vectorise() with the dimension argument.
+TEST_CASE("spmat_vectorise_dimension")
+  {
+  sp_mat m;
+  m.sprandu(10, 10, 0.1);
+  sp_mat n = m.t();
+
+  sp_vec c = vectorise(m, 0);
+  sp_rowvec d = vectorise(m, 1);
+  sp_rowvec e = vectorise(m.t(), 1);
+  sp_vec f = vectorise(m.t(), 0);
+
+  for (uword i = 0; i < m.n_elem; ++i)
+    {
+    REQUIRE(c[i] == Approx(m[i]));
+    REQUIRE(d[i] == Approx(n[i]));
+    REQUIRE(e[i] == Approx(m[i]));
+    REQUIRE(f[i] == Approx(n[i]));
+    }
+  }
+
+
+
+// Test vectorise() with an alias and a dimension argument.
+TEST_CASE("spmat_vectorise_dimension_alias")
+  {
+  sp_mat m;
+  m.sprandu(10, 10, 0.1);
+  sp_mat n(m);
+
+  m = arma::vectorise(m, 0);
+
+  REQUIRE(m.n_rows == 100);
+  REQUIRE(m.n_cols == 1);
+  for (uword i = 0; i < m.n_elem; ++i)
+    {
+    REQUIRE(m[i] == Approx(n[i]));
+    }
+
+  m.sprandu(10, 10, 0.1);
+  n = m.t();
+
+  m = arma::vectorise(m, 1);
+
+  REQUIRE(m.n_rows == 1);
+  REQUIRE(m.n_cols == 100);
+  for (uword i = 0; i < m.n_elem; ++i)
+    {
+    REQUIRE(m[i] == Approx(n[i]));
+    }
+  }

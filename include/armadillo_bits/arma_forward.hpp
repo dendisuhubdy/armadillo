@@ -234,6 +234,8 @@ template<typename T1> class diagmat_proxy;
 
 class spop_strans;
 class spop_htrans;
+class spop_vectorise_col;
+class spop_vectorise_all;
 
 class spglue_plus;
 class spglue_minus;
@@ -241,7 +243,6 @@ class spglue_schur;
 class spglue_times;
 class spglue_max;
 class spglue_min;
-
 
 struct state_type
   {
