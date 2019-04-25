@@ -39,15 +39,19 @@ spop_vectorise_col::apply_direct(SpMat<typename T1::elem_type>& out, const T1& e
   {
   arma_extra_debug_sigprint();
   
-  out = expr;
+  typedef typename T1::elem_type eT;
   
-  if( (out.n_elem == 0) || (out.n_nonzero == 0) )
+  SpMat<eT> tmp = expr;
+  
+  if( (tmp.n_elem == 0) || (tmp.n_nonzero == 0) )
     {
-    out.zeros(out.n_elem, 1);
+    out.zeros(tmp.n_elem, 1);
     }
   else
     {
-    out.reshape(out.n_elem, 1);
+    tmp.reshape(tmp.n_elem, 1);
+    
+    out.steal_mem(tmp);
     }
   }
 
@@ -72,15 +76,19 @@ spop_vectorise_row::apply_direct(SpMat<typename T1::elem_type>& out, const T1& e
   {
   arma_extra_debug_sigprint();
   
-  out = trans(expr);
+  typedef typename T1::elem_type eT;
   
-  if( (out.n_elem == 0) || (out.n_nonzero == 0) )
+  SpMat<eT> tmp = trans(expr);
+  
+  if( (tmp.n_elem == 0) || (tmp.n_nonzero == 0) )
     {
-    out.zeros(1, out.n_elem);
+    out.zeros(1, tmp.n_elem);
     }
   else
     {
-    out.reshape(1, out.n_elem);
+    tmp.reshape(1, tmp.n_elem);
+    
+    out.steal_mem(tmp);
     }
   }
 
