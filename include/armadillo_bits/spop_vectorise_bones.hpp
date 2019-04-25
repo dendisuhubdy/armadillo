@@ -32,16 +32,11 @@ class spop_vectorise_col
 
 
 class spop_vectorise_row
+  : public traits_op_row
   {
   public:
   
   template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = true;
-    static const bool is_col  = false;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1> inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_row>& in);
   
@@ -53,16 +48,9 @@ class spop_vectorise_row
 
 
 class spop_vectorise_all
+  : public traits_op_xvec
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = false;
-    static const bool is_xvec = true;
-    };
   
   template<typename T1> inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_all>& in);
   };

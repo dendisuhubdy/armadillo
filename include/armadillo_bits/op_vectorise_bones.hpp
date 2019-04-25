@@ -37,16 +37,9 @@ class op_vectorise_col
 
 
 class op_vectorise_row
+  : public traits_op_row
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = true;
-    static const bool is_col  = false;
-    static const bool is_xvec = false;
-    };
   
   template<typename T1> inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_vectorise_row>& in);
   
@@ -58,16 +51,9 @@ class op_vectorise_row
 
 
 class op_vectorise_all
+  : public traits_op_xvec
   {
   public:
-  
-  template<typename T1>
-  struct traits
-    {
-    static const bool is_row  = false;
-    static const bool is_col  = false;
-    static const bool is_xvec = true;
-    };
   
   template<typename T1> inline static void apply(Mat<typename T1::elem_type>& out, const Op<T1,op_vectorise_all>& in);
   };

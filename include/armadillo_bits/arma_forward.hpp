@@ -133,7 +133,6 @@ struct traits_op_default
   };
 
 
-
 struct traits_op_xvec
   {
   template<typename T1>
@@ -144,7 +143,6 @@ struct traits_op_xvec
     static const bool is_xvec = true;
     };
   };
-
 
 
 struct traits_op_col
@@ -159,6 +157,17 @@ struct traits_op_col
   };
 
 
+struct traits_op_row
+  {
+  template<typename T1>
+  struct traits
+    {
+    static const bool is_row  = true;
+    static const bool is_col  = false;
+    static const bool is_xvec = false;
+    };
+  };
+
 
 struct traits_op_passthru
   {
@@ -172,7 +181,6 @@ struct traits_op_passthru
   };
 
 
-
 struct traits_glue_default
   {
   template<typename T1, typename T2>
@@ -183,7 +191,6 @@ struct traits_glue_default
     static const bool is_xvec = false;
     };
   };
-
 
 
 struct traits_glue_or
