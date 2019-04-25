@@ -3920,6 +3920,9 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
   
   if( (n_rows == in_rows) && (n_cols == in_cols) )  { return; }
   
+  if(vec_state == 1)  { arma_debug_check( (in_cols != 1), "SpMat::reshape(): object is a column vector; requested size is not compatible" ); }
+  if(vec_state == 2)  { arma_debug_check( (in_rows != 1), "SpMat::reshape(): object is a row vector; requested size is not compatible"    ); }
+  
   if( (n_elem == 0) || (n_nonzero == 0) )
     {
     (*this).zeros(in_rows, in_cols);
