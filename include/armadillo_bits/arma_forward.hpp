@@ -239,8 +239,6 @@ template<typename T1> class ProxyCube;
 
 template<typename T1> class diagmat_proxy;
 
-template<typename T1> struct unwrap_spmat;
-
 class spop_strans;
 class spop_htrans;
 class spop_vectorise_row;

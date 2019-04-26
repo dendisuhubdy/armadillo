@@ -32,6 +32,12 @@ class op_nonzeros
   
   template<typename T1>
   static inline void apply(Mat<typename T1::elem_type>& out, const Op<T1, op_nonzeros>& X);
+  
+  
+  // for sparse matrices
+  
+  template<typename T1>
+  static inline void apply_noalias(Mat<typename T1::elem_type>& out, const SpBase<typename T1::elem_type, T1>& X);
   };
 
 

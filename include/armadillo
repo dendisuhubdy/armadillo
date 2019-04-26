@@ -287,7 +287,6 @@ namespace arma
   #include "armadillo_bits/op_cond_bones.hpp"
   #include "armadillo_bits/op_sp_plus_bones.hpp"
   #include "armadillo_bits/op_sp_minus_bones.hpp"
-  #include "armadillo_bits/op_sp_nonzeros_bones.hpp"
   
   #include "armadillo_bits/glue_times_bones.hpp"
   #include "armadillo_bits/glue_mixed_bones.hpp"
@@ -701,7 +700,6 @@ namespace arma
   #include "armadillo_bits/op_cond_meat.hpp"
   #include "armadillo_bits/op_sp_plus_meat.hpp"
   #include "armadillo_bits/op_sp_minus_meat.hpp"
-  #include "armadillo_bits/op_sp_nonzeros_meat.hpp"
   
   #include "armadillo_bits/glue_times_meat.hpp"
   #include "armadillo_bits/glue_mixed_meat.hpp"

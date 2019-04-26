@@ -18,16 +18,15 @@
 //! @{
 
 
-
 template<typename T1>
 arma_warn_unused
 inline
-const Op<T1, op_nonzeros>
+const Op<T1,op_nonzeros>
 nonzeros(const Base<typename T1::elem_type,T1>& X)
   {
   arma_extra_debug_sigprint();
   
-  return Op<T1, op_nonzeros>(X.get_ref());
+  return Op<T1,op_nonzeros>(X.get_ref());
   }
 
 
@@ -35,12 +34,16 @@ nonzeros(const Base<typename T1::elem_type,T1>& X)
 template<typename T1>
 arma_warn_unused
 inline
-const SpToDOp<T1, op_sp_nonzeros>
+Col<typename T1::elem_type>
 nonzeros(const SpBase<typename T1::elem_type,T1>& X)
   {
   arma_extra_debug_sigprint();
   
-  return SpToDOp<T1, op_sp_nonzeros>(X.get_ref());
+  Col<typename T1::elem_type> out;
+  
+  op_nonzeros::apply_noalias(out, X.get_ref());
+  
+  return out;
   }
 
 
