@@ -45,14 +45,7 @@ spop_vectorise_col::apply_direct(SpMat<typename T1::elem_type>& out, const T1& e
     {
     out = expr;
     
-    if( (out.n_elem == 0) || (out.n_nonzero == 0) )
-      {
-      out.zeros(out.n_elem, 1);
-      }
-    else
-      {
-      out.reshape(out.n_elem, 1);
-      }
+    out.reshape(out.n_elem, 1);
     }
   else
     {
@@ -98,14 +91,7 @@ spop_vectorise_row::apply_direct(SpMat<typename T1::elem_type>& out, const T1& e
     {
     out = trans(expr);
     
-    if( (out.n_elem == 0) || (out.n_nonzero == 0) )
-      {
-      out.zeros(1, out.n_elem);
-      }
-    else
-      {
-      out.reshape(1, out.n_elem);
-      }
+    out.reshape(1, out.n_elem);
     }
   else
     {
