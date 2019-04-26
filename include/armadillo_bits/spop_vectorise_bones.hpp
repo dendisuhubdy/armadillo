@@ -39,8 +39,6 @@ class spop_vectorise_row
   template<typename T1> inline static void apply(SpMat<typename T1::elem_type>& out, const SpOp<T1, spop_vectorise_row>& in);
   
   template<typename T1> inline static void apply_direct(SpMat<typename T1::elem_type>& out, const T1& expr);
-  
-  template<typename T1> inline static void apply_proxy(SpMat<typename T1::elem_type>& out, const SpProxy<T1>& p);
   };
 
 
