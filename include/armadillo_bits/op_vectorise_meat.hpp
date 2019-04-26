@@ -221,24 +221,25 @@ op_vectorise_row::apply_proxy(Mat<typename T1::elem_type>& out, const Proxy<T1>&
   
   if(P.is_alias(out) == false)
     {
-    out.set_size( 1, P.get_n_elem() );
+    const uword n_rows = P.get_n_rows();
+    const uword n_cols = P.get_n_cols();
+    const uword n_elem = P.get_n_elem();
+    
+    out.set_size(1, n_elem);
     
     eT* outmem = out.memptr();
     
-    const uword n_rows = P.get_n_rows();
-    const uword n_cols = P.get_n_cols();
-    
-    if( (T1::is_col) || (n_cols == 1) )
+    if(n_cols == 1)
       {
       if(is_Mat<typename Proxy<T1>::stored_type>::value == true)
         {
         const unwrap<typename Proxy<T1>::stored_type> tmp(P.Q);
         
-        arrayops::copy(out.memptr(), tmp.M.memptr(), P.get_n_elem());
+        arrayops::copy(out.memptr(), tmp.M.memptr(), n_elem);
         }
       else
         {
-        for(uword row=0; row < n_rows; ++row)  { outmem[row] = P.at(row,0); }
+        for(uword i=0; i < n_elem; ++i)  { outmem[i] = P.at(i,0); }
         }
       }
     else
