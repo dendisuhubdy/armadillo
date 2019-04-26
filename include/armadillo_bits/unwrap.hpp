@@ -718,6 +718,54 @@ struct quasi_unwrap< Op<subview_col<eT>, op_htrans> >
 
 
 
+template<typename T1>
+struct quasi_unwrap< SpToDOp<T1,op_sp_nonzeros> >
+  {
+  typedef typename T1::elem_type eT;
+  
+  inline
+  quasi_unwrap(const SpToDOp<T1,op_sp_nonzeros>& A)
+    : U(A.m)
+    , M(const_cast<eT*>(U.M.values), U.M.n_nonzero, false, true)
+    {
+    arma_extra_debug_sigprint();
+    }
+  
+  const unwrap_spmat<T1> U;
+  const Col<eT>          M;
+  
+  static const bool is_const     = true;
+  static const bool has_subview  = false;
+  static const bool has_orig_mem = true;
+  
+  template<typename eT2>
+  arma_inline bool is_alias(const Mat<eT2>&) const { return false; }
+  };
+
+
+
+template<typename eT>
+struct quasi_unwrap< SpToDOp<SpSubview<eT>,op_sp_nonzeros> >
+  {
+  inline
+  quasi_unwrap(const SpToDOp<SpSubview<eT>,op_sp_nonzeros>& A)
+    : M(A)
+    {
+    arma_extra_debug_sigprint();
+    }
+  
+  const Col<eT> M;
+  
+  static const bool is_const     = true;
+  static const bool has_subview  = false;
+  static const bool has_orig_mem = false;
+  
+  template<typename eT2>
+  arma_inline bool is_alias(const Mat<eT2>&) const { return false; }
+  };
+
+
+
 //
 //
 //

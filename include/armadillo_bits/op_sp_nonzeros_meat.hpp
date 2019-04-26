@@ -15,25 +15,46 @@
 
 
 
-//! \addtogroup op_nonzeros
+//! \addtogroup op_sp_nonzeros
 //! @{
 
 
 
-class op_nonzeros
-  : public traits_op_col
+template<typename T1>
+inline
+void
+op_sp_nonzeros::apply(Mat<typename T1::elem_type>& out, const SpToDOp<T1,op_sp_nonzeros>& in)
   {
-  public:
+  arma_extra_debug_sigprint();
   
-  // for dense matrices
+  typedef typename T1::elem_type eT;
   
-  template<typename T1>
-  static inline void apply_noalias(Mat<typename T1::elem_type>& out, const Proxy<T1>& P);
+  const SpProxy<T1> P(in.m);
   
-  template<typename T1>
-  static inline void apply(Mat<typename T1::elem_type>& out, const Op<T1, op_nonzeros>& X);
-  };
-
-
-
+  const uword N = P.get_n_nonzero();
+  
+  out.set_size(N,1);
+  
+  if(N > 0)
+    {
+    if(is_SpMat<typename SpProxy<T1>::stored_type>::value)
+      {
+      const unwrap_spmat<typename SpProxy<T1>::stored_type> U(P.Q);
+      
+      arrayops::copy(out.memptr(), U.M.values, N);
+      }
+    else
+      {
+      eT* out_mem = out.memptr();
+      
+      typename SpProxy<T1>::const_iterator_type it = P.begin();
+      
+      for(uword i=0; i<N; ++i)  { out_mem[i] = (*it); ++it; }
+      }
+    }
+  }
+  
+  
+  
+  
 //! @}
