@@ -3923,7 +3923,7 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
   if(vec_state == 1)  { arma_debug_check( (in_cols != 1), "SpMat::reshape(): object is a column vector; requested size is not compatible" ); }
   if(vec_state == 2)  { arma_debug_check( (in_rows != 1), "SpMat::reshape(): object is a row vector; requested size is not compatible"    ); }
   
-  if( (n_elem == 0) || (n_nonzero == 0) )
+  if(n_nonzero == 0)
     {
     (*this).zeros(in_rows, in_cols);
     return;
@@ -5583,7 +5583,7 @@ SpMat<eT>::steal_mem_simple(SpMat<eT>& x)
   
   if(layout_ok)
     {
-    if( (x.n_elem == 0) || (x.n_nonzero == 0) )
+    if(x.n_nonzero == 0)
       {
       (*this).zeros(x.n_rows, x.n_cols);
       }
