@@ -153,7 +153,7 @@ template<typename T1>
 arma_warn_unused
 inline
 Col<uword>
-find(const SpBase<typename T1::elem_type,T1>& X)
+find(const SpBase<typename T1::elem_type,T1>& X, const uword k = 0)
   {
   arma_extra_debug_sigprint();
   
@@ -162,9 +162,9 @@ find(const SpBase<typename T1::elem_type,T1>& X)
   const uword n_rows = P.get_n_rows();
   const uword n_nz   = P.get_n_nonzero();
   
-  Col<uword> out(n_nz);
+  Mat<uword> tmp(n_nz,1);
   
-  uword* out_mem = out.memptr();
+  uword* tmp_mem = tmp.memptr();
   
   typename SpProxy<T1>::const_iterator_type it = P.begin();
   
@@ -172,10 +172,33 @@ find(const SpBase<typename T1::elem_type,T1>& X)
     {
     const uword index = it.row() + it.col()*n_rows;
     
-    out_mem[i] = index;
+    tmp_mem[i] = index;
     
     ++it;
     }
+  
+  Col<uword> out;
+  
+  const uword count = (k == 0) ? uword(n_nz) : uword( (std::min)(n_nz, k) );
+  
+  out.steal_mem_col(tmp, count);
+  
+  return out;
+  }
+
+
+
+template<typename T1>
+arma_warn_unused
+inline
+Col<uword>
+find(const SpBase<typename T1::elem_type,T1>& X, const uword k, const char* direction)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_check(true, "find(SpBase,k,direction): not implemented yet");  // TODO
+  
+  Col<uword> out;
   
   return out;
   }
