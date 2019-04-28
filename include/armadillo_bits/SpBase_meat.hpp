@@ -433,6 +433,72 @@ SpBase<elem_type,derived>::is_finite() const
 
 template<typename elem_type, typename derived>
 inline
+arma_warn_unused
+bool
+SpBase<elem_type,derived>::has_inf() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const SpProxy<derived> P( (*this).get_ref() );
+  
+  if(is_SpMat<typename SpProxy<derived>::stored_type>::value)
+    {
+    const unwrap_spmat<typename SpProxy<derived>::stored_type> U(P.Q);
+    
+    return U.M.has_inf();
+    }
+  else
+    {
+    typename SpProxy<derived>::const_iterator_type it     = P.begin();
+    typename SpProxy<derived>::const_iterator_type it_end = P.end();
+    
+    while(it != it_end)
+      {
+      if(arma_isinf(*it))  { return true; }
+      ++it;
+      }
+    }
+  
+  return false;
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
+arma_warn_unused
+bool
+SpBase<elem_type,derived>::has_nan() const
+  {
+  arma_extra_debug_sigprint();
+  
+  const SpProxy<derived> P( (*this).get_ref() );
+  
+  if(is_SpMat<typename SpProxy<derived>::stored_type>::value)
+    {
+    const unwrap_spmat<typename SpProxy<derived>::stored_type> U(P.Q);
+    
+    return U.M.has_nan();
+    }
+  else
+    {
+    typename SpProxy<derived>::const_iterator_type it     = P.begin();
+    typename SpProxy<derived>::const_iterator_type it_end = P.end();
+    
+    while(it != it_end)
+      {
+      if(arma_isnan(*it))  { return true; }
+      ++it;
+      }
+    }
+  
+  return false;
+  }
+
+
+
+template<typename elem_type, typename derived>
+inline
 const SpOp<derived,spop_vectorise_col>
 SpBase<elem_type, derived>::as_col() const
   {
