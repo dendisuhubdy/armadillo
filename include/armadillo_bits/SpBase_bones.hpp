@@ -86,6 +86,11 @@ struct SpBase
   inline arma_warn_unused bool is_hermitian() const;
   inline arma_warn_unused bool is_hermitian(const typename get_pod_type<elem_type>::result tol) const;
   
+  inline arma_warn_unused bool is_empty()  const;
+  inline arma_warn_unused bool is_square() const;
+  inline arma_warn_unused bool is_vec()    const;
+  inline arma_warn_unused bool is_colvec() const;
+  inline arma_warn_unused bool is_rowvec() const;
   inline arma_warn_unused bool is_finite() const;
   inline arma_warn_unused bool has_inf()   const;
   inline arma_warn_unused bool has_nan()   const;
@@ -93,11 +98,6 @@ struct SpBase
   inline const SpOp<derived,spop_vectorise_col> as_col() const;
   inline const SpOp<derived,spop_vectorise_row> as_row() const;
   
-  // TODO: is_empty()
-  // TODO: is_vec()
-  // TODO: is_rowvec()
-  // TODO: is_colvec()
-  // TODO: is_square()
   };
 
 
