@@ -3929,6 +3929,39 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
     return;
     }
   
+//   (*this).reshape_helper_generic(in_rows, in_cols);
+    
+  if(in_cols == 1)
+    {
+    (*this).reshape_helper_intovec();
+    }
+  else
+    {
+    (*this).reshape_helper_generic(in_rows, in_cols);
+    }
+  }
+
+
+
+template<typename eT>
+inline
+void
+SpMat<eT>::reshape(const SizeMat& s)
+  {
+  arma_extra_debug_sigprint();
+  
+  (*this).reshape(s.n_rows, s.n_cols);
+  }
+
+
+
+template<typename eT>
+inline
+void
+SpMat<eT>::reshape_helper_generic(const uword in_rows, const uword in_cols)
+  {
+  arma_extra_debug_sigprint();
+  
   sync_csc();
   invalidate_cache();
   
@@ -3976,11 +4009,35 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
 template<typename eT>
 inline
 void
-SpMat<eT>::reshape(const SizeMat& s)
+SpMat<eT>::reshape_helper_intovec()
   {
   arma_extra_debug_sigprint();
   
-  (*this).reshape(s.n_rows, s.n_cols);
+  sync_csc();
+  invalidate_cache();
+  
+  const_iterator it = begin();
+  
+  const uword t_n_rows    = n_rows;
+  const uword t_n_nonzero = n_nonzero;
+  
+  for(uword i=0; i < t_n_nonzero; ++i)
+    {
+    const uword t_index = (it.col() * t_n_rows) + it.row();
+    
+    access::rw(row_indices[i]) = t_index;
+    
+    ++it;
+    }
+  
+  access::rw(row_indices[n_nonzero]) = 0;
+  
+  access::rw(col_ptrs[0]) = 0;
+  access::rw(col_ptrs[1]) = n_nonzero;
+  access::rw(col_ptrs[2]) = std::numeric_limits<uword>::max();
+  
+  access::rw(n_rows) = t_n_nonzero;
+  access::rw(n_cols) = 1;
   }
 
 
