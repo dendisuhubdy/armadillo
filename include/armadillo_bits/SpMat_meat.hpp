@@ -3929,8 +3929,6 @@ SpMat<eT>::reshape(const uword in_rows, const uword in_cols)
     return;
     }
   
-//   (*this).reshape_helper_generic(in_rows, in_cols);
-    
   if(in_cols == 1)
     {
     (*this).reshape_helper_intovec();
@@ -4025,9 +4023,9 @@ SpMat<eT>::reshape_helper_intovec()
     {
     const uword t_index = (it.col() * t_n_rows) + it.row();
     
-    access::rw(row_indices[i]) = t_index;
-    
     ++it;
+    
+    access::rw(row_indices[i]) = t_index;
     }
   
   access::rw(row_indices[n_nonzero]) = 0;
@@ -4036,7 +4034,7 @@ SpMat<eT>::reshape_helper_intovec()
   access::rw(col_ptrs[1]) = n_nonzero;
   access::rw(col_ptrs[2]) = std::numeric_limits<uword>::max();
   
-  access::rw(n_rows) = t_n_nonzero;
+  access::rw(n_rows) = (n_rows * n_cols);
   access::rw(n_cols) = 1;
   }
 
