@@ -10969,7 +10969,11 @@ For <i>dim=1</i>, the elements are copied from <i>X</i> row-wise; equivalent to 
 </li>
 <br>
 <li>
-<b>Caveat:</b> concatenating columns is faster than concatenating rows
+<b>Caveats:</b>
+<ul>
+<li>concatenating columns is faster than concatenating rows</li>
+<li>for sparse matrices, row-wise vectorisation is not recommended</li>
+</ul>
 </li>
 <br>
 <li>
