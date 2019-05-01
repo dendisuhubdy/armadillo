@@ -839,4 +839,33 @@ accu(const SpGlue<T1,T2,spglue_schur>& expr)
 
 
 
+template<typename T1, typename spop_type>
+arma_warn_unused
+inline
+typename T1::elem_type
+accu(const SpOp<T1, spop_type>& expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const bool is_vectorise = \
+       (is_same_type<spop_type, spop_vectorise_row>::yes)
+    || (is_same_type<spop_type, spop_vectorise_col>::yes)
+    || (is_same_type<spop_type, spop_vectorise_all>::yes);
+  
+  if(is_vectorise)
+    {
+    const unwrap_spmat<T1> U(expr.m);
+    
+    return accu(U.M);
+    }
+  
+  const SpMat<eT> tmp = expr;
+  
+  return accu(tmp);
+  }
+
+
+
 //! @}
