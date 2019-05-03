@@ -5519,7 +5519,7 @@ auxlib::rudimentary_sym_check(const Mat<eT>& X)
   const eT delta1 = std::abs(A1 - B1);
   const eT delta2 = std::abs(A2 - B2);
   
-  const eT tol = eT(100)*std::numeric_limits<eT>::epsilon();  // allow some leeway
+  const eT tol = eT(1000)*std::numeric_limits<eT>::epsilon();  // allow some leeway
   
   const bool okay1 = ( (delta1 <= tol) || (delta1 <= (C1 * tol)) );
   const bool okay2 = ( (delta2 <= tol) || (delta2 <= (C2 * tol)) );
@@ -5558,7 +5558,7 @@ auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
   const T delta_real = std::abs(A.real() - B.real());
   const T delta_imag = std::abs(A.imag() + B.imag());  // take into account the conjugate
   
-  const T tol = T(100)*std::numeric_limits<T>::epsilon();  // allow some leeway
+  const T tol = T(1000)*std::numeric_limits<T>::epsilon();  // allow some leeway
   
   const bool okay_real = ( (delta_real <= tol) || (delta_real <= (C_real * tol)) );
   const bool okay_imag = ( (delta_imag <= tol) || (delta_imag <= (C_imag * tol)) );
