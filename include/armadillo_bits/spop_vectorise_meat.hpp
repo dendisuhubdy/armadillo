@@ -80,6 +80,8 @@ spop_vectorise_row::apply_direct(SpMat<typename T1::elem_type>& out, const T1& e
   
   typedef typename T1::elem_type eT;
   
+  // NOTE: row-wise vectorisation of sparse matrices is not recommended due to the CSC storage format
+
   if(out.vec_state == 0)
     {
     out = strans(expr);
