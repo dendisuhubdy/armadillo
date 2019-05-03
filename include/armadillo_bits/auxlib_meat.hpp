@@ -5521,8 +5521,8 @@ auxlib::rudimentary_sym_check(const Mat<eT>& X)
   
   const eT tol = eT(100)*std::numeric_limits<eT>::epsilon();  // allow some leeway
   
-  const bool okay1 = (delta1 == eT(0)) || ((C1 >= eT(1)) ? bool(delta1 <= (C1 * tol)) : bool((delta1 / C1) <= tol));
-  const bool okay2 = (delta2 == eT(0)) || ((C2 >= eT(1)) ? bool(delta2 <= (C2 * tol)) : bool((delta2 / C2) <= tol));
+  const bool okay1 = ( (delta1 <= tol) || (delta1 <= (C1 * tol)) );
+  const bool okay2 = ( (delta2 <= tol) || (delta2 <= (C2 * tol)) );
   
   return (okay1 && okay2);
   }
@@ -5560,8 +5560,8 @@ auxlib::rudimentary_sym_check(const Mat< std::complex<T> >& X)
   
   const T tol = T(100)*std::numeric_limits<T>::epsilon();  // allow some leeway
   
-  const bool okay_real = (delta_real == T(0)) || ((C_real >= T(1)) ? bool(delta_real <= (C_real * tol)) : bool((delta_real / C_real) <= tol));
-  const bool okay_imag = (delta_imag == T(0)) || ((C_imag >= T(1)) ? bool(delta_imag <= (C_imag * tol)) : bool((delta_imag / C_imag) <= tol));
+  const bool okay_real = ( (delta_real <= tol) || (delta_real <= (C_real * tol)) );
+  const bool okay_imag = ( (delta_imag <= tol) || (delta_imag <= (C_imag * tol)) );
   
   return (okay_real && okay_imag);
   }
