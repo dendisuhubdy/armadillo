@@ -856,9 +856,7 @@ accu(const SpOp<T1, spop_type>& expr)
   
   if(is_vectorise)
     {
-    const unwrap_spmat<T1> U(expr.m);
-    
-    return accu(U.M);
+    return accu(expr.m);
     }
   
   const SpMat<eT> tmp = expr;

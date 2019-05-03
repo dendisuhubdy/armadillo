@@ -305,9 +305,7 @@ spop_mean::mean_all(const SpOp<T1, spop_type>& expr)
   
   if(is_vectorise)
     {
-    const unwrap_spmat<T1> U(expr.m);
-    
-    return spop_mean::mean_all(U.M);
+    return spop_mean::mean_all(expr.m);
     }
   
   const SpMat<eT> tmp = expr;
