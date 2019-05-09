@@ -38,7 +38,7 @@ guess_sympd(const Mat<eT>& A)
   // doing it properly would be too computationally expensive for our purposes
   // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
   
-  if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
+  if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
   
   const eT threshold = eT(10) * std::numeric_limits<eT>::epsilon();  // allow some leeway
   
@@ -104,7 +104,7 @@ guess_sympd(const Mat<eT>& A)
   
   typedef typename get_pod_type<eT>::result T;
   
-  if((A.n_rows != A.n_cols) || (A.n_elem == 0))  { return false; }
+  if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
   
   const T threshold = T(10) * std::numeric_limits<T>::epsilon();  // allow some leeway
   
