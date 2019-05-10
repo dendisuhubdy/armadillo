@@ -122,8 +122,6 @@ guess_sympd(const Mat<eT>& A)
   // the above conditions are necessary, but not sufficient;
   // doing it properly would be too computationally expensive for our purposes
   // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
-  // NOTE: (3) is done approximately for complex numbers,
-  // NOTE  as std::abs() on each complex element is too expensive
   
   typedef typename get_pod_type<eT>::result T;
   
@@ -142,7 +140,7 @@ guess_sympd(const Mat<eT>& A)
     const eT& A_jj      = A_col[j];
     const  T  A_jj_real = std::real(A_jj);
     const  T  A_jj_imag = std::imag(A_jj);
-        
+    
     if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > tol) )  { return false; }
     
     max_diag = (A_jj_real > max_diag) ? A_jj_real : max_diag;
@@ -165,41 +163,47 @@ guess_sympd(const Mat<eT>& A)
     const uword jp1   = j+1;
     const eT*   A_row = &(A.at(j,jp1));
     
-    // TODO: rough check for diagonal dominance?
+    const T A_jj_real = std::real(A_col[j]);
     
     for(uword i=jp1; i < N; ++i)
       {
       const eT& A_ij      = A_col[i];
       const  T  A_ij_real = std::real(A_ij);
       const  T  A_ij_imag = std::imag(A_ij);
+      const  T  A_ij_abs  =  std::abs(A_ij);
       
-      const T A_ij_real_abs = std::abs(A_ij_real);
-      const T A_ij_imag_abs = std::abs(A_ij_imag);
+      // extra check: very rough check for diagonal dominance
+      if(A_ij_abs >= A_jj_real)  { return false; }
+      
+      if(A_ij_abs >= max_diag )  { return false; }
       
       const eT& A_ji      = (*A_row);
       const  T  A_ji_real = std::real(A_ji);
       const  T  A_ji_imag = std::imag(A_ji);
+      //const  T  A_ji_abs  =  std::abs(A_ji);
       
-      const T A_ji_real_abs = std::abs(A_ji_real);
-      const T A_ji_imag_abs = std::abs(A_ji_imag);
-      
-      // approximation
-      if( (A_ij_real_abs >= max_diag) || (A_ji_real_abs >= max_diag) )  { return false; }
-      if( (A_ij_imag_abs >= max_diag) || (A_ji_imag_abs >= max_diag) )  { return false; }
-      
+      //if(A_ji_abs >= max_diag )  { return false; }
+    
       const T A_real_delta = std::abs(A_ij_real - A_ji_real);
-      const T A_imag_delta = std::abs(A_ij_imag + A_ji_imag);  // take into account complex conjugate
       
       if(A_real_delta > A_real_delta_max)
         {
         A_real_delta_max = A_real_delta;
         
+        const T A_ij_real_abs = std::abs(A_ij_real);
+        const T A_ji_real_abs = std::abs(A_ji_real);
+        
         A_real_abs_max = (std::max)(A_ij_real_abs, A_ji_real_abs);
         }
+      
+      const T A_imag_delta = std::abs(A_ij_imag + A_ji_imag);  // take into account complex conjugate
       
       if(A_imag_delta > A_imag_delta_max)
         {
         A_imag_delta_max = A_imag_delta;
+        
+        const T A_ij_imag_abs = std::abs(A_ij_imag);
+        const T A_ji_imag_abs = std::abs(A_ji_imag);
         
         A_imag_abs_max = (std::max)(A_ij_imag_abs, A_ji_imag_abs);
         }
