@@ -21,22 +21,23 @@
 namespace sympd_helper
 {
 
-
-
+// computationally inexpensive algorithm to guess whether a real matrix is positive definite:
+// (1) ensure the the matrix is symmetric (within a tolerance)
+// (2) ensure the diagonal entries are greater than zero
+// (3) ensure that the value with largest modulus is on the main diagonal
+// (4) ensure that the value with largest modulus in each column is on the main diagonal
+// the above conditions are necessary, but not sufficient;
+// doing it properly would be too computationally expensive for our purposes
+// more info:
+// http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
+// http://mathworld.wolfram.com/DiagonallyDominantMatrix.html
+  
 template<typename eT>
 inline
 typename enable_if2<is_cx<eT>::no, bool>::result
 guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
-  
-  // computationally inexpensive algorithm to guess whether a real matrix is positive definite:
-  // (1) ensure the the matrix is symmetric
-  // (2) ensure the diagonal entries are greater than zero
-  // (3) ensure that the value with largest modulus is on the diagonal
-  // the above conditions are necessary, but not sufficient;
-  // doing it properly would be too computationally expensive for our purposes
-  // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
   
   if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
   
@@ -114,14 +115,6 @@ typename enable_if2<is_cx<eT>::yes, bool>::result
 guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
-  
-  // computationally inexpensive algorithm to guess whether a complex matrix is positive definite:
-  // (1) ensure the the matrix is hermitian
-  // (2) ensure the diagonal entries are real and greater than zero
-  // (3) ensure that the value with largest modulus is on the diagonal
-  // the above conditions are necessary, but not sufficient;
-  // doing it properly would be too computationally expensive for our purposes
-  // more info: http://mathworld.wolfram.com/PositiveDefiniteMatrix.html
   
   typedef typename get_pod_type<eT>::result T;
   
