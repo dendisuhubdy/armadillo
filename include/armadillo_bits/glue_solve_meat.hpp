@@ -56,7 +56,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool no_sympd    = bool(flags & solve_opts::flag_no_sympd   );
   const bool allow_ugly  = bool(flags & solve_opts::flag_allow_ugly );
   
-  #if defined(ARMA_OPTIMISE_SOLVE_BAND)
+  #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
   const bool force_sympd = bool(flags & solve_opts::flag_force_sympd);
   #else
   const bool force_sympd = false;
