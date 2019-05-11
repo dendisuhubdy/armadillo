@@ -12311,9 +12311,10 @@ The number of rows in <i>A</i> and <i>B</i> must be the same
 <tbody>
 <tr><td><code>solve_opts::fast</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>fast mode: do not apply iterative refinement and/or equilibration</td></tr>
 <tr><td><code>solve_opts::equilibrate</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>equilibrate the system before solving &nbsp; (matrix <i>A</i> must be square)</td></tr>
+<tr><td><code>solve_opts::force_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>assume matrix <i>A</i> is symmetric/hermitian positive definite</td></tr>
 <tr><td><code>solve_opts::no_approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not find approximate solutions for rank deficient systems</td></tr>
-<tr><td><code>solve_opts::no_band</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use optimisations for band matrices</td></tr>
-<tr><td><code>solve_opts::no_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use optimisations for symmetric/hermitian positive definite matrices</td></tr>
+<tr><td><code>solve_opts::no_band</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use dedicated algorithms for band matrices</td></tr>
+<tr><td><code>solve_opts::no_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use dedicated algorithms for symmetric/hermitian positive definite matrices</td></tr>
 <tr><td><code>solve_opts::allow_ugly</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>keep solutions of systems that are singular to working precision</td></tr>
 </tbody>
 </table>
@@ -12329,6 +12330,13 @@ the above settings can be combined using the <code>+</code> operator; for exampl
 If <i>A</i> is known to be a triangular matrix,
 the solution can be computed faster by explicitly indicating that <i>A</i> is triangular through <a href="#trimat">trimatu()</a> or <a href="#trimat">trimatl()</a>;
 <br>indicating a triangular matrix also implies that <i><code>solve_opts::fast</code></i> is enabled
+</li>
+<br>
+<li>
+By default, matrix <i>A</i> is analysed to automatically determine whether it is a general matrix, band matrix, or symmetric/hermitian positive definite (SPD) matrix.
+Based on the detected matrix structure, a dedicated algorithm is selected for solving the system in order to reduce computational effort.
+However, not all SPD matrices are automatically detected.
+In such cases, <code>solve_opts::force_sympd</code> can be used to forcefully select the algorithm for SPD matrices.
 </li>
 <br>
 <li>
@@ -18170,6 +18178,7 @@ List of additions and changes for each version:
 <ul>
 <li>faster <a href="#cov">cov()</a> and <a href="#cor">cor()</a></li>
 <li>added <a href="#as_col_row">.as_col()</a> and <a href="#as_col_row">.as_row()</a></li>
+<li>expanded <a href="#solve">solve()</a> with <code>solve_opts::force_sympd</code> to assume that the given matrix is symmetric/hermitian positive definite</li>
 <li>expanded <a href="#shed">.shed_rows()</a> / <a href="#shed">.shed_cols()</a> / <a href="#shed">.shed_slices()</a> to remove rows/columns/slices specified in a vector</li>
 <li>expanded <a href="#vectorise">vectorise()</a> to handle sparse matrices</li>
 <li>expanded element-wise versions of <a href="#min_and_max">max()</a> and <a href="#min_and_max">min()</a> to handle sparse matrices</li>
