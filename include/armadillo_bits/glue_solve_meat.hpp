@@ -211,7 +211,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
         }
       else
         {
-        arma_debug_warn("solve(): system seems singular; attempting approx solution");
+        if(force_sympd)  { arma_debug_warn("solve(): system seems singular or not sympd; attempting approx solution"); }
+        else             { arma_debug_warn("solve(): system seems singular; attempting approx solution");              }
         }
       
       // TODO: conditionally recreate A: have a separate state flag which indicates whether A was previously overwritten
