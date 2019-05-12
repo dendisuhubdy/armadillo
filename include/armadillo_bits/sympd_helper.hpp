@@ -25,7 +25,7 @@ namespace sympd_helper
 // (1) ensure the the matrix is symmetric (within a tolerance)
 // (2) ensure the diagonal entries are greater than zero
 // (3) ensure that the value with largest modulus is on the main diagonal
-// (4) ensure that the value with largest modulus in each column is on the main diagonal
+// (4) ensure that (real(A_ii) + real(A_jj)) > 2*abs(real(A_ij))
 // the above conditions are necessary, but not sufficient;
 // doing it properly would be too computationally expensive for our purposes
 // more info:
@@ -45,7 +45,8 @@ guess_sympd(const Mat<eT>& A)
   
   const uword N = A.n_rows;
   
-  const eT* A_col = A.memptr();
+  const eT* A_mem = A.memptr();
+  const eT* A_col = A_mem;
   
   eT max_diag = eT(0);
   
@@ -60,12 +61,9 @@ guess_sympd(const Mat<eT>& A)
     A_col += N;
     }
   
-  A_col = A.memptr();
+  A_col = A_mem;
   
   const uword Nm1 = N-1;
-  
-  eT A_delta_max = eT(0);
-  eT A_abs_max   = eT(0);
   
   for(uword j=0; j < Nm1; ++j)
     {
@@ -79,30 +77,25 @@ guess_sympd(const Mat<eT>& A)
       const eT A_ij = A_col[i];
       const eT A_ji = (*A_row);
       
-      // extra check: very rough check for diagonal dominance
-      if(A_ij >= A_jj)  { return false; }
-      
-      const eT A_ij_abs = std::abs(A_ij);
-      const eT A_ji_abs = std::abs(A_ji);
+      const eT A_ij_abs = (std::abs)(A_ij);
+      const eT A_ji_abs = (std::abs)(A_ji);
       
       if( (A_ij_abs >= max_diag) || (A_ji_abs >= max_diag) )  { return false; }
       
-      const eT A_delta = std::abs(A_ij - A_ji);
+      const eT A_delta   = (std::abs)(A_ij - A_ji);
+      const eT A_abs_max = (std::max)(A_ij_abs, A_ji_abs);
       
-      if(A_delta > A_delta_max)
-        {
-        A_delta_max = A_delta;
-        
-        A_abs_max = (std::max)(A_ij_abs, A_ji_abs);
-        }
+      if(A_delta > (A_abs_max*tol))  { return false; }
+      
+      const eT A_ii = A_mem[i + i*N];
+      
+      if( (2*A_ij_abs) >= (A_ii + A_jj) )  { return false; }
       
       A_row += N;
       }
     
     A_col += N;
     }
-  
-  if(A_delta_max > (A_abs_max*tol))  { return false; }
   
   return true;
   }
@@ -124,7 +117,8 @@ guess_sympd(const Mat<eT>& A)
   
   const uword N = A.n_rows;
   
-  const eT* A_col = A.memptr();
+  const eT* A_mem = A.memptr();
+  const eT* A_col = A_mem;
   
   T max_diag = T(0);
   
@@ -141,15 +135,9 @@ guess_sympd(const Mat<eT>& A)
     A_col += N;
     }
   
-  A_col = A.memptr();
+  A_col = A_mem;
   
   const uword Nm1 = N-1;
-  
-  T A_real_delta_max = T(0);
-  T A_real_abs_max   = T(0);
-  
-  T A_imag_delta_max = T(0);
-  T A_imag_abs_max   = T(0);
   
   for(uword j=0; j < Nm1; ++j)
     {
@@ -165,9 +153,6 @@ guess_sympd(const Mat<eT>& A)
       const  T  A_ij_imag = std::imag(A_ij);
       const  T  A_ij_abs  =  std::abs(A_ij);
       
-      // extra check: very rough check for diagonal dominance
-      if(A_ij_abs >= A_jj_real)  { return false; }
-      
       if(A_ij_abs >= max_diag )  { return false; }
       
       const eT& A_ji      = (*A_row);
@@ -176,39 +161,35 @@ guess_sympd(const Mat<eT>& A)
       //const  T  A_ji_abs  =  std::abs(A_ji);
       
       //if(A_ji_abs >= max_diag )  { return false; }
-    
-      const T A_real_delta = std::abs(A_ij_real - A_ji_real);
       
-      if(A_real_delta > A_real_delta_max)
-        {
-        A_real_delta_max = A_real_delta;
-        
-        const T A_ij_real_abs = std::abs(A_ij_real);
-        const T A_ji_real_abs = std::abs(A_ji_real);
-        
-        A_real_abs_max = (std::max)(A_ij_real_abs, A_ji_real_abs);
-        }
       
-      const T A_imag_delta = std::abs(A_ij_imag + A_ji_imag);  // take into account complex conjugate
+      const T A_ij_real_abs = (std::abs)(A_ij_real);
+      const T A_ji_real_abs = (std::abs)(A_ji_real);
       
-      if(A_imag_delta > A_imag_delta_max)
-        {
-        A_imag_delta_max = A_imag_delta;
-        
-        const T A_ij_imag_abs = std::abs(A_ij_imag);
-        const T A_ji_imag_abs = std::abs(A_ji_imag);
-        
-        A_imag_abs_max = (std::max)(A_ij_imag_abs, A_ji_imag_abs);
-        }
+      const T A_real_delta   = (std::abs)(A_ij_real - A_ji_real);
+      const T A_real_abs_max = (std::max)(A_ij_real_abs, A_ji_real_abs);
+      
+      if(A_real_delta > (A_real_abs_max*tol))  { return false; }
+      
+      
+      const T A_ij_imag_abs = (std::abs)(A_ij_imag);
+      const T A_ji_imag_abs = (std::abs)(A_ji_imag);
+      
+      const T A_imag_delta   = (std::abs)(A_ij_imag + A_ji_imag);  // take into account complex conjugate
+      const T A_imag_abs_max = (std::max)(A_ij_imag_abs, A_ji_imag_abs);
+      
+      if(A_imag_delta > (A_imag_abs_max*tol))  { return false; }
+      
+      
+      const T A_ii_real = std::real(A_mem[i + i*N]);
+      
+      if( (2*A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
       
       A_row += N;
       }
     
     A_col += N;
     }
-  
-  if(A_real_delta_max > (A_real_abs_max*tol))  { return false; }
-  if(A_imag_delta_max > (A_imag_abs_max*tol))  { return false; }
   
   return true;
   }
