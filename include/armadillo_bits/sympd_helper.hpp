@@ -89,7 +89,7 @@ guess_sympd(const Mat<eT>& A)
       
       const eT A_ii = A_mem[i + i*N];
       
-      if( (2*A_ij_abs) >= (A_ii + A_jj) )  { return false; }
+      if( (eT(2)*A_ij_abs) >= (A_ii + A_jj) )  { return false; }
       
       A_row += N;
       }
@@ -183,7 +183,7 @@ guess_sympd(const Mat<eT>& A)
       
       const T A_ii_real = std::real(A_mem[i + i*N]);
       
-      if( (2*A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
+      if( (T(2)*A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
       
       A_row += N;
       }
