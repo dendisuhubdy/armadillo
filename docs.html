@@ -12311,11 +12311,11 @@ The number of rows in <i>A</i> and <i>B</i> must be the same
 <tbody>
 <tr><td><code>solve_opts::fast</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>fast mode: do not apply iterative refinement and/or equilibration</td></tr>
 <tr><td><code>solve_opts::equilibrate</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>equilibrate the system before solving &nbsp; (matrix <i>A</i> must be square)</td></tr>
-<tr><td><code>solve_opts::force_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>assume matrix <i>A</i> is symmetric/hermitian positive definite</td></tr>
 <tr><td><code>solve_opts::no_approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not find approximate solutions for rank deficient systems</td></tr>
 <tr><td><code>solve_opts::no_band</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use dedicated algorithms for band matrices</td></tr>
 <tr><td><code>solve_opts::no_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use dedicated algorithms for symmetric/hermitian positive definite matrices</td></tr>
 <tr><td><code>solve_opts::allow_ugly</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>keep solutions of systems that are singular to working precision</td></tr>
+<tr><td><code>solve_opts::likely_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>indicate that matrix <i>A</i> is likely to be symmetric/hermitian positive definite</td></tr>
 </tbody>
 </table>
 <br>
@@ -12336,7 +12336,7 @@ the solution can be computed faster by explicitly indicating that <i>A</i> is tr
 By default, matrix <i>A</i> is analysed to automatically determine whether it is a general matrix, band matrix, or symmetric/hermitian positive definite (SPD) matrix.
 Based on the detected matrix structure, a dedicated algorithm is selected for solving the system in order to reduce computational effort.
 However, not all SPD matrices are automatically detected.
-In such cases, <code>solve_opts::force_sympd</code> can be used to forcefully select the algorithm for SPD matrices.
+In such cases, <code>solve_opts::likely_sympd</code> can be used to indicate that matrix <i>A</i> is likely to be SPD.
 </li>
 <br>
 <li>
