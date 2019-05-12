@@ -49,31 +49,31 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   typedef typename get_pod_type<eT>::result T;
   
-  const bool fast        = bool(flags & solve_opts::flag_fast       );
-  const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
-  const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
-  const bool no_band     = bool(flags & solve_opts::flag_no_band    );
-  const bool no_sympd    = bool(flags & solve_opts::flag_no_sympd   );
-  const bool allow_ugly  = bool(flags & solve_opts::flag_allow_ugly );
+  const bool fast         = bool(flags & solve_opts::flag_fast        );
+  const bool equilibrate  = bool(flags & solve_opts::flag_equilibrate );
+  const bool no_approx    = bool(flags & solve_opts::flag_no_approx   );
+  const bool no_band      = bool(flags & solve_opts::flag_no_band     );
+  const bool no_sympd     = bool(flags & solve_opts::flag_no_sympd    );
+  const bool allow_ugly   = bool(flags & solve_opts::flag_allow_ugly  );
   
   #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
-  const bool force_sympd = bool(flags & solve_opts::flag_force_sympd);
+  const bool likely_sympd = bool(flags & solve_opts::flag_likely_sympd);
   #else
-  const bool force_sympd = false;
+  const bool likely_sympd = false;
   #endif
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
-  if(fast       )  { arma_extra_debug_print("fast");        }
-  if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
-  if(no_approx  )  { arma_extra_debug_print("no_approx");   }
-  if(no_band    )  { arma_extra_debug_print("no_band");     }
-  if(no_sympd   )  { arma_extra_debug_print("no_sympd");    }
-  if(allow_ugly )  { arma_extra_debug_print("allow_ugly");  }
-  if(force_sympd)  { arma_extra_debug_print("force_sympd"); }
+  if(fast        )  { arma_extra_debug_print("fast");         }
+  if(equilibrate )  { arma_extra_debug_print("equilibrate");  }
+  if(no_approx   )  { arma_extra_debug_print("no_approx");    }
+  if(no_band     )  { arma_extra_debug_print("no_band");      }
+  if(no_sympd    )  { arma_extra_debug_print("no_sympd");     }
+  if(allow_ugly  )  { arma_extra_debug_print("allow_ugly");   }
+  if(likely_sympd)  { arma_extra_debug_print("likely_sympd"); }
   
-  arma_debug_check( (fast     && equilibrate), "solve(): options 'fast' and 'equilibrate' are mutually exclusive" );
-  arma_debug_check( (no_sympd && force_sympd), "solve(): options 'no_sympd' and 'force_sympd' are mutually exclusive"   );
+  arma_debug_check( (fast     && equilibrate ), "solve(): options 'fast' and 'equilibrate' are mutually exclusive"        );
+  arma_debug_check( (no_sympd && likely_sympd), "solve(): options 'no_sympd' and 'likely_sympd' are mutually exclusive"   );
   
   T    rcond  = T(0);
   bool status = false;
@@ -94,9 +94,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     #endif
     
     #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
-      const bool maybe_sympd = ((no_sympd == false) && (force_sympd == false) && (auxlib::crippled_lapack(A) == false) && (is_band == false)) ? sympd_helper::guess_sympd(A) : false;
+      const bool try_sympd = ((no_sympd == false) && (auxlib::crippled_lapack(A) == false) && (is_band == false)) ? (likely_sympd ? true : sympd_helper::guess_sympd(A)) : false;
     #else
-      const bool maybe_sympd = false;
+      const bool try_sympd = false;
     #endif
     
     if(fast)
@@ -117,16 +117,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           }
         }
       else
-      if(force_sympd)
+      if(try_sympd)
         {
-        arma_extra_debug_print("glue_solve_gen::apply(): fast + force_sympd");
-        
-        status = auxlib::solve_sympd_fast(out, A, B_expr.get_ref());  // A is overwritten
-        }
-      else
-      if(maybe_sympd)
-        {
-        arma_extra_debug_print("glue_solve_gen::apply(): fast + maybe_sympd");
+        arma_extra_debug_print("glue_solve_gen::apply(): fast + try_sympd");
         
         status = auxlib::solve_sympd_fast(out, A, B_expr.get_ref());  // A is overwritten
         
@@ -164,16 +157,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
           }
         }
       else
-      if(force_sympd)
+      if(try_sympd)
         {
-        arma_extra_debug_print("glue_solve_gen::apply(): refine + force_sympd");
-        
-        status = auxlib::solve_sympd_refine(out, rcond, A, B_expr.get_ref(), equilibrate, allow_ugly);  // A is overwritten
-        }
-      else
-      if(maybe_sympd)
-        {
-        arma_extra_debug_print("glue_solve_gen::apply(): refine + maybe_sympd");
+        arma_extra_debug_print("glue_solve_gen::apply(): refine + try_sympd");
         
         status = auxlib::solve_sympd_refine(out, rcond, A, B_expr.get_ref(), equilibrate, allow_ugly);  // A is overwritten
         
@@ -211,8 +197,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
         }
       else
         {
-        if(force_sympd)  { arma_debug_warn("solve(): system seems singular or not sympd; attempting approx solution"); }
-        else             { arma_debug_warn("solve(): system seems singular; attempting approx solution");              }
+        arma_debug_warn("solve(): system seems singular; attempting approx solution");
         }
       
       // TODO: conditionally recreate A: have a separate state flag which indicates whether A was previously overwritten
