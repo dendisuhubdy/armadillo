@@ -55,12 +55,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool no_band      = bool(flags & solve_opts::flag_no_band     );
   const bool no_sympd     = bool(flags & solve_opts::flag_no_sympd    );
   const bool allow_ugly   = bool(flags & solve_opts::flag_allow_ugly  );
-  
-  #if defined(ARMA_OPTIMISE_SOLVE_SYMPD)
   const bool likely_sympd = bool(flags & solve_opts::flag_likely_sympd);
-  #else
-  const bool likely_sympd = false;
-  #endif
   
   arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
