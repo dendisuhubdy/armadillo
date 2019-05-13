@@ -12336,7 +12336,7 @@ the solution can be computed faster by explicitly indicating that <i>A</i> is tr
 By default, matrix <i>A</i> is analysed to automatically determine whether it is a general matrix, band matrix, or symmetric/hermitian positive definite (SPD) matrix.
 Based on the detected matrix structure, a dedicated algorithm is selected for solving the system in order to reduce computational effort.
 However, not all SPD matrices are automatically detected.
-In such cases, <code>solve_opts::likely_sympd</code> can be used to indicate that matrix <i>A</i> is likely to be SPD.
+To indicate that matrix <i>A</i> is likely to be SPD, use <code>solve_opts::likely_sympd</code>
 </li>
 <br>
 <li>
