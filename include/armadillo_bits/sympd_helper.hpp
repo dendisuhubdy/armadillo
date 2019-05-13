@@ -21,8 +21,8 @@
 namespace sympd_helper
 {
 
-// computationally inexpensive algorithm to guess whether a real matrix is positive definite:
-// (1) ensure the matrix is symmetric (within a tolerance)
+// computationally inexpensive algorithm to guess whether a matrix is positive definite:
+// (1) ensure the matrix is symmetric/hermitian (within a tolerance)
 // (2) ensure the diagonal entries are greater than zero
 // (3) ensure that the value with largest modulus is on the main diagonal
 // (4) ensure rudimentary diagonal dominance: (real(A_ii) + real(A_jj)) > 2*abs(real(A_ij))
