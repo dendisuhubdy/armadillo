@@ -68,7 +68,7 @@ guess_sympd(const Mat<eT>& A)
   for(uword j=0; j < Nm1; ++j)
     {
     const uword jp1   = j+1;
-    const eT*   A_row = &(A.at(j,jp1));
+    const eT*   A_row = &(A_mem[j + jp1*N]);  // &(A.at(j,jp1));
     
     const eT A_jj = A_col[j];
     
@@ -142,7 +142,7 @@ guess_sympd(const Mat<eT>& A)
   for(uword j=0; j < Nm1; ++j)
     {
     const uword jp1   = j+1;
-    const eT*   A_row = &(A.at(j,jp1));
+    const eT*   A_row = &(A_mem[j + jp1*N]);  // &(A.at(j,jp1));
     
     const T A_jj_real = std::real(A_col[j]);
     
