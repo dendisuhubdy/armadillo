@@ -85,7 +85,7 @@ guess_sympd(const Mat<eT>& A)
       const eT A_delta   = (std::abs)(A_ij - A_ji);
       const eT A_abs_max = (std::max)(A_ij_abs, A_ji_abs);
       
-      if(A_delta > (A_abs_max*tol))  { return false; }
+      if( (A_delta > tol) && (A_delta > (A_abs_max*tol)) )  { return false; }
       
       const eT A_ii = A_mem[i + i*N];
       
@@ -169,7 +169,7 @@ guess_sympd(const Mat<eT>& A)
       const T A_real_delta   = (std::abs)(A_ij_real - A_ji_real);
       const T A_real_abs_max = (std::max)(A_ij_real_abs, A_ji_real_abs);
       
-      if(A_real_delta > (A_real_abs_max*tol))  { return false; }
+      if( (A_real_delta > tol) && (A_real_delta > (A_real_abs_max*tol)) )  { return false; }
       
       
       const T A_ij_imag_abs = (std::abs)(A_ij_imag);
@@ -178,7 +178,7 @@ guess_sympd(const Mat<eT>& A)
       const T A_imag_delta   = (std::abs)(A_ij_imag + A_ji_imag);  // take into account complex conjugate
       const T A_imag_abs_max = (std::max)(A_ij_imag_abs, A_ji_imag_abs);
       
-      if(A_imag_delta > (A_imag_abs_max*tol))  { return false; }
+      if( (A_imag_delta > tol) && (A_imag_delta > (A_imag_abs_max*tol)) )  { return false; }
       
       
       const T A_ii_real = std::real(A_mem[i + i*N]);
