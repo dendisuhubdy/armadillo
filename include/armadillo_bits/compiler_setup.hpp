@@ -37,9 +37,6 @@
 #define arma_noinline
 #define arma_ignore(variable)  ((void)(variable))
 
-#undef arma_fortran_noprefix
-#undef arma_fortran_prefix
-
 #undef arma_fortran_sans_prefix_B
 #undef arma_fortran_with_prefix_B
  
@@ -61,6 +58,9 @@
   #endif
 #endif
 
+#undef arma_fortran
+#undef arma_wrapper
+
 #if defined(ARMA_USE_WRAPPER)
   #define arma_fortran(function) arma_fortran_with_prefix_B(function)
   #define arma_wrapper(function) wrapper_##function
@@ -69,17 +69,20 @@
   #define arma_wrapper(function) function
 #endif
 
-#define arma_fortran_noprefix(function) arma_fortran_sans_prefix_B(function)
-#define arma_fortran_prefix(function)   arma_fortran_with_prefix_B(function)
+#undef arma_fortran_sans_prefix
+#undef arma_fortran_with_prefix
+
+#define arma_fortran_sans_prefix(function) arma_fortran_sans_prefix_B(function)
+#define arma_fortran_with_prefix(function) arma_fortran_with_prefix_B(function)
+
+// NOTE: the fortran type for "hidden" arguments
+// NOTE: varies across compilers, compiler versions and systems (eg. 32 bit vs 64 bit);
+// NOTE: the default setting of "size_t" is a guess
+#undef  ARMA_FORTRAN_CHARLEN_TYPE
+#define ARMA_FORTRAN_CHARLEN_TYPE size_t
 
 #undef  ARMA_INCFILE_WRAP
 #define ARMA_INCFILE_WRAP(x) <x>
-
-// NOTE: the fortran type for "character length hidden arguments"
-// NOTE: varies across compilers, compiler versions and systems (eg. 32 bit vs 64 bit);
-// NOTE: the default setting of "size_t " is a guess
-#undef  ARMA_FORTRAN_CHARLEN_TYPE
-#define ARMA_FORTRAN_CHARLEN_TYPE size_t
 
 #if defined(ARMA_USE_CXX11)
   
