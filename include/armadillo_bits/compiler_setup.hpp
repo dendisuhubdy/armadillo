@@ -40,27 +40,37 @@
 #undef arma_fortran_noprefix
 #undef arma_fortran_prefix
 
-#undef arma_fortran2_noprefix
-#undef arma_fortran2_prefix
+#undef arma_fortran_sans_prefix_B
+#undef arma_fortran_with_prefix_B
  
 #if defined(ARMA_BLAS_UNDERSCORE)
-  #define arma_fortran2_noprefix(function) function##_
-  #define arma_fortran2_prefix(function)   wrapper_##function##_
+  #define arma_fortran_sans_prefix_B(function) function##_
+  
+  #if defined(ARMA_USE_FORTRAN_HIDDEN_VARIABLES)  
+    #define arma_fortran_with_prefix_B(function) wrapper2_##function##_
+  #else
+    #define arma_fortran_with_prefix_B(function) wrapper_##function##_
+  #endif
 #else
-  #define arma_fortran2_noprefix(function) function
-  #define arma_fortran2_prefix(function)   wrapper_##function
+  #define arma_fortran_sans_prefix_B(function) function
+  
+  #if defined(ARMA_USE_FORTRAN_HIDDEN_VARIABLES)  
+    #define arma_fortran_with_prefix_B(function) wrapper2_##function
+  #else
+    #define arma_fortran_with_prefix_B(function) wrapper_##function
+  #endif
 #endif
 
 #if defined(ARMA_USE_WRAPPER)
-  #define arma_fortran(function) arma_fortran2_prefix(function)
+  #define arma_fortran(function) arma_fortran_with_prefix_B(function)
   #define arma_wrapper(function) wrapper_##function
 #else
-  #define arma_fortran(function) arma_fortran2_noprefix(function)
+  #define arma_fortran(function) arma_fortran_sans_prefix_B(function)
   #define arma_wrapper(function) function
 #endif
 
-#define arma_fortran_prefix(function)   arma_fortran2_prefix(function)
-#define arma_fortran_noprefix(function) arma_fortran2_noprefix(function)
+#define arma_fortran_noprefix(function) arma_fortran_sans_prefix_B(function)
+#define arma_fortran_prefix(function)   arma_fortran_with_prefix_B(function)
 
 #undef  ARMA_INCFILE_WRAP
 #define ARMA_INCFILE_WRAP(x) <x>
