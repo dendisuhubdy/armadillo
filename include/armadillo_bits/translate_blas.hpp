@@ -30,29 +30,59 @@ namespace blas
     {
     arma_type_check((is_supported_blas_type<eT>::value == false));
     
-    if(is_float<eT>::value)
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
       {
-      typedef float T;
-      arma_fortran(arma_sgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_sgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
+        }
+      else
+      if(is_supported_complex_float<eT>::value)
+        {
+        typedef std::complex<float> T;
+        arma_fortran(arma_cgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
+        }
+      else
+      if(is_supported_complex_double<eT>::value)
+        {
+        typedef std::complex<double> T;
+        arma_fortran(arma_zgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
+        }
       }
-    else
-    if(is_double<eT>::value)
+    #else
       {
-      typedef double T;
-      arma_fortran(arma_dgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_sgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy, 1);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy, 1);
+        }
+      else
+      if(is_supported_complex_float<eT>::value)
+        {
+        typedef std::complex<float> T;
+        arma_fortran(arma_cgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy, 1);
+        }
+      else
+      if(is_supported_complex_double<eT>::value)
+        {
+        typedef std::complex<double> T;
+        arma_fortran(arma_zgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy, 1);
+        }
       }
-    else
-    if(is_supported_complex_float<eT>::value)
-      {
-      typedef std::complex<float> T;
-      arma_fortran(arma_cgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
-      }
-    else
-    if(is_supported_complex_double<eT>::value)
-      {
-      typedef std::complex<double> T;
-      arma_fortran(arma_zgemv)(transA, m, n, (const T*)alpha, (const T*)A, ldA, (const T*)x, incx, (const T*)beta, (T*)y, incy);
-      }
+    #endif
     }
   
   
@@ -64,29 +94,59 @@ namespace blas
     {
     arma_type_check((is_supported_blas_type<eT>::value == false));
     
-    if(is_float<eT>::value)
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
       {
-      typedef float T;
-      arma_fortran(arma_sgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_sgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
+        }
+      else
+      if(is_supported_complex_float<eT>::value)
+        {
+        typedef std::complex<float> T;
+        arma_fortran(arma_cgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
+        }
+      else
+      if(is_supported_complex_double<eT>::value)
+        {
+        typedef std::complex<double> T;
+        arma_fortran(arma_zgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
+        }
       }
-    else
-    if(is_double<eT>::value)
+    #else
       {
-      typedef double T;
-      arma_fortran(arma_dgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_sgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC, 1, 1);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC, 1, 1);
+        }
+      else
+      if(is_supported_complex_float<eT>::value)
+        {
+        typedef std::complex<float> T;
+        arma_fortran(arma_cgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC, 1, 1);
+        }
+      else
+      if(is_supported_complex_double<eT>::value)
+        {
+        typedef std::complex<double> T;
+        arma_fortran(arma_zgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC, 1, 1);
+        }
       }
-    else
-    if(is_supported_complex_float<eT>::value)
-      {
-      typedef std::complex<float> T;
-      arma_fortran(arma_cgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
-      }
-    else
-    if(is_supported_complex_double<eT>::value)
-      {
-      typedef std::complex<double> T;
-      arma_fortran(arma_zgemm)(transA, transB, m, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)B, ldB, (const T*)beta, (T*)C, ldC);
-      }
+    #endif
     }
   
   
@@ -98,17 +158,35 @@ namespace blas
     {
     arma_type_check((is_supported_blas_type<eT>::value == false));
     
-    if(is_float<eT>::value)
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
       {
-      typedef float T;
-      arma_fortran(arma_ssyrk)(uplo, transA, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)beta, (T*)C, ldC);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_ssyrk)(uplo, transA, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)beta, (T*)C, ldC);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dsyrk)(uplo, transA, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)beta, (T*)C, ldC);
+        }
       }
-    else
-    if(is_double<eT>::value)
+    #else
       {
-      typedef double T;
-      arma_fortran(arma_dsyrk)(uplo, transA, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)beta, (T*)C, ldC);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_ssyrk)(uplo, transA, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)beta, (T*)C, ldC, 1, 1);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dsyrk)(uplo, transA, n, k, (const T*)alpha, (const T*)A, ldA, (const T*)beta, (T*)C, ldC, 1, 1);
+        }
       }
+    #endif
     }
   
   
@@ -120,21 +198,43 @@ namespace blas
     {
     arma_type_check((is_supported_blas_type<T>::value == false));
     
-    if(is_float<T>::value)
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
       {
-      typedef float                  TT;
-      typedef std::complex<float> cx_TT;
-      
-      arma_fortran(arma_cherk)(uplo, transA, n, k, (const TT*)alpha, (const cx_TT*)A, ldA, (const TT*)beta, (cx_TT*)C, ldC);
+      if(is_float<T>::value)
+        {
+        typedef float                  TT;
+        typedef std::complex<float> cx_TT;
+        
+        arma_fortran(arma_cherk)(uplo, transA, n, k, (const TT*)alpha, (const cx_TT*)A, ldA, (const TT*)beta, (cx_TT*)C, ldC);
+        }
+      else
+      if(is_double<T>::value)
+        {
+        typedef double                  TT;
+        typedef std::complex<double> cx_TT;
+        
+        arma_fortran(arma_zherk)(uplo, transA, n, k, (const TT*)alpha, (const cx_TT*)A, ldA, (const TT*)beta, (cx_TT*)C, ldC);
+        }
       }
-    else
-    if(is_double<T>::value)
+    #else
       {
-      typedef double                  TT;
-      typedef std::complex<double> cx_TT;
-      
-      arma_fortran(arma_zherk)(uplo, transA, n, k, (const TT*)alpha, (const cx_TT*)A, ldA, (const TT*)beta, (cx_TT*)C, ldC);
+      if(is_float<T>::value)
+        {
+        typedef float                  TT;
+        typedef std::complex<float> cx_TT;
+        
+        arma_fortran(arma_cherk)(uplo, transA, n, k, (const TT*)alpha, (const cx_TT*)A, ldA, (const TT*)beta, (cx_TT*)C, ldC, 1, 1);
+        }
+      else
+      if(is_double<T>::value)
+        {
+        typedef double                  TT;
+        typedef std::complex<double> cx_TT;
+        
+        arma_fortran(arma_zherk)(uplo, transA, n, k, (const TT*)alpha, (const cx_TT*)A, ldA, (const TT*)beta, (cx_TT*)C, ldC, 1, 1);
+        }
       }
+    #endif
     }
   
   
