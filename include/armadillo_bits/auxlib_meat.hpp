@@ -4070,6 +4070,8 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     blas_int n3 = nrhs;
     blas_int n4 = lda;
     
+    // TODO: passing strings (with length > 1) to f77 fortran functions is apparently not advisable; may need to remove use of lapack::laenv()
+    
     blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );  // in case lapack::laenv() returns -1
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
     
