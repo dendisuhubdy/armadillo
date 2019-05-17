@@ -4056,23 +4056,31 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     
     podarray<eT> S(min_mn);
     
+    // NOTE: with LAPACK 3.8, can use the workspace query to also obtain liwork,
+    // NOTE: which makes the call to lapack::laenv() redundant
     
-    blas_int ispec = blas_int(9);
+    blas_int laenv_result = blas_int(0);
     
-    const char* const_name = (is_float<eT>::value) ? "SGELSD" : "DGELSD";
-    const char* const_opts = "";
+    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+      {
+      blas_int ispec = blas_int(9);
+      
+      const char* const_name = (is_float<eT>::value) ? "SGELSD" : "DGELSD";
+      const char* const_opts = " ";
+      
+      char* name = const_cast<char*>(const_name);
+      char* opts = const_cast<char*>(const_opts);
+      
+      blas_int n1 = m;
+      blas_int n2 = n;
+      blas_int n3 = nrhs;
+      blas_int n4 = lda;
+      
+      laenv_result = lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4, 6, 1);
+      }
+    #endif
     
-    char* name = const_cast<char*>(const_name);
-    char* opts = const_cast<char*>(const_opts);
-    
-    blas_int n1 = m;
-    blas_int n2 = n;
-    blas_int n3 = nrhs;
-    blas_int n4 = lda;
-    
-    // TODO: passing strings (with length > 1) to f77 fortran functions is apparently not advisable; may need to remove use of lapack::laenv()
-    
-    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );  // in case lapack::laenv() returns -1
+    blas_int smlsiz    = (std::max)( blas_int(25), laenv_result );
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
     
     blas_int nlvl   = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );
@@ -4087,6 +4095,8 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, iwork.memptr(), &info);
     
     if(info != 0)  { return false; }
+    
+    // NOTE: in LAPACK 3.8, iwork[0] returns the minimum liwork
     
     blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
     
@@ -4171,20 +4181,28 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     
     podarray<T> S(min_mn);
     
-    blas_int ispec = blas_int(9);
+    blas_int laenv_result = blas_int(0);
     
-    const char* const_name = (is_float<T>::value) ? "CGELSD" : "ZGELSD";
-    const char* const_opts = "";
+    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+      {
+      blas_int ispec = blas_int(9);
+      
+      const char* const_name = (is_float<T>::value) ? "CGELSD" : "ZGELSD";
+      const char* const_opts = " ";
+      
+      char* name = const_cast<char*>(const_name);
+      char* opts = const_cast<char*>(const_opts);
+      
+      blas_int n1 = m;
+      blas_int n2 = n;
+      blas_int n3 = nrhs;
+      blas_int n4 = lda;
+      
+      laenv_result = lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4, 6, 1);
+      }
+    #endif
     
-    char* name = const_cast<char*>(const_name);
-    char* opts = const_cast<char*>(const_opts);
-    
-    blas_int n1 = m;
-    blas_int n2 = n;
-    blas_int n3 = nrhs;
-    blas_int n4 = lda;
-    
-    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );  // in case lapack::laenv() returns -1
+    blas_int smlsiz = (std::max)( blas_int(25), laenv_result );
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
     
     blas_int nlvl = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );

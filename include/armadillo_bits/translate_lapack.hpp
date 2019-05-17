@@ -1411,9 +1411,15 @@ namespace lapack
   
   inline
   blas_int
-  laenv(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4)
+  laenv(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4, ARMA_FORTRAN_CHARLEN_TYPE name_len, ARMA_FORTRAN_CHARLEN_TYPE opts_len)
     {
-    return arma_fortran(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
+    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+      return arma_fortran(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4, name_len, opts_len);
+    #else
+      arma_ignore(name_len);
+      arma_ignore(opts_len);
+      return arma_fortran(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
+    #endif
     }
   
   
