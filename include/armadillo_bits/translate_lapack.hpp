@@ -99,29 +99,59 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
       {
-      typedef float T;
-      arma_fortran(arma_strtri)(uplo, diag, n, (T*)a, lda, info);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_strtri)(uplo, diag, n, (T*)a, lda, info);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dtrtri)(uplo, diag, n, (T*)a, lda, info);
+        }
+      else
+      if(is_supported_complex_float<eT>::value)
+        {
+        typedef std::complex<float> T;
+        arma_fortran(arma_ctrtri)(uplo, diag, n, (T*)a, lda, info);
+        }
+      else
+      if(is_supported_complex_double<eT>::value)
+        {
+        typedef std::complex<double> T;
+        arma_fortran(arma_ztrtri)(uplo, diag, n, (T*)a, lda, info);
+        }
       }
-    else
-    if(is_double<eT>::value)
+    #else
       {
-      typedef double T;
-      arma_fortran(arma_dtrtri)(uplo, diag, n, (T*)a, lda, info);
+      if(is_float<eT>::value)
+        {
+        typedef float T;
+        arma_fortran(arma_strtri)(uplo, diag, n, (T*)a, lda, info, 1, 1);
+        }
+      else
+      if(is_double<eT>::value)
+        {
+        typedef double T;
+        arma_fortran(arma_dtrtri)(uplo, diag, n, (T*)a, lda, info, 1, 1);
+        }
+      else
+      if(is_supported_complex_float<eT>::value)
+        {
+        typedef std::complex<float> T;
+        arma_fortran(arma_ctrtri)(uplo, diag, n, (T*)a, lda, info, 1, 1);
+        }
+      else
+      if(is_supported_complex_double<eT>::value)
+        {
+        typedef std::complex<double> T;
+        arma_fortran(arma_ztrtri)(uplo, diag, n, (T*)a, lda, info, 1, 1);
+        }
       }
-    else
-    if(is_supported_complex_float<eT>::value)
-      {
-      typedef std::complex<float> T;
-      arma_fortran(arma_ctrtri)(uplo, diag, n, (T*)a, lda, info);
-      }
-    else
-    if(is_supported_complex_double<eT>::value)
-      {
-      typedef std::complex<double> T;
-      arma_fortran(arma_ztrtri)(uplo, diag, n, (T*)a, lda, info);
-      }
+    #endif
     }
   
   

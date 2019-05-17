@@ -674,10 +674,10 @@ extern "C"
   void arma_fortran(arma_zgetri)(const blas_int* n,  void*  a, const blas_int* lda, const blas_int* ipiv,   void* work, const blas_int* lwork, blas_int* info);
   
   // matrix inversion (triangular matrices)
-  void arma_fortran(arma_strtri)(const char* uplo, const char* diag, const blas_int* n,  float* a, const blas_int* lda, blas_int* info);
-  void arma_fortran(arma_dtrtri)(const char* uplo, const char* diag, const blas_int* n, double* a, const blas_int* lda, blas_int* info);
-  void arma_fortran(arma_ctrtri)(const char* uplo, const char* diag, const blas_int* n,   void* a, const blas_int* lda, blas_int* info);
-  void arma_fortran(arma_ztrtri)(const char* uplo, const char* diag, const blas_int* n,   void* a, const blas_int* lda, blas_int* info);
+  void arma_fortran(arma_strtri)(const char* uplo, const char* diag, const blas_int* n,  float* a, const blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len);
+  void arma_fortran(arma_dtrtri)(const char* uplo, const char* diag, const blas_int* n, double* a, const blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len);
+  void arma_fortran(arma_ctrtri)(const char* uplo, const char* diag, const blas_int* n,   void* a, const blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len);
+  void arma_fortran(arma_ztrtri)(const char* uplo, const char* diag, const blas_int* n,   void* a, const blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len);
   
   // eigen decomposition of general matrix (real)
   void arma_fortran(arma_sgeev)(const char* jobvl, const char* jobvr, const blas_int* N,  float* a, const blas_int* lda,  float* wr,  float* wi,  float* vl, const blas_int* ldvl,  float* vr, const blas_int* ldvr,  float* work, const blas_int* lwork, blas_int* info);

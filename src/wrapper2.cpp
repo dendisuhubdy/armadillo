@@ -199,24 +199,24 @@ extern "C"
     
     
     
-    void arma_fortran_with_prefix(arma_strtri)(char* uplo, char* diag, blas_int* n,  float* a, blas_int* lda, blas_int* info)
+    void arma_fortran_with_prefix(arma_strtri)(char* uplo, char* diag, blas_int* n,  float* a, blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len)
       {
-      arma_fortran_sans_prefix(arma_strtri)(uplo, diag, n, a, lda, info);
+      arma_fortran_sans_prefix(arma_strtri)(uplo, diag, n, a, lda, info, uplo_len, diag_len);
       }
     
-    void arma_fortran_with_prefix(arma_dtrtri)(char* uplo, char* diag, blas_int* n, double* a, blas_int* lda, blas_int* info)
+    void arma_fortran_with_prefix(arma_dtrtri)(char* uplo, char* diag, blas_int* n, double* a, blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len)
       {
-      arma_fortran_sans_prefix(arma_dtrtri)(uplo, diag, n, a, lda, info);
+      arma_fortran_sans_prefix(arma_dtrtri)(uplo, diag, n, a, lda, info, uplo_len, diag_len);
       }
     
-    void arma_fortran_with_prefix(arma_ctrtri)(char* uplo, char* diag, blas_int* n,   void* a, blas_int* lda, blas_int* info)
+    void arma_fortran_with_prefix(arma_ctrtri)(char* uplo, char* diag, blas_int* n,   void* a, blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len)
       {
-      arma_fortran_sans_prefix(arma_ctrtri)(uplo, diag, n, a, lda, info);
+      arma_fortran_sans_prefix(arma_ctrtri)(uplo, diag, n, a, lda, info, uplo_len, diag_len);
       }
     
-    void arma_fortran_with_prefix(arma_ztrtri)(char* uplo, char* diag, blas_int* n,   void* a, blas_int* lda, blas_int* info)
+    void arma_fortran_with_prefix(arma_ztrtri)(char* uplo, char* diag, blas_int* n,   void* a, blas_int* lda, blas_int* info, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE diag_len)
       {
-      arma_fortran_sans_prefix(arma_ztrtri)(uplo, diag, n, a, lda, info);
+      arma_fortran_sans_prefix(arma_ztrtri)(uplo, diag, n, a, lda, info, uplo_len, diag_len);
       }
     
     
