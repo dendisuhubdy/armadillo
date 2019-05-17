@@ -143,12 +143,7 @@ namespace blas
         
         eT result[2];  // paranoia: using two elements instead of one
         
-        #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
-          blas::gemv(&trans, &m, &n, &alpha, x, &m, y, &inc, &beta, &result[0], &inc);
-        #else
-          blas::gemv(&trans, &m, &n, &alpha, x, &m, y, &inc, &beta, &result[0], &inc, 1);
-        #endif
-        
+        blas::gemv(&trans, &m, &n, &alpha, x, &m, y, &inc, &beta, &result[0], &inc);
         
         return result[0];
         }
@@ -189,11 +184,7 @@ namespace blas
       
       eT result[2];  // paranoia: using two elements instead of one
       
-      #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
-        blas::gemv(&trans, &m, &n, &alpha, x, &m, y, &inc, &beta, &result[0], &inc);
-      #else
-        blas::gemv(&trans, &m, &n, &alpha, x, &m, y, &inc, &beta, &result[0], &inc, 1);
-      #endif
+      blas::gemv(&trans, &m, &n, &alpha, x, &m, y, &inc, &beta, &result[0], &inc);
       
       return result[0];
       }
