@@ -43,7 +43,7 @@
 #if defined(ARMA_BLAS_UNDERSCORE)
   #define arma_fortran_sans_prefix_B(function) function##_
   
-  #if defined(ARMA_USE_FORTRAN_HIDDEN_VARIABLES)  
+  #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)  
     #define arma_fortran_with_prefix_B(function) wrapper2_##function##_
   #else
     #define arma_fortran_with_prefix_B(function) wrapper_##function##_
@@ -51,7 +51,7 @@
 #else
   #define arma_fortran_sans_prefix_B(function) function
   
-  #if defined(ARMA_USE_FORTRAN_HIDDEN_VARIABLES)  
+  #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)  
     #define arma_fortran_with_prefix_B(function) wrapper2_##function
   #else
     #define arma_fortran_with_prefix_B(function) wrapper_##function

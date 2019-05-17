@@ -411,7 +411,7 @@ message(STATUS "CMAKE_SHARED_LINKER_FLAGS = ${CMAKE_SHARED_LINKER_FLAGS}")
 message(STATUS "CMAKE_REQUIRED_INCLUDES   = ${CMAKE_REQUIRED_INCLUDES}"  )
 
 
-add_library( armadillo ${PROJECT_SOURCE_DIR}/src/wrapper.cpp )
+add_library( armadillo ${PROJECT_SOURCE_DIR}/src/wrapper.cpp ${PROJECT_SOURCE_DIR}/src/wrapper2.cpp )
 target_link_libraries( armadillo ${ARMA_LIBS} )
 target_include_directories(armadillo INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
 set_target_properties(armadillo PROPERTIES VERSION ${ARMA_VERSION_MAJOR}.${ARMA_VERSION_MINOR_ALT}.${ARMA_VERSION_PATCH} SOVERSION ${ARMA_VERSION_MAJOR})

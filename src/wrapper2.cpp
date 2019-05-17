@@ -25,39 +25,13 @@
 
 #include "armadillo_bits/config.hpp"
 
-#undef ARMA_USE_WRAPPER
-#undef ARMA_USE_FORTRAN_HIDDEN_ARGS
+#undef  ARMA_USE_WRAPPER
+
+#undef  ARMA_USE_FORTRAN_HIDDEN_ARGS
+#define ARMA_USE_FORTRAN_HIDDEN_ARGS
 
 #include "armadillo_bits/compiler_setup.hpp"
 #include "armadillo_bits/typedef_elem.hpp"
-#include "armadillo_bits/include_atlas.hpp"
-#include "armadillo_bits/include_superlu.hpp"
-
-
-#if defined(ARMA_USE_EXTERN_CXX11_RNG)
-  #include <random>
-  #include <ctime>
-  
-  #if defined(ARMA_HAVE_GETTIMEOFDAY)
-    #include <sys/time.h>
-  #endif
-  
-  namespace arma
-    {
-    #include "armadillo_bits/arma_rng_cxx11.hpp"
-    thread_local arma_rng_cxx11 arma_rng_cxx11_instance;
-    }
-#endif
-
-#if defined(ARMA_USE_HDF5_ALT)
-  #include <hdf5.h>
-  
-  #if defined(H5_USE_16_API_DEFAULT) || defined(H5_USE_16_API)
-    // #pragma message ("disabling use of HDF5 due to its incompatible configuration")
-    #undef ARMA_USE_HDF5_ALT
-  #endif
-
-#endif
 
 namespace arma
 {
@@ -65,32 +39,12 @@ namespace arma
 #include "armadillo_bits/def_blas.hpp"
 #include "armadillo_bits/def_lapack.hpp"
 #include "armadillo_bits/def_arpack.hpp"
-#include "armadillo_bits/def_superlu.hpp"
-// no need to include def_hdf5.hpp -- it only contains #defines for when ARMA_USE_HDF5_ALT is not defined.
-
-
-#if defined(ARMA_USE_HDF5_ALT)
-  // Wrapper functions: arma::H5open() and arma::H5check_version() to hijack calls to H5open() and H5check_version()
-  herr_t H5open()
-    {
-    return ::H5open();
-    }
-  
-  herr_t H5check_version(unsigned majnum, unsigned minnum, unsigned relnum)
-    {
-    return ::H5check_version(majnum, minnum, relnum);
-    }
-#endif
-
-
-
-// at this stage we have prototypes for the real blas, lapack and atlas functions
-
-// now we make the wrapper functions
 
 
 extern "C"
   {
+  // TODO: where required, extend functions to have "hidden" args
+  
   #if defined(ARMA_USE_BLAS)
     
     float arma_fortran_with_prefix(arma_sasum)(blas_int* n, const float* x, blas_int* incx)
@@ -129,70 +83,70 @@ extern "C"
     
     
     
-    void arma_fortran_with_prefix(arma_sgemv)(const char* transA, const blas_int* m, const blas_int* n, const float*  alpha, const float*  A, const blas_int* ldA, const float*  x, const blas_int* incx, const float*  beta, float*  y, const blas_int* incy)
+    void arma_fortran_with_prefix(arma_sgemv)(const char* transA, const blas_int* m, const blas_int* n, const float*  alpha, const float*  A, const blas_int* ldA, const float*  x, const blas_int* incx, const float*  beta, float*  y, const blas_int* incy, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
       {
-      arma_fortran_sans_prefix(arma_sgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy);
+      arma_fortran_sans_prefix(arma_sgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy, transA_len);
       }
     
-    void arma_fortran_with_prefix(arma_dgemv)(const char* transA, const blas_int* m, const blas_int* n, const double* alpha, const double* A, const blas_int* ldA, const double* x, const blas_int* incx, const double* beta, double* y, const blas_int* incy)
+    void arma_fortran_with_prefix(arma_dgemv)(const char* transA, const blas_int* m, const blas_int* n, const double* alpha, const double* A, const blas_int* ldA, const double* x, const blas_int* incx, const double* beta, double* y, const blas_int* incy, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
       {
-      arma_fortran_sans_prefix(arma_dgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy);
+      arma_fortran_sans_prefix(arma_dgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy, transA_len);
       }
     
-    void arma_fortran_with_prefix(arma_cgemv)(const char* transA, const blas_int* m, const blas_int* n, const void*   alpha, const void*   A, const blas_int* ldA, const void*   x, const blas_int* incx, const void*   beta, void*   y, const blas_int* incy)
+    void arma_fortran_with_prefix(arma_cgemv)(const char* transA, const blas_int* m, const blas_int* n, const void*   alpha, const void*   A, const blas_int* ldA, const void*   x, const blas_int* incx, const void*   beta, void*   y, const blas_int* incy, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
       {
-      arma_fortran_sans_prefix(arma_cgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy);
+      arma_fortran_sans_prefix(arma_cgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy, transA_len);
       }
     
-    void arma_fortran_with_prefix(arma_zgemv)(const char* transA, const blas_int* m, const blas_int* n, const void*   alpha, const void*   A, const blas_int* ldA, const void*   x, const blas_int* incx, const void*   beta, void*   y, const blas_int* incy)
+    void arma_fortran_with_prefix(arma_zgemv)(const char* transA, const blas_int* m, const blas_int* n, const void*   alpha, const void*   A, const blas_int* ldA, const void*   x, const blas_int* incx, const void*   beta, void*   y, const blas_int* incy, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
       {
-      arma_fortran_sans_prefix(arma_zgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy);
-      }
-    
-    
-    
-    void arma_fortran_with_prefix(arma_sgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const float*  alpha, const float*  A, const blas_int* ldA, const float*  B, const blas_int* ldB, const float*  beta, float*  C, const blas_int* ldC)
-      {
-      arma_fortran_sans_prefix(arma_sgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC);
-      }
-    
-    void arma_fortran_with_prefix(arma_dgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const double* alpha, const double* A, const blas_int* ldA, const double* B, const blas_int* ldB, const double* beta, double* C, const blas_int* ldC)
-      {
-      arma_fortran_sans_prefix(arma_dgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC);
-      }
-    
-    void arma_fortran_with_prefix(arma_cgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const void*   alpha, const void*   A, const blas_int* ldA, const void*   B, const blas_int* ldB, const void*   beta, void*   C, const blas_int* ldC)
-      {
-      arma_fortran_sans_prefix(arma_cgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC);
-      }
-    
-    void arma_fortran_with_prefix(arma_zgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const void*   alpha, const void*   A, const blas_int* ldA, const void*   B, const blas_int* ldB, const void*   beta, void*   C, const blas_int* ldC)
-      {
-      arma_fortran_sans_prefix(arma_zgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC);
+      arma_fortran_sans_prefix(arma_zgemv)(transA, m, n, alpha, A, ldA, x, incx, beta, y, incy, transA_len);
       }
     
     
     
-    void arma_fortran_with_prefix(arma_ssyrk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const  float* alpha, const  float* A, const blas_int* ldA, const  float* beta,  float* C, const blas_int* ldC)
+    void arma_fortran_with_prefix(arma_sgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const float*  alpha, const float*  A, const blas_int* ldA, const float*  B, const blas_int* ldB, const float*  beta, float*  C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE transA_len, ARMA_FORTRAN_CHARLEN_TYPE transB_len)
       {
-      arma_fortran_sans_prefix(arma_ssyrk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC);
+      arma_fortran_sans_prefix(arma_sgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC, transA_len, transB_len);
       }
     
-    void arma_fortran_with_prefix(arma_dsyrk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const double* alpha, const double* A, const blas_int* ldA, const double* beta, double* C, const blas_int* ldC)
+    void arma_fortran_with_prefix(arma_dgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const double* alpha, const double* A, const blas_int* ldA, const double* B, const blas_int* ldB, const double* beta, double* C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE transA_len, ARMA_FORTRAN_CHARLEN_TYPE transB_len)
       {
-      arma_fortran_sans_prefix(arma_dsyrk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC);
+      arma_fortran_sans_prefix(arma_dgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC, transA_len, transB_len);
+      }
+    
+    void arma_fortran_with_prefix(arma_cgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const void*   alpha, const void*   A, const blas_int* ldA, const void*   B, const blas_int* ldB, const void*   beta, void*   C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE transA_len, ARMA_FORTRAN_CHARLEN_TYPE transB_len)
+      {
+      arma_fortran_sans_prefix(arma_cgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC, transA_len, transB_len);
+      }
+    
+    void arma_fortran_with_prefix(arma_zgemm)(const char* transA, const char* transB, const blas_int* m, const blas_int* n, const blas_int* k, const void*   alpha, const void*   A, const blas_int* ldA, const void*   B, const blas_int* ldB, const void*   beta, void*   C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE transA_len, ARMA_FORTRAN_CHARLEN_TYPE transB_len)
+      {
+      arma_fortran_sans_prefix(arma_zgemm)(transA, transB, m, n, k, alpha, A, ldA, B, ldB, beta, C, ldC, transA_len, transB_len);
       }
     
     
     
-    void arma_fortran_with_prefix(arma_cherk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const  float* alpha, const void* A, const blas_int* ldA, const  float* beta, void* C, const blas_int* ldC)
+    void arma_fortran_with_prefix(arma_ssyrk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const  float* alpha, const  float* A, const blas_int* ldA, const  float* beta,  float* C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
       {
-      arma_fortran_sans_prefix(arma_cherk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC);
+      arma_fortran_sans_prefix(arma_ssyrk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC, uplo_len, transA_len);
       }
     
-    void arma_fortran_with_prefix(arma_zherk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const double* alpha, const void* A, const blas_int* ldA, const double* beta, void* C, const blas_int* ldC)
+    void arma_fortran_with_prefix(arma_dsyrk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const double* alpha, const double* A, const blas_int* ldA, const double* beta, double* C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
       {
-      arma_fortran_sans_prefix(arma_zherk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC);
+      arma_fortran_sans_prefix(arma_dsyrk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC, uplo_len, transA_len);
+      }
+    
+    
+    
+    void arma_fortran_with_prefix(arma_cherk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const  float* alpha, const void* A, const blas_int* ldA, const  float* beta, void* C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
+      {
+      arma_fortran_sans_prefix(arma_cherk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC, uplo_len, transA_len);
+      }
+    
+    void arma_fortran_with_prefix(arma_zherk)(const char* uplo, const char* transA, const blas_int* n, const blas_int* k, const double* alpha, const void* A, const blas_int* ldA, const double* beta, void* C, const blas_int* ldC, ARMA_FORTRAN_CHARLEN_TYPE uplo_len, ARMA_FORTRAN_CHARLEN_TYPE transA_len)
+      {
+      arma_fortran_sans_prefix(arma_zherk)(uplo, transA, n, k, alpha, A, ldA, beta, C, ldC, uplo_len, transA_len);
       }
     
   #endif
@@ -939,9 +893,9 @@ extern "C"
     
     
     
-    blas_int arma_fortran_with_prefix(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4)
+    blas_int arma_fortran_with_prefix(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4, ARMA_FORTRAN_CHARLEN_TYPE name_len, ARMA_FORTRAN_CHARLEN_TYPE opts_len)
       {
-      return arma_fortran_sans_prefix(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
+      return arma_fortran_sans_prefix(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4, name_len, opts_len);
       }
     
     
@@ -1018,277 +972,6 @@ extern "C"
   
   
   
-  #if defined(ARMA_USE_ATLAS)
-    
-    float wrapper_cblas_sasum(const int N, const float  *X, const int incX)
-      {
-      return      cblas_sasum(N, X, incX);
-      }
-    
-    double wrapper_cblas_dasum(const int N, const double *X, const int incX)
-      {
-      return       cblas_dasum(N, X, incX);
-      }
-    
-    
-    
-    float wrapper_cblas_snrm2(const int N, const float  *X, const int incX)
-      {
-      return      cblas_snrm2(N, X, incX);
-      }
-    
-    double wrapper_cblas_dnrm2(const int N, const double *X, const int incX)
-      {
-      return       cblas_dnrm2(N, X, incX);
-      }
-    
-    
-    
-    float wrapper_cblas_sdot(const int N, const float  *X, const int incX, const float  *Y, const int incY)
-      {
-      return      cblas_sdot(N, X, incX, Y, incY);
-      }
-    
-    double wrapper_cblas_ddot(const int N, const double *X, const int incX, const double *Y, const int incY)
-      {
-      return       cblas_ddot(N, X, incX, Y, incY);
-      }
-    
-    void wrapper_cblas_cdotu_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotu)
-      {
-                 cblas_cdotu_sub(N, X, incX, Y, incY, dotu);
-      }
-    
-    void wrapper_cblas_zdotu_sub(const int N, const void *X, const int incX, const void *Y, const int incY, void *dotu)
-      {
-                 cblas_zdotu_sub(N, X, incX, Y, incY, dotu);
-      }
-    
-    
-    
-    void wrapper_cblas_sgemv(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const int M, const int N, const float alpha,
-                             const float *A, const int lda, const float *X, const int incX, const float beta, float *Y, const int incY)
-      {
-                 cblas_sgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
-      }
-    
-    void wrapper_cblas_dgemv(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const int M, const int N, const double alpha,
-                             const double *A, const int lda, const double *X, const int incX, const double beta, double *Y, const int incY)
-      {
-                 cblas_dgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
-      }
-    
-    void wrapper_cblas_cgemv(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const int M, const int N, const void *alpha,
-                             const void *A, const int lda, const void *X, const int incX, const void *beta, void *Y, const int incY)
-      {
-                 cblas_cgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
-      }
-    
-    void wrapper_cblas_zgemv(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const int M, const int N, const void *alpha,
-                             const void *A, const int lda, const void *X, const int incX, const void *beta, void *Y, const int incY)
-      {
-                 cblas_zgemv(Order, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);
-      }
-    
-    
-    
-    void wrapper_cblas_sgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_TRANSPOSE TransB,
-                             const int M, const int N, const int K, const float alpha,
-                             const float *A, const int lda, const float *B, const int ldb, const float beta, float *C, const int ldc)
-      {
-                 cblas_sgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
-      }
-    
-    void wrapper_cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_TRANSPOSE TransB,
-                             const int M, const int N, const int K, const double alpha,
-                             const double *A, const int lda, const double *B, const int ldb, const double beta, double *C, const int ldc)
-      {
-                 cblas_dgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
-      }
-    
-    void wrapper_cblas_cgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_TRANSPOSE TransB,
-                             const int M, const int N, const int K, const void *alpha,
-                             const void *A, const int lda, const void *B, const int ldb, const void *beta, void *C, const int ldc)
-      {
-                 cblas_cgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
-      }
-    
-    void wrapper_cblas_zgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_TRANSPOSE TransB,
-                             const int M, const int N, const int K, const void *alpha,
-                             const void *A, const int lda, const void *B, const int ldb, const void *beta, void *C, const int ldc)
-      {
-                 cblas_zgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
-      }
-    
-    
-    
-    void wrapper_cblas_ssyrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
-                             const int N, const int K, const float alpha,
-                             const float *A, const int lda, const float beta, float *C, const int ldc)
-      {
-                 cblas_ssyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
-      }
-    
-    void wrapper_cblas_dsyrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
-                             const int N, const int K, const double alpha,
-                             const double *A, const int lda, const double beta, double *C, const int ldc)
-      {
-                 cblas_dsyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
-      }
-    
-    
-    
-    void wrapper_cblas_cherk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
-                             const int N, const int K, const float alpha,
-                             const void *A, const int lda, const float beta, void *C, const int ldc)
-      {
-                 cblas_cherk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
-      }
-    
-    void wrapper_cblas_zherk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
-                             const int N, const int K, const double alpha,
-                             const void *A, const int lda, const double beta, void *C, const int ldc)
-      {
-                 cblas_zherk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
-      }
-    
-    
-    
-    int wrapper_clapack_sgetrf(const enum CBLAS_ORDER Order, const int M, const int N, float  *A, const int lda, int *ipiv)
-      {
-      return    clapack_sgetrf(Order, M, N, A, lda, ipiv);
-      }
-    
-    int wrapper_clapack_dgetrf(const enum CBLAS_ORDER Order, const int M, const int N, double *A, const int lda, int *ipiv)
-      {
-      return    clapack_dgetrf(Order, M, N, A, lda, ipiv);
-      }
-    
-    int wrapper_clapack_cgetrf(const enum CBLAS_ORDER Order, const int M, const int N, void   *A, const int lda, int *ipiv)
-      {
-      return    clapack_cgetrf(Order, M, N, A, lda, ipiv);
-      }
-    
-    int wrapper_clapack_zgetrf(const enum CBLAS_ORDER Order, const int M, const int N, void   *A, const int lda, int *ipiv)
-      {
-      return    clapack_zgetrf(Order, M, N, A, lda, ipiv);
-      }
-    
-    
-    
-    int wrapper_clapack_sgetri(const enum CBLAS_ORDER Order, const int N, float  *A, const int lda, const int *ipiv)
-      {
-      return    clapack_sgetri(Order, N, A, lda, ipiv);
-      }
-    
-    int wrapper_clapack_dgetri(const enum CBLAS_ORDER Order, const int N, double *A, const int lda, const int *ipiv)
-      {
-      return    clapack_dgetri(Order, N, A, lda, ipiv);
-      }
-    
-    int wrapper_clapack_cgetri(const enum CBLAS_ORDER Order, const int N, void   *A, const int lda, const int *ipiv)
-      {
-      return    clapack_cgetri(Order, N, A, lda, ipiv);
-      }
-    
-    int wrapper_clapack_zgetri(const enum CBLAS_ORDER Order, const int N, void   *A, const int lda, const int *ipiv)
-      {
-      return    clapack_zgetri(Order, N, A, lda, ipiv);
-      }
-    
-    
-    
-    int wrapper_clapack_sgesv(const enum CBLAS_ORDER Order, const int N, const int NRHS, float  *A, const int lda, int *ipiv, float  *B, const int ldb)
-      {
-      return    clapack_sgesv(Order, N, NRHS, A, lda, ipiv, B, ldb);
-      }
-    
-    int wrapper_clapack_dgesv(const enum CBLAS_ORDER Order, const int N, const int NRHS, double *A, const int lda, int *ipiv, double *B, const int ldb)
-      {
-      return    clapack_dgesv(Order, N, NRHS, A, lda, ipiv, B, ldb);
-      }
-    
-    int wrapper_clapack_cgesv(const enum CBLAS_ORDER Order, const int N, const int NRHS, void   *A, const int lda, int *ipiv, void   *B, const int ldb)
-      {
-      return    clapack_cgesv(Order, N, NRHS, A, lda, ipiv, B, ldb);
-      }
-    
-    int wrapper_clapack_zgesv(const enum CBLAS_ORDER Order, const int N, const int NRHS, void   *A, const int lda, int *ipiv, void   *B, const int ldb)
-      {
-      return    clapack_zgesv(Order, N, NRHS, A, lda, ipiv, B, ldb);
-      }
-    
-    
-    
-    int wrapper_clapack_spotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,  float *A, const int lda)
-      {
-      return    clapack_spotrf(Order, Uplo, N, A, lda);
-      }
-    
-    int wrapper_clapack_dpotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, double *A, const int lda)
-      {
-      return    clapack_dpotrf(Order, Uplo, N, A, lda);
-      }
-    
-    int wrapper_clapack_cpotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
-      {
-      return    clapack_cpotrf(Order, Uplo, N, A, lda);
-      }
-    
-    int wrapper_clapack_zpotrf(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
-      {
-      return    clapack_zpotrf(Order, Uplo, N, A, lda);
-      }
-    
-    
-    
-    int wrapper_clapack_spotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,  float *A, const int lda)
-      {
-      return    clapack_spotri(Order, Uplo, N, A, lda);
-      }
-    
-    int wrapper_clapack_dpotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, double *A, const int lda)
-      {
-      return    clapack_dpotri(Order, Uplo, N, A, lda);
-      }
-    
-    int wrapper_clapack_cpotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
-      {
-      return    clapack_cpotri(Order, Uplo, N, A, lda);
-      }
-    
-    int wrapper_clapack_zpotri(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,   void *A, const int lda)
-      {
-      return    clapack_zpotri(Order, Uplo, N, A, lda);
-      }
-    
-    
-    
-    int wrapper_clapack_sposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS,  float *A, const int lda,  float *B, const int ldb)
-      {
-      return    clapack_sposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
-      }
-    
-    int wrapper_clapack_dposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS, double *A, const int lda, double *B, const int ldb)
-      {
-      return    clapack_dposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
-      }
-    
-    int wrapper_clapack_cposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS,   void *A, const int lda,   void *B, const int ldb)
-      {
-      return    clapack_cposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
-      }
-    
-    int wrapper_clapack_zposv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N, const int NRHS,   void *A, const int lda,   void *B, const int ldb)
-      {
-      return    clapack_zposv(Order, Uplo, N, NRHS, A, lda, B, ldb);
-      }
-    
-    
-  #endif
-
-
-
   #if defined(ARMA_USE_ARPACK)
 
     void arma_fortran_with_prefix(arma_snaupd)(blas_int* ido, char* bmat, blas_int* n, char* which, blas_int* nev, float* tol, float* resid, blas_int* ncv, float* v, blas_int* ldv, blas_int* iparam, blas_int* ipntr, float* workd, float* workl, blas_int* lworkl, blas_int* info)
@@ -1355,261 +1038,6 @@ extern "C"
       }
 
   #endif
-  
-  
-  
-  #if defined(ARMA_USE_SUPERLU)
-    
-    void wrapper_sgssv(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, superlu::SuperMatrix* e, superlu::SuperMatrix* f, superlu::SuperMatrix* g, superlu::SuperLUStat_t* h, int* i)
-      {
-      sgssv(a,b,c,d,e,f,g,h,i);
-      }
-    
-    void wrapper_dgssv(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, superlu::SuperMatrix* e, superlu::SuperMatrix* f, superlu::SuperMatrix* g, superlu::SuperLUStat_t* h, int* i)
-      {
-      dgssv(a,b,c,d,e,f,g,h,i);
-      }
-    
-    void wrapper_cgssv(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, superlu::SuperMatrix* e, superlu::SuperMatrix* f, superlu::SuperMatrix* g, superlu::SuperLUStat_t* h, int* i)
-      {
-      cgssv(a,b,c,d,e,f,g,h,i);
-      }
-    
-    void wrapper_zgssv(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, superlu::SuperMatrix* e, superlu::SuperMatrix* f, superlu::SuperMatrix* g, superlu::SuperLUStat_t* h, int* i)
-      {
-      zgssv(a,b,c,d,e,f,g,h,i);
-      }
-    
-    
-    
-    
-    void wrapper_sgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f,  float* g,  float* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n,  float* o,  float* p,  float* q,  float* r, superlu::GlobalLU_t* s, superlu::mem_usage_t* t, superlu::SuperLUStat_t* u, int* v)
-      {
-      sgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v);
-      }
-    
-    void wrapper_dgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f, double* g, double* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n, double* o, double* p, double* q, double* r, superlu::GlobalLU_t* s, superlu::mem_usage_t* t, superlu::SuperLUStat_t* u, int* v)
-      {
-      dgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v);
-      }
-    
-    void wrapper_cgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f,  float* g,  float* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n,  float* o,  float* p,  float* q,  float* r, superlu::GlobalLU_t* s, superlu::mem_usage_t* t, superlu::SuperLUStat_t* u, int* v)
-      {
-      cgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v);
-      }
-    
-    void wrapper_zgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f, double* g, double* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n, double* o, double* p, double* q, double* r, superlu::GlobalLU_t* s, superlu::mem_usage_t* t, superlu::SuperLUStat_t* u, int* v)
-      {
-      zgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v);
-      }
-    
-    
-    
-    
-    void wrapper_StatInit(superlu::SuperLUStat_t* a)
-      {
-      StatInit(a);
-      }
-
-    void wrapper_StatFree(superlu::SuperLUStat_t* a)
-      {
-      StatFree(a);
-      }
-      
-    void wrapper_set_default_options(superlu::superlu_options_t* a)
-      {
-      set_default_options(a);
-      }
-    
-    void wrapper_Destroy_SuperNode_Matrix(superlu::SuperMatrix* a)
-      {
-      Destroy_SuperNode_Matrix(a);
-      }
-
-    void wrapper_Destroy_CompCol_Matrix(superlu::SuperMatrix* a)
-      {
-      Destroy_CompCol_Matrix(a);
-      }
-
-    void wrapper_Destroy_SuperMatrix_Store(superlu::SuperMatrix* a)
-      {
-      Destroy_SuperMatrix_Store(a);
-      }
-    
-    void* wrapper_superlu_malloc(size_t a)
-      {
-      return superlu_malloc(a);
-      }
-    
-    void wrapper_superlu_free(void* a)
-      {
-      superlu_free(a);
-      }
-    
-  #endif
-  
-  
-  
-  #if defined(ARMA_USE_HDF5_ALT)
-  
-    hid_t arma_H5Tcopy(hid_t dtype_id)
-      {
-      return H5Tcopy(dtype_id);
-      }
-    
-    hid_t arma_H5Tcreate(H5T_class_t cl, size_t size)
-      {
-      return H5Tcreate(cl, size);
-      }
-    
-    herr_t arma_H5Tinsert(hid_t dtype_id, const char* name, size_t offset, hid_t field_id)
-      {
-      return H5Tinsert(dtype_id, name, offset, field_id);
-      }
-    
-    htri_t arma_H5Tequal(hid_t dtype_id1, hid_t dtype_id2)
-      {
-      return H5Tequal(dtype_id1, dtype_id2);
-      }
-    
-    herr_t arma_H5Tclose(hid_t dtype_id)
-      {
-      return H5Tclose(dtype_id);
-      }
-    
-    hid_t arma_H5Dopen(hid_t loc_id, const char* name, hid_t dapl_id)
-      {
-      return H5Dopen(loc_id, name, dapl_id);
-      }
-    
-    hid_t arma_H5Dget_type(hid_t dataset_id)
-      {
-      return H5Dget_type(dataset_id);
-      }
-    
-    hid_t arma_H5Dcreate(hid_t loc_id, const char* name, hid_t dtype_id, hid_t space_id, hid_t lcpl_id, hid_t dcpl_id, hid_t dapl_id)
-      {
-      return H5Dcreate(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
-      }
-    
-    herr_t arma_H5Dwrite(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id, hid_t xfer_plist_id, const void* buf)
-      {
-      return H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
-      }
-    
-    herr_t arma_H5Dclose(hid_t dataset_id)
-      {
-      return H5Dclose(dataset_id);
-      }
-    
-    hid_t arma_H5Dget_space(hid_t dataset_id)
-      {
-      return H5Dget_space(dataset_id);
-      }
-    
-    herr_t arma_H5Dread(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id, hid_t xfer_plist_id, void* buf)
-      {
-      return H5Dread(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
-      }
-    
-    int arma_H5Sget_simple_extent_ndims(hid_t space_id)
-      {
-      return H5Sget_simple_extent_ndims(space_id);
-      }
-    
-    int arma_H5Sget_simple_extent_dims(hid_t space_id, hsize_t* dims, hsize_t* maxdims)
-      {
-      return H5Sget_simple_extent_dims(space_id, dims, maxdims);
-      }
-    
-    herr_t arma_H5Sclose(hid_t space_id)
-      {
-      return H5Sclose(space_id);
-      }
-    
-    hid_t arma_H5Screate_simple(int rank, const hsize_t* current_dims, const hsize_t* maximum_dims)
-      {
-      return H5Screate_simple(rank, current_dims, maximum_dims);
-      }
-    
-    herr_t arma_H5Ovisit(hid_t object_id, H5_index_t index_type, H5_iter_order_t order, H5O_iterate_t op, void* op_data)
-      {
-      return H5Ovisit(object_id, index_type, order, op, op_data);
-      }
-    
-    herr_t arma_H5Eset_auto(hid_t estack_id, H5E_auto_t func, void* client_data)
-      {
-      return H5Eset_auto(estack_id, func, client_data);
-      }
-    
-    herr_t arma_H5Eget_auto(hid_t estack_id, H5E_auto_t* func, void** client_data)
-      {
-      return H5Eget_auto(estack_id, func, client_data);
-      }
-    
-    hid_t arma_H5Fopen(const char* name, unsigned flags, hid_t fapl_id)
-      {
-      return H5Fopen(name, flags, fapl_id);
-      }
-    
-    hid_t arma_H5Fcreate(const char* name, unsigned flags, hid_t fcpl_id, hid_t fapl_id)
-      {
-      return H5Fcreate(name, flags, fcpl_id, fapl_id);
-      }
-    
-    herr_t arma_H5Fclose(hid_t file_id)
-      {
-      return H5Fclose(file_id);
-      }
-    
-    htri_t arma_H5Fis_hdf5(const char* name)
-      {
-      return H5Fis_hdf5(name);
-      }
-    
-    hid_t arma_H5Gcreate(hid_t loc_id, const char* name, hid_t lcpl_id, hid_t gcpl_id, hid_t gapl_id)
-      {
-      return H5Gcreate(loc_id, name, lcpl_id, gcpl_id, gapl_id);
-      }
-    
-    hid_t arma_H5Gopen(hid_t loc_id, const char* name, hid_t gapl_id)
-      {
-      return H5Gopen(loc_id, name, gapl_id);
-      }
-    
-    herr_t arma_H5Gclose(hid_t group_id)
-      {
-      return H5Gclose(group_id);
-      }
-    
-    htri_t arma_H5Lexists(hid_t loc_id, const char* name, hid_t lapl_id)
-      {
-      return H5Lexists(loc_id, name, lapl_id);
-      }
-    
-    herr_t arma_H5Ldelete(hid_t loc_id, const char* name, hid_t lapl_id)
-      {
-      return H5Ldelete(loc_id, name, lapl_id);
-      }
-    
-    
-    // H5T_NATIVE_* types.  The rhs here expands to some macros.
-    hid_t arma_H5T_NATIVE_UCHAR  = H5T_NATIVE_UCHAR;
-    hid_t arma_H5T_NATIVE_CHAR   = H5T_NATIVE_CHAR;
-    hid_t arma_H5T_NATIVE_SHORT  = H5T_NATIVE_SHORT;
-    hid_t arma_H5T_NATIVE_USHORT = H5T_NATIVE_USHORT;
-    hid_t arma_H5T_NATIVE_INT    = H5T_NATIVE_INT;
-    hid_t arma_H5T_NATIVE_UINT   = H5T_NATIVE_UINT;
-    hid_t arma_H5T_NATIVE_LONG   = H5T_NATIVE_LONG;
-    hid_t arma_H5T_NATIVE_ULONG  = H5T_NATIVE_ULONG;
-    hid_t arma_H5T_NATIVE_LLONG  = H5T_NATIVE_LLONG;
-    hid_t arma_H5T_NATIVE_ULLONG = H5T_NATIVE_ULLONG;
-    hid_t arma_H5T_NATIVE_FLOAT  = H5T_NATIVE_FLOAT;
-    hid_t arma_H5T_NATIVE_DOUBLE = H5T_NATIVE_DOUBLE;
-
-  #endif
-  
-  
   }  // end of extern "C"
 
 
