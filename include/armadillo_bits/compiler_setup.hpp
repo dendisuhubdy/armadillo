@@ -75,12 +75,6 @@
 #define arma_fortran_sans_prefix(function) arma_fortran_sans_prefix_B(function)
 #define arma_fortran_with_prefix(function) arma_fortran_with_prefix_B(function)
 
-// NOTE: the fortran type for "hidden" arguments
-// NOTE: varies across compilers, compiler versions and systems (eg. 32 bit vs 64 bit);
-// NOTE: the default setting of "size_t" is a guess
-#undef  ARMA_FORTRAN_CHARLEN_TYPE
-#define ARMA_FORTRAN_CHARLEN_TYPE size_t
-
 #undef  ARMA_INCFILE_WRAP
 #define ARMA_INCFILE_WRAP(x) <x>
 
@@ -261,14 +255,6 @@
     #define ARMA_HAVE_LOG1P
     #define ARMA_HAVE_ISINF
     #define ARMA_HAVE_ISNAN
-  #endif
-  
-  #if (__GNUC__ <= 7)
-    #undef  ARMA_FORTRAN_CHARLEN_TYPE
-    #define ARMA_FORTRAN_CHARLEN_TYPE int
-  #else
-    #undef  ARMA_FORTRAN_CHARLEN_TYPE
-    #define ARMA_FORTRAN_CHARLEN_TYPE size_t
   #endif
   
 #endif
