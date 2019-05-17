@@ -45,13 +45,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgetrf)(m, n, (T*)a, lda, ipiv, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgetrf)(m, n, (T*)a, lda, ipiv, info);
       }
     }
@@ -79,13 +79,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgetri)(n, (T*)a, lda, ipiv, (T*)work, lwork, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgetri)(n, (T*)a, lda, ipiv, (T*)work, lwork, info);
       }
     }
@@ -115,13 +115,13 @@ namespace lapack
       else
       if(is_cx_float<eT>::value)
         {
-        typedef std::complex<float> T;
+        typedef cx_float T;
         arma_fortran(arma_ctrtri)(uplo, diag, n, (T*)a, lda, info);
         }
       else
       if(is_cx_double<eT>::value)
         {
-        typedef std::complex<double> T;
+        typedef cx_double T;
         arma_fortran(arma_ztrtri)(uplo, diag, n, (T*)a, lda, info);
         }
       }
@@ -141,13 +141,13 @@ namespace lapack
       else
       if(is_cx_float<eT>::value)
         {
-        typedef std::complex<float> T;
+        typedef cx_float T;
         arma_fortran(arma_ctrtri)(uplo, diag, n, (T*)a, lda, info, 1, 1);
         }
       else
       if(is_cx_double<eT>::value)
         {
-        typedef std::complex<double> T;
+        typedef cx_double T;
         arma_fortran(arma_ztrtri)(uplo, diag, n, (T*)a, lda, info, 1, 1);
         }
       }
@@ -436,13 +436,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cpotrf)(uplo, n, (T*)a, lda, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zpotrf)(uplo, n, (T*)a, lda, info);
       }
     }
@@ -470,13 +470,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cpbtrf)(uplo, n, kd, (T*)ab, ldab, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zpbtrf)(uplo, n, kd, (T*)ab, ldab, info);
       }
     }
@@ -504,13 +504,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cpotri)(uplo, n, (T*)a, lda, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zpotri)(uplo, n, (T*)a, lda, info);
       }
     }
@@ -538,13 +538,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgeqrf)(m, n, (T*)a, lda, (T*)tau, (T*)work, lwork, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgeqrf)(m, n, (T*)a, lda, (T*)tau, (T*)work, lwork, info);
       }
     }
@@ -745,13 +745,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgesv)(n, nrhs, (T*)a, lda, ipiv, (T*)b, ldb, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgesv)(n, nrhs, (T*)a, lda, ipiv, (T*)b, ldb, info);
       }
     }
@@ -825,13 +825,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cposv)(uplo, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zposv)(uplo, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     }
@@ -905,13 +905,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgels)(trans, m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)work, lwork, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgels)(trans, m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)work, lwork, info);
       }
     }
@@ -987,13 +987,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_ctrtrs)(uplo, trans, diag, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_ztrtrs)(uplo, trans, diag, n, nrhs, (T*)a, lda, (T*)b, ldb, info);
       }
     }
@@ -1021,13 +1021,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info);
       }
     }
@@ -1101,13 +1101,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info);
       }
     }
@@ -1228,13 +1228,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_ctrsyl)(transa, transb, isgn, m, n, (T*)a, lda, (T*)b, ldb, (T*)c, ldc, (float*)scale, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_ztrsyl)(transa, transb, isgn, m, n, (T*)a, lda, (T*)b, ldb, (T*)c, ldc, (double*)scale, info);
       }
     }
@@ -1563,13 +1563,13 @@ namespace lapack
     else
     if(is_cx_float<eT>::value)
       {
-      typedef std::complex<float> T;
+      typedef cx_float T;
       arma_fortran(arma_cgehrd)(n, ilo, ihi, (T*)a, lda, (T*)tao, (T*)work, lwork, info);
       }
     else
     if(is_cx_double<eT>::value)
       {
-      typedef std::complex<double> T;
+      typedef cx_double T;
       arma_fortran(arma_zgehrd)(n, ilo, ihi, (T*)a, lda, (T*)tao, (T*)work, lwork, info);
       }
     }
