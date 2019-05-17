@@ -4059,26 +4059,20 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     // NOTE: with LAPACK 3.8, can use the workspace query to also obtain liwork,
     // NOTE: which makes the call to lapack::laenv() redundant
     
-    blas_int laenv_result = blas_int(0);
+    blas_int ispec = blas_int(9);
     
-    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
-      {
-      blas_int ispec = blas_int(9);
-      
-      const char* const_name = (is_float<eT>::value) ? "SGELSD" : "DGELSD";
-      const char* const_opts = " ";
-      
-      char* name = const_cast<char*>(const_name);
-      char* opts = const_cast<char*>(const_opts);
-      
-      blas_int n1 = m;
-      blas_int n2 = n;
-      blas_int n3 = nrhs;
-      blas_int n4 = lda;
-      
-      laenv_result = lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4, 6, 1);
-      }
-    #endif
+    const char* const_name = (is_float<eT>::value) ? "SGELSD" : "DGELSD";
+    const char* const_opts = " ";
+    
+    char* name = const_cast<char*>(const_name);
+    char* opts = const_cast<char*>(const_opts);
+    
+    blas_int n1 = m;
+    blas_int n2 = n;
+    blas_int n3 = nrhs;
+    blas_int n4 = lda;
+    
+    blas_int laenv_result = (arma_config::hidden_args) ? blas_int(lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4, 6, 1)) : blas_int(0);
     
     blas_int smlsiz    = (std::max)( blas_int(25), laenv_result );
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
@@ -4181,26 +4175,20 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     
     podarray<T> S(min_mn);
     
-    blas_int laenv_result = blas_int(0);
+    blas_int ispec = blas_int(9);
     
-    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
-      {
-      blas_int ispec = blas_int(9);
-      
-      const char* const_name = (is_float<T>::value) ? "CGELSD" : "ZGELSD";
-      const char* const_opts = " ";
-      
-      char* name = const_cast<char*>(const_name);
-      char* opts = const_cast<char*>(const_opts);
-      
-      blas_int n1 = m;
-      blas_int n2 = n;
-      blas_int n3 = nrhs;
-      blas_int n4 = lda;
-      
-      laenv_result = lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4, 6, 1);
-      }
-    #endif
+    const char* const_name = (is_float<T>::value) ? "CGELSD" : "ZGELSD";
+    const char* const_opts = " ";
+    
+    char* name = const_cast<char*>(const_name);
+    char* opts = const_cast<char*>(const_opts);
+    
+    blas_int n1 = m;
+    blas_int n2 = n;
+    blas_int n3 = nrhs;
+    blas_int n4 = lda;
+    
+    blas_int laenv_result = (arma_config::hidden_args) ? blas_int(lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4, 6, 1)) : blas_int(0);
     
     blas_int smlsiz = (std::max)( blas_int(25), laenv_result );
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
