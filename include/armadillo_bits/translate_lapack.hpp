@@ -159,17 +159,37 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
-      {
-      typedef float T;
-      arma_fortran(arma_ssyev)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, info);
-      }
-    else
-    if(is_double<eT>::value)
-      {
-      typedef double T;
-      arma_fortran(arma_dsyev)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, info);
-      }
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+           if( is_float<eT>::value)  {  typedef  float T; arma_fortran(arma_ssyev)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, info); }
+      else if(is_double<eT>::value)  {  typedef double T; arma_fortran(arma_dsyev)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, info); }
+    #else
+           if( is_float<eT>::value)  {  typedef  float T; arma_fortran(arma_ssyev)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, info, 1, 1); }
+      else if(is_double<eT>::value)  {  typedef double T; arma_fortran(arma_dsyev)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, info, 1, 1); }
+    #endif
+    }
+  
+  
+  
+  template<typename eT>
+  inline
+  void
+  heev
+    (
+    char* jobz, char* uplo, blas_int* n,
+    eT* a, blas_int* lda, typename eT::value_type* w,
+    eT* work, blas_int* lwork, typename eT::value_type* rwork,
+    blas_int* info
+    )
+    {
+    arma_type_check(( is_supported_blas_type<eT>::value == false ));
+    
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+           if( is_cx_float<eT>::value)  { typedef  float T; typedef  cx_float cx_T; arma_fortran(arma_cheev)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, info); }
+      else if(is_cx_double<eT>::value)  { typedef double T; typedef cx_double cx_T; arma_fortran(arma_zheev)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, info); }
+    #else
+           if( is_cx_float<eT>::value)  { typedef  float T; typedef  cx_float cx_T; arma_fortran(arma_cheev)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, info, 1, 1); }
+      else if(is_cx_double<eT>::value)  { typedef double T; typedef cx_double cx_T; arma_fortran(arma_zheev)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, info, 1, 1); }
+    #endif
     }
   
   
@@ -191,36 +211,6 @@ namespace lapack
       {
       typedef double T;
       arma_fortran(arma_dsyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info);
-      }
-    }
-  
-  
-  
-  template<typename eT>
-  inline
-  void
-  heev
-    (
-    char* jobz, char* uplo, blas_int* n,
-    eT* a, blas_int* lda, typename eT::value_type* w,
-    eT* work, blas_int* lwork, typename eT::value_type* rwork,
-    blas_int* info
-    )
-    {
-    arma_type_check(( is_supported_blas_type<eT>::value == false ));
-    
-    if(is_cx_float<eT>::value)
-      {
-      typedef float T;
-      typedef typename std::complex<T> cx_T;
-      arma_fortran(arma_cheev)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, info);
-      }
-    else
-    if(is_cx_double<eT>::value)
-      {
-      typedef double T;
-      typedef typename std::complex<T> cx_T;
-      arma_fortran(arma_zheev)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, info);
       }
     }
   

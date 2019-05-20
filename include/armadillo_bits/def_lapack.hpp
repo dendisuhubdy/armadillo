@@ -696,12 +696,12 @@ extern "C"
   void arma_fortran(arma_zgeevx)(const char* balanc, const char* jobvl, const char* jobvr, const char* sense, const blas_int* n, void* a, const blas_int* lda, void* w, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, const blas_int* ilo, const blas_int* ihi, double* scale, double* abnrm, double* rconde, double* rcondv, void* work, const blas_int* lwork, double* rwork, const blas_int* info, blas_len balanc_len, blas_len jobvl_len, blas_len jobvr_len, blas_len sense_len);
   
   // eigen decomposition of symmetric real matrices
-  void arma_fortran(arma_ssyev)(const char* jobz, const char* uplo, const blas_int* n,  float* a, const blas_int* lda,  float* w,  float* work, const blas_int* lwork, blas_int* info);
-  void arma_fortran(arma_dsyev)(const char* jobz, const char* uplo, const blas_int* n, double* a, const blas_int* lda, double* w, double* work, const blas_int* lwork, blas_int* info);
+  void arma_fortran(arma_ssyev)(const char* jobz, const char* uplo, const blas_int* n,  float* a, const blas_int* lda,  float* w,  float* work, const blas_int* lwork, blas_int* info, blas_len jobz_len, blas_len uplo_len);
+  void arma_fortran(arma_dsyev)(const char* jobz, const char* uplo, const blas_int* n, double* a, const blas_int* lda, double* w, double* work, const blas_int* lwork, blas_int* info, blas_len jobz_len, blas_len uplo_len);
     
   // eigen decomposition of hermitian matrices (complex)
-  void arma_fortran(arma_cheev)(const char* jobz, const char* uplo, const blas_int* n,   void* a, const blas_int* lda,  float* w,   void* work, const blas_int* lwork,  float* rwork, blas_int* info);
-  void arma_fortran(arma_zheev)(const char* jobz, const char* uplo, const blas_int* n,   void* a, const blas_int* lda, double* w,   void* work, const blas_int* lwork, double* rwork, blas_int* info);
+  void arma_fortran(arma_cheev)(const char* jobz, const char* uplo, const blas_int* n,   void* a, const blas_int* lda,  float* w,   void* work, const blas_int* lwork,  float* rwork, blas_int* info, blas_len jobz_len, blas_len uplo_len);
+  void arma_fortran(arma_zheev)(const char* jobz, const char* uplo, const blas_int* n,   void* a, const blas_int* lda, double* w,   void* work, const blas_int* lwork, double* rwork, blas_int* info, blas_len jobz_len, blas_len uplo_len);
   
   // eigen decomposition of symmetric real matrices by divide and conquer
   void arma_fortran(arma_ssyevd)(const char* jobz, const char* uplo, const blas_int* n,  float* a, const blas_int* lda,  float* w,  float* work, const blas_int* lwork, blas_int* iwork, const blas_int* liwork, blas_int* info);
