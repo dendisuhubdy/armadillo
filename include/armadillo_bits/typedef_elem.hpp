@@ -107,6 +107,15 @@ typedef          long slng_t;
 #endif
 
 
+typedef std::complex<float>  cx_float;
+typedef std::complex<double> cx_double;
+
+typedef void* void_ptr;
+
+
+//
+
+
 #if   defined(ARMA_BLAS_LONG_LONG)
   typedef long long blas_int;
   #define ARMA_MAX_BLAS_INT 0x7fffffffffffffffULL
@@ -153,12 +162,6 @@ typedef          long slng_t;
 #endif
 
 typedef ARMA_FORTRAN_CHARLEN_TYPE blas_len;
-
-
-typedef std::complex<float>  cx_float;
-typedef std::complex<double> cx_double;
-
-typedef void* void_ptr;
 
 
 //! @}
