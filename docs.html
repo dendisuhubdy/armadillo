@@ -148,7 +148,7 @@ hr.greyline
 <a class="noprint" style="display:scroll; position:fixed; bottom:5px; right:5px;" href="#top"><font size=-1>[top]</font></a>
 
 <a name="top"></a>
-<big><b>API Documentation for Armadillo 9.400</b></big>
+<big><b>API Documentation for Armadillo 9.500</b></big>
 <br>
 <br>
 <br>
@@ -18173,12 +18173,19 @@ List of additions and changes for each version:
 
 
 
+<a name="version_9500"></a>
+<li>Version 9.500:
+<ul>
+<li>expanded <a href="#solve">solve()</a> with <code>solve_opts::likely_sympd</code> to forcefully indicate that the given matrix is positive definite</li>
+<li>faster <a href="#solve">solve()</a> and <a href="#inv">inv()</a> via more robust automatic detection of positive definite matrices</li>
+</ul>
+</li>
+<br>
 <a name="version_9400"></a>
 <li>Version 9.400:
 <ul>
 <li>faster <a href="#cov">cov()</a> and <a href="#cor">cor()</a></li>
 <li>added <a href="#as_col_row">.as_col()</a> and <a href="#as_col_row">.as_row()</a></li>
-<li>expanded <a href="#solve">solve()</a> with <code>solve_opts::likely_sympd</code> to indicate that the given matrix is symmetric/hermitian positive definite</li>
 <li>expanded <a href="#shed">.shed_rows()</a> / <a href="#shed">.shed_cols()</a> / <a href="#shed">.shed_slices()</a> to remove rows/columns/slices specified in a vector</li>
 <li>expanded <a href="#vectorise">vectorise()</a> to handle sparse matrices</li>
 <li>expanded element-wise versions of <a href="#min_and_max">max()</a> and <a href="#min_and_max">min()</a> to handle sparse matrices</li>
