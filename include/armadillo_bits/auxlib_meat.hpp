@@ -5527,7 +5527,7 @@ auxlib::rudimentary_sym_check(const Mat<eT>& X)
   const eT delta1 = std::abs(A1 - B1);
   const eT delta2 = std::abs(A2 - B2);
   
-  const eT tol = eT(10000)*std::numeric_limits<eT>::epsilon();  // allow some leeeway
+  const eT tol = eT(10000)*std::numeric_limits<eT>::epsilon();  // allow some leeway
   
   const bool okay1 = ( (delta1 <= tol) || (delta1 <= (C1 * tol)) );
   const bool okay2 = ( (delta2 <= tol) || (delta2 <= (C2 * tol)) );
