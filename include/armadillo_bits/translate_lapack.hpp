@@ -201,17 +201,13 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
-      {
-      typedef float T;
-      arma_fortran(arma_ssyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info);
-      }
-    else
-    if(is_double<eT>::value)
-      {
-      typedef double T;
-      arma_fortran(arma_dsyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info);
-      }
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+           if( is_float<eT>::value)  { typedef  float T; arma_fortran(arma_ssyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info); }
+      else if(is_double<eT>::value)  { typedef double T; arma_fortran(arma_dsyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info); }
+    #else
+           if( is_float<eT>::value)  { typedef  float T; arma_fortran(arma_ssyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info, 1, 1); }
+      else if(is_double<eT>::value)  { typedef double T; arma_fortran(arma_dsyevd)(jobz, uplo, n, (T*)a, lda, (T*)w, (T*)work, lwork, iwork, liwork, info, 1, 1); }
+    #endif
     }
   
   
@@ -230,19 +226,13 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_cx_float<eT>::value)
-      {
-      typedef float T;
-      typedef typename std::complex<T> cx_T;
-      arma_fortran(arma_cheevd)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, lrwork, iwork, liwork, info);
-      }
-    else
-    if(is_cx_double<eT>::value)
-      {
-      typedef double T;
-      typedef typename std::complex<T> cx_T;
-      arma_fortran(arma_zheevd)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, lrwork, iwork, liwork, info);
-      }
+    #if !defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+           if( is_cx_float<eT>::value)  { typedef  float T; typedef  cx_float cx_T; arma_fortran(arma_cheevd)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, lrwork, iwork, liwork, info); }
+      else if(is_cx_double<eT>::value)  { typedef double T; typedef cx_double cx_T; arma_fortran(arma_zheevd)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, lrwork, iwork, liwork, info); }
+    #else
+           if( is_cx_float<eT>::value)  { typedef  float T; typedef  cx_float cx_T; arma_fortran(arma_cheevd)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, lrwork, iwork, liwork, info, 1, 1); }
+      else if(is_cx_double<eT>::value)  { typedef double T; typedef cx_double cx_T; arma_fortran(arma_zheevd)(jobz, uplo, n, (cx_T*)a, lda, (T*)w, (cx_T*)work, lwork, (T*)rwork, lrwork, iwork, liwork, info, 1, 1); }
+    #endif
     }
   
 	
