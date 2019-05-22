@@ -712,12 +712,12 @@ extern "C"
   void arma_fortran(arma_zheevd)(const char* jobz, const char* uplo, const blas_int* n,   void* a, const blas_int* lda, double* w,   void* work, const blas_int* lwork, double* rwork, const blas_int* lrwork, blas_int* iwork, const blas_int* liwork, blas_int* info, blas_len jobz_len, blas_len uplo_len);
   
   // eigen decomposition of general real matrix pair
-  void arma_fortran(arma_sggev)(const char* jobvl, const char* jobvr, const blas_int* n,  float* a, const blas_int* lda,  float* b, const blas_int* ldb,  float* alphar,  float* alphai,  float* beta,  float* vl, const blas_int* ldvl,  float* vr, const blas_int* ldvr,  float* work, const blas_int* lwork, blas_int* info);
-  void arma_fortran(arma_dggev)(const char* jobvl, const char* jobvr, const blas_int* n, double* a, const blas_int* lda, double* b, const blas_int* ldb, double* alphar, double* alphai, double* beta, double* vl, const blas_int* ldvl, double* vr, const blas_int* ldvr, double* work, const blas_int* lwork, blas_int* info);
+  void arma_fortran(arma_sggev)(const char* jobvl, const char* jobvr, const blas_int* n,  float* a, const blas_int* lda,  float* b, const blas_int* ldb,  float* alphar,  float* alphai,  float* beta,  float* vl, const blas_int* ldvl,  float* vr, const blas_int* ldvr,  float* work, const blas_int* lwork, blas_int* info, blas_len jobvl_len, blas_len jobvr_len);
+  void arma_fortran(arma_dggev)(const char* jobvl, const char* jobvr, const blas_int* n, double* a, const blas_int* lda, double* b, const blas_int* ldb, double* alphar, double* alphai, double* beta, double* vl, const blas_int* ldvl, double* vr, const blas_int* ldvr, double* work, const blas_int* lwork, blas_int* info, blas_len jobvl_len, blas_len jobvr_len);
   
   // eigen decomposition of general complex matrix pair
-  void arma_fortran(arma_cggev)(const char* jobvl, const char* jobvr, const blas_int* n, void* a, const blas_int* lda, void* b, const blas_int* ldb, void* alpha, void* beta, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, void* work, const blas_int* lwork,  float* rwork, blas_int* info);
-  void arma_fortran(arma_zggev)(const char* jobvl, const char* jobvr, const blas_int* n, void* a, const blas_int* lda, void* b, const blas_int* ldb, void* alpha, void* beta, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, void* work, const blas_int* lwork, double* rwork, blas_int* info);
+  void arma_fortran(arma_cggev)(const char* jobvl, const char* jobvr, const blas_int* n, void* a, const blas_int* lda, void* b, const blas_int* ldb, void* alpha, void* beta, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, void* work, const blas_int* lwork,  float* rwork, blas_int* info, blas_len jobvl_len, blas_len jobvr_len);
+  void arma_fortran(arma_zggev)(const char* jobvl, const char* jobvr, const blas_int* n, void* a, const blas_int* lda, void* b, const blas_int* ldb, void* alpha, void* beta, void* vl, const blas_int* ldvl, void* vr, const blas_int* ldvr, void* work, const blas_int* lwork, double* rwork, blas_int* info, blas_len jobvl_len, blas_len jobvr_len);
   
   // Cholesky decomposition
   void arma_fortran(arma_spotrf)(const char* uplo, const blas_int* n,  float* a, const blas_int* lda, blas_int* info);
