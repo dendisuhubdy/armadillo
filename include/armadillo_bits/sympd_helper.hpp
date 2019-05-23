@@ -80,7 +80,8 @@ guess_sympd(const Mat<eT>& A)
       const eT A_ij_abs = (std::abs)(A_ij);
       const eT A_ji_abs = (std::abs)(A_ji);
       
-      if( (A_ij_abs >= max_diag) || (A_ji_abs >= max_diag) )  { return false; }
+      // if( (A_ij_abs >= max_diag) || (A_ji_abs >= max_diag) )  { return false; }
+      if(A_ij_abs >= max_diag)  { return false; }
       
       const eT A_delta   = (std::abs)(A_ij - A_ji);
       const eT A_abs_max = (std::max)(A_ij_abs, A_ji_abs);
