@@ -768,29 +768,10 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
-      {
-      typedef float T;
-      arma_fortran(arma_sgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info);
-      }
-    else
-    if(is_double<eT>::value)
-      {
-      typedef double T;
-      arma_fortran(arma_dgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info);
-      }
-    else
-    if(is_cx_float<eT>::value)
-      {
-      typedef cx_float T;
-      arma_fortran(arma_cgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info);
-      }
-    else
-    if(is_cx_double<eT>::value)
-      {
-      typedef cx_double T;
-      arma_fortran(arma_zgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info);
-      }
+         if(    is_float<eT>::value)  { typedef float     T; arma_fortran(arma_sgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info); }
+    else if(   is_double<eT>::value)  { typedef double    T; arma_fortran(arma_dgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info); }
+    else if( is_cx_float<eT>::value)  { typedef cx_float  T; arma_fortran(arma_cgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info); }
+    else if(is_cx_double<eT>::value)  { typedef cx_double T; arma_fortran(arma_zgbsv)(n, kl, ku, nrhs, (T*)ab, ldab, ipiv, (T*)b, ldb, info); }
     }
   
   
@@ -848,29 +829,10 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
-      {
-      typedef float T;
-      arma_fortran(arma_sgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info);
-      }
-    else
-    if(is_double<eT>::value)
-      {
-      typedef double T;
-      arma_fortran(arma_dgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info);
-      }
-    else
-    if(is_cx_float<eT>::value)
-      {
-      typedef cx_float T;
-      arma_fortran(arma_cgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info);
-      }
-    else
-    if(is_cx_double<eT>::value)
-      {
-      typedef cx_double T;
-      arma_fortran(arma_zgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info);
-      }
+         if(    is_float<eT>::value)  { typedef float     T; arma_fortran(arma_sgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info); }
+    else if(   is_double<eT>::value)  { typedef double    T; arma_fortran(arma_dgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info); }
+    else if( is_cx_float<eT>::value)  { typedef cx_float  T; arma_fortran(arma_cgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info); }
+    else if(is_cx_double<eT>::value)  { typedef cx_double T; arma_fortran(arma_zgtsv)(n, nrhs, (T*)dl, (T*)d, (T*)du, (T*)b, ldb, info); }
     }
   
   
