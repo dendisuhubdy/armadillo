@@ -725,17 +725,8 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
-      {
-      typedef float T;
-      arma_fortran(arma_sgelsd)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)S, (T*)rcond, rank, (T*)work, lwork, iwork, info);
-      }
-    else
-    if(is_double<eT>::value)
-      {
-      typedef double T;
-      arma_fortran(arma_dgelsd)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)S, (T*)rcond, rank, (T*)work, lwork, iwork, info);
-      }
+         if( is_float<eT>::value)  { typedef  float T; arma_fortran(arma_sgelsd)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)S, (T*)rcond, rank, (T*)work, lwork, iwork, info); }
+    else if(is_double<eT>::value)  { typedef double T; arma_fortran(arma_dgelsd)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)S, (T*)rcond, rank, (T*)work, lwork, iwork, info); }
     }
   
   
@@ -749,19 +740,8 @@ namespace lapack
     
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_cx_float<eT>::value)
-      {
-      typedef float               pod_T;
-      typedef std::complex<float>  cx_T;
-      arma_fortran(arma_cgelsd)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, (pod_T*)S, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, iwork, info);
-      }
-    else
-    if(is_cx_double<eT>::value)
-      {
-      typedef double               pod_T;
-      typedef std::complex<double>  cx_T;
-      arma_fortran(arma_zgelsd)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, (pod_T*)S, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, iwork, info);
-      }
+         if( is_cx_float<eT>::value)  { typedef float  pod_T; typedef cx_float  cx_T; arma_fortran(arma_cgelsd)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, (pod_T*)S, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, iwork, info); }
+    else if(is_cx_double<eT>::value)  { typedef double pod_T; typedef cx_double cx_T; arma_fortran(arma_zgelsd)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, (pod_T*)S, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, iwork, info); }
     }
   
   
