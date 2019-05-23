@@ -482,8 +482,6 @@ extern "C"
   void arma_fortran(arma_cpotri)(const char* uplo, const blas_int* n,   void* a, const blas_int* lda, blas_int* info, blas_len uplo_len);
   void arma_fortran(arma_zpotri)(const char* uplo, const blas_int* n,   void* a, const blas_int* lda, blas_int* info, blas_len uplo_len);
   
-  // ### TODO FROM HERE ON ###
-  
   // QR decomposition
   void arma_fortran(arma_sgeqrf)(const blas_int* m, const blas_int* n,  float* a, const blas_int* lda,  float* tau,  float* work, const blas_int* lwork, blas_int* info);
   void arma_fortran(arma_dgeqrf)(const blas_int* m, const blas_int* n, double* a, const blas_int* lda, double* tau, double* work, const blas_int* lwork, blas_int* info);
@@ -497,6 +495,8 @@ extern "C"
   // Q matrix calculation from QR decomposition (complex matrices)
   void arma_fortran(arma_cungqr)(const blas_int* m, const blas_int* n, const blas_int* k,   void* a, const blas_int* lda,   const void* tau,   void* work, const blas_int* lwork, blas_int* info);
   void arma_fortran(arma_zungqr)(const blas_int* m, const blas_int* n, const blas_int* k,   void* a, const blas_int* lda,   const void* tau,   void* work, const blas_int* lwork, blas_int* info);
+  
+  // ### TODO FROM HERE ON ###
   
   // SVD (real matrices)
   void arma_fortran(arma_sgesvd)(const char* jobu, const char* jobvt, const blas_int* m, const blas_int* n, float*  a, const blas_int* lda, float*  s, float*  u, const blas_int* ldu, float*  vt, const blas_int* ldvt, float*  work, const blas_int* lwork, blas_int* info);

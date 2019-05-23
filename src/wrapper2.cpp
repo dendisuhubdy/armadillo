@@ -406,8 +406,6 @@ extern "C"
       }
     
     
-    // ### TODO FROM HERE ON ###
-    
     
     void arma_fortran_with_prefix(arma_sgeqrf)(blas_int* m, blas_int* n,  float* a, blas_int* lda,  float* tau,  float* work, blas_int* lwork, blas_int* info)
       {
@@ -453,6 +451,8 @@ extern "C"
       arma_fortran_sans_prefix(arma_zungqr)(m, n, k, a, lda, tau, work, lwork, info);
       }
     
+    
+    // ### TODO FROM HERE ON ###
     
     
     void arma_fortran_with_prefix(arma_sgesvd)(char* jobu, char* jobvt, blas_int* m, blas_int* n, float*  a, blas_int* lda, float*  s, float*  u, blas_int* ldu, float*  vt, blas_int* ldvt, float*  work, blas_int* lwork, blas_int* info)
