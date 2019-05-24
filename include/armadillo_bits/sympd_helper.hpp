@@ -39,8 +39,7 @@ guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
   
-  //if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
-  if((A.n_rows != A.n_cols) || (A.n_rows < 1))  { return false; }
+  if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
   
   const eT tol = eT(100) * std::numeric_limits<eT>::epsilon();  // allow some leeway
   
@@ -148,7 +147,7 @@ guess_sympd(const Mat<eT>& A)
   for(uword j=0; j < Nm1; ++j)
     {
     const uword jp1       = j+1;
-    const eT*   A_ji_ptr = &(A_mem[j + jp1*N]);  // &(A.at(j,jp1));
+    const eT*   A_ji_ptr = &(A_mem[j   + jp1*N]);  // &(A.at(j,jp1));
     const eT*   A_ii_ptr = &(A_mem[jp1 + jp1*N]);
     
     const T A_jj_real = std::real(A_col[j]);
