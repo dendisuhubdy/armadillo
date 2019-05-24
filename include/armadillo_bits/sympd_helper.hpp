@@ -106,6 +106,7 @@ guess_sympd(const Mat<eT>& A)
 
 
 
+// NOTE: this is a simplified and approximate implementation for complex matrices
 template<typename eT>
 inline
 typename enable_if2<is_cx<eT>::yes, bool>::result
@@ -157,29 +158,25 @@ guess_sympd(const Mat<eT>& A)
       const eT& A_ij      = A_col[i];
       const  T  A_ij_real = std::real(A_ij);
       const  T  A_ij_imag = std::imag(A_ij);
-      const  T  A_ij_abs  =  std::abs(A_ij);
       
-      if(A_ij_abs >= max_diag )  { return false; }
+      const T A_ij_real_abs = (std::abs)(A_ij_real);
+      const T A_ij_imag_abs = (std::abs)(A_ij_imag);
+      
+      // rough approximation
+      if( (A_ij_real_abs >= max_diag) || (A_ij_imag_abs >= max_diag) )  { return false; }
       
       const eT& A_ji      = (*A_ji_ptr);
       const  T  A_ji_real = std::real(A_ji);
       const  T  A_ji_imag = std::imag(A_ji);
-      //const  T  A_ji_abs  =  std::abs(A_ji);
       
-      //if(A_ji_abs >= max_diag )  { return false; }
-      
-      
-      const T A_ij_real_abs = (std::abs)(A_ij_real);
       const T A_ji_real_abs = (std::abs)(A_ji_real);
+      const T A_ji_imag_abs = (std::abs)(A_ji_imag);
       
       const T A_real_delta   = (std::abs)(A_ij_real - A_ji_real);
       const T A_real_abs_max = (std::max)(A_ij_real_abs, A_ji_real_abs);
       
       if( (A_real_delta > tol) && (A_real_delta > (A_real_abs_max*tol)) )  { return false; }
       
-      
-      const T A_ij_imag_abs = (std::abs)(A_ij_imag);
-      const T A_ji_imag_abs = (std::abs)(A_ji_imag);
       
       const T A_imag_delta   = (std::abs)(A_ij_imag + A_ji_imag);  // take into account complex conjugate
       const T A_imag_abs_max = (std::max)(A_ij_imag_abs, A_ji_imag_abs);
@@ -189,7 +186,7 @@ guess_sympd(const Mat<eT>& A)
       
       const T A_ii_real = std::real(*A_ii_ptr);
       
-      if( (T(2)*A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
+      if( (A_ij_real_abs + A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
       
       A_ji_ptr += N;
       A_ii_ptr += Np1;
@@ -200,6 +197,104 @@ guess_sympd(const Mat<eT>& A)
   
   return true;
   }
+
+
+
+// NOTE: this is the full implementation for complex matrices; it's too slow for our purposes
+// template<typename eT>
+// inline
+// typename enable_if2<is_cx<eT>::yes, bool>::result
+// guess_sympd(const Mat<eT>& A)
+//   {
+//   arma_extra_debug_sigprint();
+//   
+//   typedef typename get_pod_type<eT>::result T;
+//   
+//   if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
+//   
+//   const T tol = T(100) * std::numeric_limits<T>::epsilon();  // allow some leeway
+//   
+//   const uword N = A.n_rows;
+//   
+//   const eT* A_mem = A.memptr();
+//   const eT* A_col = A_mem;
+//   
+//   T max_diag = T(0);
+//   
+//   for(uword j=0; j < N; ++j)
+//     {
+//     const eT& A_jj      = A_col[j];
+//     const  T  A_jj_real = std::real(A_jj);
+//     const  T  A_jj_imag = std::imag(A_jj);
+//     
+//     if( (A_jj_real <= T(0)) || (std::abs(A_jj_imag) > tol) )  { return false; }
+//     
+//     max_diag = (A_jj_real > max_diag) ? A_jj_real : max_diag;
+//     
+//     A_col += N;
+//     }
+//   
+//   A_col = A_mem;
+//   
+//   const uword Nm1 = N-1;
+//   const uword Np1 = N+1;
+//   
+//   for(uword j=0; j < Nm1; ++j)
+//     {
+//     const uword jp1       = j+1;
+//     const eT*   A_ji_ptr = &(A_mem[j   + jp1*N]);  // &(A.at(j,jp1));
+//     const eT*   A_ii_ptr = &(A_mem[jp1 + jp1*N]);
+//     
+//     const T A_jj_real = std::real(A_col[j]);
+//     
+//     for(uword i=jp1; i < N; ++i)
+//       {
+//       const eT& A_ij      = A_col[i];
+//       const  T  A_ij_real = std::real(A_ij);
+//       const  T  A_ij_imag = std::imag(A_ij);
+//       const  T  A_ij_abs  =  std::abs(A_ij);
+//       
+//       if(A_ij_abs >= max_diag )  { return false; }
+//       
+//       const eT& A_ji      = (*A_ji_ptr);
+//       const  T  A_ji_real = std::real(A_ji);
+//       const  T  A_ji_imag = std::imag(A_ji);
+//       //const  T  A_ji_abs  =  std::abs(A_ji);
+//       
+//       //if(A_ji_abs >= max_diag )  { return false; }
+//       
+//       
+//       const T A_ij_real_abs = (std::abs)(A_ij_real);
+//       const T A_ji_real_abs = (std::abs)(A_ji_real);
+//       
+//       const T A_real_delta   = (std::abs)(A_ij_real - A_ji_real);
+//       const T A_real_abs_max = (std::max)(A_ij_real_abs, A_ji_real_abs);
+//       
+//       if( (A_real_delta > tol) && (A_real_delta > (A_real_abs_max*tol)) )  { return false; }
+//       
+//       
+//       const T A_ij_imag_abs = (std::abs)(A_ij_imag);
+//       const T A_ji_imag_abs = (std::abs)(A_ji_imag);
+//       
+//       const T A_imag_delta   = (std::abs)(A_ij_imag + A_ji_imag);  // take into account complex conjugate
+//       const T A_imag_abs_max = (std::max)(A_ij_imag_abs, A_ji_imag_abs);
+//       
+//       if( (A_imag_delta > tol) && (A_imag_delta > (A_imag_abs_max*tol)) )  { return false; }
+//       
+//       
+//       const T A_ii_real = std::real(*A_ii_ptr);
+//       
+//       if( (T(2)*A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
+//       
+//       A_ji_ptr += N;
+//       A_ii_ptr += Np1;
+//       }
+//     
+//     A_col += N;
+//     }
+//   
+//   return true;
+//   }
 
 
 
