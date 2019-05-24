@@ -39,7 +39,8 @@ guess_sympd(const Mat<eT>& A)
   {
   arma_extra_debug_sigprint();
   
-  if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
+  //if((A.n_rows != A.n_cols) || (A.n_rows < 16))  { return false; }
+  if((A.n_rows != A.n_cols) || (A.n_rows < 1))  { return false; }
   
   const eT tol = eT(100) * std::numeric_limits<eT>::epsilon();  // allow some leeway
   
@@ -64,18 +65,20 @@ guess_sympd(const Mat<eT>& A)
   A_col = A_mem;
   
   const uword Nm1 = N-1;
+  const uword Np1 = N+1;
   
   for(uword j=0; j < Nm1; ++j)
     {
-    const uword jp1   = j+1;
-    const eT*   A_row = &(A_mem[j + jp1*N]);  // &(A.at(j,jp1));
-    
     const eT A_jj = A_col[j];
+    
+    const uword jp1      = j+1;
+    const eT*   A_ji_ptr = &(A_mem[j   + jp1*N]);  // &(A.at(j,jp1));
+    const eT*   A_ii_ptr = &(A_mem[jp1 + jp1*N]);
     
     for(uword i=jp1; i < N; ++i)
       {
       const eT A_ij = A_col[i];
-      const eT A_ji = (*A_row);
+      const eT A_ji = (*A_ji_ptr);
       
       const eT A_ij_abs = (std::abs)(A_ij);
       const eT A_ji_abs = (std::abs)(A_ji);
@@ -88,11 +91,12 @@ guess_sympd(const Mat<eT>& A)
       
       if( (A_delta > tol) && (A_delta > (A_abs_max*tol)) )  { return false; }
       
-      const eT A_ii = A_mem[i + i*N];
+      const eT A_ii = (*A_ii_ptr);
       
-      if( (eT(2)*A_ij_abs) >= (A_ii + A_jj) )  { return false; }
+      if( (A_ij_abs + A_ij_abs) >= (A_ii + A_jj) )  { return false; }
       
-      A_row += N;
+      A_ji_ptr += N;
+      A_ii_ptr += Np1;
       }
     
     A_col += N;
@@ -139,11 +143,13 @@ guess_sympd(const Mat<eT>& A)
   A_col = A_mem;
   
   const uword Nm1 = N-1;
+  const uword Np1 = N+1;
   
   for(uword j=0; j < Nm1; ++j)
     {
-    const uword jp1   = j+1;
-    const eT*   A_row = &(A_mem[j + jp1*N]);  // &(A.at(j,jp1));
+    const uword jp1       = j+1;
+    const eT*   A_ji_ptr = &(A_mem[j + jp1*N]);  // &(A.at(j,jp1));
+    const eT*   A_ii_ptr = &(A_mem[jp1 + jp1*N]);
     
     const T A_jj_real = std::real(A_col[j]);
     
@@ -156,7 +162,7 @@ guess_sympd(const Mat<eT>& A)
       
       if(A_ij_abs >= max_diag )  { return false; }
       
-      const eT& A_ji      = (*A_row);
+      const eT& A_ji      = (*A_ji_ptr);
       const  T  A_ji_real = std::real(A_ji);
       const  T  A_ji_imag = std::imag(A_ji);
       //const  T  A_ji_abs  =  std::abs(A_ji);
@@ -182,11 +188,12 @@ guess_sympd(const Mat<eT>& A)
       if( (A_imag_delta > tol) && (A_imag_delta > (A_imag_abs_max*tol)) )  { return false; }
       
       
-      const T A_ii_real = std::real(A_mem[i + i*N]);
+      const T A_ii_real = std::real(*A_ii_ptr);
       
       if( (T(2)*A_ij_real_abs) >= (A_ii_real + A_jj_real) )  { return false; }
       
-      A_row += N;
+      A_ji_ptr += N;
+      A_ii_ptr += Np1;
       }
     
     A_col += N;
