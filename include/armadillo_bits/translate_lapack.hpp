@@ -391,8 +391,6 @@ namespace lapack
     }
   
   
-  // ### TODO FROM HERE ON ###
-  
   
   template<typename eT>
   inline
@@ -406,17 +404,13 @@ namespace lapack
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
-    if(is_float<eT>::value)
-      {
-      typedef float T;
-      arma_fortran(arma_sgesvd)(jobu, jobvt, m, n, (T*)a, lda, (T*)s, (T*)u, ldu, (T*)vt, ldvt, (T*)work, lwork, info);
-      }
-    else
-    if(is_double<eT>::value)
-      {
-      typedef double T;
-      arma_fortran(arma_dgesvd)(jobu, jobvt, m, n, (T*)a, lda, (T*)s, (T*)u, ldu, (T*)vt, ldvt, (T*)work, lwork, info);
-      }
+    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+           if( is_float<eT>::value)  { typedef float  T; arma_fortran(arma_sgesvd)(jobu, jobvt, m, n, (T*)a, lda, (T*)s, (T*)u, ldu, (T*)vt, ldvt, (T*)work, lwork, info, 1, 1); }
+      else if(is_double<eT>::value)  { typedef double T; arma_fortran(arma_dgesvd)(jobu, jobvt, m, n, (T*)a, lda, (T*)s, (T*)u, ldu, (T*)vt, ldvt, (T*)work, lwork, info, 1, 1); }
+    #else
+           if( is_float<eT>::value)  { typedef float  T; arma_fortran(arma_sgesvd)(jobu, jobvt, m, n, (T*)a, lda, (T*)s, (T*)u, ldu, (T*)vt, ldvt, (T*)work, lwork, info); }
+      else if(is_double<eT>::value)  { typedef double T; arma_fortran(arma_dgesvd)(jobu, jobvt, m, n, (T*)a, lda, (T*)s, (T*)u, ldu, (T*)vt, ldvt, (T*)work, lwork, info); }
+    #endif
     }
   
   
@@ -434,29 +428,17 @@ namespace lapack
     arma_type_check(( is_supported_blas_type<T>::value == false ));
     arma_type_check(( is_supported_blas_type< std::complex<T> >::value == false ));
     
-    if(is_float<T>::value)
-      {
-      typedef float bT;
-      arma_fortran(arma_cgesvd)
-        (
-        jobu, jobvt, m, n, (std::complex<bT>*)a, lda,
-        (bT*)s, (std::complex<bT>*)u, ldu, (std::complex<bT>*)vt, ldvt,
-        (std::complex<bT>*)work, lwork, (bT*)rwork, info
-        );
-      }
-    else
-    if(is_double<T>::value)
-      {
-      typedef double bT;
-      arma_fortran(arma_zgesvd)
-        (
-        jobu, jobvt, m, n, (std::complex<bT>*)a, lda,
-        (bT*)s, (std::complex<bT>*)u, ldu, (std::complex<bT>*)vt, ldvt,
-        (std::complex<bT>*)work, lwork, (bT*)rwork, info
-        );
-      }
+    #if defined(ARMA_USE_FORTRAN_HIDDEN_ARGS)
+           if( is_float<T>::value)  { typedef float  bT; typedef cx_float  cx_bT; arma_fortran(arma_cgesvd)(jobu, jobvt, m, n, (cx_bT*)a, lda, (bT*)s, (cx_bT*)u, ldu, (cx_bT*)vt, ldvt, (cx_bT*)work, lwork, (bT*)rwork, info, 1, 1); }
+      else if(is_double<T>::value)  { typedef double bT; typedef cx_double cx_bT; arma_fortran(arma_zgesvd)(jobu, jobvt, m, n, (cx_bT*)a, lda, (bT*)s, (cx_bT*)u, ldu, (cx_bT*)vt, ldvt, (cx_bT*)work, lwork, (bT*)rwork, info, 1, 1); }
+    #else
+           if( is_float<T>::value)  { typedef float  bT; typedef cx_float  cx_bT; arma_fortran(arma_cgesvd)(jobu, jobvt, m, n, (cx_bT*)a, lda, (bT*)s, (cx_bT*)u, ldu, (cx_bT*)vt, ldvt, (cx_bT*)work, lwork, (bT*)rwork, info); }
+      else if(is_double<T>::value)  { typedef double bT; typedef cx_double cx_bT; arma_fortran(arma_zgesvd)(jobu, jobvt, m, n, (cx_bT*)a, lda, (bT*)s, (cx_bT*)u, ldu, (cx_bT*)vt, ldvt, (cx_bT*)work, lwork, (bT*)rwork, info); }
+    #endif
     }
   
+  
+  // ### TODO FROM HERE ON ###
   
   
   template<typename eT>
