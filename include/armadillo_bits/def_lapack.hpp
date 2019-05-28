@@ -518,21 +518,21 @@ extern "C"
   void arma_fortran(arma_cgesv)(const blas_int* n, const blas_int* nrhs, void*   a, const blas_int* lda, blas_int* ipiv, void*   b, const blas_int* ldb, blas_int* info);
   void arma_fortran(arma_zgesv)(const blas_int* n, const blas_int* nrhs, void*   a, const blas_int* lda, blas_int* ipiv, void*   b, const blas_int* ldb, blas_int* info);
   
-  // ### TODO FROM HERE ON ###
-  
   // solve system of linear equations (general square matrix, advanced form, real matrices)
-  void arma_fortran(arma_sgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* af, const blas_int* ldaf, blas_int* ipiv, char* equed,  float* r,  float* c,  float* b, const blas_int* ldb,  float* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info);
-  void arma_fortran(arma_dgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs, double* a, const blas_int* lda, double* af, const blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, double* b, const blas_int* ldb, double* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_sgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* af, const blas_int* ldaf, blas_int* ipiv, char* equed,  float* r,  float* c,  float* b, const blas_int* ldb,  float* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info, blas_len fact_len, blas_len trans_len, blas_len equed_len);
+  void arma_fortran(arma_dgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs, double* a, const blas_int* lda, double* af, const blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, double* b, const blas_int* ldb, double* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info, blas_len fact_len, blas_len trans_len, blas_len equed_len);
   
   // solve system of linear equations (general square matrix, advanced form, complex matrices)
-  void arma_fortran(arma_cgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, blas_int* ipiv, char* equed,  float* r,  float* c, void* b, const blas_int* ldb, void* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info);
-  void arma_fortran(arma_zgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, void* b, const blas_int* ldb, void* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info);
+  void arma_fortran(arma_cgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, blas_int* ipiv, char* equed,  float* r,  float* c, void* b, const blas_int* ldb, void* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info, blas_len fact_len, blas_len trans_len, blas_len equed_len);
+  void arma_fortran(arma_zgesvx)(const char* fact, const char* trans, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, void* b, const blas_int* ldb, void* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info, blas_len fact_len, blas_len trans_len, blas_len equed_len);
   
   // solve system of linear equations (symmetric positive definite matrix)
-  void arma_fortran(arma_sposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* b, const blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_dposv)(const char* uplo, const blas_int* n, const blas_int* nrhs, double* a, const blas_int* lda, double* b, const blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_cposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,   void* a, const blas_int* lda,   void* b, const blas_int* ldb, blas_int* info);
-  void arma_fortran(arma_zposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,   void* a, const blas_int* lda,   void* b, const blas_int* ldb, blas_int* info);
+  void arma_fortran(arma_sposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* b, const blas_int* ldb, blas_int* info, blas_len uplo_len);
+  void arma_fortran(arma_dposv)(const char* uplo, const blas_int* n, const blas_int* nrhs, double* a, const blas_int* lda, double* b, const blas_int* ldb, blas_int* info, blas_len uplo_len);
+  void arma_fortran(arma_cposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,   void* a, const blas_int* lda,   void* b, const blas_int* ldb, blas_int* info, blas_len uplo_len);
+  void arma_fortran(arma_zposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,   void* a, const blas_int* lda,   void* b, const blas_int* ldb, blas_int* info, blas_len uplo_len);
+  
+  // ### TODO FROM HERE ON ###
   
   // solve system of linear equations (symmetric positive definite matrix, advanced form, real matrices)
   void arma_fortran(arma_sposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* af, const blas_int* ldaf, char* equed,  float* s,  float* b, const blas_int* ldb,  float* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info);
