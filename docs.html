@@ -18179,6 +18179,13 @@ List of additions and changes for each version:
 <li>expanded <a href="#solve">solve()</a> with <code>solve_opts::likely_sympd</code> to forcefully indicate that the given matrix is positive definite</li>
 <li>more robust automatic detection of positive definite matrices by <a href="#solve">solve()</a> and <a href="#inv">inv()</a></li>
 <li>faster insertion into sparse submatrices</li>
+<li>
+extended LAPACK function prototypes to follow Fortran <a href="https://gcc.gnu.org/onlinedocs/gfortran/Argument-passing-conventions.html">passing conventions</a> for so-called "hidden arguments",
+in order to address <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90329">GCC Bug 90329</a>;
+<br>
+to use previous LAPACK function prototypes without the "hidden arguments",
+<code>#define ARMA_DONT_USE_FORTRAN_HIDDEN_ARGS</code> before <code>#include &lt;armadillo&gt;</code>
+</li>
 </ul>
 </li>
 <br>
