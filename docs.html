@@ -12315,7 +12315,7 @@ The number of rows in <i>A</i> and <i>B</i> must be the same
 <tr><td><code>solve_opts::no_band</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use dedicated algorithms for band matrices</td></tr>
 <tr><td><code>solve_opts::no_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not use dedicated algorithms for symmetric/hermitian positive definite matrices</td></tr>
 <tr><td><code>solve_opts::allow_ugly</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>keep solutions of systems that are singular to working precision</td></tr>
-<tr><td><code>solve_opts::likely_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>indicate that matrix <i>A</i> is likely to be symmetric/hermitian positive definite</td></tr>
+<tr><td><code>solve_opts::likely_sympd</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>indicate that matrix <i>A</i> is likely symmetric/hermitian positive definite</td></tr>
 </tbody>
 </table>
 <br>
@@ -12336,7 +12336,7 @@ the solution can be computed faster by explicitly indicating that <i>A</i> is tr
 By default, matrix <i>A</i> is analysed to automatically determine whether it is a general matrix, band matrix, or symmetric/hermitian positive definite (SPD) matrix.
 Based on the detected matrix structure, a dedicated algorithm is selected for solving the system in order to reduce computational effort.
 However, not all SPD matrices are automatically detected.
-To indicate that matrix <i>A</i> is likely to be SPD, use <code>solve_opts::likely_sympd</code>
+To skip the analysis and directly indicate that matrix <i>A</i> is likely to be SPD, use <code>solve_opts::likely_sympd</code>
 </li>
 <br>
 <li>
@@ -18176,7 +18176,7 @@ List of additions and changes for each version:
 <a name="version_9500"></a>
 <li>Version 9.500:
 <ul>
-<li>expanded <a href="#solve">solve()</a> with <code>solve_opts::likely_sympd</code> to forcefully indicate that the given matrix is positive definite</li>
+<li>expanded <a href="#solve">solve()</a> with <code>solve_opts::likely_sympd</code> to indicate that the given matrix is likely positive definite</li>
 <li>more robust automatic detection of positive definite matrices by <a href="#solve">solve()</a> and <a href="#inv">inv()</a></li>
 <li>faster insertion into sparse submatrices</li>
 <li>
