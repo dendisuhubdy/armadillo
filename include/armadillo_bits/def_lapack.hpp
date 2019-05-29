@@ -532,15 +532,15 @@ extern "C"
   void arma_fortran(arma_cposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,   void* a, const blas_int* lda,   void* b, const blas_int* ldb, blas_int* info, blas_len uplo_len);
   void arma_fortran(arma_zposv)(const char* uplo, const blas_int* n, const blas_int* nrhs,   void* a, const blas_int* lda,   void* b, const blas_int* ldb, blas_int* info, blas_len uplo_len);
   
+  // solve system of linear equations (symmetric positive definite matrix, advanced form, real matrices)
+  void arma_fortran(arma_sposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* af, const blas_int* ldaf, char* equed,  float* s,  float* b, const blas_int* ldb,  float* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info, blas_len fact_len, blas_len uplo_len, blas_len equed_len);
+  void arma_fortran(arma_dposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs, double* a, const blas_int* lda, double* af, const blas_int* ldaf, char* equed, double* s, double* b, const blas_int* ldb, double* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info, blas_len fact_len, blas_len uplo_len, blas_len equed_len);
+  
   // ### TODO FROM HERE ON ###
   
-  // solve system of linear equations (symmetric positive definite matrix, advanced form, real matrices)
-  void arma_fortran(arma_sposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs,  float* a, const blas_int* lda,  float* af, const blas_int* ldaf, char* equed,  float* s,  float* b, const blas_int* ldb,  float* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info);
-  void arma_fortran(arma_dposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs, double* a, const blas_int* lda, double* af, const blas_int* ldaf, char* equed, double* s, double* b, const blas_int* ldb, double* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info);
-  
   // solve system of linear equations (hermitian positive definite matrix, advanced form, complex matrices)
-  void arma_fortran(arma_cposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, char* equed,  float* s, void* b, const blas_int* ldb, void* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info);
-  void arma_fortran(arma_zposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, char* equed, double* s, void* b, const blas_int* ldb, void* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info);
+  void arma_fortran(arma_cposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, char* equed,  float* s, void* b, const blas_int* ldb, void* x, const blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info, blas_len fact_len, blas_len uplo_len, blas_len equed_len);
+  void arma_fortran(arma_zposvx)(const char* fact, const char* uplo, const blas_int* n, const blas_int* nrhs, void* a, const blas_int* lda, void* af, const blas_int* ldaf, char* equed, double* s, void* b, const blas_int* ldb, void* x, const blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info, blas_len fact_len, blas_len uplo_len, blas_len equed_len);
   
   // solve over/under-determined system of linear equations
   void arma_fortran(arma_sgels)(const char* trans, const blas_int* m, const blas_int* n, const blas_int* nrhs, float*  a, const blas_int* lda, float*  b, const blas_int* ldb, float*  work, const blas_int* lwork, blas_int* info);
